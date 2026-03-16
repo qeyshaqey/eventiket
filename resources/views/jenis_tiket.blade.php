@@ -178,8 +178,8 @@
         <div class="cards">
             <!-- VIP -->
             <div class="card vip">
-                <div class="badge">⭐ EKSKLUSIF</div>
-                <div class="icon">👑</div>
+                <div class="badge"> EKSKLUSIF</div>
+                <div class="icon"></div>
                 <h2>VIP</h2>
                 <p class="desc">Kursi terbaik dengan akses dan layanan premium</p>
                 <div class="price">Rp 200.000 <span>/orang</span></div>
@@ -188,8 +188,8 @@
 
             <!-- Regular -->
             <div class="card regular">
-                <div class="badge">✅ POPULER</div>
-                <div class="icon">🎫</div>
+                <div class="badge"> POPULER</div>
+                <div class="icon"></div>
                 <h2>Regular</h2>
                 <p class="desc">Kursi standar dengan kenyamanan yang terjamin</p>
                 <div class="price">Rp 150.000 <span>/orang</span></div>
@@ -198,8 +198,8 @@
 
             <!-- Early Bird -->
             <div class="card earlybird">
-                <div class="badge">🔥 TERBATAS</div>
-                <div class="icon">🐦</div>
+                <div class="badge">TERBATAS</div>
+                <div class="icon"></div>
                 <h2>Early Bird</h2>
                 <p class="desc">Harga spesial untuk pembelian awal, stok terbatas!</p>
                 <div class="price">Rp 100.000 <span>/orang</span></div>
