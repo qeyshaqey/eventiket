@@ -8,6 +8,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+use App\Http\Controllers\DashboardController;
+Route::get('/dashboard', [DashboardController::class, 'index']);
+
 Route::get('/jenistiket', [JenisTiketController::class, 'index']);
 
 use App\Http\Controllers\ListEventController;
