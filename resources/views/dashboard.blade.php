@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Dashboard Eventiket</title>
+    <title>Home - Eventiket</title>
 
     <style>
 
@@ -17,7 +17,7 @@
             display:flex;
             justify-content:space-between;
             align-items:center;
-            background:#2c3e50;
+            background:#192853;
             padding:15px 40px;
             color:white;
         }
@@ -27,27 +27,90 @@
             font-weight:bold;
         }
 
+        /* NAV RIGHT (SEARCH STYLE) */
+
+        .nav-right{
+            display:flex;
+            align-items:center;
+            background:white;
+            padding:5px 15px;
+            border-radius:25px;
+        }
+
         .nav-right a{
             text-decoration:none;
-            color:white;
-            margin-left:15px;
-            padding:8px 14px;
-            border-radius:6px;
+            color:#192853;
+            margin:0 10px;
+            padding:6px 10px;
+            border-radius:20px;
+            transition:0.3s;
         }
+
+        .nav-right a:hover{
+            background:#192853;
+            color:white;
+        }
+
+        /* LOGIN SIGNUP */
 
         .login{
             background:#3498db;
+            color:white !important;
         }
 
         .signup{
             background:#2ecc71;
+            color:white !important;
         }
 
-        .nav-right a:hover{
-            opacity:0.9;
+        /* DROPDOWN */
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
         }
 
-        /* HERO / IKLAN */
+        .dropbtn {
+            background: transparent;
+            border: none;
+            color:#192853;
+            padding:6px 10px;
+            border-radius:20px;
+            cursor:pointer;
+        }
+
+        .dropbtn:hover {
+            background:#192853;
+            color:white;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background: white;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
+            border-radius: 8px;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .dropdown-content a {
+            color: black;
+            padding: 10px;
+            display: block;
+            text-decoration: none;
+        }
+
+        .dropdown-content a:hover {
+            background: #f1f1f1;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        /* HERO */
 
         .hero{
             background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),
@@ -72,40 +135,13 @@
             font-size:18px;
         }
 
-        .hero button{
-            margin-top:20px;
-            padding:12px 25px;
-            border:none;
-            background:#e74c3c;
-            color:white;
-            font-size:16px;
-            border-radius:8px;
-            cursor:pointer;
-        }
-
-        .hero button:hover{
-            background:#c0392b;
-        }
-
-        /* CONTAINER */
-
-        .container{
-            padding:40px;
-        }
-
-        .card{
-            background:white;
-            padding:25px;
-            border-radius:10px;
-            box-shadow:0 3px 8px rgba(0,0,0,0.1);
-            margin-bottom:20px;
-        }
+        /* MENU */
 
         .menu{
             display:grid;
             grid-template-columns: repeat(auto-fit, minmax(200px,1fr));
             gap:25px;
-            margin-top:20px;
+            padding:40px;
         }
 
         .menu-card{
@@ -124,62 +160,106 @@
             box-shadow:0 8px 20px rgba(0,0,0,0.15);
         }
 
-        .icon{
-            font-size:40px;
-            margin-bottom:10px;
-        }
-
         .title{
             font-size:18px;
             font-weight:bold;
         }
-</style>
+
+        /* ABOUT */
+
+        .about{
+            background:#ffffff;
+            padding:40px;
+            text-align:center;
+        }
+
+        .about p{
+            max-width:600px;
+            margin:auto;
+        }
+
+        /* CONTACT */
+
+        .contact{
+            background:#192853;
+            padding:40px;
+            text-align:center;
+            color:white;
+        }
+
+        /* FOOTER */
+
+        footer{
+            background:#192853;
+            color:white;
+            text-align:center;
+            padding:15px;
+            margin-top:5px;
+        }
+
+    </style>
 </head>
 
 <body>
+
 <!-- NAVBAR -->
-
 <div class="navbar">
-
-    <div class="logo">
-        Eventiket
-    </div>
+    <div class="logo">Eventiket</div>
 
     <div class="nav-right">
-        <a class="login" href="#">Login</a>
-        <a class="signup" href="#">Sign Up</a>
+        <a href="/home">Home</a>
+
+        <div class="dropdown">
+            <button class="dropbtn">Kategori ▾</button>
+            <div class="dropdown-content">
+                <a href="/product?kategori=konser">Konser</a>
+                <a href="/product?kategori=seminar">Seminar</a>
+                <a href="/product?kategori=festival">Festival</a>
+                <a href="/product?kategori=workshop">Workshop</a>
+                <a href="/product?kategori=olahraga">Olahraga</a>
+            </div>
+        </div>
+
+        <a href="/about">Tentang</a>
+        <a href="/contact">Hubungi Kami</a>
+        <a class="login" href="/login">Masuk</a>
+        <a class="signup" href="/register">Daftar</a>
     </div>
-
 </div>
 
-<!-- HERO IKLAN EVENT -->
-
+<!-- HERO -->
 <div class="hero">
-
-    <h1>Temukan Event Terbaik</h1>
+    <h1>Temukan Event Terbaik Kampus</h1>
     <p>Konser, Seminar, Festival, dan banyak lagi!</p>
-
-    <button>Lihat Event</button>
-
 </div>
 
-
-<!-- MENU DASHBOARD -->
-
+<!-- MENU -->
 <div class="menu">
-
-    <a class="menu-card" href="/list_event">
+    <a class="menu-card" href="/product">
         <div class="title">List Event</div>
         <p>Lihat semua event yang tersedia</p>
     </a>
 
-    <a class="menu-card" href="/jenis_tiket">
+    <a class="menu-card" href="#">
         <div class="title">Jenis Tiket</div>
         <p>Kelola kategori tiket event</p>
     </a>
-    </div>
-
 </div>
+
+<!-- ABOUT -->
+<div class="about">
+    <h2>Tentang Eventiket</h2>
+    <p>
+        Eventiket adalah platform manajemen event dan pemesanan tiket online 
+        yang membantu pengguna menemukan dan membeli tiket dengan mudah.
+    </p>
+</div>
+
+
+<!-- FOOTER -->
+<footer>
+    <p>© 2026 Eventiket</p>
+</footer>
 
 </body>
 </html>
