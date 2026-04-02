@@ -23,6 +23,6 @@ class BarangController extends Controller
     public function tampilkan()
     {
         $data = $this->getData();
-        return view('list_barang', compact('data'));
+        return view('jenis_barang', compact('data'));
     }
 }
