@@ -20,28 +20,3 @@ Route::get('/jenistiket', [JenisTiketController::class, 'index']);
 Route::get('/event', [ListEventController::class, 'index']);
 Route::get('/barang', [BarangController::class, 'tampilkan']);
 
-use Illuminate\Http\Request;
-
-Route::get('/login', function () {
-    return view('login');
-});
-
-Route::post('/login', function (Request $request) {
-
-    $username = $request->username;
-    $password = $request->password;
-
-    if (!$username || !$password) {
-        return back()->with('error', 'Username dan password wajib diisi.');
-    }
-
-    if ($username === 'admin' && $password === 'password123') {
-        session(['user' => $username]);
-        return back()->with('success', 'Login berhasil! Selamat datang, ' . $username);
-    }
-
-    return back()->with('error', 'Username atau password salah.');
-});
-
-use App\Http\Controllers\AuthController;
-
