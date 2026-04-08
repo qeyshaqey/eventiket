@@ -14,7 +14,7 @@ Route::get('/', function () {
 
 Route::get('/contact', [ContactController::class, 'index'])->name('contact.index');
 Route::post('/contact/send', [ContactController::class, 'send'])->name('contact.send');
-Route::get('/etalase-event', [EtalaseEventController::class, 'index'])->name('etalase.event');
+Route::get('/etalase_event', [EtalaseEventController::class, 'index'])->name('etalase.event');
 Route::get('/dashboard', [DashboardController::class, 'index']);
 Route::get('/jenistiket', [JenisTiketController::class, 'index']);
 Route::get('/event', [ListEventController::class, 'index']);
