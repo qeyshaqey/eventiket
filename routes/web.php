@@ -8,8 +8,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EtalaseEventController;
 use App\Http\Controllers\JenisTiketController;
 use App\Http\Controllers\ListEventController;
-// use App\Http\Controllers\RegisterController; // ✅ Tanpa folder Auth
-use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\RegisterController;
 Route::get('/', function () {
     return view('welcome');
 });
@@ -46,3 +45,10 @@ Route::post('/login', function (Request $request) {
 // ── Register ──
 Route::get('/register', [RegisterController::class, 'showForm'])->name('register');
 Route::post('/register', [RegisterController::class, 'store'])->name('register.store');
+
+use App\Http\Controllers\DashboardPesertaController;
+Route::get('/dashboard_peserta', [DashboardPesertaController::class, 'index']);
+
+use App\Http\Controllers\BerandaPanitiaController;
+
+Route::get('/beranda-panitia', [BerandaPanitiaController::class, 'index'])->name('beranda.panitia');

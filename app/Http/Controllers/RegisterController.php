@@ -1,21 +1,17 @@
 <?php
-namespace App\Http\Controllers\Auth;
+namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\RegisterController;
 use Illuminate\Http\Request;
 class RegisterController extends Controller
 {
-    /**
-     * Tampilkan halaman form registrasi.
-     */
+    // form registrasi.
     public function showForm()
     {
-        return view('auth.register');
+        return view('register');
     }
 
-    /**
-     * Proses data registrasi.
-     */
+    // registrasi
     public function store(RegisterRequest $request)
     {
         // Data sudah tervalidasi oleh RegisterRequest
