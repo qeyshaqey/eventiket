@@ -8,6 +8,10 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EtalaseEventController;
 use App\Http\Controllers\JenisTiketController;
 use App\Http\Controllers\ListEventController;
+use App\Http\Controllers\BerandaPanitiaController;
+
+Route::get('/beranda-panitia', [BerandaPanitiaController::class, 'index'])
+    ->name('beranda.panitia');
 // use App\Http\Controllers\RegisterController; // ✅ Tanpa folder Auth
 use App\Http\Controllers\Auth\RegisterController;
 Route::get('/', function () {
