@@ -50,5 +50,4 @@ use App\Http\Controllers\DashboardPesertaController;
 Route::get('/dashboard_peserta', [DashboardPesertaController::class, 'index']);
 
 use App\Http\Controllers\BerandaPanitiaController;
-
 Route::get('/beranda-panitia', [BerandaPanitiaController::class, 'index'])->name('beranda.panitia');
