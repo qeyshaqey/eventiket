@@ -1,13 +1,15 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
 use App\Http\Controllers\BarangController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EtalaseEventController;
 use App\Http\Controllers\JenisTiketController;
 use App\Http\Controllers\ListEventController;
-
+// use App\Http\Controllers\RegisterController; // ✅ Tanpa folder Auth
+use App\Http\Controllers\Auth\RegisterController;
 Route::get('/', function () {
     return view('welcome');
 });
@@ -20,14 +22,12 @@ Route::get('/jenistiket', [JenisTiketController::class, 'index']);
 Route::get('/event', [ListEventController::class, 'index']);
 Route::get('/barang', [BarangController::class, 'tampilkan']);
 
-use Illuminate\Http\Request;
-
+// ── Login ──
 Route::get('/login', function () {
     return view('login');
-});
+})->name('login');
 
 Route::post('/login', function (Request $request) {
-
     $username = $request->username;
     $password = $request->password;
 
@@ -43,3 +43,6 @@ Route::post('/login', function (Request $request) {
     return back()->with('error', 'Username atau password salah.');
 });
 
+// ── Register ──
+Route::get('/register', [RegisterController::class, 'showForm'])->name('register');
+Route::post('/register', [RegisterController::class, 'store'])->name('register.store');
