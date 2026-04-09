@@ -48,6 +48,8 @@ Route::post('/register', [RegisterController::class, 'store'])->name('register.s
 
 use App\Http\Controllers\DashboardPesertaController;
 Route::get('/dashboard_peserta', [DashboardPesertaController::class, 'index']);
+Route::get('/detail_event/{id}', [DashboardPesertaController::class, 'showDetail'])->name('detail.event');
 
 use App\Http\Controllers\BerandaPanitiaController;
+
 Route::get('/beranda-panitia', [BerandaPanitiaController::class, 'index'])->name('beranda.panitia');
