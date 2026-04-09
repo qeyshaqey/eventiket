@@ -19,7 +19,7 @@ class DashboardPesertaController extends Controller
                 'category' => 'Musik',
                 'status' => 'Tersedia Tiket',
                 'price' => 'Rp 125.000',
-                'image' => 'gambarevent.jpg',
+                'image' => 'gambarevent3.jpg',
                 'tickets' => [
                     ['type' => 'Tiket Perdana', 'price' => 150000],
                     ['type' => 'Tiket Umum', 'price' => 125000],
@@ -35,7 +35,7 @@ class DashboardPesertaController extends Controller
                 'category' => 'Pameran',
                 'status' => 'Tersedia Tiket',
                 'price' => 'Rp 85.000',
-                'image' => 'gambarevent2.jpg',
+                'image' => 'gambarevent3.jpg',
                 'tickets' => [
                     ['type' => 'Tiket Perdana', 'price' => 110000],
                     ['type' => 'Tiket Umum', 'price' => 85000],
@@ -51,7 +51,7 @@ class DashboardPesertaController extends Controller
                 'category' => 'Workshop',
                 'status' => 'Tiket Habis',
                 'price' => 'Rp 55.000',
-                'image' => 'gambarevent.jpg',
+                'image' => 'gambarevent3.jpg',
                 'tickets' => [
                     ['type' => 'Tiket Perdana', 'price' => 70000],
                     ['type' => 'Tiket Umum', 'price' => 55000],
@@ -67,7 +67,7 @@ class DashboardPesertaController extends Controller
                 'category' => 'Seminar',
                 'status' => 'Tiket Habis',
                 'price' => 'Rp 45.000',
-                'image' => 'gambarevent.jpg',
+                'image' => 'gambarevent3.jpg',
                 'tickets' => [
                     ['type' => 'Tiket Perdana', 'price' => 60000],
                     ['type' => 'Tiket Umum', 'price' => 45000],
@@ -83,7 +83,7 @@ class DashboardPesertaController extends Controller
                 'category' => 'Kompetisi',
                 'status' => 'Tersedia Tiket',
                 'price' => 'Rp 95.000',
-                'image' => 'gambarevent2.jpg',
+                'image' => 'gambarevent3.jpg',
                 'tickets' => [
                     ['type' => 'Tiket Perdana', 'price' => 120000],
                     ['type' => 'Tiket Umum', 'price' => 95000],
@@ -99,7 +99,7 @@ class DashboardPesertaController extends Controller
                 'category' => 'Talkshow',
                 'status' => 'Tersedia Tiket',
                 'price' => 'Rp 65.000',
-                'image' => 'gambarevent.jpg',
+                'image' => 'gambarevent3.jpg',
                 'tickets' => [
                     ['type' => 'Tiket Perdana', 'price' => 90000],
                     ['type' => 'Tiket Umum', 'price' => 65000],
@@ -115,7 +115,7 @@ class DashboardPesertaController extends Controller
                 'category' => 'Festival',
                 'status' => 'Tersedia Tiket',
                 'price' => 'Rp 75.000',
-                'image' => 'gambarevent.jpg',
+                'image' => 'gambarevent3.jpg',
                 'tickets' => [
                     ['type' => 'Tiket Perdana', 'price' => 100000],
                     ['type' => 'Tiket Umum', 'price' => 75000],
