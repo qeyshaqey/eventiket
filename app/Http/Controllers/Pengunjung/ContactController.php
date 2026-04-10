@@ -1,8 +1,10 @@
 <?php
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Pengunjung;
+
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 class ContactController extends Controller {
-    public function index() { return view('contact'); }
+    public function index() { return view('pengunjung.contact'); }
     public function send(Request $request) {
         $request->validate([
             'name'    => 'required|string|max:100',

@@ -298,7 +298,7 @@
 <body>
   <section class="page-hero">
     <div class="page-content">
-      <a href="/dashboard_peserta" class="back-link">&larr; Kembali ke Dashboard</a>
+      <a href="/dashboard_pengunjung" class="back-link">&larr; Kembali ke Dashboard</a>
       <span class="badge">{{ $event['category'] }}</span>
       <h1>{{ $event['title'] }}</h1>
       <p>{{ $event['status'] }} — Klik tombol tiket untuk memulai pesanan.</p>

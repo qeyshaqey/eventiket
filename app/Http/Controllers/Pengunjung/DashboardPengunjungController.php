@@ -1,11 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Pengunjung;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 
-class DashboardPesertaController extends Controller
+
+class DashboardPengunjungController extends Controller
 {
     private function events()
     {
@@ -142,8 +144,7 @@ class DashboardPesertaController extends Controller
                 'query' => $request->query(),
             ]
         );
-
-        return view('dashboard_peserta', compact('paginatedEvents'));
+        return view('Pengunjung.dashboard_pengunjung', compact('paginatedEvents'));
     }
 
     public function showDetail($id)
@@ -154,6 +155,6 @@ class DashboardPesertaController extends Controller
             abort(404);
         }
 
-        return view('detail_event', compact('event'));
+        return view('Pengunjung.detail_event', compact('event'));
     }
 }

@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use App\Http\Controllers\BarangController;
-use App\Http\Controllers\ContactController;
+use App\Http\Controllers\Pengunjung\ContactController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EtalaseEventController;
 use App\Http\Controllers\JenisTiketController;
@@ -46,10 +46,9 @@ Route::post('/login', function (Request $request) {
 Route::get('/register', [RegisterController::class, 'showForm'])->name('register');
 Route::post('/register', [RegisterController::class, 'store'])->name('register.store');
 
-use App\Http\Controllers\DashboardPesertaController;
-Route::get('/dashboard_peserta', [DashboardPesertaController::class, 'index']);
-Route::get('/detail_event/{id}', [DashboardPesertaController::class, 'showDetail'])->name('detail.event');
+use App\Http\Controllers\Pengunjung\DashboardPengunjungController;
+Route::get('/dashboard_pengunjung', [DashboardPengunjungController::class, 'index']);
+Route::get('/detail_event/{id}', [DashboardPengunjungController::class, 'showDetail'])->name('detail.event');
 
 use App\Http\Controllers\BerandaPanitiaController;
-
 Route::get('/beranda-panitia', [BerandaPanitiaController::class, 'index'])->name('beranda.panitia');
