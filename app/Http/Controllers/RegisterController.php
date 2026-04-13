@@ -1,11 +1,16 @@
 <?php
+
 namespace App\Http\Controllers;
+
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\RegisterController;
+use App\Http\Requests\RegisterRequest; 
+use App\Models\User;                   
+use Illuminate\Support\Facades\Hash;  
 use Illuminate\Http\Request;
+
 class RegisterController extends Controller
 {
-    // form registrasi.
+    // form registrasi
     public function showForm()
     {
         return view('register');
@@ -14,7 +19,6 @@ class RegisterController extends Controller
     // registrasi
     public function store(RegisterRequest $request)
     {
-        // Data sudah tervalidasi oleh RegisterRequest
         User::create([
             'name'     => $request->username,
             'email'    => $request->email,
