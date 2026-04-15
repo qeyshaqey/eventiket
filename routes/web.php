@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\BarangController;
 use App\Http\Controllers\Pengunjung\ContactController;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\DashboardAdminController; // ✅ TAMBAHAN
+use App\Http\Controllers\DashboardAdminController;
 use App\Http\Controllers\EtalaseEventController;
 use App\Http\Controllers\JenisTiketController;
 use App\Http\Controllers\ListEventController;
