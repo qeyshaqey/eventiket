@@ -37,12 +37,13 @@
                 Data Pengunjung
             </a>
 
-            <a href="{{ route('') }}"
+            <a href="{{ route('data.panitia') }}"
                 class="flex items-center gap-3 px-5 py-3 text-white/60 hover:bg-yellow-400/10 hover:text-white">
                 Data Panitia
             </a>
 
-            <a href="#" class="flex items-center gap-3 px-5 py-3 text-white/60 hover:bg-yellow-400/10 hover:text-white">
+            <a href="{{ route('kelola.event') }}"
+                class="flex items-center gap-3 px-5 py-3 text-white/60 hover:bg-yellow-400/10 hover:text-white">
                 Kelola Event
             </a>
 

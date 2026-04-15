@@ -42,9 +42,26 @@ use App\Http\Controllers\PengunjungController;
 Route::get('/data-pengunjung', [PengunjungController::class, 'index'])
     ->name('data.pengunjung');
 
+use App\Http\Controllers\PanitiaController;
+
+Route::get('/data-panitia', [PanitiaController::class, 'index'])
+    ->name('data.panitia');
+
+use App\Http\Controllers\EventController;
+
+Route::get('/kelola-event', [EventController::class, 'index'])->name('kelola.event');
+Route::get('/event-approve/{id}', [EventController::class, 'approve'])->name('event.approve');
+Route::get('/event-delete/{id}', [EventController::class, 'delete'])->name('event.delete');
+
+
+use App\Http\Controllers\KategoriController;
+
+Route::get('/kategori', [KategoriController::class, 'index'])->name('kategori');
+Route::post('/kategori/store', [KategoriController::class, 'store'])->name('kategori.store');
+Route::get('/kategori/delete/{id}', [KategoriController::class, 'destroy'])->name('kategori.delete');
+
 // Lainnya
 Route::get('/jenistiket', [JenisTiketController::class, 'index']);
-Route::get('/event', [ListEventController::class, 'index']);
 Route::get('/barang', [BarangController::class, 'tampilkan']);
 
 // ── Login ──
