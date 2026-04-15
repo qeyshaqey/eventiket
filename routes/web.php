@@ -84,3 +84,8 @@ Route::get('/detail_event/{id}', [DashboardPengunjungController::class, 'showDet
 
 // ── Beranda Panitia ──
 Route::get('/beranda-panitia', [BerandaPanitiaController::class, 'index'])->name('beranda.panitia');
+
+Route::post('/logout', function () {
+    session()->flush();
+    return redirect('/login');
+})->name('logout');
