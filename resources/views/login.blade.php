@@ -573,7 +573,7 @@
                 </button>
             </form>
 
-            <p class="reg">Belum punya akun? <a href="#">Daftar sekarang</a></p>
+            <p class="reg">Belum punya akun? <a href="">Daftar sekarang</a></p>
         </div>
 
     </div>
