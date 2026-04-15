@@ -32,11 +32,13 @@
                 Dashboard
             </a>
 
-            <a href="data-pengunjung.php" class="flex items-center gap-3 px-5 py-3 text-white/60 hover:bg-yellow-400/10 hover:text-white">
+            <a href="{{ route('data.pengunjung') }}"
+                class="flex items-center gap-3 px-5 py-3 text-white/60 hover:bg-yellow-400/10 hover:text-white">
                 Data Pengunjung
             </a>
 
-            <a href="#" class="flex items-center gap-3 px-5 py-3 text-white/60 hover:bg-yellow-400/10 hover:text-white">
+            <a href="{{ route('') }}"
+                class="flex items-center gap-3 px-5 py-3 text-white/60 hover:bg-yellow-400/10 hover:text-white">
                 Data Panitia
             </a>
 
@@ -58,7 +60,7 @@
                 @csrf
                 <button type="submit"
                     class="flex items-center gap-1 text-xs bg-red-500/20 text-red-400 px-3 py-1 rounded-md hover:bg-red-500/30 transition">
-                     Logout
+                    Logout
                 </button>
             </form>
 

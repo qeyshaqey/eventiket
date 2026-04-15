@@ -37,6 +37,11 @@ Route::get('/dashboard', [DashboardController::class, 'index']);
 // Dashboard Admin 
 Route::get('/dashboard-admin', [DashboardAdminController::class, 'index']);
 
+use App\Http\Controllers\PengunjungController;
+
+Route::get('/data-pengunjung', [PengunjungController::class, 'index'])
+    ->name('data.pengunjung');
+
 // Lainnya
 Route::get('/jenistiket', [JenisTiketController::class, 'index']);
 Route::get('/event', [ListEventController::class, 'index']);
