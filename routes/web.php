@@ -14,13 +14,10 @@ use App\Http\Controllers\ListEventController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Pengunjung\DashboardPengunjungController;
+use App\Http\Controllers\Pengunjung\TiketController;
 use App\Http\Controllers\BerandaPanitiaController;
 
-/*
-|--------------------------------------------------------------------------
-| WEB ROUTES
-|--------------------------------------------------------------------------
-*/
+
 
 // Halaman awal
 Route::get('/', function () {
@@ -81,6 +78,7 @@ Route::post('/lupa-password', [ForgotPasswordController::class, 'sendResetLink']
 // ── Dashboard Pengunjung ──
 Route::get('/dashboard_pengunjung', [DashboardPengunjungController::class, 'index']);
 Route::get('/detail_event/{id}', [DashboardPengunjungController::class, 'showDetail'])->name('detail.event');
+Route::get('/tiket_aktif', [TiketController::class, 'index']);
 
 // ── Beranda Panitia ──
 Route::get('/beranda-panitia', [BerandaPanitiaController::class, 'index'])->name('beranda.panitia');
