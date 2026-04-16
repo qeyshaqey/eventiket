@@ -42,7 +42,9 @@
                     <td class="p-3">{{ $d['ukm'] }}</td>
                     <td class="p-3">{{ $d['status'] }}</td>
                     <td class="p-3">
-                        <button class="px-3 py-1 text-xs rounded-full bg-red-500/20 text-red-500">Hapus</button>
+                        <button class="w-9 h-9 flex items-center justify-center rounded-lg bg-red-500/10 text-red-500 hover:bg-red-100 transition">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
                     </td>
                 </tr>
                 @endforeach
@@ -88,23 +90,24 @@
 </div>
 
 <script>
-function tab(x){
-    document.getElementById('k').classList.add('hidden');
-    document.getElementById('p').classList.add('hidden');
+    function tab(x) {
+        document.getElementById('k').classList.add('hidden');
+        document.getElementById('p').classList.add('hidden');
 
-    document.getElementById('b1').classList.remove('bg-[#192853]','text-yellow-400');
-    document.getElementById('b2').classList.remove('bg-[#192853]','text-yellow-400');
+        document.getElementById('b1').classList.remove('bg-[#192853]', 'text-yellow-400');
+        document.getElementById('b2').classList.remove('bg-[#192853]', 'text-yellow-400');
 
-    if(x==='k'){
-        document.getElementById('k').classList.remove('hidden');
-        document.getElementById('b1').classList.add('bg-[#192853]','text-yellow-400');
-    } else {
-        document.getElementById('p').classList.remove('hidden');
-        document.getElementById('b2').classList.add('bg-[#192853]','text-yellow-400');
+        if (x === 'k') {
+            document.getElementById('k').classList.remove('hidden');
+            document.getElementById('b1').classList.add('bg-[#192853]', 'text-yellow-400');
+        } else {
+            document.getElementById('p').classList.remove('hidden');
+            document.getElementById('b2').classList.add('bg-[#192853]', 'text-yellow-400');
+        }
     }
-}
 </script>
 @endsection
 
 </body>
+
 </html>

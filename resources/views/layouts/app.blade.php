@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,11 +8,15 @@
 
     <script src="https://cdn.tailwindcss.com"></script>
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
     <!-- FONT (FIXED) -->
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 
     <style>
-        body { font-family: 'Poppins', sans-serif; }
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
     </style>
 </head>
 
@@ -26,11 +31,11 @@
         </div>
 
         @php
-            function active($route) {
-                return request()->is($route)
-                    ? 'bg-yellow-400/10 text-yellow-400 border-l-4 border-yellow-400'
-                    : 'text-white/60 hover:bg-yellow-400/10 hover:text-white';
-            }
+        function active($route) {
+        return request()->is($route)
+        ? 'bg-yellow-400/10 text-yellow-400 border-l-4 border-yellow-400'
+        : 'text-white/60 hover:bg-yellow-400/10 hover:text-white';
+        }
         @endphp
 
         <nav class="flex-1 py-4 text-sm">
@@ -73,8 +78,8 @@
 
             <form action="{{ route('logout') }}" method="POST">
                 @csrf
-                <button class="text-xs bg-red-500/20 text-red-400 px-3 py-1 rounded-md hover:bg-red-500/30">
-                    Logout
+                <button class="w-9 h-9 flex items-center justify-center rounded-lg bg-red-500/10 text-red-400 hover:bg-red-500/20 transition">
+                    <i class="fa-solid fa-right-from-bracket"></i>
                 </button>
             </form>
         </div>
@@ -87,4 +92,5 @@
     </div>
 
 </body>
+
 </html>
