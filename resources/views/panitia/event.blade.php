@@ -8,7 +8,7 @@
     <div class="mb-4">
         <h1 class="text-xl font-bold mb-3">Event Yang Dikelola</h1>
 
-        <button onclick="openModal()" 
+        <button onclick="bukaTambah()" 
             class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition">
             + Tambah Event
         </button>
@@ -40,86 +40,35 @@
 
     <div class="bg-white rounded-lg shadow-xl w-full max-w-lg relative max-h-[90vh] flex flex-col overflow-hidden">
 
-        <!-- HEADER STICKY -->
+        <!-- HEADER -->
         <div class="sticky top-0 bg-white z-20 px-6 py-4 border-b flex justify-between items-center">
-           <h2 id="formTitle" class="text-lg font-bold">FORM TAMBAH EVENT</h2>
-            <button onclick="closeModal()" class="text-xl text-red-500 hover:text-red-700 transition">✖</button>
+            <h2 id="formTitle" class="text-lg font-bold">FORM TAMBAH EVENT</h2>
+            <button onclick="closeModal()" class="text-xl text-red-500">✖</button>
         </div>
 
-        <!-- BODY SCROLL -->
+        <!-- BODY -->
         <div class="p-6 overflow-y-auto">
-
             <form onsubmit="event.preventDefault(); tambahEvent();" class="space-y-4">
 
-                <div>
-                    <label class="text-sm font-semibold">Judul Event</label>
-                    <input type="text" id="judulEvent" class="w-full border px-3 py-2 rounded mt-1">
-                </div>
+                <input type="text" id="judulEvent" placeholder="Judul Event" class="w-full border p-2 rounded">
+                <input type="text" id="kategori" placeholder="Kategori" class="w-full border p-2 rounded">
+                <textarea id="Deskripsi" placeholder="Deskripsi" class="w-full border p-2 rounded"></textarea>
 
-                <div>
-                    <label class="text-sm font-semibold">Kategori</label>
-                    <select id="kategori" class="w-full border px-3 py-2 rounded mt-1">
-                        <option value="">Pilih Kategori</option>
-                        <option>Workshop</option>
-                        <option>Seminar</option>
-                        <option>Hiburan</option>
-                        <option>Olahraga</option>
-                    </select>
-                </div>
-
-                <div>
-                    <label class="text-sm font-semibold">Deskripsi</label>
-                    <textarea id="Deskripsi" class="w-full border px-3 py-2 rounded mt-1"></textarea>
-                </div>
-
-                <div class="grid grid-cols-2 gap-3">
-                    <div>
-                        <label class="text-sm font-semibold">Tanggal Mulai</label>
-                        <input type="date" id="tanggalmulai" class="w-full border px-3 py-2 rounded mt-1">
-                    </div>
-
-                    <div>
-                        <label class="text-sm font-semibold">Tanggal Selesai</label>
-                        <input type="date" id="tanggalselesai" class="w-full border px-3 py-2 rounded mt-1">
-                    </div>
-                </div>
-
-                <div>
-                    <label class="text-sm font-semibold">Waktu</label>
-                    <input type="time" id="waktumulai" class="w-full border px-3 py-2 rounded mt-1">
-                </div>
-
-                <div>
-                    <label class="text-sm font-semibold">Lokasi</label>
-                    <input type="text" id="Lokasi" class="w-full border px-3 py-2 rounded mt-1">
-                </div>
-
-                <div>
-                    <label class="text-sm font-semibold">Poster</label>
-                    <div class="border rounded p-3 text-center mt-1">
-                        <input type="file" id="gambarInput" accept="image/*" onchange="previewImage(event)" class="hidden">
-
-                        <button type="button"
-                            onclick="document.getElementById('gambarInput').click()"
-                            class="border px-3 py-1 text-sm">
-                            PILIH FILE
-                        </button>
-
-                        <img id="preview" class="hidden w-32 mt-2 mx-auto rounded">
-                    </div>
-                </div>
+                <input type="date" id="tanggalmulai" class="w-full border p-2 rounded">
+                <input type="date" id="tanggalselesai" class="w-full border p-2 rounded">
+                <input type="time" id="waktumulai" class="w-full border p-2 rounded">
+                <input type="text" id="Lokasi" placeholder="Lokasi" class="w-full border p-2 rounded">
 
             </form>
-
         </div>
 
-        <!-- FOOTER STICKY -->
+        <!-- FOOTER -->
         <div class="sticky bottom-0 bg-white border-t px-6 py-4 flex justify-between">
-            <button onclick="closeModal()" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-gray-800">
+            <button onclick="closeModal()" class="bg-red-500 text-white px-4 py-2 rounded">
                 BATAL
             </button>
 
-            <button id="submitBtn" onclick="tambahEvent()" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-gray-800">
+            <button id="submitBtn" onclick="tambahEvent()" class="bg-blue-500 text-white px-4 py-2 rounded">
                 UNGGAH
             </button>
         </div>
@@ -127,67 +76,15 @@
     </div>
 </div>
 
-<!--MODAL DETAIL-->
-<div id="detailModal" class="fixed inset-0 bg-black/50 hidden flex justify-center items-center">
-    <div class="bg-white rounded-lg shadow-xl w-full max-w-2xl relative max-h-[90vh] flex flex-col overflow-hidden">
-        <!-- HEADER -->
-        <div class="sticky top-0 bg-white z-20 px-6 py-4 border-b flex justify-between items-center">
-            <h2 class="text-lg font-bold">DETAIL EVENT</h2>
-            <button onclick="closeDetail()" class="text-red-500 hover:text-red-700 text-xl">✖</button>
-        </div>
-        <div class="p-6 overflow-y-auto">
-            <!-- CONTENT -->
-            <div id="detailContent" class="grid grid-cols-2 gap-6 items-start">
-
-                <!-- KIRI (GAMBAR) -->
-                <div>
-                    <img id="detailImage" 
-                         class="w-full h-60 object-cover rounded shadow bg-gray-200">
-                </div>
-
-                <!-- KANAN (TEXT) -->
-                <div class="space-y-2 text-sm">
-                    <p><b>Judul :</b> <span id="d_judul"></span></p>
-                    <p><b>Kategori :</b> <span id="d_kategori"></span></p>
-                    <p><b>Tanggal :</b> <span id="d_tanggal"></span></p>
-                    <p><b>Waktu :</b> <span id="d_waktu"></span></p>
-                    <p><b>Lokasi :</b> <span id="d_lokasi"></span></p>
-                    <p><b>Status :</b> <span id="d_status"></span></p>
-                </div>
-
-                <!-- DESKRIPSI -->
-                <div class="col-span-2">
-                    <p class="font-semibold mb-1">Deskripsi :</p>
-                    <p id="d_deskripsi"></p>
-                </div>
-            </div>
-
-            <!--FOOTER-->
-            <div class="sticky bottom-0 bg-white border-t px-4 py-2 flex w-full">
-                <button onclick="kirimEvent()" class="ml-auto bg-blue-500 text-white px-5 py-2 rounded hover:bg-blue-600 shadow">KIRIM</button>
-            </div>
-            
-        </div>
-    </div>
-</div>
-
 <script>
 let events = JSON.parse(localStorage.getItem('events')) || [];
 let editIndex = null;
 
-// simpan ke localStorage
 function saveToStorage() {
     localStorage.setItem('events', JSON.stringify(events));
 }
 
 function tambahEvent() {
-
-    const fileInput = document.getElementById('gambarInput');
-    let gambar = "";
-
-    if (fileInput.files.length > 0) {
-        gambar = URL.createObjectURL(fileInput.files[0]);
-    }
 
     const data = {
         judul: document.getElementById('judulEvent').value,
@@ -198,7 +95,7 @@ function tambahEvent() {
         waktu: document.getElementById('waktumulai').value,
         lokasi: document.getElementById('Lokasi').value,
         status: "Draft",
-        gambar: gambar
+        tiket: []
     };
 
     if (editIndex !== null) {
@@ -224,27 +121,42 @@ function renderTable() {
             <td class="border p-2">${e.judul}</td>
             <td class="border p-2">${e.kategori}</td>
             <td class="border p-2">${e.deskripsi}</td>
-            <td class="border p-2">${e.tanggalMulai || '-'} - ${e.tanggalSelesai || '-'}</td>
+            <td class="border p-2">${e.tanggalMulai}</td>
             <td class="border p-2">${e.waktu}</td>
             <td class="border p-2">${e.lokasi}</td>
 
-            <td class="border p-2">
-                <span class="text-yellow-600 font-semibold">
-                    ${e.status}
-                </span>
-            </td>
+            <td class="border p-2 text-yellow-600">${e.status}</td>
 
-            <td class="border p-2 space-x-1">
-                <button onclick="lihatDetail(${i})" class="text-blue-500 hover:text-blue-700"><i class="bi bi-upload"></i></button>
-                <button onclick="editEvent(${i})" class="text-yellow-500 hover:text-yellow-700"><i class="bi bi-pencil-square"></i></button>
-                <button onclick="hapusEvent(${i})" class="text-red-500 hover:text-red-700"><i class="bi bi-trash"></i></button>
+            <td class="border p-2 space-x-2">
+
+                <!-- KE TIKET -->
+                <button onclick="window.location.href='/panitia/tiket?event=${i}'"
+                    class="text-green-500">
+                    <i class="bi bi-ticket-perforated"></i>
+                </button>
+
+                <!-- DETAIL -->
+                <button onclick="lihatDetail(${i})" class="text-blue-500">
+                    <i class="bi bi-upload"></i>
+                </button>
+
+                <!-- EDIT -->
+                <button onclick="editEvent(${i})" class="text-yellow-500">
+                    <i class="bi bi-pencil-square"></i>
+                </button>
+
+                <!-- HAPUS -->
+                <button onclick="hapusEvent(${i})" class="text-red-500">
+                    <i class="bi bi-trash"></i>
+                </button>
+
             </td>
         </tr>`;
     });
 }
 
 function hapusEvent(i) {
-    if (confirm("Yakin mau hapus event ini?")) {
+    if (confirm("Hapus?")) {
         events.splice(i,1);
         saveToStorage();
         renderTable();
@@ -263,35 +175,17 @@ function editEvent(i) {
     document.getElementById('Lokasi').value = e.lokasi;
 
     editIndex = i;
+
     document.getElementById('formTitle').innerText = "FORM EDIT EVENT";
     document.getElementById('submitBtn').innerText = "SIMPAN";
+
     openModal();
 }
 
 function lihatDetail(i) {
-    const e = events[i];
-
-    document.getElementById('d_judul').innerText = e.judul;
-    document.getElementById('d_kategori').innerText = e.kategori;
-    document.getElementById('d_tanggal').innerText = e.tanggalMulai + " - " + e.tanggalSelesai;
-    document.getElementById('d_waktu').innerText = e.waktu;
-    document.getElementById('d_lokasi').innerText = e.lokasi;
-    document.getElementById('d_status').innerText = e.status;
-    document.getElementById('d_deskripsi').innerText = e.deskripsi;
-
-    const img = document.getElementById('detailImage');
-    if (e.gambar && e.gambar !== "") {
-        img.src = e.gambar;
-    } else {
-        img.src = "https://via.placeholder.com/400x250?text=No+Image";
-    }
-
-    document.getElementById('detailModal').classList.remove('hidden');
+    alert("Detail event index: " + i);
 }
 
-function closeDetail() {
-    document.getElementById('detailModal').classList.add('hidden');
-}
 function bukaTambah() {
     document.getElementById('formTitle').innerText = "FORM TAMBAH EVENT";
     document.getElementById('submitBtn').innerText = "UNGGAH";
@@ -305,18 +199,10 @@ function openModal() {
 function closeModal() {
     document.getElementById('modal').classList.add('hidden');
     document.querySelector('form').reset();
-    document.getElementById('preview').classList.add('hidden');
-    document.getElementById('submitBtn').innerText = "UNGGAH";
     editIndex = null;
 }
 
-function previewImage(event) {
-    const img = document.getElementById('preview');
-    img.src = URL.createObjectURL(event.target.files[0]);
-    img.classList.remove('hidden');
-}
 renderTable();
-
 </script>
 
 @endsection

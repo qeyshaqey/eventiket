@@ -26,6 +26,7 @@ Route::prefix('panitia')->group(function () {
     Route::view('/beranda', 'panitia.berandapanitia')->name('beranda');
 
     Route::view('/event', 'panitia.event')->name('event');
+    Route::view('/tiket', 'panitia.tiket')->name('tiket');
 
 });
 //=========================================//

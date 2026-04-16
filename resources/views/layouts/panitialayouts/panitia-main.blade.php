@@ -52,9 +52,9 @@ function active($route) {
             </a>
 
             <!-- TIKET -->
-            <a href="#"
-                class="flex items-center gap-3 px-5 py-3 text-white/60 hover:bg-yellow-400/10 hover:text-white">
-                <i class="bi bi-ticket-perforated"></i> Tiket
+            <a href="{{ route('tiket') }}"
+                class="flex items-center gap-3 px-5 py-3 {{ active('tiket') }}">
+                <i class="bi bi-ticket-perforated"></i>Tiket
             </a>
 
             <!-- VERIFIKASI -->
