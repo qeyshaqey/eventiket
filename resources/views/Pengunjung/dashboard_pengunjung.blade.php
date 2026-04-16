@@ -35,91 +35,106 @@
             <div class="mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
                 <div class="max-w-3xl">
                     <h1 class="mt-8 text-4xl font-bold tracking-tight sm:text-5xl">Temukan Event Terbaik Kampus</h1>
-                    <p class="mt-4 max-w-xl text-base text-white/85 sm:text-lg">Semua event tampil serupa, tetapi sekarang Anda sudah berada di dashboard akun dan bisa langsung melihat tiket serta profil.</p>
+                    <p class="mt-4 max-w-xl text-base text-white/85 sm:text-lg">Konser, seminar, festival, dan banyak lagi. Jelajahi acara terbaik dengan tampilan yang bersih dan responsif.</p>
                 </div>
             </div>
         </section>
 
-        <section class="bg-[#EFF8FF] py-12">
+        <section id="event" class="bg-[#EFF8FF] py-12">
             <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <div class="mb-8 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-                    <form action="{{ route('pengunjung.dashboard') }}" method="GET" class="flex w-full gap-3 md:w-auto md:flex-1">
-                        <div class="relative w-full">
-                            <input name="search" value="{{ $search ?? '' }}" type="text" placeholder="Cari event..." class="w-full rounded-full border border-[#cbd5e1] bg-white px-4 py-3 pr-12 text-sm text-[#192853] shadow-sm focus:border-[#192853] focus:outline-none" />
-                            <button type="submit" class="absolute right-2 top-1/2 -translate-y-1/2 rounded-full bg-[#192853] px-3 py-2 text-white transition hover:bg-[#111827]">
-                                <i class="fa-solid fa-search"></i>
-                            </button>
+                    <form id="search-form" action="{{ route('pengunjung.dashboard') }}#event" method="GET" class="flex w-full gap-3 md:w-auto md:flex-1">
+                        <div class="relative w-full md:flex md:items-center md:gap-3">
+                            <div class="relative w-full md:w-auto md:flex-1">
+                                <input id="search-input" name="search" value="{{ $search ?? '' }}" type="text" placeholder="Cari event..." class="w-full rounded-full border border-[#cbd5e1] bg-white px-4 py-3 pr-12 text-sm text-[#192853] shadow-sm focus:border-[#192853] focus:outline-none" autocomplete="off" />
+                                <button type="submit" class="absolute right-2 top-1/2 -translate-y-1/2 rounded-full bg-[#192853] px-3 py-2 text-white transition hover:bg-[#111827]">
+                                    <i class="fa-solid fa-search"></i>
+                                </button>
+                            </div>
+                            <select id="category-select" name="category" class="rounded-full border border-[#cbd5e1] bg-white px-4 py-3 text-sm text-[#192853] shadow-sm focus:border-[#192853] focus:outline-none">
+                                <option value="semua" {{ ($category ?? 'semua') === 'semua' ? 'selected' : '' }}>Semua Kategori</option>
+                                <option value="Seminar" {{ ($category ?? '') === 'Seminar' ? 'selected' : '' }}>Seminar</option>
+                                <option value="Sosial" {{ ($category ?? '') === 'Sosial' ? 'selected' : '' }}>Sosial</option>
+                                <option value="Olahraga" {{ ($category ?? '') === 'Olahraga' ? 'selected' : '' }}>Olahraga</option>
+                                <option value="Hiburan" {{ ($category ?? '') === 'Hiburan' ? 'selected' : '' }}>Hiburan</option>
+                                <option value="Kompetisi" {{ ($category ?? '') === 'Kompetisi' ? 'selected' : '' }}>Kompetisi</option>
+                                <option value="Religi" {{ ($category ?? '') === 'Religi' ? 'selected' : '' }}>Religi</option>
+                            </select>
                         </div>
                     </form>
-
-                    <form action="{{ route('pengunjung.dashboard') }}" method="GET" class="flex items-center gap-3">
-                        <input type="hidden" name="search" value="{{ $search ?? '' }}">
-                        <select name="category" class="rounded-full border border-[#cbd5e1] bg-white px-4 py-3 text-sm text-[#192853] shadow-sm focus:border-[#192853] focus:outline-none">
-                            <option value="semua" {{ ($category ?? 'semua') === 'semua' ? 'selected' : '' }}>Semua Kategori</option>
-                            <option value="Musik" {{ ($category ?? '') === 'Musik' ? 'selected' : '' }}>Musik</option>
-                            <option value="Pameran" {{ ($category ?? '') === 'Pameran' ? 'selected' : '' }}>Pameran</option>
-                            <option value="Workshop" {{ ($category ?? '') === 'Workshop' ? 'selected' : '' }}>Workshop</option>
-                            <option value="Seminar" {{ ($category ?? '') === 'Seminar' ? 'selected' : '' }}>Seminar</option>
-                            <option value="Kompetisi" {{ ($category ?? '') === 'Kompetisi' ? 'selected' : '' }}>Kompetisi</option>
-                            <option value="Talkshow" {{ ($category ?? '') === 'Talkshow' ? 'selected' : '' }}>Talkshow</option>
-                            <option value="Festival" {{ ($category ?? '') === 'Festival' ? 'selected' : '' }}>Festival</option>
-                        </select>
-                        <button type="submit" class="rounded-full bg-[#192853] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#111827]">Filter</button>
-                    </form>
                 </div>
 
-                <div class="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
-                    @foreach ($paginatedEvents as $event)
-                        <article class="group overflow-hidden rounded-[32px] border border-[#cbd5e1] bg-white shadow-[0_25px_60px_rgba(25,40,83,0.08)] transition duration-300 hover:-translate-y-1">
-                            <a href="{{ route('detail.event', ['id' => $event['id']]) }}" class="block">
-                                <div class="overflow-hidden">
-                                    <img src="{{ asset('image/' . $event['image']) }}" alt="{{ $event['title'] }}" class="h-64 w-full object-cover transition duration-500 group-hover:scale-105" />
-                                </div>
-                            </a>
-                            <div class="space-y-4 p-6">
-                                <div class="flex items-center justify-between gap-3 text-sm font-semibold text-[#475569] flex-nowrap">
-                                    <span class="inline-flex items-center whitespace-nowrap rounded-full bg-[#EFF8FF] px-3 py-1 uppercase tracking-[0.12em]">{{ $event['category'] }}</span>
-                                    <span class="inline-flex items-center whitespace-nowrap rounded-full bg-[#FFE14E] px-3 py-1 text-[#192853]">{{ $event['status'] }}</span>
-                                </div>
-                                <h3 class="text-xl font-semibold text-[#192853]">{{ $event['title'] }}</h3>
-                            </div>
-                        </article>
-                    @endforeach
+                <div id="dashboard-results">
+                    @include('Pengunjung.partials.dashboard_event_section')
                 </div>
-
-                @if ($paginatedEvents->lastPage() > 1)
-                    <div class="mt-12 flex justify-center">
-                        <nav aria-label="Pagination">
-                            <ul class="inline-flex items-center gap-2">
-                                <li>
-                                    @if ($paginatedEvents->onFirstPage())
-                                        <span class="inline-flex h-11 w-11 items-center justify-center rounded-full border border-[#cbd5e1] bg-[#EFF8FF] text-[#475569]">&laquo;</span>
-                                    @else
-                                        <a href="{{ $paginatedEvents->appends(['search' => $search ?? '', 'category' => $category ?? 'semua'])->previousPageUrl() }}" class="inline-flex h-11 w-11 items-center justify-center rounded-full border border-[#cbd5e1] bg-white text-[#192853] transition hover:bg-[#EFF8FF]">&laquo;</a>
-                                    @endif
-                                </li>
-                                @for ($i = 1; $i <= $paginatedEvents->lastPage(); $i++)
-                                    <li>
-                                        @if ($paginatedEvents->currentPage() == $i)
-                                            <span class="inline-flex h-11 min-w-[44px] items-center justify-center rounded-full bg-[#192853] px-4 text-sm font-semibold text-white">{{ $i }}</span>
-                                        @else
-                                            <a href="{{ $paginatedEvents->appends(['search' => $search ?? '', 'category' => $category ?? 'semua'])->url($i) }}" class="inline-flex h-11 min-w-[44px] items-center justify-center rounded-full border border-[#cbd5e1] bg-white px-4 text-sm font-medium text-[#192853] transition hover:bg-[#EFF8FF]">{{ $i }}</a>
-                                        @endif
-                                    </li>
-                                @endfor
-                                <li>
-                                    @if ($paginatedEvents->hasMorePages())
-                                        <a href="{{ $paginatedEvents->appends(['search' => $search ?? '', 'category' => $category ?? 'semua'])->nextPageUrl() }}" class="inline-flex h-11 w-11 items-center justify-center rounded-full border border-[#cbd5e1] bg-white text-[#192853] transition hover:bg-[#EFF8FF]">&raquo;</a>
-                                    @else
-                                        <span class="inline-flex h-11 w-11 items-center justify-center rounded-full border border-[#cbd5e1] bg-[#EFF8FF] text-[#475569]">&raquo;</span>
-                                    @endif
-                                </li>
-                            </ul>
-                        </nav>
-                    </div>
-                @endif
             </div>
         </section>
     </main>
+
+    <script>
+        const searchInput = document.getElementById('search-input');
+        const categorySelect = document.getElementById('category-select');
+        const searchForm = document.getElementById('search-form');
+        const dashboardResults = document.getElementById('dashboard-results');
+        const ajaxUrl = "{{ route('pengunjung.dashboard.ajax') }}";
+        let timeoutId = null;
+
+        function buildQuery(params) {
+            return new URLSearchParams(params).toString();
+        }
+
+        async function fetchResults(page = 1) {
+            const query = buildQuery({
+                search: searchInput.value.trim(),
+                category: categorySelect.value,
+                page,
+            });
+
+            const response = await fetch(`${ajaxUrl}?${query}`);
+            if (!response.ok) {
+                return;
+            }
+
+            const result = await response.json();
+            dashboardResults.innerHTML = result.html;
+            attachPaginationLinks();
+        }
+
+        function attachPaginationLinks() {
+            const links = dashboardResults.querySelectorAll('a.paginate-link');
+            links.forEach(link => {
+                link.addEventListener('click', function (event) {
+                    event.preventDefault();
+                    const url = new URL(link.href);
+                    const page = url.searchParams.get('page') || 1;
+                    fetchResults(page);
+                });
+            });
+        }
+
+        if (searchForm) {
+            searchForm.addEventListener('submit', function (event) {
+                event.preventDefault();
+                fetchResults(1);
+            });
+        }
+
+        if (searchInput) {
+            searchInput.addEventListener('input', function () {
+                clearTimeout(timeoutId);
+                timeoutId = setTimeout(function () {
+                    fetchResults(1);
+                }, 200);
+            });
+        }
+
+        if (categorySelect) {
+            categorySelect.addEventListener('change', function () {
+                fetchResults(1);
+            });
+        }
+
+        attachPaginationLinks();
+    </script>
 </body>
 </html>

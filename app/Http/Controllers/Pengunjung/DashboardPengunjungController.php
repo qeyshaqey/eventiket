@@ -8,95 +8,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 
 class DashboardPengunjungController extends Controller
 {
-    private function events()
-    {
-        return collect([
-            [
-                'id' => 1,
-                'title' => 'Festival Musik Kampus',
-                'date' => '28 April 2026',
-                'time' => '19.00 WIB',
-                'venue' => 'Lapangan Terbuka',
-                'category' => 'Musik',
-                'status' => 'Tersedia Tiket',
-                'price' => 'Rp 125.000',
-                'image' => 'gambarevent1.jpg',
-                'description' => 'Festival Musik Kampus adalah acara spesial',
-            ],
-            [
-                'id' => 2,
-                'title' => 'Pameran Startup Lokal',
-                'date' => '02 Mei 2026',
-                'time' => '10.00 - 16.00 WIB',
-                'venue' => 'Aula Serbaguna',
-                'category' => 'Pameran',
-                'status' => 'Tersedia Tiket',
-                'price' => 'Rp 85.000',
-                'image' => 'gambarevent2.jpg',
-                'description' => 'Pameran Startup Lokal adalah acara spesial',
-            ],
-            [
-                'id' => 3,
-                'title' => 'Workshop Konten Digital',
-                'date' => '06 Mei 2026',
-                'time' => '13.00 - 17.00 WIB',
-                'venue' => 'Lab Multimedia',
-                'category' => 'Workshop',
-                'status' => 'Tiket Habis',
-                'price' => 'Rp 55.000',
-                'image' => 'gambarevent3.jpg',
-                'description' => 'Workshop Konten Digital adalah acara spesial',
-            ],
-            [
-                'id' => 4,
-                'title' => 'Seminar Kewirausahaan',
-                'date' => '10 Mei 2026',
-                'time' => '09.00 - 12.00 WIB',
-                'venue' => 'Gedung Serbaguna',
-                'category' => 'Seminar',
-                'status' => 'Tiket Habis',
-                'price' => 'Rp 45.000',
-                'image' => 'gambarevent1.jpg',
-                'description' => 'Seminar Kewirausahaan adalah acara spesial',
-            ],
-            [
-                'id' => 5,
-                'title' => 'Kompetisi Coding Nasional',
-                'date' => '15 Mei 2026',
-                'time' => '08.00 - 18.00 WIB',
-                'venue' => 'Lab Komputer',
-                'category' => 'Kompetisi',
-                'status' => 'Tersedia Tiket',
-                'price' => 'Rp 95.000',
-                'image' => 'gambarevent2.jpg',
-                'description' => 'Kompetisi Coding Nasional adalah acara spesial',
-            ],
-            [
-                'id' => 6,
-                'title' => 'Talkshow Alumni Sukses',
-                'date' => '20 Mei 2026',
-                'time' => '14.00 - 16.00 WIB',
-                'venue' => 'Auditorium',
-                'category' => 'Talkshow',
-                'status' => 'Tersedia Tiket',
-                'price' => 'Rp 65.000',
-                'image' => 'gambarevent3.jpg',
-                'description' => 'Talkshow Alumni Sukses adalah acara spesial',
-            ],
-            [
-                'id' => 7,
-                'title' => 'Festival Film Pendek',
-                'date' => '25 Mei 2026',
-                'time' => '18.00 - 22.00 WIB',
-                'venue' => 'Teater Kampus',
-                'category' => 'Festival',
-                'status' => 'Tersedia Tiket',
-                'price' => 'Rp 75.000',
-                'image' => 'gambarevent1.jpg',
-                'description' => 'Festival Film Pendek adalah acara spesial',
-            ],
-        ]);
-    }
+    use EventDataTrait;
 
     public function index(Request $request)
     {
@@ -118,11 +30,45 @@ class DashboardPengunjungController extends Controller
             })->values();
         }
 
+        $paginatedEvents = $this->paginateEvents($events, $request);
+
+        return view('Pengunjung.dashboard_pengunjung', compact('paginatedEvents', 'search', 'category'));
+    }
+
+    public function ajaxSearch(Request $request)
+    {
+        $search = trim($request->query('search', ''));
+        $category = $request->query('category', 'semua');
+
+        $events = $this->events();
+
+        if ($search !== '') {
+            $events = $events->filter(function ($event) use ($search) {
+                return str_contains(strtolower($event['title']), strtolower($search))
+                    || str_contains(strtolower($event['category']), strtolower($search));
+            })->values();
+        }
+
+        if ($category !== 'semua') {
+            $events = $events->filter(function ($event) use ($category) {
+                return strtolower($event['category']) === strtolower($category);
+            })->values();
+        }
+
+        $paginatedEvents = $this->paginateEvents($events, $request);
+
+        $html = view('Pengunjung.partials.dashboard_event_section', compact('paginatedEvents', 'search', 'category'))->render();
+
+        return response()->json(['html' => $html]);
+    }
+
+    private function paginateEvents($events, Request $request)
+    {
         $perPage = 4;
         $page = $request->input('page', 1);
         $currentPageItems = $events->slice(($page - 1) * $perPage, $perPage)->values();
 
-        $paginatedEvents = new LengthAwarePaginator(
+        return new LengthAwarePaginator(
             $currentPageItems,
             $events->count(),
             $perPage,
@@ -132,7 +78,5 @@ class DashboardPengunjungController extends Controller
                 'query' => $request->query(),
             ]
         );
-
-        return view('Pengunjung.dashboard_pengunjung', compact('paginatedEvents', 'search', 'category'));
     }
 }
