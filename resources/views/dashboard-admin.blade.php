@@ -1,76 +1,7 @@
-<!DOCTYPE html>
-<html lang="id">
+@extends('layouts.app')
+@section('content')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Eventix Admin</title>
-
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
-
-    <style>
-        body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-        }
-    </style>
-</head>
-
-<body class="bg-[#EFF8FF] text-[#192853]">
-
-    <!-- SIDEBAR -->
-    <div class="fixed top-0 left-0 h-full w-[230px] bg-[#192853] text-white flex flex-col shadow-lg">
-
-        <div class="p-5 bg-[#0f1a35] border-b border-yellow-300/20">
-            <h2 class="text-yellow-400 font-semibold text-sm">Eventix Admin</h2>
-            <p class="text-xs text-white/40">Sistem Manajemen Event</p>
-        </div>
-
-        <nav class="flex-1 py-4 text-sm">
-
-            <a href="#" class="flex items-center gap-3 px-5 py-3 bg-yellow-400/10 text-yellow-400 border-l-4 border-yellow-400">
-                Dashboard
-            </a>
-
-            <a href="{{ route('data.pengunjung') }}"
-                class="flex items-center gap-3 px-5 py-3 text-white/60 hover:bg-yellow-400/10 hover:text-white">
-                Data Pengunjung
-            </a>
-
-            <a href="{{ route('data.panitia') }}"
-                class="flex items-center gap-3 px-5 py-3 text-white/60 hover:bg-yellow-400/10 hover:text-white">
-                Data Panitia
-            </a>
-
-            <a href="{{ route('kelola.event') }}"
-                class="flex items-center gap-3 px-5 py-3 text-white/60 hover:bg-yellow-400/10 hover:text-white">
-                Kelola Event
-            </a>
-
-            <a href="#" class="flex items-center gap-3 px-5 py-3 text-white/60 hover:bg-yellow-400/10 hover:text-white">
-                Kategori Event
-            </a>
-
-        </nav>
-
-        <div class="p-4 border-t border-white/10 flex items-center justify-between">
-
-            <span class="text-xs text-white/30">Eventix Admin</span>
-
-            <form action="{{ route('logout') }}" method="POST">
-                @csrf
-                <button type="submit"
-                    class="flex items-center gap-1 text-xs bg-red-500/20 text-red-400 px-3 py-1 rounded-md hover:bg-red-500/30 transition">
-                    Logout
-                </button>
-            </form>
-
-        </div>
-
-    </div>
-
-    <!-- MAIN -->
-    <div class="ml-[230px] p-8">
+    <div class=" p-8">
 
         <!-- TOPBAR -->
         <div class="mb-6">
@@ -107,14 +38,7 @@
 
                 @foreach ($events as $event)
                 <div class="flex items-center gap-3 p-3 rounded-lg cursor-pointer hover:bg-[#EFF8FF] border border-transparent hover:border-[#c8dff5]"
-                    onclick='showModal(
-          @json($event["nama"]),
-          @json($event["kategori"]),
-          @json($event["tanggal"]),
-          @json($event["waktu"]),
-          @json($event["lokasi"]),
-          @json($event["deskripsi"])
-        )'>
+                    >
 
                     <div class="bg-[#192853] text-yellow-400 text-xs font-semibold px-3 py-2 rounded text-center min-w-[55px]">
                         {{ $event['tanggal'] }}
@@ -204,6 +128,5 @@
         });
     </script>
 
-</body>
 
-</html>
+@endsection

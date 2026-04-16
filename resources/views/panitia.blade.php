@@ -1,40 +1,8 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Data Panitia</title>
-
-<script src="https://cdn.tailwindcss.com"></script>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
-
-<style>
-body { font-family: 'Plus Jakarta Sans', sans-serif; }
-</style>
-</head>
-
-<body class="bg-[#EFF8FF]">
-
-<!-- SIDEBAR -->
-<div class="fixed w-[230px] h-screen bg-[#192853] text-white shadow-lg">
-
-    <div class="p-5 bg-[#0f1a35] border-b border-white/10">
-        <h2 class="text-yellow-400 text-sm font-semibold">Eventix Admin</h2>
-        <p class="text-xs text-white/40">Sistem Manajemen Event</p>
-    </div>
-
-    <nav class="py-4 text-sm">
-        <a class="block px-5 py-3 text-white/60 hover:bg-yellow-400/10">Dashboard</a>
-        <a class="block px-5 py-3 text-white/60 hover:bg-yellow-400/10">Data Pengunjung</a>
-        <a class="block px-5 py-3 bg-yellow-400/10 text-yellow-400 border-l-4 border-yellow-400">Data Panitia</a>
-        <a class="block px-5 py-3 text-white/60 hover:bg-yellow-400/10">Kelola Event</a>
-        <a class="block px-5 py-3 text-white/60 hover:bg-yellow-400/10">Kategori Event</a>
-    </nav>
-
-</div>
+@extends('layouts.app')
+@section('content')
 
 <!-- MAIN -->
-<div class="ml-[230px] p-8">
+<div class=" p-8">
 
     <!-- HEADER -->
     <div class="mb-4">
@@ -136,6 +104,7 @@ function tab(x){
     }
 }
 </script>
+@endsection
 
 </body>
 </html>
