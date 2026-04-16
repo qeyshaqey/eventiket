@@ -21,7 +21,8 @@ class DashboardPengunjungController extends Controller
                 'category' => 'Musik',
                 'status' => 'Tersedia Tiket',
                 'price' => 'Rp 125.000',
-                'image' => 'gambarevent3.jpg',
+                'image' => 'gambarevent1.jpg',
+                'description' => 'Festival Musik Kampus adalah acara spesial',
                 'tickets' => [
                     ['type' => 'Tiket Perdana', 'price' => 150000],
                     ['type' => 'Tiket Umum', 'price' => 125000],
@@ -37,7 +38,8 @@ class DashboardPengunjungController extends Controller
                 'category' => 'Pameran',
                 'status' => 'Tersedia Tiket',
                 'price' => 'Rp 85.000',
-                'image' => 'gambarevent3.jpg',
+                'image' => 'gambarevent2.jpg',
+                'description' => 'Pameran Startup Lokal adalah acara spesial',
                 'tickets' => [
                     ['type' => 'Tiket Perdana', 'price' => 110000],
                     ['type' => 'Tiket Umum', 'price' => 85000],
@@ -54,6 +56,7 @@ class DashboardPengunjungController extends Controller
                 'status' => 'Tiket Habis',
                 'price' => 'Rp 55.000',
                 'image' => 'gambarevent3.jpg',
+                'description' => 'Workshop Konten Digital adalah acara spesial',
                 'tickets' => [
                     ['type' => 'Tiket Perdana', 'price' => 70000],
                     ['type' => 'Tiket Umum', 'price' => 55000],
@@ -69,7 +72,8 @@ class DashboardPengunjungController extends Controller
                 'category' => 'Seminar',
                 'status' => 'Tiket Habis',
                 'price' => 'Rp 45.000',
-                'image' => 'gambarevent3.jpg',
+                'image' => 'gambarevent1.jpg',
+                'description' => 'Seminar Kewirausahaan adalah acara spesial',
                 'tickets' => [
                     ['type' => 'Tiket Perdana', 'price' => 60000],
                     ['type' => 'Tiket Umum', 'price' => 45000],
@@ -85,7 +89,8 @@ class DashboardPengunjungController extends Controller
                 'category' => 'Kompetisi',
                 'status' => 'Tersedia Tiket',
                 'price' => 'Rp 95.000',
-                'image' => 'gambarevent3.jpg',
+                'image' => 'gambarevent2.jpg',
+                'description' => 'Kompetisi Coding Nasional adalah acara spesial',
                 'tickets' => [
                     ['type' => 'Tiket Perdana', 'price' => 120000],
                     ['type' => 'Tiket Umum', 'price' => 95000],
@@ -99,9 +104,10 @@ class DashboardPengunjungController extends Controller
                 'time' => '14.00 - 16.00 WIB',
                 'venue' => 'Auditorium',
                 'category' => 'Talkshow',
-                'status' => 'Tersedia Tiket',
+                'status' => 'Tersedia T',
                 'price' => 'Rp 65.000',
                 'image' => 'gambarevent3.jpg',
+                'description' => 'Talkshow Alumni Sukses adalah acara spesial',
                 'tickets' => [
                     ['type' => 'Tiket Perdana', 'price' => 90000],
                     ['type' => 'Tiket Umum', 'price' => 65000],
@@ -117,7 +123,8 @@ class DashboardPengunjungController extends Controller
                 'category' => 'Festival',
                 'status' => 'Tersedia Tiket',
                 'price' => 'Rp 75.000',
-                'image' => 'gambarevent3.jpg',
+                'image' => 'gambarevent1.jpg',
+                'description' => 'Festival Film Pendek adalah acara spesial',
                 'tickets' => [
                     ['type' => 'Tiket Perdana', 'price' => 100000],
                     ['type' => 'Tiket Umum', 'price' => 75000],

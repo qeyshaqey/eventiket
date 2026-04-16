@@ -565,7 +565,7 @@
                 </div>
 
                 <div class="options-row">
-                    <a href="#" class="forgot">Lupa password?</a>
+                    <a href="{{ route('password.forgot') }}" class="forgot">Lupa password?</a>
                 </div>
 
                 <button class="btn">
@@ -573,7 +573,7 @@
                 </button>
             </form>
 
-            <p class="reg">Belum punya akun? <a href="">Daftar sekarang</a></p>
+            <p class="reg">Belum punya akun? <a href="{{ route('register') }}">Daftar sekarang</a></p>
         </div>
 
     </div>

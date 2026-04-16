@@ -18,10 +18,10 @@
         <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-5 sm:px-6 lg:px-8">
             <a href="/home" class="text-xl font-semibold tracking-tight">Eventiket</a>
             <nav class="hidden items-center gap-4 md:flex">
-                <a href="/home" class="rounded-full px-4 py-2 text-sm font-medium transition hover:bg-[#162146]">Home</a>
-                <a href="/" class="rounded-full px-4 py-2 text-sm font-medium transition hover:bg-[#162146]">Event</a>
-                <a href="/about" class="rounded-full px-4 py-2 text-sm font-medium transition hover:bg-[#162146]">Tentang</a>
-                <a href="/contact" class="rounded-full px-4 py-2 text-sm font-medium transition hover:bg-[#162146]">Hubungi Kami</a>
+                <a href="/home" class="rounded-full border border-white px-4 py-2 text-sm font-medium transition hover:bg-white hover:text-[#192853]">Home</a>
+                <a href="/" class="rounded-full border border-white px-4 py-2 text-sm font-medium transition hover:bg-white hover:text-[#192853]">Event</a>
+                <a href="/about" class="rounded-full border border-white px-4 py-2 text-sm font-medium transition hover:bg-white hover:text-[#192853]">Tentang</a>
+                <a href="/contact" class="rounded-full border border-white px-4 py-2 text-sm font-medium transition hover:bg-white hover:text-[#192853]">Hubungi Kami</a>
                 <a href="/login" class="rounded-full border border-white px-4 py-2 text-sm font-semibold transition hover:bg-white hover:text-[#192853]">Masuk</a>
             </nav>
             <button type="button" class="inline-flex items-center gap-2 rounded-full border border-[#3f5a8c] px-4 py-2 text-sm font-medium text-white transition hover:bg-[#162146] md:hidden">
@@ -35,7 +35,7 @@
         <section class="relative overflow-hidden bg-[#192853] text-white" style="background-image: radial-gradient(circle at top, rgba(255,225,78,0.14), transparent 40%), linear-gradient(180deg, rgba(25,40,83,0.95), rgba(25,40,83,0.8));">
             <div class="mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
                 <div class="max-w-3xl">
-                    <p class="inline-flex rounded-full bg-[#FFE14E] px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-[#192853] shadow-sm">Event Kampus</p>
+                    <!-- <p class="inline-flex rounded-full bg-[#FFE14E] px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-[#192853] shadow-sm">Event Kampus</p> -->
                     <h1 class="mt-8 text-4xl font-bold tracking-tight sm:text-5xl">Temukan Event Terbaik Kampus</h1>
                     <p class="mt-4 max-w-xl text-base text-white/85 sm:text-lg">Konser, seminar, festival, dan banyak lagi. Jelajahi acara terbaik dengan tampilan yang bersih dan responsif.</p>
                 </div>

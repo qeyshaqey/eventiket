@@ -1,417 +1,191 @@
 ﻿<!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Detail Event | Eventiket</title>
-  <style>
-    :root {
-      --navy: #192853;
-      --cream: #EFF8FF;
-      --yellow: #FFE14E;
-      --white: #ffffff;
-      --gray: #475569;
-      --shadow: 0 18px 55px rgba(25, 40, 83, 0.12);
-      --radius: 24px;
-    }
+    <meta charset="UTF-8">
+    <title>Detail Event</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      font-family: 'Inter', system-ui, sans-serif;
-      background: linear-gradient(180deg, #f8fbff 0%, #eff8ff 100%);
-      color: var(--navy);
-    }
+    <!-- Tailwind -->
+    <script src="https://cdn.tailwindcss.com"></script>
 
-    .page-hero {
-      padding: 54px 24px 42px;
-      text-align: center;
-      background: radial-gradient(circle at top, rgba(255,225,78,0.18), transparent 40%), var(--navy);
-      color: var(--white);
-      position: relative;
-      overflow: hidden;
-    }
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        navy: "#192853",
+                        cream: "#EFF8FF",
+                        yellow: "#FFE14E",
+                        grayCustom: "#475569"
+                    },
+                    fontFamily: {
+                        poppins: ["Poppins", "sans-serif"]
+                    }
+                }
+            }
+        }
+    </script>
 
-    .page-hero::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      opacity: 0.12;
-      background: radial-gradient(circle at center, #ffe14e 0%, transparent 55%);
-    }
-
-    .page-hero .page-content {
-      position: relative;
-      z-index: 1;
-      max-width: 900px;
-      margin: 0 auto;
-    }
-
-    .page-hero .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      padding: 10px 18px;
-      border-radius: 999px;
-      background: rgba(255,225,78,0.18);
-      color: var(--yellow);
-      font-size: 13px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-    }
-
-    .page-hero h1 {
-      font-size: clamp(2.4rem, 4vw, 3.5rem);
-      margin: 18px 0 12px;
-      line-height: 1.04;
-      letter-spacing: -0.04em;
-    }
-
-    .page-hero p {
-      max-width: 760px;
-      margin: 0 auto;
-      color: rgba(255,255,255,0.88);
-      font-size: 1rem;
-      line-height: 1.8;
-    }
-
-    .content {
-      padding: 40px 24px 96px;
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-
-    .detail-grid {
-      display: grid;
-      grid-template-columns: 1.1fr 0.9fr;
-      gap: 32px;
-      margin-bottom: 32px;
-    }
-
-    @media (max-width: 900px) {
-      .detail-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    .detail-poster {
-      border-radius: var(--radius);
-      overflow: hidden;
-      box-shadow: var(--shadow);
-      background: var(--white);
-    }
-
-    .detail-poster img {
-      width: 100%;
-      display: block;
-      object-fit: cover;
-      min-height: 420px;
-    }
-
-    .detail-info {
-      display: flex;
-      flex-direction: column;
-      gap: 24px;
-    }
-
-    .detail-info h2 {
-      margin: 0;
-      font-size: clamp(2rem, 3vw, 2.8rem);
-      line-height: 1.1;
-    }
-
-    .detail-meta {
-      display: grid;
-      gap: 14px;
-      background: var(--white);
-      border-radius: var(--radius);
-      padding: 26px;
-      box-shadow: var(--shadow);
-      border: 1px solid rgba(25,40,83,0.08);
-    }
-
-    .detail-meta span {
-      display: inline-flex;
-      align-items: center;
-      gap: 12px;
-      color: var(--gray);
-      font-size: 0.98rem;
-    }
-
-    .detail-meta span strong {
-      color: var(--navy);
-      min-width: 90px;
-      display: inline-block;
-    }
-
-    .ticket-panel {
-      background: var(--white);
-      border-radius: var(--radius);
-      padding: 28px;
-      box-shadow: var(--shadow);
-      border: 1px solid rgba(25,40,83,0.08);
-    }
-
-    .ticket-panel h3 {
-      margin: 0 0 18px;
-      font-size: 1.3rem;
-      color: var(--navy);
-    }
-
-    .ticket-options {
-      display: grid;
-      gap: 14px;
-      margin-bottom: 24px;
-    }
-
-    .ticket-type {
-      display: grid;
-      grid-template-columns: 1fr auto;
-      align-items: center;
-      padding: 16px 18px;
-      border-radius: 20px;
-      border: 1px solid rgba(25,40,83,0.12);
-      transition: border-color 0.2s ease, background 0.2s ease;
-      cursor: pointer;
-      background: #f8fbff;
-    }
-
-    .ticket-type input {
-      display: none;
-    }
-
-    .ticket-type.selected {
-      border-color: var(--yellow);
-      background: rgba(255,225,78,0.18);
-    }
-
-    .ticket-name {
-      font-weight: 700;
-      color: var(--navy);
-      font-size: 1rem;
-    }
-
-    .ticket-price {
-      color: var(--gray);
-      font-size: 0.96rem;
-    }
-
-    .ticket-side {
-      text-align: right;
-      min-width: 120px;
-    }
-
-    .quantity {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 24px;
-    }
-
-    .quantity span {
-      font-size: 0.95rem;
-      color: var(--gray);
-    }
-
-    .quantity-control {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      border-radius: 999px;
-      background: #eef4ff;
-      padding: 8px;
-      box-shadow: inset 0 1px 2px rgba(25,40,83,0.08);
-    }
-
-    .quantity-control button {
-      width: 36px;
-      height: 36px;
-      border: none;
-      border-radius: 50%;
-      background: var(--navy);
-      color: var(--white);
-      font-size: 1.2rem;
-      cursor: pointer;
-    }
-
-    .quantity-control span {
-      min-width: 36px;
-      text-align: center;
-      font-weight: 700;
-      font-size: 1rem;
-      color: var(--navy);
-    }
-
-    .total-box {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 18px 22px;
-      border-radius: 20px;
-      background: rgba(25,40,83,0.04);
-      border: 1px solid rgba(25,40,83,0.08);
-      margin-bottom: 32px;
-      color: var(--navy);
-      font-weight: 700;
-    }
-
-    .bottom-footer {
-      background: var(--navy);
-      color: var(--white);
-      padding: 24px 24px 40px;
-      text-align: center;
-      border-top-left-radius: 32px;
-      border-top-right-radius: 32px;
-      box-shadow: 0 -18px 45px rgba(25,40,83,0.12);
-      margin-top: 40px;
-    }
-
-    .buy-button {
-      padding: 16px 32px;
-      border: none;
-      border-radius: 999px;
-      background: var(--yellow);
-      color: var(--navy);
-      cursor: pointer;
-      font-weight: 700;
-      font-size: 1rem;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-    }
-
-    .buy-button:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 10px 30px rgba(255,225,78,0.22);
-    }
-
-    .back-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      color: var(--white);
-      text-decoration: none;
-      font-weight: 600;
-      margin-bottom: 20px;
-    }
-  </style>
+    <!-- Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
-<body>
-  <section class="page-hero">
-    <div class="page-content">
-      <a href="/dashboard_pengunjung" class="back-link">&larr; Kembali ke Dashboard</a>
-      <span class="badge">{{ $event['category'] }}</span>
-      <h1>{{ $event['title'] }}</h1>
-      <p>{{ $event['status'] }} — Klik tombol tiket untuk memulai pesanan.</p>
+
+<body class="bg-cream font-poppins">
+
+<!-- NAVBAR -->
+<div class="bg-navy text-white px-6 py-4 flex justify-between items-center">
+    <h1 class="font-semibold">EVENTIKET</h1>
+
+    <div class="flex items-center gap-3">
+        <button class="bg-white text-navy px-4 py-1 rounded-full text-sm font-medium">
+            TIKET SAYA
+        </button>
+
+        <div class="w-9 h-9 bg-white rounded-full flex items-center justify-center">
+            <i class="bi bi-person-circle text-navy text-lg"></i>
+        </div>
     </div>
-  </section>
+</div>
 
-  <main class="content">
-    <div class="detail-grid">
-      <div class="detail-poster">
-        <img src="{{ asset('image/' . $event['image']) }}" alt="{{ $event['title'] }}" />
-      </div>
 
-      <div class="detail-info">
-        <div class="detail-meta">
-          <span><strong>Judul</strong>{{ $event['title'] }}</span>
-          <span><strong>Tanggal</strong>{{ $event['date'] }}</span>
-          <span><strong>Waktu</strong>{{ $event['time'] }}</span>
-          <span><strong>Lokasi</strong>{{ $event['venue'] }}</span>
+<!-- CONTENT -->
+<div class="max-w-7xl mx-auto px-6 py-12">
+
+    <div class="grid grid-cols-1 lg:grid-cols-[1.2fr_1fr] gap-10">
+
+        <!-- LEFT -->
+        <div class="space-y-6">
+
+            <!-- IMAGE -->
+            <div class="bg-white rounded-2xl h-[450px] overflow-hidden shadow-sm flex items-center justify-center">
+                <img src="{{ asset('image/' . ($event['image'] ?? 'default.jpg')) }}"
+                     alt="{{ $event['title'] }}"
+                     class="w-full h-full object-contain">
+            </div>
+
+            <!-- DESKRIPSI -->
+            <div class="bg-white rounded-2xl p-6 text-[15px] leading-relaxed text-grayCustom shadow-sm">
+                {{ $event['description'] ?? 'Deskripsi belum tersedia.' }}
+            </div>
+
         </div>
 
-        <section class="ticket-panel">
-          <h3>Pilih Jenis Tiket</h3>
-          <div class="ticket-options">
-            @foreach ($event['tickets'] as $ticket)
-              <label class="ticket-type{{ $loop->first ? ' selected' : '' }}">
-                <input type="radio" name="ticket_type" value="{{ $ticket['price'] }}" {{ $loop->first ? 'checked' : '' }} />
-                <div>
-                  <div class="ticket-name">{{ $ticket['type'] }}</div>
-                  <div class="ticket-price">Rp {{ number_format($ticket['price'], 0, ',', '.') }}</div>
+        <!-- RIGHT -->
+        <div class="space-y-6">
+
+            <!-- INFO -->
+            <div class="bg-white rounded-2xl p-6 shadow-sm text-[15px]">
+                <div class="grid grid-cols-[130px_10px_1fr] gap-y-3">
+                    <span class="font-semibold">Judul</span><span>:</span><span>{{ $event['title'] }}</span>
+                    <span class="font-semibold">Kategori</span><span>:</span><span>{{ $event['category'] }}</span>
+                    <span class="font-semibold">Tanggal</span><span>:</span><span>{{ $event['date'] }}</span>
+                    <span class="font-semibold">Waktu</span><span>:</span><span>{{ $event['time'] }}</span>
+                    <span class="font-semibold">Lokasi</span><span>:</span><span>{{ $event['venue'] }}</span>
                 </div>
-              </label>
-            @endforeach
-          </div>
-
-          <div class="quantity">
-            <span>Jumlah Tiket</span>
-            <div class="quantity-control">
-              <button type="button" id="decrement">-</button>
-              <span id="ticketQuantity">1</span>
-              <button type="button" id="increment">+</button>
             </div>
-          </div>
 
-          <div class="total-box">
-            <span>Total Harga</span>
-            <span id="totalPrice"></span>
-          </div>
-        </section>
-      </div>
+            <!-- TIKET -->
+            <div class="bg-white rounded-2xl p-6 shadow-sm">
+
+                <h3 class="font-semibold mb-6 text-lg">Pilih Jenis Tiket</h3>
+
+                @foreach($event['tickets'] as $i => $ticket)
+                <div class="flex items-center justify-between bg-[#F8FAFC] rounded-xl px-5 py-4 mb-4">
+
+                    <!-- INFO -->
+                    <div>
+                        <p class="font-semibold text-navy text-[15px]">{{ $ticket['type'] }}</p>
+                        <p class="text-sm text-grayCustom">
+                            Rp {{ number_format($ticket['price'],0,',','.') }}
+                        </p>
+                    </div>
+
+                    <!-- ACTION -->
+                    <div class="flex items-center gap-4">
+
+                        <!-- KUOTA -->
+                        <div class="text-xs bg-white px-3 py-1 rounded-full shadow-sm">
+                            Kuota 10
+                        </div>
+
+                        <!-- COUNTER -->
+                        <div class="flex items-center bg-white rounded-full px-2 py-1 shadow-sm">
+
+                            <button onclick="decrease({{ $i }})"
+                                class="w-8 h-8 rounded-full hover:bg-gray-100 text-lg">-</button>
+
+                            <span id="qty-{{ $i }}" class="w-6 text-center font-medium">0</span>
+
+                            <button onclick="increase({{ $i }})"
+                                class="w-8 h-8 rounded-full hover:bg-gray-100 text-lg">+</button>
+
+                        </div>
+
+                    </div>
+                </div>
+                @endforeach
+
+                <!-- TOTAL -->
+                <div class="mt-6 space-y-4 text-sm">
+
+                    <div class="flex justify-between items-center">
+                        <span>Jumlah Tiket</span>
+                        <span id="totalQty" class="bg-gray-200 px-4 py-1 rounded-full">0</span>
+                    </div>
+
+                    <div class="flex justify-between bg-[#F1F5F9] px-5 py-4 rounded-xl font-semibold">
+                        <span>Total Harga</span>
+                        <span id="totalPrice">Rp 0</span>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
     </div>
-  </main>
 
-  <footer class="bottom-footer">
-    <button class="buy-button" type="button" id="buyButton">Beli Tiket</button>
-  </footer>
+    <!-- BUTTON -->
+    <div class="mt-12">
+        <button class="w-full bg-navy text-white py-4 rounded-full text-lg font-semibold hover:bg-yellow hover:text-navy transition">
+            Beli Tiket
+        </button>
+    </div>
 
-  <script>
-    const quantityEl = document.getElementById('ticketQuantity');
-    const totalPriceEl = document.getElementById('totalPrice');
-    const ticketRadios = document.querySelectorAll('input[name="ticket_type"]');
-    const ticketLabels = document.querySelectorAll('.ticket-type');
-    let quantity = 1;
+</div>
 
-    function formatRupiah(value) {
-      return new Intl.NumberFormat('id-ID').format(value);
+<!-- SCRIPT -->
+<script>
+let prices = @json(array_column($event['tickets'], 'price'));
+let quantities = new Array(prices.length).fill(0);
+
+function formatRupiah(num) {
+    return new Intl.NumberFormat('id-ID').format(num);
+}
+
+function updateUI() {
+    let totalQty = quantities.reduce((a, b) => a + b, 0);
+    let totalPrice = quantities.reduce((sum, qty, i) => sum + qty * prices[i], 0);
+
+    document.getElementById("totalQty").innerText = totalQty;
+    document.getElementById("totalPrice").innerText = "Rp " + formatRupiah(totalPrice);
+}
+
+function increase(i) {
+    quantities[i]++;
+    document.getElementById("qty-" + i).innerText = quantities[i];
+    updateUI();
+}
+
+function decrease(i) {
+    if (quantities[i] > 0) {
+        quantities[i]--;
+        document.getElementById("qty-" + i).innerText = quantities[i];
+        updateUI();
     }
+}
+</script>
 
-    function getSelectedPrice() {
-      const checked = document.querySelector('input[name="ticket_type"]:checked');
-      return checked ? Number(checked.value) : 0;
-    }
-
-    function updateTotal() {
-      const price = getSelectedPrice();
-      totalPriceEl.textContent = 'Rp ' + formatRupiah(price * quantity);
-    }
-
-    function resetSelectedClass() {
-      ticketLabels.forEach(label => label.classList.remove('selected'));
-      const checked = document.querySelector('input[name="ticket_type"]:checked');
-      if (checked) {
-        checked.closest('.ticket-type').classList.add('selected');
-      }
-    }
-
-    ticketRadios.forEach(radio => {
-      radio.addEventListener('change', () => {
-        resetSelectedClass();
-        updateTotal();
-      });
-    });
-
-    document.getElementById('increment').addEventListener('click', () => {
-      quantity += 1;
-      quantityEl.textContent = quantity;
-      updateTotal();
-    });
-
-    document.getElementById('decrement').addEventListener('click', () => {
-      if (quantity > 1) {
-        quantity -= 1;
-        quantityEl.textContent = quantity;
-        updateTotal();
-      }
-    });
-
-    document.getElementById('buyButton').addEventListener('click', () => {
-      const selectedType = document.querySelector('input[name="ticket_type"]:checked').closest('.ticket-type').querySelector('.ticket-name').textContent;
-      alert(`Pesanan: ${quantity} x ${selectedType} \nTotal: ${totalPriceEl.textContent}`);
-    });
-
-    resetSelectedClass();
-    updateTotal();
-  </script>
 </body>
 </html>
