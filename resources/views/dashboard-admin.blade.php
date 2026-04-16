@@ -8,7 +8,7 @@
             <h1 class="text-xl font-semibold">Dashboard</h1>
         </div>
 
-        <!-- CARDS -->
+               <!-- CARDS -->
         <div class="grid grid-cols-3 gap-5 mb-6">
 
             <div class="bg-white p-5 rounded-xl border shadow">
@@ -38,7 +38,14 @@
 
                 @foreach ($events as $event)
                 <div class="flex items-center gap-3 p-3 rounded-lg cursor-pointer hover:bg-[#EFF8FF] border border-transparent hover:border-[#c8dff5]"
-                    >
+                    onclick='showModal(
+          @json($event["nama"]),
+          @json($event["kategori"]),
+          @json($event["tanggal"]),
+          @json($event["waktu"]),
+          @json($event["lokasi"]),
+          @json($event["deskripsi"])
+        )'>
 
                     <div class="bg-[#192853] text-yellow-400 text-xs font-semibold px-3 py-2 rounded text-center min-w-[55px]">
                         {{ $event['tanggal'] }}
@@ -105,6 +112,7 @@
 
         </div>
     </div>
+
 
     <script>
         function showModal(nama, kategori, tanggal, waktu, lokasi, deskripsi) {

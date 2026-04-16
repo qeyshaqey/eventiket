@@ -6,10 +6,12 @@
     <title>{{ $title ?? 'Eventix Admin' }}</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- FONT (FIXED) -->
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 
     <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        body { font-family: 'Poppins', sans-serif; }
     </style>
 </head>
 
@@ -23,40 +25,43 @@
             <p class="text-xs text-white/40">Sistem Manajemen Event</p>
         </div>
 
+        @php
+            function active($route) {
+                return request()->is($route)
+                    ? 'bg-yellow-400/10 text-yellow-400 border-l-4 border-yellow-400'
+                    : 'text-white/60 hover:bg-yellow-400/10 hover:text-white';
+            }
+        @endphp
+
         <nav class="flex-1 py-4 text-sm">
 
             <!-- Dashboard -->
             <a href="/dashboard-admin"
-                class="flex items-center gap-3 px-5 py-3 
-                {{ request()->is('dashboard-admin') ? 'bg-yellow-400/10 text-yellow-400 border-l-4 border-yellow-400' : 'text-white/60 hover:bg-yellow-400/10 hover:text-white' }}">
+                class="flex items-center gap-3 px-5 py-3 {{ active('dashboard-admin') }}">
                 Dashboard
             </a>
 
             <!-- Data Pengunjung -->
             <a href="{{ route('data.pengunjung') }}"
-                class="flex items-center gap-3 px-5 py-3 
-                {{ request()->is('data-pengunjung') ? 'bg-yellow-400/10 text-yellow-400 border-l-4 border-yellow-400' : 'text-white/60 hover:bg-yellow-400/10 hover:text-white' }}">
+                class="flex items-center gap-3 px-5 py-3 {{ active('data-pengunjung') }}">
                 Data Pengunjung
             </a>
 
             <!-- Data Panitia -->
             <a href="{{ route('data.panitia') }}"
-                class="flex items-center gap-3 px-5 py-3 
-                {{ request()->is('data-pengunjung') ? 'bg-yellow-400/10 text-yellow-400 border-l-4 border-yellow-400' : 'text-white/60 hover:bg-yellow-400/10 hover:text-white' }}">
+                class="flex items-center gap-3 px-5 py-3 {{ active('data-panitia') }}">
                 Data Panitia
             </a>
 
             <!-- Kelola Event -->
             <a href="{{ route('kelola.event') }}"
-                class="flex items-center gap-3 px-5 y-3 
-                {{ request()->is('data-pengunjung') ? 'bg-yellow-400/10 text-yellow-400 border-l-4 border-yellow-400' : 'text-white/60 hover:bg-yellow-400/10 hover:text-white' }}">
+                class="flex items-center gap-3 px-5 py-3 {{ active('kelola-event') }}">
                 Kelola Event
             </a>
 
             <!-- Kategori Event -->
             <a href="{{ route('kategori') }}"
-                class="flex items-center gap-3 px-5 y-3 
-                {{ request()->is('data-pengunjung') ? 'bg-yellow-400/10 text-yellow-400 border-l-4 border-yellow-400' : 'text-white/60 hover:bg-yellow-400/10 hover:text-white' }}">
+                class="flex items-center gap-3 px-5 py-3 {{ active('kategori') }}">
                 Kategori Event
             </a>
 
