@@ -6,16 +6,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ $title ?? 'Eventix Admin' }}</title>
 
+    <!-- Tailwind -->
     <script src="https://cdn.tailwindcss.com"></script>
 
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-    <!-- FONT (FIXED) -->
+    <!-- Font -->
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 
     <style>
         body {
-            font-family: 'Poppins', sans-serif;
+            font-family: 'Plus Jakarta Sans', sans-serif;
         }
     </style>
 </head>
@@ -25,6 +27,7 @@
     <!-- SIDEBAR -->
     <div class="fixed top-0 left-0 h-full w-[230px] bg-[#192853] text-white flex flex-col shadow-lg">
 
+        <!-- LOGO -->
         <div class="p-5 bg-[#0f1a35] border-b border-yellow-300/20">
             <h2 class="text-yellow-400 font-semibold text-sm">Eventix Admin</h2>
             <p class="text-xs text-white/40">Sistem Manajemen Event</p>
@@ -32,41 +35,32 @@
 
         @php
         function active($route) {
-        return request()->is($route)
-        ? 'bg-yellow-400/10 text-yellow-400 border-l-4 border-yellow-400'
-        : 'text-white/60 hover:bg-yellow-400/10 hover:text-white';
+            return request()->is($route)
+                ? 'bg-yellow-400/10 text-yellow-400 border-l-4 border-yellow-400'
+                : 'text-white/60 hover:bg-yellow-400/10 hover:text-white';
         }
         @endphp
 
+        <!-- MENU -->
         <nav class="flex-1 py-4 text-sm">
 
-            <!-- Dashboard -->
-            <a href="/dashboard-admin"
-                class="flex items-center gap-3 px-5 py-3 {{ active('dashboard-admin') }}">
+            <a href="/dashboard-admin" class="flex items-center gap-3 px-5 py-3 {{ active('dashboard-admin') }}">
                 Dashboard
             </a>
 
-            <!-- Data Pengunjung -->
-            <a href="{{ route('data.pengunjung') }}"
-                class="flex items-center gap-3 px-5 py-3 {{ active('data-pengunjung') }}">
+            <a href="{{ route('data.pengunjung') }}" class="flex items-center gap-3 px-5 py-3 {{ active('data-pengunjung') }}">
                 Data Pengunjung
             </a>
 
-            <!-- Data Panitia -->
-            <a href="{{ route('data.panitia') }}"
-                class="flex items-center gap-3 px-5 py-3 {{ active('data-panitia') }}">
+            <a href="{{ route('data.panitia') }}" class="flex items-center gap-3 px-5 py-3 {{ active('data-panitia') }}">
                 Data Panitia
             </a>
 
-            <!-- Kelola Event -->
-            <a href="{{ route('kelola.event') }}"
-                class="flex items-center gap-3 px-5 py-3 {{ active('kelola-event') }}">
+            <a href="{{ route('kelola.event') }}" class="flex items-center gap-3 px-5 py-3 {{ active('kelola-event') }}">
                 Kelola Event
             </a>
 
-            <!-- Kategori Event -->
-            <a href="{{ route('kategori') }}"
-                class="flex items-center gap-3 px-5 py-3 {{ active('kategori') }}">
+            <a href="{{ route('kategori') }}" class="flex items-center gap-3 px-5 py-3 {{ active('kategori') }}">
                 Kategori Event
             </a>
 
@@ -78,7 +72,8 @@
 
             <form action="{{ route('logout') }}" method="POST">
                 @csrf
-                <button class="w-9 h-9 flex items-center justify-center rounded-lg bg-red-500/10 text-red-400 hover:bg-red-500/20 transition">
+                <button type="submit"
+                    class="w-9 h-9 flex items-center justify-center rounded-lg bg-red-500/10 text-red-400 hover:bg-red-500 hover:text-white transition">
                     <i class="fa-solid fa-right-from-bracket"></i>
                 </button>
             </form>
@@ -86,9 +81,35 @@
 
     </div>
 
-    <!-- MAIN CONTENT -->
-    <div class="ml-[230px] p-8">
-        @yield('content')
+    <!-- MAIN -->
+    <div class="ml-[230px] min-h-screen flex flex-col">
+
+        <!-- 🔥 HEADER ATAS (BIRU TUA) -->
+        <div class="h-[60px] bg-[#192853] border-b border-white/10 flex items-center justify-between px-6 shadow-sm">
+
+            <!-- TITLE -->
+            <h1 class="text-lg font-semibold text-yellow-400">
+                @yield('title', 'Dashboard')
+            </h1>
+
+            <!-- RIGHT -->
+            <div class="flex items-center gap-3 text-sm text-white/70">
+
+                <span>Admin</span>
+
+                <div class="w-8 h-8 rounded-full bg-yellow-400 text-[#192853] flex items-center justify-center">
+                    <i class="fa-solid fa-user"></i>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- CONTENT -->
+        <div class="p-8 flex-1">
+            @yield('content')
+        </div>
+
     </div>
 
 </body>
