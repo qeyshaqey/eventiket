@@ -38,85 +38,92 @@
 <!-- ================= MODAL FORM ================= -->
 <div id="modal" class="fixed inset-0 bg-black/50 hidden flex justify-center items-center">
 
-    <div class="bg-white p-6 rounded-lg shadow-xl w-full max-w-lg relative max-h-[90vh] overflow-y-auto">
+    <div class="bg-white rounded-lg shadow-xl w-full max-w-lg relative max-h-[90vh] flex flex-col">
 
-        <button onclick="closeModal()" class="absolute top-2 right-3 text-xl">✖</button>
-
-        <div class="sticky top-0 bg-white z-10 pb-2 border-b mb-4">
-        <h2 class="text-lg font-bold">FORM TAMBAH EVENT</h2>
+        <!-- HEADER STICKY -->
+        <div class="sticky top-0 bg-white z-20 px-6 py-4 border-b flex justify-between items-center">
+            <h2 class="text-lg font-bold">FORM TAMBAH EVENT</h2>
+            <button onclick="closeModal()" class="text-xl text-red-500 hover:text-red-700 transition">✖</button>
         </div>
 
-        <form onsubmit="event.preventDefault(); tambahEvent();" class="space-y-4">
+        <!-- BODY SCROLL -->
+        <div class="p-6 overflow-y-auto">
 
-            <div>
-                <label class="text-sm font-semibold">Judul Event</label>
-                <input type="text" id="judulEvent" class="w-full border px-3 py-2 rounded mt-1">
-            </div>
+            <form onsubmit="event.preventDefault(); tambahEvent();" class="space-y-4">
 
-            <div>
-                <label class="text-sm font-semibold">Kategori</label>
-                <select id="kategori" class="w-full border px-3 py-2 rounded mt-1">
-                    <option value="">Pilih Kategori</option>
-                    <option>Workshop</option>
-                    <option>Seminar</option>
-                    <option>Hiburan</option>
-                    <option>Olahraga</option>
-                </select>
-            </div>
-
-            <div>
-                <label class="text-sm font-semibold">Deskripsi</label>
-                <textarea id="Deskripsi" class="w-full border px-3 py-2 rounded mt-1"></textarea>
-            </div>
-
-            <div class="grid grid-cols-2 gap-3">
                 <div>
-                    <label class="text-sm font-semibold">Tanggal Mulai</label>
-                    <input type="date" id="tanggalmulai" class="w-full border px-3 py-2 rounded mt-1">
+                    <label class="text-sm font-semibold">Judul Event</label>
+                    <input type="text" id="judulEvent" class="w-full border px-3 py-2 rounded mt-1">
                 </div>
 
                 <div>
-                    <label class="text-sm font-semibold">Tanggal Selesai</label>
-                    <input type="date" id="tanggalselesai" class="w-full border px-3 py-2 rounded mt-1">
+                    <label class="text-sm font-semibold">Kategori</label>
+                    <select id="kategori" class="w-full border px-3 py-2 rounded mt-1">
+                        <option value="">Pilih Kategori</option>
+                        <option>Workshop</option>
+                        <option>Seminar</option>
+                        <option>Hiburan</option>
+                        <option>Olahraga</option>
+                    </select>
                 </div>
-            </div>
 
-            <div>
-                <label class="text-sm font-semibold">Waktu</label>
-                <input type="time" id="waktumulai" class="w-full border px-3 py-2 rounded mt-1">
-            </div>
-
-            <div>
-                <label class="text-sm font-semibold">Lokasi</label>
-                <input type="text" id="Lokasi" class="w-full border px-3 py-2 rounded mt-1">
-            </div>
-
-            <div>
-                <label class="text-sm font-semibold">Poster</label>
-                <div class="border rounded p-3 text-center mt-1">
-                    <input type="file" id="gambarInput" accept="image/*" onchange="previewImage(event)" class="hidden">
-
-                    <button type="button"
-                        onclick="document.getElementById('gambarInput').click()"
-                        class="border px-3 py-1 text-sm">
-                        PILIH FILE
-                    </button>
-
-                    <img id="preview" class="hidden w-32 mt-2 mx-auto rounded">
+                <div>
+                    <label class="text-sm font-semibold">Deskripsi</label>
+                    <textarea id="Deskripsi" class="w-full border px-3 py-2 rounded mt-1"></textarea>
                 </div>
-            </div>
 
-            <div class="flex justify-between pt-3">
-                <button type="button" onclick="closeModal()" class="border px-4 py-2 rounded">
-                    BATAL
-                </button>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="text-sm font-semibold">Tanggal Mulai</label>
+                        <input type="date" id="tanggalmulai" class="w-full border px-3 py-2 rounded mt-1">
+                    </div>
 
-                <button type="submit" class="bg-gray-700 text-white px-4 py-2 rounded">
-                    SIMPAN
-                </button>
-            </div>
+                    <div>
+                        <label class="text-sm font-semibold">Tanggal Selesai</label>
+                        <input type="date" id="tanggalselesai" class="w-full border px-3 py-2 rounded mt-1">
+                    </div>
+                </div>
 
-        </form>
+                <div>
+                    <label class="text-sm font-semibold">Waktu</label>
+                    <input type="time" id="waktumulai" class="w-full border px-3 py-2 rounded mt-1">
+                </div>
+
+                <div>
+                    <label class="text-sm font-semibold">Lokasi</label>
+                    <input type="text" id="Lokasi" class="w-full border px-3 py-2 rounded mt-1">
+                </div>
+
+                <div>
+                    <label class="text-sm font-semibold">Poster</label>
+                    <div class="border rounded p-3 text-center mt-1">
+                        <input type="file" id="gambarInput" accept="image/*" onchange="previewImage(event)" class="hidden">
+
+                        <button type="button"
+                            onclick="document.getElementById('gambarInput').click()"
+                            class="border px-3 py-1 text-sm">
+                            PILIH FILE
+                        </button>
+
+                        <img id="preview" class="hidden w-32 mt-2 mx-auto rounded">
+                    </div>
+                </div>
+
+            </form>
+
+        </div>
+
+        <!-- FOOTER STICKY -->
+        <div class="sticky bottom-0 bg-white border-t px-6 py-4 flex justify-between">
+            <button onclick="closeModal()" class="border px-4 py-2 rounded hover:bg-gray-100">
+                BATAL
+            </button>
+
+            <button onclick="tambahEvent()" class="bg-gray-700 text-white px-4 py-2 rounded hover:bg-gray-800">
+                SIMPAN
+            </button>
+        </div>
+
     </div>
 </div>
 

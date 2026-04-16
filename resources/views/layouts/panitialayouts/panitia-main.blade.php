@@ -29,12 +29,12 @@
 
         <!-- FUNCTION ACTIVE -->
         @php
-            function active($route) {
-                return request()->is($route . '*')
-                    ? 'bg-yellow-400/10 text-yellow-400 border-l-4 border-yellow-400'
-                    : 'text-white/60 hover:bg-yellow-400/10 hover:text-white';
-            }
-        @endphp
+function active($route) {
+    return request()->is('panitia/' . $route . '*')
+        ? 'bg-yellow-400/10 text-yellow-400 border-l-4 border-yellow-400'
+        : 'text-white/60 hover:bg-yellow-400/10 hover:text-white';
+}
+@endphp
 
         <!-- MENU -->
         <nav class="flex-1 py-4 text-sm">
