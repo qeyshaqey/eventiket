@@ -40,21 +40,23 @@
             </a>
 
             <!-- Data Panitia -->
-            <a href="#"
-                class="flex items-center gap-3 px-5 py-3 text-white/60 hover:bg-yellow-400/10 hover:text-white">
+            <a href="{{ route('data.panitia') }}"
+                class="flex items-center gap-3 px-5 py-3 
+                {{ request()->is('data-pengunjung') ? 'bg-yellow-400/10 text-yellow-400 border-l-4 border-yellow-400' : 'text-white/60 hover:bg-yellow-400/10 hover:text-white' }}">
                 Data Panitia
             </a>
 
             <!-- Kelola Event -->
-            <a href="/event"
-                class="flex items-center gap-3 px-5 py-3 
-                {{ request()->is('event') ? 'bg-yellow-400/10 text-yellow-400 border-l-4 border-yellow-400' : 'text-white/60 hover:bg-yellow-400/10 hover:text-white' }}">
+            <a href="{{ route('kelola.event') }}"
+                class="flex items-center gap-3 px-5 y-3 
+                {{ request()->is('data-pengunjung') ? 'bg-yellow-400/10 text-yellow-400 border-l-4 border-yellow-400' : 'text-white/60 hover:bg-yellow-400/10 hover:text-white' }}">
                 Kelola Event
             </a>
 
             <!-- Kategori Event -->
-            <a href="#"
-                class="flex items-center gap-3 px-5 py-3 text-white/60 hover:bg-yellow-400/10 hover:text-white">
+            <a href="{{ route('kategori') }}"
+                class="flex items-center gap-3 px-5 y-3 
+                {{ request()->is('data-pengunjung') ? 'bg-yellow-400/10 text-yellow-400 border-l-4 border-yellow-400' : 'text-white/60 hover:bg-yellow-400/10 hover:text-white' }}">
                 Kategori Event
             </a>
 
