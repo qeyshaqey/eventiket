@@ -27,40 +27,44 @@
 </div>
 
 <!-- TABLE -->
-<div class="bg-white rounded-xl border shadow overflow-hidden">
+<div class="bg-white rounded-xl border shadow">
 
-    <table class="w-full text-sm">
-        <thead class="bg-[#f5f9ff] text-gray-500">
-            <tr>
-                <th class="p-4 text-left">No</th>
-                <th class="p-4 text-left">Nama</th>
-                <th class="p-4 text-left">Email</th>
-                <th class="p-4 text-left">NIM</th>
-                <th class="p-4 text-left">Event</th>
-            </tr>
-        </thead>
+    <!-- SCROLL AREA -->
+    <div class="max-h-[350px] overflow-y-auto overflow-x-auto rounded-xl">
 
-        <tbody id="tableBody">
-            @foreach($data as $i => $d)
-            <tr class="border-t hover:bg-[#EFF8FF]"
-                data-kategori="{{ $d['kategori'] }}"
-                data-event="{{ $d['event'] }}">
+        <table class="w-full text-sm min-w-[700px]">
+            <thead class="bg-[#f5f9ff] text-gray-500 sticky top-0 z-10">
+                <tr>
+                    <th class="p-4 text-left">No</th>
+                    <th class="p-4 text-left">Nama</th>
+                    <th class="p-4 text-left">Email</th>
+                    <th class="p-4 text-left">NIM</th>
+                    <th class="p-4 text-left">Event</th>
+                </tr>
+            </thead>
 
-                <td class="p-4">{{ $i+1 }}</td>
-                <td class="p-4">{{ $d['nama'] }}</td>
-                <td class="p-4 text-gray-500">{{ $d['email'] }}</td>
-                <td class="p-4">{{ $d['nim'] }}</td>
-                <td class="p-4">
-                    <span class="bg-yellow-200 text-xs px-3 py-1 rounded-full">
-                        {{ $d['event'] }}
-                    </span>
-                </td>
+            <tbody id="tableBody">
+                @foreach($data as $i => $d)
+                <tr class="border-t hover:bg-[#EFF8FF]"
+                    data-kategori="{{ $d['kategori'] }}"
+                    data-event="{{ $d['event'] }}">
 
-            </tr>
-            @endforeach
-        </tbody>
-    </table>
+                    <td class="p-4">{{ $i+1 }}</td>
+                    <td class="p-4">{{ $d['nama'] }}</td>
+                    <td class="p-4 text-gray-500">{{ $d['email'] }}</td>
+                    <td class="p-4">{{ $d['nim'] }}</td>
+                    <td class="p-4">
+                        <span class="bg-yellow-200 text-xs px-3 py-1 rounded-full">
+                            {{ $d['event'] }}
+                        </span>
+                    </td>
 
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
+
+    </div>
 </div>
 
 <!-- SCRIPT FILTER -->

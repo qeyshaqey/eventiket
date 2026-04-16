@@ -33,18 +33,19 @@ $events = [
 
 <div class="flex">
 
-    <div class="flex-1 px-6 py-8">
+    <div class="flex-1 px-6 py-0">
 
         <div class="max-w-5xl mx-auto">
 
             <h1 class="text-2xl font-semibold text-[#192853] mb-6">Kelola Event</h1>
 
             <!-- CONTAINER -->
-            <div class="bg-gray-100 rounded-2xl p-4 space-y-3 shadow">
+            <!-- <div class="bg-gray-100 rounded-2xl p-4 space-y-3 shadow"> -->
+                <div class="bg-white rounded-2xl p-4 space-y-3 shadow">
 
                 @foreach ($events as $i => $event)
                 <div
-                    class="flex items-center justify-between p-3 rounded-xl hover:bg-white transition cursor-pointer"
+                    class="flex items-center justify-between p-3 rounded-xl hover:bg-gray-100 active:bg-gray-200 transition cursor-pointer"
                     onclick='showModal(
                         @json($event["nama"]),
                         @json($event["tanggal"]),
