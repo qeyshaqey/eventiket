@@ -47,9 +47,9 @@ Route::get('/dashboard', [DashboardController::class, 'index']);
 // Dashboard Admin 
 Route::get('/dashboard-admin', [DashboardAdminController::class, 'index']);
 
-use App\Http\Controllers\PengunjungLoginController;
+use App\Http\Controllers\PengunjungController;
 
-Route::get('/data-pengunjung', [PengunjungLoginController::class, 'index'])
+Route::get('/data-pengunjung', [PengunjungController::class, 'index'])
     ->name('data.pengunjung');
 
 use App\Http\Controllers\PanitiaController;
