@@ -6,7 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 
-class DashboardPengunjungController extends Controller
+
+class HomePageController extends Controller
 {
     private function events()
     {
@@ -22,6 +23,11 @@ class DashboardPengunjungController extends Controller
                 'price' => 'Rp 125.000',
                 'image' => 'gambarevent1.jpg',
                 'description' => 'Festival Musik Kampus adalah acara spesial',
+                'tickets' => [
+                    ['type' => 'Tiket Perdana', 'price' => 150000],
+                    ['type' => 'Tiket Umum', 'price' => 125000],
+                    ['type' => 'Tiket Premium', 'price' => 200000],
+                ],
             ],
             [
                 'id' => 2,
@@ -34,6 +40,11 @@ class DashboardPengunjungController extends Controller
                 'price' => 'Rp 85.000',
                 'image' => 'gambarevent2.jpg',
                 'description' => 'Pameran Startup Lokal adalah acara spesial',
+                'tickets' => [
+                    ['type' => 'Tiket Perdana', 'price' => 110000],
+                    ['type' => 'Tiket Umum', 'price' => 85000],
+                    ['type' => 'Tiket Premium', 'price' => 140000],
+                ],
             ],
             [
                 'id' => 3,
@@ -46,6 +57,11 @@ class DashboardPengunjungController extends Controller
                 'price' => 'Rp 55.000',
                 'image' => 'gambarevent3.jpg',
                 'description' => 'Workshop Konten Digital adalah acara spesial',
+                'tickets' => [
+                    ['type' => 'Tiket Perdana', 'price' => 70000],
+                    ['type' => 'Tiket Umum', 'price' => 55000],
+                    ['type' => 'Tiket Premium', 'price' => 90000],
+                ],
             ],
             [
                 'id' => 4,
@@ -58,6 +74,11 @@ class DashboardPengunjungController extends Controller
                 'price' => 'Rp 45.000',
                 'image' => 'gambarevent1.jpg',
                 'description' => 'Seminar Kewirausahaan adalah acara spesial',
+                'tickets' => [
+                    ['type' => 'Tiket Perdana', 'price' => 60000],
+                    ['type' => 'Tiket Umum', 'price' => 45000],
+                    ['type' => 'Tiket Premium', 'price' => 80000],
+                ],
             ],
             [
                 'id' => 5,
@@ -70,6 +91,11 @@ class DashboardPengunjungController extends Controller
                 'price' => 'Rp 95.000',
                 'image' => 'gambarevent2.jpg',
                 'description' => 'Kompetisi Coding Nasional adalah acara spesial',
+                'tickets' => [
+                    ['type' => 'Tiket Perdana', 'price' => 120000],
+                    ['type' => 'Tiket Umum', 'price' => 95000],
+                    ['type' => 'Tiket Premium', 'price' => 175000],
+                ],
             ],
             [
                 'id' => 6,
@@ -82,6 +108,11 @@ class DashboardPengunjungController extends Controller
                 'price' => 'Rp 65.000',
                 'image' => 'gambarevent3.jpg',
                 'description' => 'Talkshow Alumni Sukses adalah acara spesial',
+                'tickets' => [
+                    ['type' => 'Tiket Perdana', 'price' => 90000],
+                    ['type' => 'Tiket Umum', 'price' => 65000],
+                    ['type' => 'Tiket Premium', 'price' => 120000],
+                ],
             ],
             [
                 'id' => 7,
@@ -94,30 +125,18 @@ class DashboardPengunjungController extends Controller
                 'price' => 'Rp 75.000',
                 'image' => 'gambarevent1.jpg',
                 'description' => 'Festival Film Pendek adalah acara spesial',
+                'tickets' => [
+                    ['type' => 'Tiket Perdana', 'price' => 100000],
+                    ['type' => 'Tiket Umum', 'price' => 75000],
+                    ['type' => 'Tiket Premium', 'price' => 140000],
+                ],
             ],
         ]);
     }
 
     public function index(Request $request)
     {
-        $search = trim($request->query('search', ''));
-        $category = $request->query('category', 'semua');
-
         $events = $this->events();
-
-        if ($search !== '') {
-            $events = $events->filter(function ($event) use ($search) {
-                return str_contains(strtolower($event['title']), strtolower($search))
-                    || str_contains(strtolower($event['category']), strtolower($search));
-            })->values();
-        }
-
-        if ($category !== 'semua') {
-            $events = $events->filter(function ($event) use ($category) {
-                return strtolower($event['category']) === strtolower($category);
-            })->values();
-        }
-
         $perPage = 4;
         $page = $request->input('page', 1);
         $currentPageItems = $events->slice(($page - 1) * $perPage, $perPage)->values();
@@ -132,7 +151,17 @@ class DashboardPengunjungController extends Controller
                 'query' => $request->query(),
             ]
         );
+        return view('Pengunjung.home_page', compact('paginatedEvents'));
+    }
 
-        return view('Pengunjung.dashboard_pengunjung', compact('paginatedEvents', 'search', 'category'));
+    public function showDetail($id)
+    {
+        $event = $this->events()->firstWhere('id', (int) $id);
+
+        if (! $event) {
+            abort(404);
+        }
+
+        return view('Pengunjung.detail_event', compact('event'));
     }
 }

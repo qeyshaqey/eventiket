@@ -13,6 +13,7 @@ use App\Http\Controllers\JenisTiketController;
 use App\Http\Controllers\ListEventController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\Pengunjung\HomePageController;
 use App\Http\Controllers\Pengunjung\DashboardPengunjungController;
 use App\Http\Controllers\Pengunjung\TiketController;
 use App\Http\Controllers\BerandaPanitiaController;
@@ -37,9 +38,9 @@ Route::get('/dashboard', [DashboardController::class, 'index']);
 // Dashboard Admin 
 Route::get('/dashboard-admin', [DashboardAdminController::class, 'index']);
 
-use App\Http\Controllers\PengunjungController;
+use App\Http\Controllers\PengunjungLoginController;
 
-Route::get('/data-pengunjung', [PengunjungController::class, 'index'])
+Route::get('/data-pengunjung', [PengunjungLoginController::class, 'index'])
     ->name('data.pengunjung');
 
 use App\Http\Controllers\PanitiaController;
@@ -78,12 +79,14 @@ Route::post('/login', function (Request $request) {
     }
 
     if ($username === 'admin' && $password === 'password123') {
-        session(['user' => $username]);
+        session(['user' => $username, 'role' => 'admin']);
 
         return redirect('/dashboard-admin');
     }
 
-    return back()->with('error', 'Username atau password salah.');
+    session(['user' => $username, 'role' => 'pengunjung']);
+
+    return redirect()->route('pengunjung.dashboard');
 });
 
 // ── Register ──
@@ -98,8 +101,9 @@ Route::post('/lupa-password', [ForgotPasswordController::class, 'sendResetLink']
     ->name('password.forgot.send');
 
 // ── Dashboard Pengunjung ──
-Route::get('/home_page', [DashboardPengunjungController::class, 'index']);
-Route::get('/detail_event/{id}', [DashboardPengunjungController::class, 'showDetail'])->name('detail.event');
+Route::get('/home_page', [HomePageController::class, 'index']);
+Route::get('/dashboard_pengunjung', [DashboardPengunjungController::class, 'index'])->name('pengunjung.dashboard');
+Route::get('/detail_event/{id}', [HomePageController::class, 'showDetail'])->name('detail.event');
 Route::get('/tiket_aktif', [TiketController::class, 'index']);
 
 // ── Beranda Panitia ──

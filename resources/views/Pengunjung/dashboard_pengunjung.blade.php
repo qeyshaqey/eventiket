@@ -14,22 +14,21 @@
     </style>
 </head>
 <body class="min-h-screen bg-[#EFF8FF] text-[#192853]">
-    <header class="sticky top-0 z-50 bg-white shadow-sm">
-        <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
-            <a href="/pengunjung-dashboard" class="text-xl font-semibold tracking-tight">Eventiket</a>
+    <header class="sticky top-0 z-50 bg-[#192853] text-white shadow-sm">
+        <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-5">
+            <a href="{{ route('pengunjung.dashboard') }}" class="text-xl font-semibold tracking-tight">Eventiket</a>
+
             <div class="flex items-center gap-3">
-                <a href="/tiket_aktif" class="hidden rounded-full border border-[#192853] px-4 py-2 text-sm font-medium text-[#192853] transition hover:bg-[#192853] hover:text-white md:inline-flex">Tiket Saya</a>
-                <div class="inline-flex items-center gap-3 rounded-full border border-[#192853] bg-[#192853] px-4 py-2 text-white transition hover:bg-[#000000]/90">
-                    <span class="hidden sm:inline-block">{{ session('user', 'Pengunjung') }}</span>
-                    <i class="fa-solid fa-user"></i>
-                </div>
-                <form action="{{ route('logout') }}" method="POST" class="hidden md:inline-flex">
-                    @csrf
-                    <button type="submit" class="rounded-full border border-[#192853] px-4 py-2 text-sm font-medium text-[#192853] transition hover:bg-[#192853] hover:text-white">Keluar</button>
-                </form>
+                <a href="/tiket_aktif" class="rounded-full border border-white px-4 py-2 text-sm font-medium text-white transition hover:bg-white hover:text-[#192853]">TIKET SAYA</a>
+
+                <!-- ICON USER -->
+                <button class="w-10 h-10 rounded-full border border-white bg-transparent text-white flex items-center justify-center transition hover:bg-white hover:text-[#192853]">
+                    <i class="fa-solid fa-user-circle text-lg"></i>
+                </button>
             </div>
         </div>
     </header>
+
 
     <main>
         <section class="relative overflow-hidden bg-[#192853] text-white" style="background-image: radial-gradient(circle at top, rgba(255,225,78,0.14), transparent 40%), linear-gradient(180deg, rgba(25,40,83,0.95), rgba(25,40,83,0.8));">
