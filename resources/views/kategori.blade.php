@@ -2,7 +2,7 @@
 
 @section('content')
 
-<h1 class="text-[18px] font-semibold mb-6">Data Pengunjung</h1>
+<h1 class="text-[18px] font-semibold mb-6">Kelola Event</h1>
 
 <div class="bg-white rounded-[16px] border border-[#e6eef8] shadow p-6">
 
