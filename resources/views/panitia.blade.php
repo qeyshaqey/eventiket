@@ -2,12 +2,11 @@
 @section('content')
 
 <!-- MAIN -->
-<div class=" p-8">
+<div class=" p-0">
 
     <!-- HEADER -->
     <div class="mb-4">
         <h1 class="text-xl font-semibold text-[#192853]">Data Panitia</h1>
-        <p class="text-sm text-gray-500">Kelola dan pengajuan panitia</p>
     </div>
 
     <!-- TAB -->

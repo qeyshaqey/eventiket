@@ -84,26 +84,6 @@
     <!-- MAIN -->
     <div class="ml-[230px] min-h-screen flex flex-col">
 
-        <!-- 🔥 HEADER ATAS (BIRU TUA) -->
-        <div class="h-[60px] bg-[#192853] border-b border-white/10 flex items-center justify-between px-6 shadow-sm">
-
-            <!-- TITLE -->
-            <h1 class="text-lg font-semibold text-yellow-400">
-                @yield('title', 'Dashboard')
-            </h1>
-
-            <!-- RIGHT -->
-            <div class="flex items-center gap-3 text-sm text-white/70">
-
-                <span>Admin</span>
-
-                <div class="w-8 h-8 rounded-full bg-yellow-400 text-[#192853] flex items-center justify-center">
-                    <i class="fa-solid fa-user"></i>
-                </div>
-
-            </div>
-
-        </div>
 
         <!-- CONTENT -->
         <div class="p-8 flex-1">

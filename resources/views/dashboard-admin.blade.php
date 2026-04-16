@@ -1,10 +1,10 @@
 @extends('layouts.app')
 @section('content')
 
-    <div class=" p-8">
+    <div class=" ">
 
         <!-- TOPBAR -->
-        <div class="mb-6">
+        <div class="mb-1">
             <h1 class="text-xl font-semibold">Dashboard</h1>
         </div>
 
