@@ -33,19 +33,18 @@
 <body class="bg-cream font-poppins">
 
 <!-- NAVBAR -->
-<div class="bg-navy text-white px-6 py-4 flex justify-between items-center">
-    <h1 class="font-semibold">EVENTIKET</h1>
+<div class="sticky top-0 z-50 bg-navy text-white shadow-sm">
+    <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-5">
+        <a href="/home" class="text-xl font-semibold tracking-tight">Eventiket</a>
 
-    <div class="flex items-center gap-3">
-        <button class="bg-white text-navy px-4 py-1 rounded-full text-sm font-medium">
-            TIKET SAYA
-        </button>
-    
-        <!-- ICON USER -->
-        <button class="w-9 h-9 bg-white rounded-full flex items-center justify-center hover:bg-yellow transition">
-            <i class="bi bi-person-circle text-navy text-lg"></i>
-        </button>
-</button>
+        <div class="flex items-center gap-3">
+            <a href="/tiket_aktif" class="rounded-full border border-white px-4 py-2 text-sm font-medium text-white transition hover:bg-white hover:text-[#192853]">TIKET SAYA</a>
+
+            <!-- ICON USER -->
+            <button class="w-10 h-10 rounded-full border border-white bg-transparent text-white flex items-center justify-center transition hover:bg-white hover:text-[#192853]">
+                <i class="bi bi-person-circle text-lg"></i>
+            </button>
+        </div>
     </div>
 </div>
 

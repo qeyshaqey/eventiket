@@ -37,13 +37,6 @@
     <h1 class="font-semibold">EVENTIKET</h1>
 
     <div class="flex items-center gap-3">
-        <button class="bg-white text-navy px-4 py-1 rounded-full text-sm font-medium">
-            TIKET SAYA
-        </button>
-
-        <div class="w-9 h-9 bg-white rounded-full flex items-center justify-center">
-            <i class="bi bi-person-circle text-navy text-lg"></i>
-        </div>
     </div>
 </div>
 
@@ -148,9 +141,9 @@
 
     <!-- BUTTON -->
     <div class="mt-12">
-        <button class="w-full bg-navy text-white py-4 rounded-full text-lg font-semibold hover:bg-yellow hover:text-navy transition">
+        <a href="{{ route('login') }}" class="inline-flex w-full items-center justify-center bg-navy text-white py-4 rounded-full text-lg font-semibold hover:bg-yellow hover:text-navy transition">
             Beli Tiket
-        </button>
+        </a>
     </div>
 
 </div>

@@ -104,7 +104,7 @@ class DashboardPengunjungController extends Controller
                 'time' => '14.00 - 16.00 WIB',
                 'venue' => 'Auditorium',
                 'category' => 'Talkshow',
-                'status' => 'Tersedia T',
+                'status' => 'Tersedia Tiket',
                 'price' => 'Rp 65.000',
                 'image' => 'gambarevent3.jpg',
                 'description' => 'Talkshow Alumni Sukses adalah acara spesial',
@@ -151,7 +151,7 @@ class DashboardPengunjungController extends Controller
                 'query' => $request->query(),
             ]
         );
-        return view('Pengunjung.dashboard_pengunjung', compact('paginatedEvents'));
+        return view('Pengunjung.home_page', compact('paginatedEvents'));
     }
 
     public function showDetail($id)

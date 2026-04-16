@@ -98,7 +98,7 @@ Route::post('/lupa-password', [ForgotPasswordController::class, 'sendResetLink']
     ->name('password.forgot.send');
 
 // ── Dashboard Pengunjung ──
-Route::get('/dashboard_pengunjung', [DashboardPengunjungController::class, 'index']);
+Route::get('/home_page', [DashboardPengunjungController::class, 'index']);
 Route::get('/detail_event/{id}', [DashboardPengunjungController::class, 'showDetail'])->name('detail.event');
 Route::get('/tiket_aktif', [TiketController::class, 'index']);
 

@@ -14,35 +14,30 @@
     </style>
 </head>
 <body class="min-h-screen bg-[#EFF8FF] text-[#192853]">
-    <header class="bg-[#192853] text-white shadow-sm">
+    <header class="sticky top-0 z-50 bg-[#192853] text-white shadow-sm">
         <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-5 sm:px-6 lg:px-8">
             <a href="/home" class="text-xl font-semibold tracking-tight">Eventiket</a>
             <nav class="hidden items-center gap-4 md:flex">
-                <a href="/home" class="rounded-full border border-white px-4 py-2 text-sm font-medium transition hover:bg-white hover:text-[#192853]">Home</a>
-                <a href="/" class="rounded-full border border-white px-4 py-2 text-sm font-medium transition hover:bg-white hover:text-[#192853]">Event</a>
-                <a href="/about" class="rounded-full border border-white px-4 py-2 text-sm font-medium transition hover:bg-white hover:text-[#192853]">Tentang</a>
-                <a href="/contact" class="rounded-full border border-white px-4 py-2 text-sm font-medium transition hover:bg-white hover:text-[#192853]">Hubungi Kami</a>
+                <a href="#home" class="rounded-full border border-white px-4 py-2 text-sm font-medium transition hover:bg-white hover:text-[#192853]">Home</a>
+                <a href="#event" class="rounded-full border border-white px-4 py-2 text-sm font-medium transition hover:bg-white hover:text-[#192853]">Event</a>
+                <a href="#about" class="rounded-full border border-white px-4 py-2 text-sm font-medium transition hover:bg-white hover:text-[#192853]">Tentang</a>
+                <a href="#contact" class="rounded-full border border-white px-4 py-2 text-sm font-medium transition hover:bg-white hover:text-[#192853]">Hubungi Kami</a>
                 <a href="/login" class="rounded-full border border-white px-4 py-2 text-sm font-semibold transition hover:bg-white hover:text-[#192853]">Masuk</a>
             </nav>
-            <button type="button" class="inline-flex items-center gap-2 rounded-full border border-[#3f5a8c] px-4 py-2 text-sm font-medium text-white transition hover:bg-[#162146] md:hidden">
-                <i class="fa-solid fa-bars"></i>
-                Menu
-            </button>
-        </div>
+       </div>
     </header>
 
     <main>
-        <section class="relative overflow-hidden bg-[#192853] text-white" style="background-image: radial-gradient(circle at top, rgba(255,225,78,0.14), transparent 40%), linear-gradient(180deg, rgba(25,40,83,0.95), rgba(25,40,83,0.8));">
+        <section id="home" class="relative overflow-hidden bg-[#192853] text-white" style="background-image: radial-gradient(circle at top, rgba(255,225,78,0.14), transparent 40%), linear-gradient(180deg, rgba(25,40,83,0.95), rgba(25,40,83,0.8));">
             <div class="mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
                 <div class="max-w-3xl">
-                    <!-- <p class="inline-flex rounded-full bg-[#FFE14E] px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-[#192853] shadow-sm">Event Kampus</p> -->
                     <h1 class="mt-8 text-4xl font-bold tracking-tight sm:text-5xl">Temukan Event Terbaik Kampus</h1>
                     <p class="mt-4 max-w-xl text-base text-white/85 sm:text-lg">Konser, seminar, festival, dan banyak lagi. Jelajahi acara terbaik dengan tampilan yang bersih dan responsif.</p>
                 </div>
             </div>
         </section>
 
-        <section class="bg-[#EFF8FF] py-16">
+        <section id="event" class="bg-[#EFF8FF] py-16">
             <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <div class="mb-12 text-center">
                     <span class="inline-flex rounded-full bg-[#FFE14E] px-4 py-2 text-sm font-semibold uppercase tracking-[0.24em] text-[#192853] shadow-sm">Etalase Event</span>
@@ -58,9 +53,9 @@
                                 </div>
                             </a>
                             <div class="space-y-4 p-6">
-                                <div class="flex items-center justify-between gap-3 text-sm font-semibold text-[#475569]">
-                                    <span class="rounded-full bg-[#EFF8FF] px-3 py-1 uppercase tracking-[0.12em]">{{ $event['category'] }}</span>
-                                    <span class="rounded-full bg-[#FFE14E] px-3 py-1 text-[#192853]">{{ $event['status'] }}</span>
+                                <div class="flex items-center justify-between gap-3 text-sm font-semibold text-[#475569] flex-nowrap">
+                                    <span class="inline-flex items-center whitespace-nowrap rounded-full bg-[#EFF8FF] px-3 py-1 uppercase tracking-[0.12em]">{{ $event['category'] }}</span>
+                                    <span class="inline-flex items-center whitespace-nowrap rounded-full bg-[#FFE14E] px-3 py-1 text-[#192853]">{{ $event['status'] }}</span>
                                 </div>
                                 <h3 class="text-xl font-semibold text-[#192853]">{{ $event['title'] }}</h3>
                             </div>
@@ -76,7 +71,7 @@
                                     @if ($paginatedEvents->onFirstPage())
                                         <span class="inline-flex h-11 w-11 items-center justify-center rounded-full border border-[#cbd5e1] bg-[#EFF8FF] text-[#475569]">&laquo;</span>
                                     @else
-                                        <a href="{{ $paginatedEvents->previousPageUrl() }}" class="inline-flex h-11 w-11 items-center justify-center rounded-full border border-[#cbd5e1] bg-white text-[#192853] transition hover:bg-[#EFF8FF]">&laquo;</a>
+                                        <a href="{{ $paginatedEvents->previousPageUrl() }}#event" class="inline-flex h-11 w-11 items-center justify-center rounded-full border border-[#cbd5e1] bg-white text-[#192853] transition hover:bg-[#EFF8FF]">&laquo;</a>
                                     @endif
                                 </li>
                                 @for ($i = 1; $i <= $paginatedEvents->lastPage(); $i++)
@@ -84,13 +79,13 @@
                                         @if ($paginatedEvents->currentPage() == $i)
                                             <span class="inline-flex h-11 min-w-[44px] items-center justify-center rounded-full bg-[#192853] px-4 text-sm font-semibold text-white">{{ $i }}</span>
                                         @else
-                                            <a href="{{ $paginatedEvents->url($i) }}" class="inline-flex h-11 min-w-[44px] items-center justify-center rounded-full border border-[#cbd5e1] bg-white px-4 text-sm font-medium text-[#192853] transition hover:bg-[#EFF8FF]">{{ $i }}</a>
+                                            <a href="{{ $paginatedEvents->url($i) }}#event" class="inline-flex h-11 min-w-[44px] items-center justify-center rounded-full border border-[#cbd5e1] bg-white px-4 text-sm font-medium text-[#192853] transition hover:bg-[#EFF8FF]">{{ $i }}</a>
                                         @endif
                                     </li>
                                 @endfor
                                 <li>
                                     @if ($paginatedEvents->hasMorePages())
-                                        <a href="{{ $paginatedEvents->nextPageUrl() }}" class="inline-flex h-11 w-11 items-center justify-center rounded-full border border-[#cbd5e1] bg-white text-[#192853] transition hover:bg-[#EFF8FF]">&raquo;</a>
+                                        <a href="{{ $paginatedEvents->nextPageUrl() }}#event" class="inline-flex h-11 w-11 items-center justify-center rounded-full border border-[#cbd5e1] bg-white text-[#192853] transition hover:bg-[#EFF8FF]">&raquo;</a>
                                     @else
                                         <span class="inline-flex h-11 w-11 items-center justify-center rounded-full border border-[#cbd5e1] bg-[#EFF8FF] text-[#475569]">&raquo;</span>
                                     @endif
@@ -102,7 +97,7 @@
             </div>
         </section>
 
-        <section class="bg-white py-20">
+        <section id="about" class="bg-white py-20">
             <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <div class="mb-12 text-center">
                     <p class="mx-auto inline-flex rounded-full bg-[#FFE14E] px-4 py-2 text-xs font-semibold uppercase tracking-[0.28em] text-[#192853] shadow-sm">Tentang Eventiket</p>
@@ -135,7 +130,7 @@
             </div>
         </section>
 
-    <section class="bg-[#EFF8FF] py-20">
+    <section id="contact" class="bg-[#EFF8FF] py-20">
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 
             <div class="grid gap-10 xl:grid-cols-[1.4fr_1fr]">
