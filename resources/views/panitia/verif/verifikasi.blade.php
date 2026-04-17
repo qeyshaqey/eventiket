@@ -17,7 +17,8 @@
                 <th class="border p-2">PEMBELI</th>
                 <th class="border p-2">EVENT</th>
                 <th class="border p-2">TIKET</th>
-                <th class="border p-2">JUMLAH</th>
+                <th class="border p-2">TANGGAL BELI</th>
+                <th class="border p-2">TOTAL HARGA</th>
                 <th class="border p-2">BUKTI</th>
                 <th class="border p-2">AKSI</th>
             </tr>
@@ -34,8 +35,9 @@
                     </div>
                 </td>
                 <td class="border p-2">{{ $pembayaran->tiket->event->judul ?? '-' }}</td>
-                <td class="border p-2">{{ $pembayaran->tiket->nama }}</td>
-                <td class="border p-2">Rp {{ number_format($pembayaran->jumlah, 0, ',', '.') }}</td>
+                <td class="border p-2">{{ $pembayaran->tiket->nama }} ({{ $pembayaran->jumlah_tiket }} tiket)</td>
+                <td class="border p-2">{{ \Carbon\Carbon::parse($pembayaran->tanggal_beli)->format('d M Y') }}</td>
+                <td class="border p-2">Rp {{ number_format($pembayaran->jumlah_tiket * $pembayaran->harga_tiket, 0, ',', '.') }}</td>
                 <td class="border p-2">
                     @if($pembayaran->bukti_pembayaran)
                     <button onclick="lihatBukti('{{ $pembayaran->bukti_pembayaran }}')" class="text-blue-500 hover:text-blue-700 text-xs underline">
@@ -74,31 +76,49 @@
         <img id="buktiImage" src="" class="w-full h-auto rounded">
     </div>
 </div>
+<div id="toast" class="fixed top-5 right-5 hidden px-4 py-3 rounded shadow text-white z-50"></div>
 
 <script>
-function konfirmasiPembayaran(id) {
-    if (confirm('Konfirmasi pembayaran ini?')) {
-        fetch(`/panitia/verifikasi/${id}/konfirmasi`, {
-            method: 'POST',
-            headers: {
-                'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                'Content-Type': 'application/json'
-            }
-        }).then(response => {
-            if (response.ok) {
-                showToast('Pembayaran dikonfirmasi!', 'success');
-                setTimeout(() => location.reload(), 1500);
-            } else {
-                showToast('Gagal mengonfirmasi!', 'error');
-            }
-        }).catch(() => {
-            showToast('Terjadi kesalahan!', 'error');
-        });
-    }
-}
+    function showToast(message, type = 'success') {
+    const toast = document.getElementById('toast');
 
+    toast.innerText = message;
+
+    // reset class
+    toast.className = "fixed top-5 right-5 px-4 py-3 rounded shadow text-white z-50";
+
+    // warna
+    if (type === 'success') {
+        toast.classList.add('bg-green-500');
+    } else {
+        toast.classList.add('bg-red-500');
+    }
+
+    toast.classList.remove('hidden');
+
+    setTimeout(() => {
+        toast.classList.add('hidden');
+    }, 2000);
+}
+function konfirmasiPembayaran(id) {
+    fetch(`/panitia/verifikasi/${id}/konfirmasi`, {
+        method: 'POST',
+        headers: {
+            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+            'Content-Type': 'application/json'
+        }
+    }).then(response => {
+        if (response.ok) {
+            showToast('Pembayaran dikonfirmasi!', 'success');
+            setTimeout(() => location.reload(), 1500);
+        } else {
+            showToast('Gagal mengkonfirmasi!', 'error');
+        }
+    }).catch(() => {
+        showToast('Terjadi kesalahan!', 'error');
+    });
+}
 function tolakPembayaran(id) {
-    if (confirm('Tolak pembayaran ini?')) {
         fetch(`/panitia/verifikasi/${id}/tolak`, {
             method: 'POST',
             headers: {
@@ -116,7 +136,6 @@ function tolakPembayaran(id) {
             showToast('Terjadi kesalahan!', 'error');
         });
     }
-}
 
 function lihatBukti(bukti) {
     document.getElementById('buktiImage').src = '/storage/' + bukti;
@@ -125,34 +144,6 @@ function lihatBukti(bukti) {
 
 function closeBuktiModal() {
     document.getElementById('buktiModal').classList.add('hidden');
-}
-</script>
-
-@endsection
-            showToast('Terjadi kesalahan!', 'error');
-        });
-    }
-}
-
-function tolakPanitia(id) {
-    if (confirm('Tolak verifikasi panitia ini?')) {
-        fetch(`/panitia/verifikasi/${id}/tolak`, {
-            method: 'POST',
-            headers: {
-                'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                'Content-Type': 'application/json'
-            }
-        }).then(response => {
-            if (response.ok) {
-                showToast('Panitia ditolak!', 'error');
-                setTimeout(() => location.reload(), 1500);
-            } else {
-                showToast('Gagal menolak!', 'error');
-            }
-        }).catch(() => {
-            showToast('Terjadi kesalahan!', 'error');
-        });
-    }
 }
 </script>
 

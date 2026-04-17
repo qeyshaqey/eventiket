@@ -10,22 +10,27 @@ class VerifikasiController extends Controller
 {
     public function index()
     {
-        // Get all payments with pending status
-        $pembayarans = Pembayaran::with(['user', 'tiket.event'])
-            ->where('status', 'pending')
-            ->orderBy('created_at', 'desc')
-            ->get();
-        
-        return view('panitia.verif.verifikasi', compact('pembayarans'));
-    }
+        $pembayarans = collect([
+    (object)[
+        'id' => 1,
+        'jumlah_tiket' => 2,
+        'harga_tiket' => 75000,
+        'tanggal_beli' => '2026-04-15',
+        'bukti_pembayaran' => 'bukti1.jpg',
+        'user' => (object)[
+            'name' => 'Andi Saputra',
+            'email' => 'andi@gmail.com'
+        ],
+        'tiket' => (object)[
+            'nama' => 'VIP',
+            'event' => (object)[
+                'judul' => 'Konser Musik 2026'
+            ]
+        ]
+    ],
+]);
 
-    public function konfirmasi(Request $request, $id)
-    {
-        $pembayaran = Pembayaran::findOrFail($id);
-        $pembayaran->status = 'confirmed';
-        $pembayaran->save();
-
-        return back()->with('success', 'Pembayaran berhasil dikonfirmasi!');
+        return view('panitia..verif.verifikasi', compact('pembayarans'));
     }
 
     public function tolak(Request $request, $id)

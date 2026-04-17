@@ -66,8 +66,8 @@ function active($route) {
             </a>
 
             <!-- VERIFIKASI -->
-            <a href="#"
-                class="flex items-center gap-3 px-5 py-3 text-white/60 hover:bg-yellow-400/10 hover:text-white">
+            <a href="{{ route('panitia.verifikasi') }}"
+                class="flex items-center gap-3 px-5 py-3 {{ active('verifikasi') }}">
                 <i class="bi bi-check2-square"></i> Verifikasi
             </a>
 
