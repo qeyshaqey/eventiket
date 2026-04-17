@@ -29,6 +29,7 @@ use App\Http\Controllers\KategoriController;
 //===========PANITIA SIDE===================//
 use App\Http\Controllers\panitia\EventPanitiaController;
 use App\Http\Controllers\panitia\TiketPanitiaController;
+use App\Http\Controllers\panitia\VerifikasiController;
 Route::prefix('panitia')->group(function () {
 
     Route::view('/beranda', 'panitia.berandapanitia')->name('panitia.beranda');
@@ -45,6 +46,11 @@ Route::prefix('panitia')->group(function () {
     Route::post('/tiket', [TiketPanitiaController::class, 'store'])->name('panitia.tiket.store');
     Route::put('/tiket/{tiket}', [TiketPanitiaController::class, 'update'])->name('panitia.tiket.update');
     Route::delete('/tiket/{tiket}', [TiketPanitiaController::class, 'destroy'])->name('panitia.tiket.destroy');
+
+    // Verifikasi routes (pembayaran)
+    Route::get('/verifikasi', [VerifikasiController::class, 'index'])->name('panitia.verifikasi');
+    Route::post('/verifikasi/{id}/konfirmasi', [VerifikasiController::class, 'konfirmasi'])->name('panitia.verifikasi.konfirmasi');
+    Route::post('/verifikasi/{id}/tolak', [VerifikasiController::class, 'tolak'])->name('panitia.verifikasi.tolak');
 
 });
 //=========================================//
