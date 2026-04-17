@@ -72,7 +72,7 @@
         <!-- ACTION -->
         <div class="flex justify-between items-center mt-4">
             <button onclick="openModal({{ $event->id }})"
-                class="bg-blue-500 text-white px-3 py-1 rounded text-sm hover:bg-blue-600">
+                class="flex items-center gap-2 bg-[#192853] text-yellow-400 px-3 py-2 rounded-lg text-sm hover:bg-[#0f1a35] transition">
                 + Tambah Tiket
             </button>
 
@@ -88,11 +88,14 @@
 </div>
 
 <!-- MODAL TAMBAH TIKET -->
-<div id="modalTiket" class="fixed inset-0 bg-black/50 hidden flex justify-center items-center z-50">
-    <div class="bg-white p-6 rounded-xl shadow w-96">
-        <h2 class="font-bold mb-4">Tambah Tiket</h2>
+<div id="modalTiket" class="fixed inset-0 bg-black/50 hidden flex justify-center items-center z-50" onclick="closeModal()">
+    <div class="bg-white p-6 rounded-xl shadow w-96" onclick="event.stopPropagation()">
+        <div class="flex justify-between items-center mb-4">
+            <h2 class="font-bold">Tambah Tiket</h2>
+            <button onclick="closeModal()" class="text-red-500 text-xl">&times;</button>
+        </div>
 
-        <form id="formTambah" method="POST" action="{{ route('panitia.tiket.store') }}">
+        <form id="formTambah" method="POST" action="{{ route('panitia.tiket.store') }}" onsubmit="return checkForm()">
             @csrf
             <input type="hidden" name="event_id" id="eventId">
 
@@ -118,9 +121,12 @@
 </div>
 
 <!-- MODAL EDIT TIKET -->
-<div id="modalEditTiket" class="fixed inset-0 bg-black/50 hidden flex justify-center items-center z-50">
-    <div class="bg-white p-6 rounded-xl shadow w-96">
-        <h2 class="font-bold mb-4">Edit Tiket</h2>
+<div id="modalEditTiket" class="fixed inset-0 bg-black/50 hidden flex justify-center items-center z-50" onclick="closeEditModal()">
+    <div class="bg-white p-6 rounded-xl shadow w-96" onclick="event.stopPropagation()">
+        <div class="flex justify-between items-center mb-4">
+            <h2 class="font-bold">Edit Tiket</h2>
+            <button onclick="closeEditModal()" class="text-red-500 text-xl">&times;</button>
+        </div>
 
         <form id="formEdit" method="POST">
             @csrf
@@ -148,9 +154,32 @@
 </div>
 
 <script>
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        closeModal();
+        closeEditModal();
+    }
+});
+
 function openModal(eventId) {
+    console.log('Opening modal for event:', eventId);
     document.getElementById('eventId').value = eventId;
     document.getElementById('modalTiket').classList.remove('hidden');
+}
+
+function checkForm() {
+    const eventId = document.getElementById('eventId').value;
+    const nama = document.getElementById('namaTiket').value;
+    const harga = document.getElementById('hargaTiket').value;
+    const cuota = document.getElementById('kuotaTiket').value;
+    
+    console.log('Form values:', { event_id: eventId, nama, harga, cuota });
+    
+    if (!eventId) {
+        alert('Event ID tidak ada! Klik tombol "+ Tambah Tiket" dari event yang benar.');
+        return false;
+    }
+    return true;
 }
 
 function closeModal() {
@@ -160,10 +189,10 @@ function closeModal() {
     document.getElementById('kuotaTiket').value = "";
 }
 
-function openEditModal(id, nama, harga, kuasa) {
+function openEditModal(id, nama, harga, cuota) {
     document.getElementById('editNama').value = nama;
     document.getElementById('editHarga').value = harga;
-    document.getElementById('editKuota').value = kuasa;
+    document.getElementById('editKuota').value = cuota;
     document.getElementById('formEdit').action = '/panitia/tiket/' + id;
     document.getElementById('modalEditTiket').classList.remove('hidden');
 }

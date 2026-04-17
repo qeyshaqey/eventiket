@@ -35,9 +35,24 @@
                 <td class="border p-2">{{ $index + 1 }}</td>
                 <td class="border p-2">{{ $event->judul }}</td>
                 <td class="border p-2">{{ $event->kategori }}</td>
-                <td class="border p-2">{{ Str::limit($event->deskripsi, 30) }}</td>
-                <td class="border p-2">{{ $event->tanggal_mulai }}</td>
-                <td class="border p-2">{{ $event->waktu }}</td>
+                <td class="border p-2 text-left">
+                    <div class="max-w-xs">
+                        {{ Str::limit($event->deskripsi, 30) }}
+                        @if(strlen($event->deskripsi) > 30)
+                        <button onclick="openDetail({{ $event->id }})" class="text-blue-500 hover:text-blue-700 text-xs underline">
+                            Read more
+                        </button>
+                        @endif
+                    </div>
+                </td>
+                <td class="border p-2">
+                    {{ \Carbon\Carbon::parse($event->tanggal_mulai)->format('d M Y') }}
+                    {{ $event->tanggal_selesai ? ' - ' . \Carbon\Carbon::parse($event->tanggal_selesai)->format('d M Y') : '' }}
+                </td>
+                <td class="border p-2">
+                    {{ $event->waktu_mulai ? \Carbon\Carbon::parse($event->waktu_mulai)->format('H:i') : '-' }}
+                    {{ $event->waktu_selesai ? ' - ' . \Carbon\Carbon::parse($event->waktu_selesai)->format('H:i') : '' }}
+                </td>
                 <td class="border p-2">{{ $event->lokasi }}</td>
                 <td class="border p-2">
                     @if($event->status === 'Published')
@@ -74,7 +89,7 @@
             </tr>
             @empty
             <tr>
-                <td colspan="9" class="border p-4 text-center text-gray-500">Belum ada event</td>
+                <td colspan="10" class="border p-4 text-center text-gray-500">Belum ada event</td>
             </tr>
             @endforelse
         </tbody>
@@ -141,10 +156,17 @@
                 </div>
 
                 <!-- WAKTU -->
-                <div>
-                    <label class="text-sm font-semibold">Waktu</label>
-                    <input type="time" id="waktu" name="waktu"
-                        class="w-full border border-gray-300 p-2 rounded focus:ring-2 focus:ring-blue-400 outline-none">
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="text-sm font-semibold">Waktu Mulai</label>
+                        <input type="time" id="waktu_mulai" name="waktu_mulai"
+                            class="w-full border border-gray-300 p-2 rounded focus:ring-2 focus:ring-blue-400 outline-none">
+                    </div>
+                    <div>
+                        <label class="text-sm font-semibold">Waktu Selesai</label>
+                        <input type="time" id="waktu_selesai" name="waktu_selesai"
+                            class="w-full border border-gray-300 p-2 rounded focus:ring-2 focus:ring-blue-400 outline-none">
+                    </div>
                 </div>
 
                 <!-- LOKASI -->
@@ -204,8 +226,10 @@
                 <div class="flex-1 text-sm space-y-2">
                     <p><b>Judul :</b> <span id="d_judul"></span></p>
                     <p><b>Kategori :</b> <span id="d_kategori"></span></p>
-                    <p><b>Tanggal :</b> <span id="d_tanggal"></span></p>
-                    <p><b>Waktu :</b> <span id="d_waktu"></span></p>
+                    <p><b>Tanggal Mulai :</b> <span id="d_tanggal_mulai"></span></p>
+                    <p><b>Tanggal Selesai :</b> <span id="d_tanggal_selesai"></span></p>
+                    <p><b>Waktu Mulai :</b> <span id="d_waktu_mulai"></span></p>
+                    <p><b>Waktu Selesai :</b> <span id="d_waktu_selesai"></span></p>
                     <p><b>Lokasi :</b> <span id="d_lokasi"></span></p>
                     <p><b>Status :</b> <span id="d_status"></span></p>
                 </div>
@@ -268,7 +292,8 @@ function openModal(mode, eventId = null) {
         document.getElementById('deskripsi').value = event.deskripsi || '';
         document.getElementById('tanggal_mulai').value = event.tanggal_mulai;
         document.getElementById('tanggal_selesai').value = event.tanggal_selesai || '';
-        document.getElementById('waktu').value = event.waktu || '';
+        document.getElementById('waktu_mulai').value = event.waktu_mulai || '';
+        document.getElementById('waktu_selesai').value = event.waktu_selesai || '';
         document.getElementById('lokasi').value = event.lokasi || '';
 
         // Show preview
@@ -296,8 +321,10 @@ function openDetail(eventId) {
     
     document.getElementById('d_judul').innerText = event.judul;
     document.getElementById('d_kategori').innerText = event.kategori;
-    document.getElementById('d_tanggal').innerText = event.tanggal_mulai + (event.tanggal_selesai ? ' - ' + event.tanggal_selesai : '');
-    document.getElementById('d_waktu').innerText = event.waktu || '-';
+    document.getElementById('d_tanggal_mulai').innerText = event.tanggal_mulai;
+    document.getElementById('d_tanggal_selesai').innerText = event.tanggal_selesai || '-';
+    document.getElementById('d_waktu_mulai').innerText = event.waktu_mulai || '-';
+    document.getElementById('d_waktu_selesai').innerText = event.waktu_selesai || '-';
     document.getElementById('d_lokasi').innerText = event.lokasi || '-';
     document.getElementById('d_deskripsi').innerText = event.deskripsi || 'Tidak ada deskripsi';
 

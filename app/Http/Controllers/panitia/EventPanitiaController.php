@@ -41,7 +41,8 @@ class EventPanitiaController extends Controller
             'deskripsi' => 'nullable|string',
             'tanggal_mulai' => 'required|date',
             'tanggal_selesai' => 'nullable|date',
-            'waktu' => 'nullable',
+            'waktu_mulai' => 'nullable',
+            'waktu_selesai' => 'nullable',
             'lokasi' => 'nullable|string|max:255',
             'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
@@ -89,7 +90,8 @@ class EventPanitiaController extends Controller
             'deskripsi' => 'nullable|string',
             'tanggal_mulai' => 'required|date',
             'tanggal_selesai' => 'nullable|date',
-            'waktu' => 'nullable',
+            'waktu_mulai' => 'nullable',
+            'waktu_selesai' => 'nullable',
             'lokasi' => 'nullable|string|max:255',
             'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);

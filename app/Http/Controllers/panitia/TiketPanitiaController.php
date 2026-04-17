@@ -27,6 +27,11 @@ class TiketPanitiaController extends Controller
      */
     public function store(Request $request)
     {
+        // Ubah format harga dari "25.000" ke 25000
+        if ($request->harga) {
+            $request->merge(['harga' => (int) str_replace('.', '', $request->harga)]);
+        }
+
         $validated = $request->validate([
             'nama' => 'required|string|max:255',
             'harga' => 'required|integer|min:0',
@@ -34,7 +39,7 @@ class TiketPanitiaController extends Controller
             'event_id' => 'required|exists:events,id',
         ]);
 
-        Tiket::create($validated);
+        $tiket = Tiket::create($validated);
 
         // Update status event menjadi Published
         $event = Event::find($validated['event_id']);
@@ -48,6 +53,11 @@ class TiketPanitiaController extends Controller
      */
     public function update(Request $request, Tiket $tiket)
     {
+        // Ubah format harga dari "25.000" ke 25000
+        if ($request->harga) {
+            $request->merge(['harga' => (int) str_replace('.', '', $request->harga)]);
+        }
+
         $validated = $request->validate([
             'nama' => 'required|string|max:255',
             'harga' => 'required|integer|min:0',

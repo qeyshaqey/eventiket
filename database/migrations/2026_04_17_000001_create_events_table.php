@@ -15,7 +15,8 @@ return new class extends Migration
             $table->text('deskripsi')->nullable();
             $table->date('tanggal_mulai');
             $table->date('tanggal_selesai')->nullable();
-            $table->time('waktu')->nullable();
+            $table->time('waktu_mulai')->nullable();
+            $table->time('waktu_selesai')->nullable();
             $table->string('lokasi')->nullable();
             $table->string('gambar')->nullable();
             $table->enum('status', ['Draft', 'Published', 'Rejected'])->default('Draft');
