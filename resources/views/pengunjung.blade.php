@@ -29,8 +29,8 @@
 <!-- TABLE -->
 <div class="bg-white rounded-xl border shadow">
 
-    <!-- SCROLL AREA -->
-    <div class="max-h-[350px] overflow-y-auto overflow-x-auto rounded-xl">
+    <!-- SCROLL AREA (DITINGGIKAN) -->
+    <div class="max-h-[420px] overflow-y-auto overflow-x-auto rounded-xl">
 
         <table class="w-full text-sm min-w-[700px]">
             <thead class="bg-[#f5f9ff] text-gray-500 sticky top-0 z-10">

@@ -2,13 +2,13 @@
 
 @section('content')
 
-<h1 class="text-[18px] font-semibold mb-6">Kelola Event</h1>
+<h1 class="text-[18px] font-semibold mb-6">Kategori Event</h1>
 
 <div class="bg-white rounded-[16px] border border-[#e6eef8] shadow p-6">
 
     <!-- HEADER -->
     <div class="flex justify-between items-center mb-5">
-        <h2 class="text-sm font-semibold">Kategori Event</h2>
+        <h2 class="text-sm font-semibold">Buat Kategori</h2>
 
         <button type="button" onclick="openModal()"
             class="flex items-center gap-2 bg-[#192853] text-yellow-400 px-3 py-2 rounded-lg text-sm hover:bg-[#0f1a35] transition">
@@ -18,7 +18,7 @@
     </div>
 
     <!-- SCROLL TABLE -->
-    <div class="max-h-[60vh] overflow-y-auto rounded-lg border">
+    <div class="max-h-[65vh] overflow-y-auto rounded-lg border">
 
         <table class="w-full text-sm border-collapse">
 
