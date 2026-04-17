@@ -3,130 +3,221 @@
 @section('content')
 <div class="bg-[#EFF8FF] min-h-screen p-6">
 
-<!-- CARDS -->
-<div class="grid grid-cols-3 gap-4 mb-10">
-    <div class="bg-white p-10 rounded shadow text-center transition transform hover:-translate-y-2 hover:shadow-xl">
-        <p class="text-2xl font-bold">3</p>
-        <p class="text-sm">EVENT AKTIF</p>
+<!-- CARDS UPGRADE -->
+<div class="grid grid-cols-3 gap-6 mb-10">
+
+    <!-- EVENT AKTIF -->
+    <div class="bg-gradient-to-r from-blue-500 to-blue-600 text-white p-6 rounded-2xl shadow-lg hover:scale-105 transition duration-300">
+        <div class="flex items-center justify-between">
+            <div>
+                <p class="text-sm opacity-90">EVENT TERDEKAT</p>
+                <p class="text-xl font-bold mt-1">CODING CAMP</p>
+                <p class="text-sm opacity-80">20 April </p>
+            </div>
+            <div class="bg-white/20 p-3 rounded-full text-xl">
+                📅
+            </div>
+        </div>
     </div>
-    <div class="bg-white p-10 rounded shadow text-center transition transform hover:-translate-y-2 hover:shadow-xl">
-        <p class="text-2xl font-bold">40</p>
-        <p class="text-sm">TIKET TERJUAL</p>
+
+    <!-- TIKET TERJUAL -->
+    <div class="bg-gradient-to-r from-green-500 to-green-600 text-white p-6 rounded-2xl shadow-lg hover:scale-105 transition duration-300">
+        <div class="flex items-center justify-between">
+            <div>
+                <p class="text-sm opacity-90">TIKET TERJUAL</p>
+                <p class="text-xl font-bold mt-1">40</p>
+                <p class="text-sm opacity-80">+12% dari minggu lalu</p>
+            </div>
+            <div class="bg-white/20 p-3 rounded-full text-xl">
+                🎟️
+            </div>
+        </div>
     </div>
-    <div class="bg-white p-10 rounded shadow text-center transition transform hover:-translate-y-2 hover:shadow-xl">
-        <p class="text-2xl font-bold">10</p>
-        <p class="text-sm">PENDING VERIFIKASI</p>
+
+    <!-- PENDING -->
+    <div class="bg-gradient-to-r from-yellow-400 to-orange-500 text-white p-6 rounded-2xl shadow-lg hover:scale-105 transition duration-300">
+    <div class="flex items-center justify-between">
+        <div>
+            <p class="text-sm opacity-90">EVENT TERLARIS</p>
+            <p class="text-xl font-bold mt-1">Music Festival</p>
+            <p class="text-sm opacity-80">50 tiket</p>
+        </div>
+        <div class="bg-white/20 p-3 rounded-full text-xl">
+            🚀
+        </div>
+    </div>
+</div>
+
+</div>
+<!-- GRAFIK -->
+<div class="grid grid-cols-2 gap-6 mb-10">
+    <div class="bg-white p-6 rounded shadow">
+        <h3 class="font-bold text-lg mb-4">Tiket Terjual per Event</h3>
+        <canvas id="ticketChart"></canvas>
+    </div>
+
+    <div class="bg-white p-6 rounded shadow">
+        <h3 class="font-bold text-lg mb-4">Progress Kuota</h3>
+
+        <div class="mb-3">
+            <div class="flex justify-between text-sm">
+                <span>Music Festival</span><span>50%</span>
+            </div>
+            <div class="bg-gray-200 h-3 rounded">
+                <div class="bg-yellow-500 h-3 rounded" style="width:50%"></div>
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <div class="flex justify-between text-sm">
+                <span>Seminar AI</span><span>48%</span>
+            </div>
+            <div class="bg-gray-200 h-3 rounded">
+                <div class="bg-green-600 h-3 rounded" style="width:48%"></div>
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <div class="flex justify-between text-sm">
+                <span>Startup Talk</span><span>45%</span>
+            </div>
+            <div class="bg-gray-200 h-3 rounded">
+                <div class="bg-purple-600 h-3 rounded" style="width:45%"></div>
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <div class="flex justify-between text-sm">
+                <span>Coding Camp</span><span>43%</span>
+            </div>
+            <div class="bg-gray-200 h-3 rounded">
+                <div class="bg-blue-600 h-3 rounded" style="width:43%"></div>
+            </div>
+        </div>
+
     </div>
 </div>
 
 <!-- TABLE -->
 <div class="bg-white rounded shadow p-4">
 
-    <!-- HEADER + FILTER -->
-    <div class="flex justify-between items-center mb-4">
-        <h2 class="font-bold text-lg">DAFTAR EVENT</h2>
+<div class="flex justify-between items-center mb-4">
+    <h2 class="font-bold text-lg">DAFTAR EVENT AKTIF</h2>
 
-        <!-- FILTER KATEGORI SAJA -->
-        <select id="filterKategori" onchange="filterData()" 
-            class="border rounded px-3 py-1 text-sm">
+    <!-- FILTER -->
+    <div class="flex gap-3">
+
+        <input id="search" type="text" placeholder="Cari..."
+            class="px-3 py-2 border rounded text-sm">
+
+        <!-- KATEGORI -->
+        <select id="kategori" class="px-3 py-2 border rounded text-sm">
             <option value="">Semua Kategori</option>
-            <option value="Workshop">Workshop</option>
             <option value="Seminar">Seminar</option>
+            <option value="Workshop">Workshop</option>
             <option value="Hiburan">Hiburan</option>
         </select>
+
+        <!-- AUTO EVENT -->
+        <select id="event" class="px-3 py-2 border rounded text-sm">
+            <option value="">Semua Event</option>
+        </select>
+
     </div>
+</div>
 
-    <!-- TABLE -->
-    <table class="w-full text-sm border">
-        <thead class="bg-gray-100">
-            <tr>
-                <th class="border p-2">NO</th>
-                <th class="border p-2">JUDUL EVENT</th>
-                <th class="border p-2">KATEGORI</th>
-                <th class="border p-2">TANGGAL</th>
-                <th class="border p-2">WAKTU</th>
-                <th class="border p-2">LOKASI</th>
-                <th class="border p-2">SISA KUOTA</th>
-            </tr>
-        </thead>
-
-        <tbody id="eventTable" class="text-center"></tbody>
-    </table>
+<table class="w-full text-sm border">
+    <thead class="bg-gray-100">
+        <tr>
+            <th class="border p-2">NO</th>
+            <th class="border p-2">JUDUL</th>
+            <th class="border p-2">KATEGORI</th>
+            <th class="border p-2">TANGGAL</th>
+            <th class="border p-2">WAKTU</th>
+            <th class="border p-2">LOKASI</th>
+            <th class="border p-2">KUOTA</th>
+        </tr>
+    </thead>
+    <tbody id="eventTable"></tbody>
+</table>
 
 </div>
 </div>
 
-<!-- SCRIPT -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 <script>
 document.addEventListener("DOMContentLoaded", function () {
 
-    const dataEvent = [
-        {
-            judul: "Coding Camp",
-            kategori: "Workshop",
-            tanggal: "20-21 April 2026",
-            waktu: "09:00",
-            lokasi: "Politeknik Batam",
-            kuota: "15 Tiket"
-        },
-        {
-            judul: "Seminar AI",
-            kategori: "Seminar",
-            tanggal: "25 April 2026",
-            waktu: "13:00",
-            lokasi: "Batam Center",
-            kuota: "20 Tiket"
-        },
-        {
-            judul: "Music Festival",
-            kategori: "Hiburan",
-            tanggal: "30 April 2026",
-            waktu: "19:00",
-            lokasi: "Mega Mall",
-            kuota: "50 Tiket"
-        },
-        {
-            judul: "Startup Talk",
-            kategori: "Seminar",
-            tanggal: "5 Mei 2026",
-            waktu: "10:00",
-            lokasi: "Nagoya Hill",
-            kuota: "30 Tiket"
-        }
-    ];
+const dataEvent = [
+    { judul:"Coding Camp", kategori:"Workshop", tanggal:"20-21 April", waktu:"09:00", lokasi:"Polibatam", kuota:"15" },
+    { judul:"Seminar AI", kategori:"Seminar", tanggal:"25 April", waktu:"13:00", lokasi:"Batam Center", kuota:"20" },
+    { judul:"Music Festival", kategori:"Hiburan", tanggal:"30 April", waktu:"19:00", lokasi:"Mega Mall", kuota:"50" },
+    { judul:"Startup Talk", kategori:"Seminar", tanggal:"5 Mei", waktu:"10:00", lokasi:"Nagoya", kuota:"30" }
+];
 
-    function tampilkanData(data) {
-        const table = document.getElementById("eventTable");
-        table.innerHTML = "";
+// render table
+function tampilkanData(data){
+    const table = document.getElementById("eventTable");
+    table.innerHTML="";
+    data.forEach((e,i)=>{
+        table.innerHTML += `
+        <tr>
+            <td class="border p-2">${i+1}</td>
+            <td class="border p-2">${e.judul}</td>
+            <td class="border p-2">${e.kategori}</td>
+            <td class="border p-2">${e.tanggal}</td>
+            <td class="border p-2">${e.waktu}</td>
+            <td class="border p-2">${e.lokasi}</td>
+            <td class="border p-2">${e.kuota}</td>
+        </tr>`;
+    });
+}
 
-        data.forEach((event, index) => {
-            table.innerHTML += `
-                <tr class="hover:bg-gray-50">
-                    <td class="border p-2">${index + 1}</td>
-                    <td class="border p-2 font-semibold">${event.judul}</td>
-                    <td class="border p-2">${event.kategori}</td>
-                    <td class="border p-2">${event.tanggal}</td>
-                    <td class="border p-2">${event.waktu}</td>
-                    <td class="border p-2">${event.lokasi}</td>
-                    <td class="border p-2 text-green-600 font-semibold">${event.kuota}</td>
-                </tr>
-            `;
-        });
-    }
+// FILTER (FIX TOTAL)
+function filterData(){
+    const search = document.getElementById("search").value.toLowerCase();
+    const kategori = document.getElementById("kategori").value;
+    const event = document.getElementById("event").value;
 
-    window.filterData = function () {
-        const kategori = document.getElementById("filterKategori").value;
+    const hasil = dataEvent.filter(e =>
+        e.judul.toLowerCase().includes(search) &&
+        (kategori ? e.kategori === kategori : true) &&
+        (event ? e.judul === event : true)
+    );
 
-        let hasil = dataEvent;
+    tampilkanData(hasil);
+}
 
-        if (kategori) {
-            hasil = hasil.filter(e => e.kategori === kategori);
-        }
+// AUTO DROPDOWN EVENT (FIX)
+const eventSelect = document.getElementById("event");
+[...new Set(dataEvent.map(e=>e.judul))].forEach(j=>{
+    let opt=document.createElement("option");
+    opt.value=j;
+    opt.textContent=j;
+    eventSelect.appendChild(opt);
+});
 
-        tampilkanData(hasil);
-    }
+// EVENT LISTENER
+document.getElementById("search").addEventListener("input",filterData);
+document.getElementById("kategori").addEventListener("change",filterData);
+document.getElementById("event").addEventListener("change",filterData);
 
-    tampilkanData(dataEvent);
+// init
+tampilkanData(dataEvent);
+
+// CHART
+new Chart(document.getElementById('ticketChart'), {
+    type:'bar',
+    data:{
+        labels:dataEvent.map(e=>e.judul),
+        datasets:[{
+            data:dataEvent.map(e=>parseInt(e.kuota)),
+            backgroundColor:['#2563eb','#059669','#f59e0b','#7c3aed']
+        }]
+    },
+    options:{plugins:{legend:{display:false}}}
+});
 
 });
 </script>
