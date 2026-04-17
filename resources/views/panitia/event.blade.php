@@ -218,16 +218,24 @@ function saveToStorage() {
 
 function tambahEvent() {
 
+    const file = document.getElementById('gambarInput').files[0];
+    let gambar = null;
+
+    if (file) {
+        gambar = URL.createObjectURL(file);
+    }
+
     const data = {
-        judul: document.getElementById('judulEvent').value,
+        judul: document.getElementById('judulEvent').value.trim(),
         kategori: document.getElementById('kategori').value,
-        deskripsi: document.getElementById('Deskripsi').value,
+        deskripsi: document.getElementById('Deskripsi').value.trim(),
         tanggalMulai: document.getElementById('tanggalmulai').value,
         tanggalSelesai: document.getElementById('tanggalselesai').value,
         waktu: document.getElementById('waktumulai').value,
-        lokasi: document.getElementById('Lokasi').value,
+        lokasi: document.getElementById('Lokasi').value.trim(),
         status: "Draft",
-        tiket: []
+        tiket: [],
+        gambar: gambar
     };
 
     if (editIndex !== null) {
