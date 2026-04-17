@@ -35,9 +35,9 @@
 
         @php
         function active($route) {
-            return request()->is($route)
-                ? 'bg-yellow-400/10 text-yellow-400 border-l-4 border-yellow-400'
-                : 'text-white/60 hover:bg-yellow-400/10 hover:text-white';
+        return request()->is($route)
+        ? 'bg-yellow-400/10 text-yellow-400 border-l-4 border-yellow-400'
+        : 'text-white/60 hover:bg-yellow-400/10 hover:text-white';
         }
         @endphp
 
@@ -45,22 +45,27 @@
         <nav class="flex-1 py-4 text-sm">
 
             <a href="/dashboard-admin" class="flex items-center gap-3 px-5 py-3 {{ active('dashboard-admin') }}">
-                Dashboard
+                <i class="fa-solid fa-house"></i>
+                Beranda
             </a>
 
             <a href="{{ route('data.pengunjung') }}" class="flex items-center gap-3 px-5 py-3 {{ active('data-pengunjung') }}">
+                <i class="fa-solid fa-users"></i>
                 Data Pengunjung
             </a>
 
             <a href="{{ route('data.panitia') }}" class="flex items-center gap-3 px-5 py-3 {{ active('data-panitia') }}">
+                <i class="fa-solid fa-user-tie"></i>
                 Data Panitia
             </a>
 
             <a href="{{ route('kelola.event') }}" class="flex items-center gap-3 px-5 py-3 {{ active('kelola-event') }}">
+                <i class="fa-solid fa-calendar-check"></i>
                 Kelola Event
             </a>
 
             <a href="{{ route('kategori') }}" class="flex items-center gap-3 px-5 py-3 {{ active('kategori') }}">
+                <i class="fa-solid fa-tags"></i>
                 Kategori Event
             </a>
 
@@ -68,7 +73,7 @@
 
         <!-- FOOTER -->
         <div class="p-4 border-t border-white/10 flex items-center justify-between">
-            <span class="text-xs text-white/30">Eventix Admin</span>
+            <span class="text-xs text-white/30">@Eventix Admin 2026</span>
 
             <form action="{{ route('logout') }}" method="POST">
                 @csrf

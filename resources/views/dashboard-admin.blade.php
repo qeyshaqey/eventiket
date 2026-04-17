@@ -5,7 +5,7 @@
 
         <!-- TOPBAR -->
         <div class="mb-1">
-            <h1 class="text-xl font-semibold">Dashboard</h1>
+            <h1 class="text-xl font-semibold">Beranda</h1>
         </div>
 
                <!-- CARDS -->
@@ -34,7 +34,7 @@
         </div>
 
         <div class="bg-white rounded-xl border shadow">
-            <div class="max-h-[360px] overflow-y-auto p-3 space-y-2">
+            <div class="max-h-[380px] overflow-y-auto p-3 space-y-2">
 
                 @foreach ($events as $event)
                 <div class="flex items-center gap-3 p-3 rounded-lg cursor-pointer hover:bg-[#EFF8FF] border border-transparent hover:border-[#c8dff5]"
