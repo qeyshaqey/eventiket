@@ -62,7 +62,6 @@
                         <span class="text-xs bg-yellow-200 px-3 py-1 rounded-full">
                             {{ $event['kategori'] }}
                         </span>
-                        <span class="text-gray-400 text-lg">›</span>
                     </div>
 
                 </div>
