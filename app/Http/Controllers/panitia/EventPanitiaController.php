@@ -15,9 +15,10 @@ class EventPanitiaController extends Controller
     public function index()
     {
         // Ambil events untuk user yang login (atau semua jika admin)
-        $events = Event::when(auth()->check(), function ($query) {
-            return $query->where('panitia_id', auth()->id());
-        })->latest()->get();
+        $events = Event::with('tikets')
+            ->when(auth()->check(), function ($query) {
+                return $query->where('panitia_id', auth()->id());
+            })->latest()->get();
 
         return view('panitia.event.index', compact('events'));
     }

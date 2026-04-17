@@ -12,14 +12,16 @@ class TiketPanitiaController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         // Debug: tampilkan semua event dulu (hapus filter auth)
         $events = Event::with('tikets')
             ->latest()
             ->get();
 
-        return view('panitia.tiket', compact('events'));
+        $highlightEventId = $request->query('event_id');
+
+        return view('panitia.tiket', compact('events', 'highlightEventId'));
     }
 
     /**

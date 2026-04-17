@@ -6,7 +6,7 @@
     <h1 class="text-xl font-bold mb-6">TIKET YANG DIKELOLA</h1>
 
     @forelse($events as $event)
-    <div class="bg-white rounded-xl shadow p-4 mb-6">
+    <div id="event-{{ $event->id }}" class="bg-white rounded-xl shadow p-4 mb-6 {{ isset($highlightEventId) && $highlightEventId == $event->id ? 'ring-4 ring-blue-400' : '' }}">
 
         <div class="flex gap-4">
             <!-- GAMBAR -->
@@ -160,6 +160,18 @@ document.addEventListener('keydown', function(e) {
         closeEditModal();
     }
 });
+
+// Auto-scroll ke event yang dituju
+const urlParams = new URLSearchParams(window.location.search);
+const highlightEventId = urlParams.get('event_id');
+if (highlightEventId) {
+    setTimeout(() => {
+        const eventElement = document.getElementById('event-' + highlightEventId);
+        if (eventElement) {
+            eventElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+    }, 100);
+}
 
 function openModal(eventId) {
     console.log('Opening modal for event:', eventId);

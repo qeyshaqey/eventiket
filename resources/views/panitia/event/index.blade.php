@@ -63,28 +63,22 @@
                         <span class="text-yellow-600 font-semibold">Draft</span>
                     @endif
                 </td>
+                
                 <td class="border p-2 space-x-1">
-                    <button onclick="openDetail({{ $event->id }})" class="text-green-500 hover:text-green-700" title="Lihat Detail">
-                        <i class="bi bi-eye"></i>
+                    @if($event->tikets->count() === 0)
+                    <button onclick="bukaHalamanTiket({{ $event->id }})" class="text-green-500 hover:text-green-700" title="Tambah Tiket">
+                        <i class="bi bi-ticket-perforated"></i>
                     </button>
+                    @endif
                     <button onclick="openModal('edit', {{ $event->id }})" class="text-yellow-500 hover:text-yellow-700" title="Edit">
                         <i class="bi bi-pencil-square"></i>
                     </button>
-                    @if($event->status === 'Draft')
-                    <form action="{{ route('panitia.event.kirim', $event->id) }}" method="POST" class="inline">
-                        @csrf
-                        <button type="submit" class="text-blue-500 hover:text-blue-700" title="Kirim ke Admin" onclick="return confirm('Kirim event ke admin?')">
-                            <i class="bi bi-upload"></i>
-                        </button>
-                    </form>
-                    @endif
-                    <form action="{{ route('panitia.event.destroy', $event->id) }}" method="POST" class="inline">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="text-red-500 hover:text-red-700" title="Hapus" onclick="return confirm('Hapus event?')">
-                            <i class="bi bi-trash"></i>
-                        </button>
-                    </form>
+                    <button onclick="openDetail({{ $event->id }})" class="text-blue-500 hover:text-blue-700" title="Kirim ke Admin">
+                        <i class="bi bi-upload"></i>
+                    </button>
+                    <button onclick="hapusEvent({{ $event->id }})" class="text-red-500 hover:text-red-700" title="Hapus">
+                        <i class="bi bi-trash"></i>
+                    </button>
                 </td>
             </tr>
             @empty
@@ -226,12 +220,11 @@
                 <div class="flex-1 text-sm space-y-2">
                     <p><b>Judul :</b> <span id="d_judul"></span></p>
                     <p><b>Kategori :</b> <span id="d_kategori"></span></p>
-                    <p><b>Tanggal Mulai :</b> <span id="d_tanggal_mulai"></span></p>
-                    <p><b>Tanggal Selesai :</b> <span id="d_tanggal_selesai"></span></p>
-                    <p><b>Waktu Mulai :</b> <span id="d_waktu_mulai"></span></p>
-                    <p><b>Waktu Selesai :</b> <span id="d_waktu_selesai"></span></p>
+                    <p><b>Tanggal :</b> <span id="d_tanggal"></span></p>
+                    <p><b>Waktu :</b> <span id="d_waktu"></span></p>
                     <p><b>Lokasi :</b> <span id="d_lokasi"></span></p>
-                    <p><b>Status :</b> <span id="d_status"></span></p>
+                    <p><b>Tiket :</b></p>
+                    <div id="d_tiket" class="ml-2 text-gray-600"></div>
                 </div>
             </div>
 
@@ -243,15 +236,33 @@
         </div>
 
         <!-- FOOTER -->
-        <div class="sticky bottom-0 bg-white border-t px-6 py-4 flex justify-between items-center">
-            <span id="d_status_badge" class="px-3 py-1 text-sm font-semibold rounded bg-yellow-100 text-yellow-600">
-                Draft
-            </span>
-            <button id="btnEdit" class="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600">
-                EDIT
+        <div class="sticky bottom-0 bg-white border-t px-6 py-4 flex justify-end items-center">
+            <button onclick="kirimKeAdmin()" class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 font-semibold">
+                <i class="bi bi-send mr-1"></i> KIRIM
             </button>
         </div>
 
+    </div>
+</div>
+
+<!-- ================= MODAL KONFIRMASI HAPUS ================= -->
+<div id="deleteModal" class="fixed inset-0 bg-black/50 hidden z-50 flex justify-center items-center">
+    <div class="bg-white rounded-lg shadow-xl w-full max-w-md p-6">
+        <div class="text-center">
+            <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <i class="bi bi-exclamation-triangle text-red-500 text-3xl"></i>
+            </div>
+            <h3 class="text-lg font-bold mb-2">Hapus Event?</h3>
+            <p id="deleteMessage" class="text-gray-600 mb-6">Event yang dihapus tidak dapat dikembalikan.</p>
+            <div class="flex justify-center gap-3">
+                <button onclick="closeDeleteModal()" class="bg-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-400">
+                    BATAL
+                </button>
+                <button onclick="confirmDelete()" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
+                    HAPUS
+                </button>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -321,29 +332,38 @@ function openDetail(eventId) {
     
     document.getElementById('d_judul').innerText = event.judul;
     document.getElementById('d_kategori').innerText = event.kategori;
-    document.getElementById('d_tanggal_mulai').innerText = event.tanggal_mulai;
-    document.getElementById('d_tanggal_selesai').innerText = event.tanggal_selesai || '-';
-    document.getElementById('d_waktu_mulai').innerText = event.waktu_mulai || '-';
-    document.getElementById('d_waktu_selesai').innerText = event.waktu_selesai || '-';
+    
+    // Tanggal: gabungkan mulai dan selesai
+    let tanggalText = event.tanggal_mulai;
+    if (event.tanggal_selesai && event.tanggal_selesai !== event.tanggal_mulai) {
+        tanggalText += ' - ' + event.tanggal_selesai;
+    }
+    document.getElementById('d_tanggal').innerText = tanggalText;
+    
+    // Waktu: gabungkan mulai dan selesai
+    let waktuText = event.waktu_mulai || '-';
+    if (event.waktu_selesai && event.waktu_selesai !== event.waktu_mulai) {
+        waktuText += ' - ' + event.waktu_selesai;
+    }
+    document.getElementById('d_waktu').innerText = waktuText;
+    
     document.getElementById('d_lokasi').innerText = event.lokasi || '-';
     document.getElementById('d_deskripsi').innerText = event.deskripsi || 'Tidak ada deskripsi';
 
-    // Status
-    const statusBadge = document.getElementById('d_status_badge');
-    const statusText = document.getElementById('d_status');
+    // Status berdasarkan ada tidaknya tiket
+    const hasTickets = event.tikets && event.tikets.length > 0;
     
-    if (event.status === 'Published') {
-        statusBadge.className = 'px-3 py-1 text-sm font-semibold rounded bg-green-100 text-green-600';
-        statusBadge.innerText = 'Published';
-        statusText.innerText = 'Published';
-    } else if (event.status === 'Rejected') {
-        statusBadge.className = 'px-3 py-1 text-sm font-semibold rounded bg-red-100 text-red-600';
-        statusBadge.innerText = 'Rejected';
-        statusText.innerText = 'Rejected';
+    // Info Tiket
+    const ticketContainer = document.getElementById('d_tiket');
+    if (hasTickets) {
+        let ticketHtml = '<ul class="list-disc list-inside space-y-1">';
+        event.tikets.forEach(t => {
+            ticketHtml += `<li>${t.nama} - Rp ${parseInt(t.harga).toLocaleString('id-ID')} (Kuota: ${t.kuota})</li>`;
+        });
+        ticketHtml += '</ul>';
+        ticketContainer.innerHTML = ticketHtml;
     } else {
-        statusBadge.className = 'px-3 py-1 text-sm font-semibold rounded bg-yellow-100 text-yellow-600';
-        statusBadge.innerText = 'Draft';
-        statusText.innerText = 'Draft';
+        ticketContainer.innerText = 'Belum ada tiket';
     }
 
     // Gambar
@@ -360,18 +380,69 @@ function openDetail(eventId) {
 
     currentEventId = eventId;
     
-    // Set edit button
-    document.getElementById('btnEdit').onclick = function() {
-        closeDetail();
-        openModal('edit', eventId);
-    };
+    // Set edit button - tidak ada di modal detail
+    // Gunakan tombol edit di tabel untuk mengedit
     
     modal.classList.remove('hidden');
+}
+
+function kirimKeAdmin() {
+    if (confirm('Kirim event ke admin untuk approval?')) {
+        fetch(`/panitia/event/${currentEventId}/kirim`, {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                'Content-Type': 'application/json'
+            }
+        }).then(() => {
+            showToast('Event berhasil dikirim ke admin!');
+            setTimeout(() => location.reload(), 1000);
+        });
+    }
 }
 
 function closeDetail() {
     document.getElementById('detailModal').classList.add('hidden');
     currentEventId = null;
+}
+
+function hapusEvent(eventId) {
+    currentEventId = eventId;
+    document.getElementById('deleteModal').classList.remove('hidden');
+}
+
+function closeDeleteModal() {
+    document.getElementById('deleteModal').classList.add('hidden');
+    currentEventId = null;
+}
+
+function confirmDelete() {
+    if (!currentEventId) return;
+    
+    fetch(`/panitia/event/${currentEventId}`, {
+        method: 'POST',
+        headers: {
+            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ _method: 'DELETE' })
+    }).then(response => {
+        closeDeleteModal();
+        if (response.ok) {
+            showToast('Event berhasil dihapus!', 'success');
+            setTimeout(() => location.reload(), 1500);
+        } else {
+            showToast('Gagal menghapus event!', 'error');
+        }
+    }).catch(() => {
+        closeDeleteModal();
+        showToast('Terjadi kesalahan!', 'error');
+    });
+}
+
+function bukaHalamanTiket(eventId) {
+    // Redirect ke halaman tiket dengan parameter event
+    window.location.href = '{{ route("panitia.tiket") }}?event_id=' + eventId;
 }
 </script>
 
