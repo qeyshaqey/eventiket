@@ -28,6 +28,7 @@ use App\Http\Controllers\KategoriController;
 
 //===========PANITIA SIDE===================//
 use App\Http\Controllers\panitia\EventPanitiaController;
+use App\Http\Controllers\panitia\TiketPanitiaController;
 Route::prefix('panitia')->group(function () {
 
     Route::view('/beranda', 'panitia.berandapanitia')->name('panitia.beranda');
@@ -39,7 +40,11 @@ Route::prefix('panitia')->group(function () {
     Route::delete('/event/{event}', [EventPanitiaController::class, 'destroy'])->name('panitia.event.destroy');
     Route::post('/event/{event}/kirim', [EventPanitiaController::class, 'kirim'])->name('panitia.event.kirim');
 
-    Route::view('/tiket', 'panitia.tiket')->name('panitia.tiket');
+    // Tiket routes
+    Route::get('/tiket', [TiketPanitiaController::class, 'index'])->name('panitia.tiket');
+    Route::post('/tiket', [TiketPanitiaController::class, 'store'])->name('panitia.tiket.store');
+    Route::put('/tiket/{tiket}', [TiketPanitiaController::class, 'update'])->name('panitia.tiket.update');
+    Route::delete('/tiket/{tiket}', [TiketPanitiaController::class, 'destroy'])->name('panitia.tiket.destroy');
 
 });
 //=========================================//

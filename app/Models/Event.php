@@ -26,4 +26,9 @@ class Event extends Model
     {
         return $this->belongsTo(User::class, 'panitia_id');
     }
+
+    public function tikets()
+    {
+        return $this->hasMany(Tiket::class);
+    }
 }
