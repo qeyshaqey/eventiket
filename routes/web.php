@@ -46,7 +46,7 @@ Route::prefix('panitia')->group(function () {
 
 // Halaman awal
 Route::get('/', function () {
-    return view('welcome');
+    return redirect('/login');
 });
 
 // Contact
