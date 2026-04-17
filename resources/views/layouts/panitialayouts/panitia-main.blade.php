@@ -40,19 +40,19 @@ function active($route) {
         <nav class="flex-1 py-4 text-sm">
 
             <!-- BERANDA -->
-            <a href="{{ route('beranda') }}"
+            <a href="{{ route('panitia.beranda') }}"
                 class="flex items-center gap-3 px-5 py-3 {{ active('beranda') }}">
                 <i class="bi bi-house"></i> Beranda
             </a>
 
             <!-- EVENT -->
-            <a href="{{ route('event') }}"
+            <a href="{{ route('panitia.event') }}"
                 class="flex items-center gap-3 px-5 py-3 {{ active('event') }}">
                 <i class="bi bi-calendar"></i> Event
             </a>
 
             <!-- TIKET -->
-            <a href="{{ route('tiket') }}"
+            <a href="{{ route('panitia.tiket') }}"
                 class="flex items-center gap-3 px-5 py-3 {{ active('tiket') }}">
                 <i class="bi bi-ticket-perforated"></i>Tiket
             </a>

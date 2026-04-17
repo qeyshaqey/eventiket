@@ -27,12 +27,19 @@ use App\Http\Controllers\KategoriController;
 
 
 //===========PANITIA SIDE===================//
+use App\Http\Controllers\panitia\EventPanitiaController;
 Route::prefix('panitia')->group(function () {
 
-    Route::view('/beranda', 'panitia.berandapanitia')->name('beranda');
+    Route::view('/beranda', 'panitia.berandapanitia')->name('panitia.beranda');
 
-    Route::view('/event', 'panitia.event')->name('event');
-    Route::view('/tiket', 'panitia.tiket')->name('tiket');
+    // Event routes - modal based
+    Route::get('/event', [EventPanitiaController::class, 'index'])->name('panitia.event');
+    Route::post('/event', [EventPanitiaController::class, 'store'])->name('panitia.event.store');
+    Route::put('/event/{event}', [EventPanitiaController::class, 'update'])->name('panitia.event.update');
+    Route::delete('/event/{event}', [EventPanitiaController::class, 'destroy'])->name('panitia.event.destroy');
+    Route::post('/event/{event}/kirim', [EventPanitiaController::class, 'kirim'])->name('panitia.event.kirim');
+
+    Route::view('/tiket', 'panitia.tiket')->name('panitia.tiket');
 
 });
 //=========================================//
