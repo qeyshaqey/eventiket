@@ -8,7 +8,7 @@
     <div class="mb-4">
         <h1 class="text-xl font-bold mb-3">Event Yang Dikelola</h1>
         <button onclick="openModal('tambah')" 
-            class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition">
+            class="flex items-center gap-2 bg-[#192853] text-yellow-400 px-3 py-2 rounded-lg text-sm hover:bg-[#0f1a35] transition">
             + Tambah Event
         </button>
     </div>
