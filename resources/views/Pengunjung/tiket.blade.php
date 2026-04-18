@@ -48,14 +48,34 @@
     </div>
 </div>
 
+@php
+    $activeTab = request('tab', 'aktif');
+    $currentCategory = request('category');
+    $eventsToShow = $activeTab === 'riwayat' ? $historyEvents : $activeEvents;
+@endphp
+
+<!-- TAB PILIHAN -->
+<div class="px-6 mt-6">
+    <div class="mx-auto flex w-full max-w-xl items-center justify-between pb-3">
+        <a href="/tiket_aktif?tab=aktif{{ $currentCategory ? '&category='.$currentCategory : '' }}"
+           class="text-sm font-semibold transition {{ $activeTab === 'aktif' ? 'text-navy border-b-4 border-yellow pb-2' : 'text-slate-500 hover:text-slate-700' }}">
+            TIKET AKTIF
+        </a>
+        <a href="/tiket_aktif?tab=riwayat{{ $currentCategory ? '&category='.$currentCategory : '' }}"
+           class="text-sm font-semibold transition {{ $activeTab === 'riwayat' ? 'text-navy border-b-4 border-yellow pb-2' : 'text-slate-500 hover:text-slate-700' }}">
+            RIWAYAT TRANSAKSI
+        </a>
+    </div>
+</div>
+
 <!-- FILTER CATEGORY -->
 <div class="px-6 mt-6">
     <div class="flex gap-3 flex-wrap">
 
         <!-- BUTTON SEMUA -->
-        <a href="/tiket_aktif"
+        <a href="/tiket_aktif?tab={{ $activeTab }}"
            class="px-4 py-2 rounded-full text-sm transition
-           {{ request('category') == null ? 'bg-navy text-white' : 'bg-white hover:bg-yellow' }}">
+           {{ $currentCategory == null ? 'bg-navy text-white' : 'bg-white hover:bg-yellow' }}">
             Semua
         </a>
 
@@ -64,9 +84,9 @@
         @endphp
 
         @foreach($categories as $cat)
-            <a href="?category={{ $cat }}"
+            <a href="?tab={{ $activeTab }}&category={{ $cat }}"
                class="px-4 py-2 rounded-full text-sm transition
-               {{ request('category') == $cat ? 'bg-navy text-white' : 'bg-white hover:bg-yellow' }}">
+               {{ $currentCategory == $cat ? 'bg-navy text-white' : 'bg-white hover:bg-yellow' }}">
                 {{ $cat }}
             </a>
         @endforeach
@@ -78,12 +98,19 @@
 <div class="px-4 py-8">
 <div class="max-w-3xl mx-auto space-y-6">
 
-@foreach($events as $event)
+@php
+    $filteredEvents = collect($eventsToShow)->filter(function ($event) use ($currentCategory) {
+        return !$currentCategory || $event['category'] === $currentCategory;
+    });
+@endphp
 
-    {{-- FILTER LOGIC --}}
-    @if(request('category') && $event['category'] != request('category'))
-        @continue
-    @endif
+@if($filteredEvents->isEmpty())
+    <div class="bg-white rounded-2xl p-8 shadow-sm text-center text-sm text-slate-600">
+        Belum ada tiket yang sesuai dengan pilihan saat ini.
+    </div>
+@endif
+
+@foreach($filteredEvents as $event)
 
 <div class="bg-white rounded-2xl p-5 shadow-sm relative hover:shadow-md transition">
 
@@ -139,10 +166,10 @@
     </button>
     @endif
 
-    <!-- BADGE AKTIF -->
+    <!-- BADGE STATUS AKTIF / SELESAI -->
     @if($event['status'] == 'Berhasil Diverifikasi')
     <div class="absolute bottom-4 right-4 bg-gray-200 text-xs px-4 py-1 rounded-full font-medium">
-        AKTIF
+        {{ $activeTab === 'riwayat' ? 'SELESAI' : 'AKTIF' }}
     </div>
     @endif
 
