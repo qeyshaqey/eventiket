@@ -139,6 +139,18 @@ Route::get('/dashboard_pengunjung', [DashboardPengunjungController::class, 'inde
 Route::get('/dashboard_pengunjung/ajax', [DashboardPengunjungController::class, 'ajaxSearch'])->name('pengunjung.dashboard.ajax');
 Route::get('/detail_event/{id}', [HomePageController::class, 'showDetail'])->name('detail.event');
 Route::get('/tiket_aktif', [TiketController::class, 'index']);
+Route::get('/profil_pengunjung', function () {
+    return view('Pengunjung.profil_pengunjung');
+})->name('pengunjung.profil');
+
+Route::get('/daftar_panitia', function () {
+    return view('Pengunjung.daftar_panitia');
+})->name('pengunjung.daftar_panitia');
+
+Route::post('/daftar_panitia', function (\Illuminate\Http\Request $request) {
+    // Di sini akan ditaruh logika untuk menyimpan ke database nanti.
+    return back()->with('success', 'Pengajuan panitia berhasil dikirim!');
+})->name('pengunjung.daftar_panitia.store');
 
 // ── Beranda Panitia ──
 Route::get('/beranda-panitia', [BerandaPanitiaController::class, 'index'])->name('beranda.panitia');

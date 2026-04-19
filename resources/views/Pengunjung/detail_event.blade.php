@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
@@ -238,9 +238,16 @@ function formatRupiah(num) {
     return new Intl.NumberFormat('id-ID').format(num);
 }
 
-function showToast(message) {
+function showToast(message, type = 'success') {
     if (!toastNotice || !toastNoticeText) return;
     toastNoticeText.innerText = message;
+    
+    if (type === 'error') {
+        toastNotice.classList.replace('border-yellow', 'border-red-500');
+    } else {
+        toastNotice.classList.replace('border-red-500', 'border-yellow');
+    }
+
     toastNotice.classList.remove('opacity-0', 'pointer-events-none');
     toastNotice.classList.add('opacity-100');
     clearTimeout(noticeTimeout);
@@ -306,7 +313,7 @@ function decrease(i) {
 function openCheckout() {
     const totalQty = quantities.reduce((a, b) => a + b, 0);
     if (totalQty <= 0) {
-        showToast('Pilih minimal 1 tiket terlebih dahulu.');
+        showToast('Pilih minimal 1 tiket terlebih dahulu.', 'error');
         return;
     }
 
