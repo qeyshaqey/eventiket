@@ -101,7 +101,7 @@
             <button onclick="closeModal()" class="text-xl text-red-500 hover:text-red-700">&times;</button>
         </div>
 
-        <!-- BODY -->
+        <!-- BODY --> <!--FORM-->
         <div class="p-6 overflow-y-auto flex-1">
             <form id="eventForm" method="POST" enctype="multipart/form-data" class="space-y-4">
                 @csrf
@@ -111,8 +111,12 @@
                 <div>
                     <label class="text-sm font-semibold">Judul Event</label>
                     <input type="text" id="judul" name="judul"
+                        value="{{ old('judul') }}"
                         class="w-full border border-gray-300 p-2 rounded focus:ring-2 focus:ring-blue-400 outline-none"
                         placeholder="Masukkan judul event" required>
+                        @error('judul')
+                        <small class="text-red-500">{{ $message }}</small>
+                        @enderror
                 </div>
 
                 <!-- KATEGORI -->
@@ -121,10 +125,13 @@
                     <select id="kategori" name="kategori"
                         class="w-full border border-gray-300 p-2 rounded focus:ring-2 focus:ring-blue-400 outline-none" required>
                         <option value="">Pilih Kategori</option>
-                        <option value="Workshop">Workshop</option>
-                        <option value="Seminar">Seminar</option>
-                        <option value="Hiburan">Hiburan</option>
+                        <option value="Workshop" {{ old('kategori') == 'Workshop' ? 'selected' : '' }}>Workshop</option>
+                        <option value="Seminar" {{ old('kategori') == 'Seminar' ? 'selected' : '' }}>Seminar</option>
+                        <option value="Hiburan" {{ old('kategori') == 'Hiburan' ? 'selected' : '' }}>Hiburan</option>
                     </select>
+                    @error('kategori')
+                    <small class="text-red-500">{{ $message }}</small>
+                    @enderror
                 </div>
 
                 <!-- DESKRIPSI -->
@@ -132,7 +139,10 @@
                     <label class="text-sm font-semibold">Deskripsi</label>
                     <textarea id="deskripsi" name="deskripsi"
                         class="w-full border border-gray-300 p-2 rounded focus:ring-2 focus:ring-blue-400 outline-none"
-                        placeholder="Masukkan deskripsi"></textarea>
+                        placeholder="Masukkan deskripsi">{{ old('deskripsi') }}</textarea>
+                        @error('deskripsi')
+                        <small class="text-red-500">{{ $message }}</small>
+                        @enderror
                 </div>
 
                 <!-- TANGGAL -->
@@ -140,12 +150,20 @@
                     <div>
                         <label class="text-sm font-semibold">Tanggal Mulai</label>
                         <input type="date" id="tanggal_mulai" name="tanggal_mulai"
+                            value="{{ old('tanggal_mulai') }}"
                             class="w-full border border-gray-300 p-2 rounded focus:ring-2 focus:ring-blue-400 outline-none" required>
+                            @error('tanggal_mulai')
+                            <small class="text-red-500">{{ $message }}</small>
+                            @enderror
                     </div>
                     <div>
                         <label class="text-sm font-semibold">Tanggal Selesai</label>
                         <input type="date" id="tanggal_selesai" name="tanggal_selesai"
+                            value="{{ old('tanggal_selesai') }}"
                             class="w-full border border-gray-300 p-2 rounded focus:ring-2 focus:ring-blue-400 outline-none">
+                            @error('tanggal_selesai')
+                            <small class="text-red-500">{{ $message }}</small>
+                            @enderror
                     </div>
                 </div>
 
@@ -154,12 +172,20 @@
                     <div>
                         <label class="text-sm font-semibold">Waktu Mulai</label>
                         <input type="time" id="waktu_mulai" name="waktu_mulai"
+                            value="{{ old('waktu_mulai') }}"
                             class="w-full border border-gray-300 p-2 rounded focus:ring-2 focus:ring-blue-400 outline-none">
+                            @error('waktu_mulai')
+                            <small class="text-red-500">{{ $message }}</small>
+                            @enderror
                     </div>
                     <div>
                         <label class="text-sm font-semibold">Waktu Selesai</label>
                         <input type="time" id="waktu_selesai" name="waktu_selesai"
+                            value="{{ old('waktu_selesai') }}"
                             class="w-full border border-gray-300 p-2 rounded focus:ring-2 focus:ring-blue-400 outline-none">
+                            @error('waktu_selesai')
+                            <small class="text-red-500">{{ $message }}</small>
+                            @enderror
                     </div>
                 </div>
 
@@ -167,8 +193,12 @@
                 <div>
                     <label class="text-sm font-semibold">Lokasi</label>
                     <input type="text" id="lokasi" name="lokasi"
+                        value="{{ old('lokasi') }}"
                         class="w-full border border-gray-300 p-2 rounded focus:ring-2 focus:ring-blue-400 outline-none"
                         placeholder="Masukkan lokasi">
+                        @error('lokasi')
+                        <small class="text-red-500">{{ $message }}</small>
+                        @enderror
                 </div>
 
                 <!-- POSTER -->
@@ -280,7 +310,9 @@ function openModal(mode, eventId = null) {
 
     closeDetail();
     modal.classList.remove('hidden');
+    if (!document.querySelector('.bg-red-100')) {
     form.reset();
+    }
     previewContainer.classList.add('hidden');
 
     if (mode === 'tambah') {
@@ -445,5 +477,12 @@ function bukaHalamanTiket(eventId) {
     window.location.href = '{{ route("panitia.tiket") }}?event_id=' + eventId;
 }
 </script>
+@if ($errors->any())
+<script>
+    setTimeout(() => {
+        openModal('tambah');
+    }, 100);
+</script>
+@endif
 
 @endsection

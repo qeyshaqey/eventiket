@@ -20,7 +20,7 @@ class EventPanitiaController extends Controller
                 return $query->where('panitia_id', auth()->id());
             })->latest()->get();
 
-        return view('panitia.event.index', compact('events'));
+        return view('pages.panitia.event.index', compact('events'));
     }
 
     /**
@@ -28,48 +28,43 @@ class EventPanitiaController extends Controller
      */
     public function create()
     {
-        return view('panitia.event.create');
+        return view('pages.panitia.event.create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'judul' => 'required|string|max:255',
-            'kategori' => 'required|string|max:100',
-            'deskripsi' => 'nullable|string',
-            'tanggal_mulai' => 'required|date',
-            'tanggal_selesai' => 'nullable|date',
-            'waktu_mulai' => 'nullable',
-            'waktu_selesai' => 'nullable',
-            'lokasi' => 'nullable|string|max:255',
-            'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-        ]);
+{
+    $validated = $request->validate([
+        'judul' => 'required',
+        'kategori' => 'required',
+        'deskripsi' => 'required',
+        'tanggal_mulai' => 'required|date',
+        'waktu_mulai' => 'required',
+        'lokasi' => 'required',
+        'gambar' => 'required|image'
+    ], [
+        'judul.required' => 'Judul event wajib diisi!',
+        'kategori.required' => 'Kategori wajib diisi!',
+        'deskripsi.required' => 'Deskripsi wajib diisi!',
+        'tanggal_mulai.required' => 'Tanggal wajib diisi!',
+        'waktu_mulai.required' => 'Waktu wajib diisi!',
+        'lokasi.required' => 'Lokasi wajib diisi!',
+        'gambar.required' => 'Gambar wajib diupload!'
+    ]);
 
-        // Upload gambar jika ada
-        if ($request->hasFile('gambar')) {
-            $validated['gambar'] = $request->file('gambar')->store('event-images', 'public');
-        }
+    Event::create($validated);
 
-        // Set default status Draft
-        $validated['status'] = 'Draft';
-        
-        // Set panitia_id (gunakan user login atau default 1 untuk demo)
-        $validated['panitia_id'] = auth()->id() ?? 1;
-
-        Event::create($validated);
-
-        return redirect()->route('panitia.event')->with('success', 'Event berhasil ditambahkan!');
-    }
+    return back()->with('success', 'Event berhasil ditambahkan!');
+}
 
     /**
      * Display the specified resource.
      */
     public function show(Event $event)
     {
-        return view('panitia.event.show', compact('event'));
+        return view('pages.panitia.event.show', compact('event'));
     }
 
     /**
@@ -77,7 +72,7 @@ class EventPanitiaController extends Controller
      */
     public function edit(Event $event)
     {
-        return view('panitia.event.edit', compact('event'));
+        return view('pages.panitia.event.edit', compact('event'));
     }
 
     /**

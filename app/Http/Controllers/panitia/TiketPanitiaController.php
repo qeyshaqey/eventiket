@@ -21,7 +21,7 @@ class TiketPanitiaController extends Controller
 
         $highlightEventId = $request->query('event_id');
 
-        return view('panitia.tiket', compact('events', 'highlightEventId'));
+        return view('pages.panitia.tiket', compact('events', 'highlightEventId'));
     }
 
     /**
