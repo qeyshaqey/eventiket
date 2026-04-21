@@ -111,7 +111,7 @@
                 <div>
                     <label class="text-sm font-semibold">Judul Event</label>
                     <input type="text" id="judul" name="judul"
-                        value="{{ old('judul') }}"
+                        value="{{ old('judul', $event->judul) }}"
                         class="w-full border border-gray-300 p-2 rounded focus:ring-2 focus:ring-blue-400 outline-none"
                         placeholder="Masukkan judul event" required>
                         @error('judul')
@@ -125,9 +125,9 @@
                     <select id="kategori" name="kategori"
                         class="w-full border border-gray-300 p-2 rounded focus:ring-2 focus:ring-blue-400 outline-none" required>
                         <option value="">Pilih Kategori</option>
-                        <option value="Workshop" {{ old('kategori') == 'Workshop' ? 'selected' : '' }}>Workshop</option>
-                        <option value="Seminar" {{ old('kategori') == 'Seminar' ? 'selected' : '' }}>Seminar</option>
-                        <option value="Hiburan" {{ old('kategori') == 'Hiburan' ? 'selected' : '' }}>Hiburan</option>
+                        <option value="Workshop" {{ old('kategori', $event->kategori) == 'Workshop' ? 'selected' : '' }}>Workshop</option>
+                        <option value="Seminar" {{ old('kategori', $event->kategori) == 'Seminar' ? 'selected' : '' }}>Seminar</option>
+                        <option value="Hiburan" {{ old('kategori', $event->kategori) == 'Hiburan' ? 'selected' : '' }}>Hiburan</option>
                     </select>
                     @error('kategori')
                     <small class="text-red-500">{{ $message }}</small>
@@ -137,9 +137,7 @@
                 <!-- DESKRIPSI -->
                 <div>
                     <label class="text-sm font-semibold">Deskripsi</label>
-                    <textarea id="deskripsi" name="deskripsi"
-                        class="w-full border border-gray-300 p-2 rounded focus:ring-2 focus:ring-blue-400 outline-none"
-                        placeholder="Masukkan deskripsi">{{ old('deskripsi') }}</textarea>
+                    <textarea name="deskripsi" class="w-full border border-gray-300 p-2 rounded focus:ring-2 focus:ring-blue-400 outline-none" placeholder="Masukkan deskripsi">{{ old('deskripsi', $event->deskripsi) }}</textarea>
                         @error('deskripsi')
                         <small class="text-red-500">{{ $message }}</small>
                         @enderror
@@ -150,7 +148,7 @@
                     <div>
                         <label class="text-sm font-semibold">Tanggal Mulai</label>
                         <input type="date" id="tanggal_mulai" name="tanggal_mulai"
-                            value="{{ old('tanggal_mulai') }}"
+                            value="{{ old('tanggal_mulai', $event->tanggal_mulai) }}"
                             class="w-full border border-gray-300 p-2 rounded focus:ring-2 focus:ring-blue-400 outline-none" required>
                             @error('tanggal_mulai')
                             <small class="text-red-500">{{ $message }}</small>
@@ -159,7 +157,7 @@
                     <div>
                         <label class="text-sm font-semibold">Tanggal Selesai</label>
                         <input type="date" id="tanggal_selesai" name="tanggal_selesai"
-                            value="{{ old('tanggal_selesai') }}"
+                            value="{{ old('tanggal_selesai', $event->tanggal_selesai) }}"
                             class="w-full border border-gray-300 p-2 rounded focus:ring-2 focus:ring-blue-400 outline-none">
                             @error('tanggal_selesai')
                             <small class="text-red-500">{{ $message }}</small>
@@ -172,7 +170,7 @@
                     <div>
                         <label class="text-sm font-semibold">Waktu Mulai</label>
                         <input type="time" id="waktu_mulai" name="waktu_mulai"
-                            value="{{ old('waktu_mulai') }}"
+                            value="{{ old('waktu_mulai', $event->waktu_mulai) }}"
                             class="w-full border border-gray-300 p-2 rounded focus:ring-2 focus:ring-blue-400 outline-none">
                             @error('waktu_mulai')
                             <small class="text-red-500">{{ $message }}</small>
@@ -181,7 +179,7 @@
                     <div>
                         <label class="text-sm font-semibold">Waktu Selesai</label>
                         <input type="time" id="waktu_selesai" name="waktu_selesai"
-                            value="{{ old('waktu_selesai') }}"
+                            value="{{ old('waktu_selesai', $event->waktu_selesai) }}"
                             class="w-full border border-gray-300 p-2 rounded focus:ring-2 focus:ring-blue-400 outline-none">
                             @error('waktu_selesai')
                             <small class="text-red-500">{{ $message }}</small>
@@ -193,7 +191,7 @@
                 <div>
                     <label class="text-sm font-semibold">Lokasi</label>
                     <input type="text" id="lokasi" name="lokasi"
-                        value="{{ old('lokasi') }}"
+                        value="{{ old('lokasi', $event->lokasi) }}"
                         class="w-full border border-gray-300 p-2 rounded focus:ring-2 focus:ring-blue-400 outline-none"
                         placeholder="Masukkan lokasi">
                         @error('lokasi')
