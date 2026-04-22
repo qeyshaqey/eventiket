@@ -38,11 +38,11 @@ class PanitiaController extends Controller
 
         // ================= DITOLAK =================
         $ditolak = [
-            ["nama" => "Budi Santoso", "email" => "budi@gmail.com", "nim" => "2210112360", "alasan" => "Tidak memenuhi syarat"],
-            ["nama" => "Citra Dewi", "email" => "citra@gmail.com", "nim" => "2210112361", "alasan" => "Data tidak lengkap"],
-            ["nama" => "Eko Prasetyo", "email" => "eko@gmail.com", "nim" => "2210112362", "alasan" => "Kuota penuh"],
-            ["nama" => "Dewi Lestari", "email" => "dewi@gmail.com", "nim" => "2210112363", "alasan" => "Tidak hadir seleksi"],
-            ["nama" => "Ahmad Fauzi", "email" => "ahmad@gmail.com", "nim" => "2210112364", "alasan" => "Dokumen tidak valid"],
+            ["nama" => "Budi Santoso", "email" => "budi@gmail.com", "nim" => "2210112360", "ukm" => "HMTI", "alasan" => "Tidak memenuhi syarat"],
+            ["nama" => "Citra Dewi", "email" => "citra@gmail.com", "nim" => "2210112361", "ukm" => "UKM Seni", "alasan" => "Data tidak lengkap"],
+            ["nama" => "Eko Prasetyo", "email" => "eko@gmail.com", "nim" => "2210112362", "ukm" => "BEM", "alasan" => "Kuota penuh"],
+            ["nama" => "Dewi Lestari", "email" => "dewi@gmail.com", "nim" => "2210112363", "ukm" => "UKM Olahraga", "alasan" => "Tidak hadir seleksi"],
+            ["nama" => "Ahmad Fauzi", "email" => "ahmad@gmail.com", "nim" => "2210112364", "ukm" => "HMTI", "alasan" => "Dokumen tidak valid"],
         ];
 
         return view('panitia', compact('kelola', 'pengajuan', 'ditolak'));
