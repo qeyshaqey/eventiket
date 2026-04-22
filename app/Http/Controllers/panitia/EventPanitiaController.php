@@ -3,130 +3,80 @@
 namespace App\Http\Controllers\panitia;
 
 use App\Http\Controllers\Controller;
-use App\Models\Event;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 
 class EventPanitiaController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        // Ambil events untuk user yang login (atau semua jika admin)
-        $events = Event::with('tikets')
-            ->when(auth()->check(), function ($query) {
-                return $query->where('panitia_id', auth()->id());
-            })->latest()->get();
+        $events = session('events', []);
 
         return view('pages.panitia.event.index', compact('events'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        return view('pages.panitia.event.create');
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
-{
-    $validated = $request->validate([
-        'judul' => 'required',
-        'kategori' => 'required',
-        'deskripsi' => 'required',
-        'tanggal_mulai' => 'required|date',
-        'waktu_mulai' => 'required',
-        'lokasi' => 'required',
-        'gambar' => 'required|image'
-    ], [
-        'judul.required' => 'Judul event wajib diisi!',
-        'kategori.required' => 'Kategori wajib diisi!',
-        'deskripsi.required' => 'Deskripsi wajib diisi!',
-        'tanggal_mulai.required' => 'Tanggal wajib diisi!',
-        'waktu_mulai.required' => 'Waktu wajib diisi!',
-        'lokasi.required' => 'Lokasi wajib diisi!',
-        'gambar.required' => 'Gambar wajib diupload!'
-    ]);
-
-    Event::create($validated);
-
-    return back()->with('success', 'Event berhasil ditambahkan!');
-}
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Event $event)
-    {
-        return view('pages.panitia.event.show', compact('event'));
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Event $event)
-    {
-        return view('pages.panitia.event.edit', compact('event'));
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Event $event)
     {
         $validated = $request->validate([
-            'judul' => 'required|string|max:255',
-            'kategori' => 'required|string|max:100',
-            'deskripsi' => 'nullable|string',
-            'tanggal_mulai' => 'required|date',
-            'tanggal_selesai' => 'nullable|date',
-            'waktu_mulai' => 'nullable',
-            'waktu_selesai' => 'nullable',
-            'lokasi' => 'nullable|string|max:255',
-            'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'judul' => 'required',
+            'kategori' => 'required',
+            'deskripsi' => 'required',
+            'tanggal_mulai' => 'required',
+            'waktu_mulai' => 'required',
+            'lokasi' => 'required',
         ]);
 
-        // Upload gambar baru jika ada
-        if ($request->hasFile('gambar')) {
-            // Hapus gambar lama jika ada
-            if ($event->gambar) {
-                Storage::disk('public')->delete($event->gambar);
+        $events = session('events', []);
+
+        // ✅ FIX: struktur lengkap sesuai blade
+        $validated['id'] = count($events) + 1;
+        $validated['status'] = 'Draft';
+        $validated['tikets'] = [];
+
+        // 🔥 INI YANG BIKIN ERROR TADI
+        $validated['tanggal_selesai'] = null;
+        $validated['waktu_selesai'] = null;
+
+        $events[] = (object) $validated;
+
+        session(['events' => $events]);
+
+        return back()->with('success', 'Event berhasil ditambahkan');
+    }
+
+    public function update(Request $request, $id)
+    {
+        $events = session('events', []);
+
+        foreach ($events as &$event) {
+            if ($event->id == $id) {
+                $event->judul = $request->judul;
+                $event->kategori = $request->kategori;
+                $event->deskripsi = $request->deskripsi;
+                $event->tanggal_mulai = $request->tanggal_mulai;
+                $event->waktu_mulai = $request->waktu_mulai;
+                $event->lokasi = $request->lokasi;
             }
-            $validated['gambar'] = $request->file('gambar')->store('event-images', 'public');
         }
 
-        $event->update($validated);
+        session(['events' => $events]);
 
-        return redirect()->route('panitia.event')->with('success', 'Event berhasil diperbarui!');
+        return back()->with('success', 'Event berhasil diupdate');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Event $event)
+    public function destroy($id)
     {
-        // Hapus gambar jika ada
-        if ($event->gambar) {
-            Storage::disk('public')->delete($event->gambar);
-        }
+        $events = session('events', []);
 
-        $event->delete();
+        $events = array_filter($events, function ($event) use ($id) {
+            return $event->id != $id;
+        });
 
-        return redirect()->route('panitia.event')->with('success', 'Event berhasil dihapus!');
+        session(['events' => array_values($events)]);
+
+        return back()->with('success', 'Event berhasil dihapus');
     }
 
-    /**
-     * Kirim event ke admin untuk approval
-     */
-    public function kirim(Event $event)
-    {
-        $event->update(['status' => 'Published']);
-        return redirect()->route('panitia.event')->with('success', 'Event berhasil dikirim ke admin!');
-    }
+    public function show($id) { return back(); }
+    public function edit($id) { return back(); }
+    public function kirim($id) { return back(); }
 }
