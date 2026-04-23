@@ -8,7 +8,7 @@
 <div class="bg-white p-4 rounded-xl border shadow mb-5 flex gap-3">
 
     <input id="search" type="text" placeholder="Cari pengunjung..."
-        class="px-4 py-2 border rounded-lg text-sm w-[220px] focus:ring-2 focus:ring-yellow-300">
+        class="px-4 py-2 border rounded-lg text-sm flex-1 focus:ring-2 focus:ring-yellow-300">
 
     <select id="kategori" class="px-3 py-2 border rounded-lg text-sm">
         <option value="">Kategori</option>
