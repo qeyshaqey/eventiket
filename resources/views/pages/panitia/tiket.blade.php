@@ -11,11 +11,11 @@
         <div class="flex gap-4">
             <!-- GAMBAR -->
             <div class="w-32 h-32 bg-gray-200 rounded flex items-center justify-center">
-                @if($event->gambar)
-                    <img src="{{ Storage::url($event->gambar) }}" class="w-full h-full object-cover rounded">
-                @else
-                    <i class="bi bi-image text-2xl text-gray-400"></i>
-                @endif
+                @if($event->poster)
+    <img src="{{ Storage::url($event->poster) }}" class="w-full h-full object-cover rounded">
+@else
+    <i class="bi bi-image text-2xl text-gray-400"></i>
+@endif
             </div>
 
             <!-- DETAIL -->
@@ -175,15 +175,23 @@ const highlightEventId = urlParams.get('event_id');
 if (highlightEventId) {
     setTimeout(() => {
         const eventElement = document.getElementById('event-' + highlightEventId);
+
         if (eventElement) {
+            // scroll ke event
             eventElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+            openModal(highlightEventId);
         }
-    }, 100);
+    }, 300);
 }
 
 function openModal(eventId) {
-    console.log('Opening modal for event:', eventId);
     document.getElementById('eventId').value = eventId;
+
+    document.getElementById('namaTiket').value = "";
+    document.getElementById('hargaTiket').value = "";
+    document.getElementById('kuotaTiket').value = "";
+
     document.getElementById('modalTiket').classList.remove('hidden');
 }
 

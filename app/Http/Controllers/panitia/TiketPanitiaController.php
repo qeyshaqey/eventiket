@@ -3,8 +3,6 @@
 namespace App\Http\Controllers\panitia;
 
 use App\Http\Controllers\Controller;
-use App\Models\Event;
-use App\Models\Tiket;
 use Illuminate\Http\Request;
 
 class TiketPanitiaController extends Controller
@@ -14,11 +12,7 @@ class TiketPanitiaController extends Controller
      */
     public function index(Request $request)
     {
-        // Debug: tampilkan semua event dulu (hapus filter auth)
-        $events = Event::with('tikets')
-            ->latest()
-            ->get();
-
+        $events = session('events', []);
         $highlightEventId = $request->query('event_id');
 
         return view('pages.panitia.tiket', compact('events', 'highlightEventId'));
@@ -29,62 +23,100 @@ class TiketPanitiaController extends Controller
      */
     public function store(Request $request)
     {
-        // Ubah format harga dari "25.000" ke 25000
-        if ($request->harga) {
-            $request->merge(['harga' => (int) str_replace('.', '', $request->harga)]);
-        }
-
         $validated = $request->validate([
-            'nama' => 'required|string|max:255',
-            'harga' => 'required|integer|min:0',
-            'kuota' => 'required|integer|min:1',
-            'event_id' => 'required|exists:events,id',
+            'nama' => 'required',
+            'harga' => 'required',
+            'kuota' => 'required',
+            'event_id' => 'required',
         ]);
 
-        $tiket = Tiket::create($validated);
+        $events = session('events', []);
 
-        // Update status event menjadi Published
-        $event = Event::find($validated['event_id']);
-        $event->update(['status' => 'Published']);
+        foreach ($events as &$event) {
+            if ($event->id == $validated['event_id']) {
 
-        return redirect()->route('panitia.tiket')->with('success', 'Tiket berhasil ditambahkan!');
+                // kalau belum ada tikets, bikin array dulu
+                if (!isset($event->tikets)) {
+                    $event->tikets = [];
+                }
+
+                // tambah tiket
+                $event->tikets[] = (object) [
+                    'id' => count($event->tikets) + 1,
+                    'nama' => $validated['nama'],
+                    'harga' => $validated['harga'],
+                    'kuota' => $validated['kuota'],
+                ];
+
+                // update status
+                $event->status = 'Published';
+            }
+        }
+
+        session(['events' => $events]);
+
+        return redirect()->route('panitia.tiket', [
+            'event_id' => $validated['event_id']
+        ]);
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update tiket (SESSION VERSION)
      */
-    public function update(Request $request, Tiket $tiket)
+    public function update(Request $request, $id)
     {
-        // Ubah format harga dari "25.000" ke 25000
-        if ($request->harga) {
-            $request->merge(['harga' => (int) str_replace('.', '', $request->harga)]);
-        }
-
         $validated = $request->validate([
-            'nama' => 'required|string|max:255',
-            'harga' => 'required|integer|min:0',
-            'kuota' => 'required|integer|min:1',
+            'nama' => 'required',
+            'harga' => 'required',
+            'kuota' => 'required',
         ]);
 
-        $tiket->update($validated);
+        $events = session('events', []);
 
-        return redirect()->route('panitia.tiket')->with('success', 'Tiket berhasil diperbarui!');
+        foreach ($events as &$event) {
+            if (!isset($event->tikets)) continue;
+
+            foreach ($event->tikets as &$tiket) {
+                if ($tiket->id == $id) {
+                    $tiket->nama = $validated['nama'];
+                    $tiket->harga = $validated['harga'];
+                    $tiket->kuota = $validated['kuota'];
+                }
+            }
+        }
+
+        session(['events' => $events]);
+
+        return back()->with('success', 'Tiket berhasil diupdate!');
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove tiket (SESSION VERSION)
      */
-    public function destroy(Tiket $tiket)
+    public function destroy($id)
     {
-        $eventId = $tiket->event_id;
-        $tiket->delete();
+        $events = session('events', []);
 
-        // Jika tidak ada tiket lagi, update status event menjadi Draft
-        $tiketCount = Tiket::where('event_id', $eventId)->count();
-        if ($tiketCount === 0) {
-            Event::find($eventId)->update(['status' => 'Draft']);
+        foreach ($events as &$event) {
+
+            if (!isset($event->tikets)) continue;
+
+            // hapus tiket
+            $event->tikets = array_filter($event->tikets, function ($tiket) use ($id) {
+                return $tiket->id != $id;
+            });
+
+            // reset index
+            $event->tikets = array_values($event->tikets);
+
+            // kalau tiket habis → balik ke Draft
+            if (count($event->tikets) === 0) {
+                $event->status = 'Draft';
+            }
         }
 
-        return redirect()->route('panitia.tiket')->with('success', 'Tiket berhasil dihapus!');
+        session(['events' => $events]);
+
+        return back()->with('success', 'Tiket berhasil dihapus!');
     }
 }

@@ -10,18 +10,17 @@ class Event extends Model
     use HasFactory;
 
     protected $fillable = [
-        'judul',
-        'kategori',
-        'deskripsi',
-        'tanggal_mulai',
-        'tanggal_selesai',
-        'waktu_mulai',
-        'waktu_selesai',
-        'lokasi',
-        'gambar',
-        'status',
-        'panitia_id',
-    ];
+    'judul',
+    'kategori',
+    'deskripsi',
+    'tanggal_mulai',
+    'tanggal_selesai',
+    'waktu_mulai',
+    'waktu_selesai',
+    'lokasi',
+    'poster',
+    'status',
+];
 
     public function panitia()
     {
