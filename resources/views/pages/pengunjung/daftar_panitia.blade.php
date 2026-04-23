@@ -1,41 +1,11 @@
-<!DOCTYPE html>
-<html lang="id">
+@extends('layouts.pengunjung')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Daftar Kepanitiaan Event</title>
+@section('title', 'Daftar Kepanitiaan Event')
 
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
-   
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
+@section('body_class', 'bg-cream font-poppins min-h-screen flex flex-col')
 
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        navy: "#192853",
-                        cream: "#EFF8FF",
-                        yellow: "#FFE14E",
-                        grayCustom: "#475569"
-                    },
-                    fontFamily: {
-                        poppins: ["Poppins", "sans-serif"]
-                    }
-                }
-            }
-        }
-    </script>
-
-    <!-- Google Fonts Poppins -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
-        rel="stylesheet">
-        
-    <style>
+@push('styles')
+<style>
         /* Sembunyikan icon kalender default*/
         input[type="date"]::-webkit-calendar-picker-indicator {
             cursor: pointer;
@@ -46,30 +16,10 @@
             opacity: 1;
         }
     </style>
-</head>
+@endpush
 
-<body class="bg-cream font-poppins min-h-screen flex flex-col">
-
-    <!-- NAVBAR -->
-    <div class="sticky top-0 z-50 bg-navy text-white shadow-sm">
-        <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-5">
-            <a href="/home" class="text-xl font-semibold tracking-tight">Eventiket</a>
-
-            <div class="flex items-center gap-3">
-                <a href="/tiket_aktif"
-                    class="rounded-full border border-white px-4 py-2 text-sm font-medium text-white transition hover:bg-white hover:text-navy">TIKET SAYA</a>
-
-                <!-- ICON USER -->
-                <a href="{{ route('pengunjung.profil') }}"
-                    class="w-10 h-10 rounded-full border border-white bg-transparent text-white flex items-center justify-center transition hover:bg-white hover:text-navy">
-                    <i class="fa-solid fa-user text-lg"></i>
-                </a>
-            </div>
-        </div>
-    </div>
-
-
-    <!-- CONTENT -->
+@section('content')
+<!-- CONTENT -->
     <div class="flex-grow flex justify-center px-4 sm:px-10 py-6 sm:py-10 pb-20">
         <div class="bg-white w-full max-w-4xl rounded-[2.5rem] overflow-hidden shadow-xl border border-slate-100">
 
@@ -213,7 +163,10 @@
     </div>
 
     <!-- SCRIPTS -->
-    <script>
+@endsection
+
+@push('scripts')
+<script>
         let noticeTimeout = null;
         const toastNotice = document.getElementById('toast-notice');
         const toastNoticeText = document.getElementById('toast-notice-text');
@@ -264,5 +217,4 @@
             });
         @endif
     </script>
-</body>
-</html>
+@endpush

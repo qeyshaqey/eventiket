@@ -1,33 +1,17 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home - Eventiket</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    @vite('resources/css/app.css')
-    <style>
+@extends('layouts.pengunjung')
+
+@section('title', 'Home - Eventiket')
+
+@section('body_class', 'min-h-screen bg-[#EFF8FF] text-[#192853]')
+
+@push('styles')
+<style>
         body { font-family: 'Poppins', sans-serif; }
     </style>
-</head>
-<body class="min-h-screen bg-[#EFF8FF] text-[#192853]">
-    <header class="sticky top-0 z-50 bg-[#192853] text-white shadow-sm">
-        <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-5 sm:px-6 lg:px-8">
-            <a href="/home" class="text-xl font-semibold tracking-tight">Eventiket</a>
-            <nav class="hidden items-center gap-4 md:flex">
-                <a href="#home" class="rounded-full border border-white px-4 py-2 text-sm font-medium transition hover:bg-white hover:text-[#192853]">Home</a>
-                <a href="#event" class="rounded-full border border-white px-4 py-2 text-sm font-medium transition hover:bg-white hover:text-[#192853]">Event</a>
-                <a href="#about" class="rounded-full border border-white px-4 py-2 text-sm font-medium transition hover:bg-white hover:text-[#192853]">Tentang</a>
-                <a href="#contact" class="rounded-full border border-white px-4 py-2 text-sm font-medium transition hover:bg-white hover:text-[#192853]">Hubungi Kami</a>
-                <a href="/login" class="rounded-full border border-white px-4 py-2 text-sm font-semibold transition hover:bg-white hover:text-[#192853]">Masuk</a>
-            </nav>
-       </div>
-    </header>
+@endpush
 
-    <main>
+@section('content')
+<main>
         <section id="home" class="relative overflow-hidden bg-[#192853] text-white" style="background-image: radial-gradient(circle at top, rgba(255,225,78,0.14), transparent 40%), linear-gradient(180deg, rgba(25,40,83,0.95), rgba(25,40,83,0.8));">
             <div class="mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
                 <div class="max-w-3xl">
@@ -312,5 +296,5 @@
             <p>© 2026 Eventiket</p>
         </div>
     </footer>
-</body>
-</html>
+@endsection
+

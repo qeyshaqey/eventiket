@@ -1,49 +1,11 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pembayaran Tiket - Eventiket</title>
-    <!-- Icons -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
-    <!-- Tailwind -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        navy: "#192853",
-                        cream: "#EFF8FF",
-                        yellow: "#FFE14E",
-                        grayCustom: "#475569"
-                    },
-                    fontFamily: {
-                        poppins: ["Poppins", "sans-serif"]
-                    },
-                    animation: {
-                        'blob': 'blob 7s infinite',
-                        'fade-in-up': 'fadeInUp 0.6s ease-out forwards',
-                    },
-                    keyframes: {
-                        blob: {
-                            '0%': { transform: 'translate(0px, 0px) scale(1)' },
-                            '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
-                            '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
-                            '100%': { transform: 'translate(0px, 0px) scale(1)' },
-                        },
-                        fadeInUp: {
-                            '0%': { opacity: '0', transform: 'translateY(20px)' },
-                            '100%': { opacity: '1', transform: 'translateY(0)' },
-                        }
-                    }
-                }
-            }
-        }
-    </script>
-    <!-- Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <style>
+@extends('layouts.pengunjung')
+
+@section('title', 'Pembayaran Tiket - Eventiket')
+
+@section('body_class', 'bg-cream font-poppins min-h-screen text-grayCustom relative overflow-x-hidden selection:bg-yellow selection:text-navy pb-16')
+
+@push('styles')
+<style>
         ::-webkit-scrollbar {
             width: 8px;
         }
@@ -64,30 +26,14 @@
             border: 1px solid rgba(255, 255, 255, 0.3);
         }
     </style>
-</head>
-<body class="bg-cream font-poppins min-h-screen text-grayCustom relative overflow-x-hidden selection:bg-yellow selection:text-navy pb-16">
+@endpush
 
+@section('content')
 <!-- Animasi Background-->
 <div class="fixed inset-0 w-full h-full pointer-events-none z-0 overflow-hidden">
     <div class="absolute top-[-10%] left-[-10%] w-96 h-96 bg-navy/10 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob"></div>
     <div class="absolute top-[20%] right-[-10%] w-96 h-96 bg-yellow/20 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob" style="animation-delay: 2s;"></div>
     <div class="absolute bottom-[-20%] left-[20%] w-[30rem] h-[30rem] bg-navy/5 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob" style="animation-delay: 4s;"></div>
-</div>
-
-<!-- NAVBAR -->
-<div class="sticky top-0 z-50 bg-navy text-white shadow-sm">
-    <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-5">
-        <a href="/home" class="text-xl font-semibold tracking-tight">Eventiket</a>
-
-        <div class="flex items-center gap-3">
-            <a href="/tiket_aktif" class="rounded-full border border-white px-4 py-2 text-sm font-medium text-white transition hover:bg-white hover:text-[#192853]">TIKET SAYA</a>
-
-            <!-- ICON USER -->
-            <a href="{{ route('pengunjung.profil') }}" class="w-10 h-10 rounded-full border border-white bg-transparent text-white flex items-center justify-center transition hover:bg-white hover:text-[#192853]">
-                <i class="bi bi-person-circle text-lg"></i>
-            </a>
-        </div>
-    </div>
 </div>
 
 <!-- KONTEN HALAMAN -->
@@ -254,7 +200,9 @@
 <div id="toast-notice" class="fixed top-6 right-6 z-50 w-[min(360px,calc(100%-2rem))] opacity-0 pointer-events-none transform rounded-[24px] border border-slate-200 border-r-8 border-yellow bg-white/95 px-5 py-4 text-sm text-slate-900 shadow-2xl backdrop-blur-sm transition duration-300 ease-out">
     <p id="toast-notice-text" class="font-medium"></p>
 </div>
+@endsection
 
+@push('scripts')
 <script>
     const inputFile = document.getElementById('bukti_transfer');
     const previewContainer = document.getElementById('image-preview');
@@ -373,6 +321,4 @@
         }
     });
 </script>
-
-</body>
-</html>
+@endpush

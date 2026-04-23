@@ -35,7 +35,7 @@ class HomePageController extends Controller
     {
         $event = $this->events()->firstWhere('id', (int) $id);
 
-        if (! $event) {
+        if (!$event) {
             abort(404);
         }
 

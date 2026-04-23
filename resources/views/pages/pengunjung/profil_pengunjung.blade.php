@@ -1,64 +1,11 @@
-<!DOCTYPE html>
-<html lang="id">
+@extends('layouts.pengunjung')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profil Pengunjung</title>
+@section('title', 'Profil Pengunjung')
 
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
-   
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
+@section('body_class', 'bg-cream font-poppins min-h-screen flex flex-col')
 
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        navy: "#192853",
-                        cream: "#EFF8FF",
-                        yellow: "#FFE14E",
-                        grayCustom: "#475569"
-                    },
-                    fontFamily: {
-                        poppins: ["Poppins", "sans-serif"]
-                    }
-                }
-            }
-        }
-    </script>
-
-    <!-- Google Fonts Poppins -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
-        rel="stylesheet">
-</head>
-
-<body class="bg-cream font-poppins min-h-screen flex flex-col">
-
-    <!-- NAVBAR -->
-    <div class="sticky top-0 z-50 bg-navy text-white shadow-sm">
-        <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-5">
-            <a href="/home" class="text-xl font-semibold tracking-tight">Eventiket</a>
-
-            <div class="flex items-center gap-3">
-                <a href="/tiket_aktif"
-                    class="rounded-full border border-white px-4 py-2 text-sm font-medium text-white transition hover:bg-white hover:text-[#192853]">TIKET
-                    SAYA</a>
-
-                <!-- ICON USER -->
-                <a href="{{ route('pengunjung.profil') }}"
-                    class="w-10 h-10 rounded-full border border-white bg-transparent text-white flex items-center justify-center transition hover:bg-white hover:text-[#192853]">
-                    <i class="bi bi-person-circle text-lg"></i>
-                </a>
-            </div>
-        </div>
-    </div>
-
-
-    <!-- CONTENT -->
+@section('content')
+<!-- CONTENT -->
     <div class="flex-grow flex items-center justify-center p-4 sm:p-10 py-10">
         <div class="bg-white w-full max-w-4xl rounded-[2.5rem] p-6 sm:p-14 shadow-xl border border-slate-100">
 
@@ -218,8 +165,10 @@
     <div id="toast-notice" class="fixed top-24 right-6 z-[70] w-[min(360px,calc(100%-2rem))] opacity-0 pointer-events-none transform rounded-[24px] border border-slate-200 border-r-8 border-yellow bg-white/95 px-5 py-4 text-sm text-navy shadow-2xl backdrop-blur-sm transition duration-300 ease-out">
         <p id="toast-notice-text" class="font-medium"></p>
     </div>
+@endsection
 
-    <script>
+@push('scripts')
+<script>
         let noticeTimeout = null;
         const toastNotice = document.getElementById('toast-notice');
         const toastNoticeText = document.getElementById('toast-notice-text');
@@ -280,7 +229,4 @@
             }
         });
     </script>
-
-</body>
-
-</html>
+@endpush

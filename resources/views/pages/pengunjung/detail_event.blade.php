@@ -1,46 +1,10 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <title>Detail Event</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+@extends('layouts.pengunjung')
 
-    <!-- Tailwind -->
-    <script src="https://cdn.tailwindcss.com"></script>
+@section('title', 'Detail Event')
 
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        navy: "#192853",
-                        cream: "#EFF8FF",
-                        yellow: "#FFE14E",
-                        grayCustom: "#475569"
-                    },
-                    fontFamily: {
-                        poppins: ["Poppins", "sans-serif"]
-                    }
-                }
-            }
-        }
-    </script>
+@section('body_class', 'bg-cream font-poppins')
 
-    <!-- Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-</head>
-
-<body class="bg-cream font-poppins">
-
-<!-- NAVBAR -->
-<div class="bg-navy text-white px-6 py-4 flex justify-between items-center">
-    <h1 class="font-semibold">EVENTIKET</h1>
-
-    <div class="flex items-center gap-3">
-    </div>
-</div>
-
-
+@section('content')
 <!-- CONTENT -->
 <div class="max-w-7xl mx-auto px-6 py-12">
 
@@ -225,6 +189,9 @@
 </div>
 
 <!-- SCRIPT -->
+@endsection
+
+@push('scripts')
 <script>
 let prices = @json(array_column($event['tickets'], 'price'));
 let quotas = @json(array_column($event['tickets'], 'quota'));
@@ -379,6 +346,4 @@ if (checkoutModal) {
     });
 }
 </script>
-
-</body>
-</html>
+@endpush

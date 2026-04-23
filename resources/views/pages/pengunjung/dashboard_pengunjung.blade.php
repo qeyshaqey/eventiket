@@ -1,36 +1,16 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Pengunjung - Eventiket</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    @vite('resources/css/app.css')
-    <style>
+@extends('layouts.pengunjung')
+
+@section('title', 'Dashboard Pengunjung - Eventiket')
+
+@section('body_class', 'min-h-screen bg-[#EFF8FF] text-[#192853]')
+
+@push('styles')
+<style>
         body { font-family: 'Poppins', sans-serif; }
     </style>
-</head>
+@endpush
 
-<!-- NAVBAR -->
-<body class="min-h-screen bg-[#EFF8FF] text-[#192853]">
-    <header class="sticky top-0 z-50 bg-[#192853] text-white shadow-sm">
-        <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-5">
-            <a href="{{ route('pengunjung.dashboard') }}" class="text-xl font-semibold tracking-tight">Eventiket</a>
-
-            <div class="flex items-center gap-3">
-                <a href="/tiket_aktif" class="rounded-full border border-white px-4 py-2 text-sm font-medium text-white transition hover:bg-white hover:text-[#192853]">TIKET SAYA</a>
-
-                <!-- ICON USER -->
-                <a href="{{ route('pengunjung.profil') }}" class="w-10 h-10 rounded-full border border-white bg-transparent text-white flex items-center justify-center transition hover:bg-white hover:text-[#192853]">
-                    <i class="fa-solid fa-user-circle text-lg"></i>
-                </a>
-            </div>
-        </div>
-    </header>
-
+@section('content')
 <!-- HERO SECTION -->
     <main>
         <section class="relative overflow-hidden bg-[#192853] text-white" style="background-image: radial-gradient(circle at top, rgba(255,225,78,0.14), transparent 40%), linear-gradient(180deg, rgba(25,40,83,0.95), rgba(25,40,83,0.8));">
@@ -77,7 +57,10 @@
     </main>
 
     <!-- JAVASCRIPT -->
-    <script>
+@endsection
+
+@push('scripts')
+<script>
         const searchInput = document.getElementById('search-input');
         const categorySelect = document.getElementById('category-select');
         const searchForm = document.getElementById('search-form');
@@ -142,5 +125,4 @@
 
         attachPaginationLinks();
     </script>
-</body>
-</html>
+@endpush

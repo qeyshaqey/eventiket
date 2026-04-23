@@ -111,7 +111,7 @@ Route::post('/login', function (Request $request) {
     }
 
     $user = User::where('name', $username)->first();
-    if (! $user || ! Hash::check($password, $user->password)) {
+    if (!$user || !Hash::check($password, $user->password)) {
         return back()->with('error', 'Username atau password salah.');
     }
 
@@ -131,27 +131,30 @@ Route::post('/lupa-password', [ForgotPasswordController::class, 'sendResetLink']
     ->name('password.forgot.send');
 
 // ── Dashboard Pengunjung ──
-Route::get('/home_page', [HomePageController::class, 'index']);
-Route::get('/dashboard_pengunjung', [DashboardPengunjungController::class, 'index'])->name('pengunjung.dashboard');
-Route::get('/dashboard_pengunjung/ajax', [DashboardPengunjungController::class, 'ajaxSearch'])->name('pengunjung.dashboard.ajax');
-Route::get('/detail_event/{id}', [HomePageController::class, 'showDetail'])->name('detail.event');
-Route::get('/tiket_aktif', [TiketController::class, 'index']);
-Route::get('/profil_pengunjung', function () {
-    return view('Pengunjung.profil_pengunjung');
-})->name('pengunjung.profil');
+Route::prefix('pengunjung')->name('pengunjung.')->group(function () {
+    Route::get('/home_page', [HomePageController::class, 'index'])->name('home');
+    Route::get('/dashboard_pengunjung', [DashboardPengunjungController::class, 'index'])->name('dashboard');
+    Route::get('/dashboard_pengunjung/ajax', [DashboardPengunjungController::class, 'ajaxSearch'])->name('dashboard.ajax');
+    Route::get('/detail_event/{id}', [HomePageController::class, 'showDetail'])->name('detail.event');
+    Route::get('/tiket_aktif', [TiketController::class, 'index'])->name('tiket');
+    
+    Route::get('/profil_pengunjung', function () {
+        return view('pages.pengunjung.profil_pengunjung');
+    })->name('profil');
 
-Route::get('/pembayaran', function () {
-    return view('Pengunjung.pembayaran');
-})->name('pengunjung.pembayaran');
+    Route::get('/pembayaran', function () {
+        return view('pages.pengunjung.pembayaran');
+    })->name('pembayaran');
 
-Route::get('/daftar_panitia', function () {
-    return view('Pengunjung.daftar_panitia');
-})->name('pengunjung.daftar_panitia');
+    Route::get('/daftar_panitia', function () {
+        return view('pages.pengunjung.daftar_panitia');
+    })->name('daftar_panitia');
 
-Route::post('/daftar_panitia', function (\Illuminate\Http\Request $request) {
-    // Di sini akan ditaruh logika untuk menyimpan ke database nanti.
-    return back()->with('success', 'Pengajuan panitia berhasil dikirim!');
-})->name('pengunjung.daftar_panitia.store');
+    Route::post('/daftar_panitia', function (\Illuminate\Http\Request $request) {
+        // Di sini akan ditaruh logika untuk menyimpan ke database nanti.
+        return back()->with('success', 'Pengajuan panitia berhasil dikirim!');
+    })->name('daftar_panitia.store');
+});
 
 // ── Beranda Panitia ──
 Route::get('/beranda-panitia', [BerandaPanitiaController::class, 'index'])->name('beranda.panitia');

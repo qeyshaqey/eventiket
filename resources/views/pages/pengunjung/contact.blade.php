@@ -1,12 +1,9 @@
+@extends('layouts.pengunjung')
 
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Contact | Eventiket</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <style>
+@section('title', 'Contact | Eventiket')
+
+@push('styles')
+<style>
     :root {
         --navy: #192853;
         --cream: #EFF8FF;
@@ -273,7 +270,9 @@
         .form-row { grid-template-columns: 1fr; }
     }
 </style>
-<body>
+@endpush
+
+@section('content')
 <section class="page-hero">
     <div class="page-content">
       <span class="badge">Hubungi Kami</span>
@@ -380,6 +379,5 @@
         </div>
     </div>
 </section>
-</body>
-</html>
+@endsection
 
