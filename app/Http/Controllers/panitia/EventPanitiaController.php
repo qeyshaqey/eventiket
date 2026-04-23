@@ -15,18 +15,18 @@ class EventPanitiaController extends Controller
     }
 
     public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'judul' => 'required',
-            'kategori' => 'required',
-            'deskripsi' => 'required',
-            'tanggal_mulai' => 'required|date',
-            'tanggal_selesai' => 'nullable|date',
-            'waktu_mulai' => 'required',
-            'waktu_selesai' => 'nullable',
-            'lokasi' => 'required',
-            'poster' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
-        ]);
+{
+    $request->validate([
+        'judul' => 'required',
+        'kategori' => 'required',
+        'deskripsi' => 'required',
+        'tanggal_mulai' => 'required|date',
+        'tanggal_selesai' => 'nullable|date',
+        'waktu_mulai' => 'required',
+        'waktu_selesai' => 'nullable',
+        'lokasi' => 'required',
+        'poster' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+    ]);
 
         if ($request->hasFile('poster')) {
             $validated['poster'] = $request->file('poster')->store('poster', 'public');
