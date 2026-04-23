@@ -38,7 +38,7 @@
                 class="w-full px-3 py-2 border rounded-lg text-sm">
         </div>
 
-        <div class="max-h-[420px] overflow-y-auto">
+        <div class="max-h-[400px] overflow-y-auto">
             <table class="w-full text-sm border-collapse" id="tableKelola">
                 <thead class="text-gray-500 border-b bg-gray-50 sticky top-0">
                     <tr>
@@ -86,7 +86,7 @@
                 class="w-full px-3 py-2 border rounded-lg text-sm">
         </div>
 
-        <div class="max-h-[420px] overflow-y-auto">
+        <div class="max-h-[400px] overflow-y-auto">
             <table class="w-full text-sm border-collapse" id="tableDitolak">
 
                 <!-- HEADER FIX -->
@@ -126,7 +126,7 @@
                 class="w-full px-3 py-2 border rounded-lg text-sm">
         </div>
 
-        <div class="max-h-[420px] overflow-y-auto">
+        <div class="max-h-[400px] overflow-y-auto">
             <table class="w-full text-sm border-collapse" id="tablePengajuan">
                 <thead class="text-gray-500 border-b bg-gray-50 sticky top-0">
                     <tr>
