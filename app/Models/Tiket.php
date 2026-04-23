@@ -2,20 +2,18 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Tiket extends Model
 {
-    use HasFactory;
-
     protected $fillable = [
+        'event_id',
         'nama',
         'harga',
-        'kuota',
-        'event_id',
+        'kuota'
     ];
 
+    // relasi ke event
     public function event()
     {
         return $this->belongsTo(Event::class);

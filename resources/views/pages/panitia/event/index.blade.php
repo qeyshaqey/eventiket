@@ -126,33 +126,64 @@
             <input type="hidden" id="methodOverride" name="_method" value="POST">
 
             <!-- Judul -->
-            <input name="judul" type="text" placeholder="Judul Event"
-                class="w-full border p-2 mb-2 rounded" required>
+            <div>
+    <label class="text-sm text-black-600 font-bold mb-1 block">Judul Event</label>
+    <input type="text" name="judul" class="w-full border rounded-lg p-2">
+</div>
 
             <!-- Kategori -->
-            <select name="kategori" class="w-full border p-2 mb-2 rounded" required>
-                <option value="">Pilih Kategori</option>
-                <option value="Musik">Musik</option>
-                <option value="Seminar">Seminar</option>
-                <option value="Workshop">Workshop</option>
-                <option value="Olahraga">Olahraga</option>
-            </select>
+            <div>
+    <label class="text-sm text-black-600 font-bold mb-1 block">Kategori</label>
+    <select name="kategori" class="w-full border rounded-lg p-2">
+        <option>Pilih Kategori</option>
+        <option>Seminar</option>
+        <option>Workshop</option>
+    </select>
+</div>
 
             <!-- Deskripsi -->
-            <textarea name="deskripsi" placeholder="Deskripsi"
-                class="w-full border p-2 mb-2 rounded"></textarea>
+            <div>
+    <label class="text-sm text-black-600 font-bold mb-1 block">Deskripsi</label>
+    <textarea name="deskripsi" placeholder="Deskripsi"
+        class="w-full border p-2 mb-2 rounded"></textarea>
+</div>
 
             <!-- Tanggal -->
-            <input name="tanggal_mulai" type="date" class="w-full border p-2 mb-2 rounded" required>
-            <input name="tanggal_selesai" type="date" class="w-full border p-2 mb-2 rounded">
+            <div class="grid grid-cols-2 gap-4">
+    
+    <div>
+        <label class="text-sm text-black-600 font-bold mb-1 block">Tanggal Mulai</label>
+        <input type="date" name="tanggal_mulai" class="w-full border rounded-lg p-2">
+    </div>
+
+    <div>
+        <label class="text-sm text-black-600 font-bold mb-1 block">Tanggal Selesai</label>
+        <input type="date" name="tanggal_selesai" class="w-full border rounded-lg p-2">
+    </div>
+
+</div>
 
             <!-- Waktu -->
-            <input name="waktu_mulai" type="time" class="w-full border p-2 mb-2 rounded" required>
-            <input name="waktu_selesai" type="time" class="w-full border p-2 mb-2 rounded">
+            <div class="grid grid-cols-2 gap-4">
+    
+    <div>
+        <label class="text-sm text-black-600 font-bold mb-1 block">Waktu Mulai</label>
+        <input type="time" name="waktu_mulai" class="w-full border rounded-lg p-2">
+    </div>
+
+    <div>
+        <label class="text-sm text-black-600 font-bold mb-1 block">Waktu Selesai</label>
+        <input type="time" name="waktu_selesai" class="w-full border rounded-lg p-2">
+    </div>
+
+</div>
 
             <!-- Lokasi -->
+             <div>
+             <label class="text-sm text-black-600 font-bold mb-1 block">Lokasi</label>
             <input name="lokasi" type="text" placeholder="Lokasi"
                 class="w-full border p-2 mb-2 rounded">
+            </div>
 
             <!-- Poster -->
             <input type="file" name="poster"
