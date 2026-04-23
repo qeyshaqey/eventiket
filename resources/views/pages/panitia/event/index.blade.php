@@ -126,65 +126,109 @@
             <input type="hidden" id="methodOverride" name="_method" value="POST">
 
             <!-- Judul -->
-            <div>
-    <label class="text-sm text-black-600 font-bold mb-1 block">Judul Event</label>
-    <input type="text" name="judul" class="w-full border rounded-lg p-2">
+
+<div>
+    <label class="text-sm text-black-600 mb-1 block">Judul Event</label>
+    <input type="text" name="judul"
+        placeholder="Judul Event"
+        value="{{ old('judul') }}"
+        class="w-full border rounded-lg p-2 placeholder-gray-400 text-sm @error('judul') border-red-500 @enderror">
+
+    @error('judul')
+        <small class="text-red-500 text-xs">{{ $message }}</small>
+    @enderror
 </div>
 
-            <!-- Kategori -->
-            <div>
-    <label class="text-sm text-black-600 font-bold mb-1 block">Kategori</label>
-    <select name="kategori" class="w-full border rounded-lg p-2">
-        <option>Pilih Kategori</option>
-        <option>Seminar</option>
-        <option>Workshop</option>
+<!-- Kategori -->
+<div>
+    <label class="text-sm text-black-600 mb-1 block">Kategori</label>
+    <select name="kategori"
+        class="w-full border rounded-lg p-2 text-sm @error('kategori') border-red-500 @enderror">
+        
+        <option value="">Pilih Kategori</option>
+        <option value="Seminar" {{ old('kategori') == 'Seminar' ? 'selected' : '' }}>Seminar</option>
+        <option value="Workshop" {{ old('kategori') == 'Workshop' ? 'selected' : '' }}>Workshop</option>
     </select>
+
+    @error('kategori')
+        <small class="text-red-500 text-xs">{{ $message }}</small>
+    @enderror
 </div>
 
-            <!-- Deskripsi -->
-            <div>
-    <label class="text-sm text-black-600 font-bold mb-1 block">Deskripsi</label>
-    <textarea name="deskripsi" placeholder="Deskripsi"
-        class="w-full border p-2 mb-2 rounded"></textarea>
+<!-- Deskripsi -->
+<div>
+    <label class="text-sm text-black-600 mb-1 block">Deskripsi</label>
+    <textarea name="deskripsi"
+        placeholder="Deskripsi"
+        class="w-full border rounded-lg p-2 placeholder-gray-400 text-sm @error('deskripsi') border-red-500 @enderror">{{ old('deskripsi') }}</textarea>
+
+    @error('deskripsi')
+        <small class="text-red-500 text-xs">{{ $message }}</small>
+    @enderror
 </div>
 
-            <!-- Tanggal -->
-            <div class="grid grid-cols-2 gap-4">
-    
+<!-- Tanggal -->
+<div class="grid grid-cols-2 gap-4">
     <div>
-        <label class="text-sm text-black-600 font-bold mb-1 block">Tanggal Mulai</label>
-        <input type="date" name="tanggal_mulai" class="w-full border rounded-lg p-2">
+        <label class="text-sm text-black-600 mb-1 block">Tanggal Mulai</label>
+        <input type="date" name="tanggal_mulai"
+            value="{{ old('tanggal_mulai') }}"
+            class="w-full border rounded-lg p-2 text-sm @error('tanggal_mulai') border-red-500 @enderror">
+
+        @error('tanggal_mulai')
+            <small class="text-red-500 text-xs">{{ $message }}</small>
+        @enderror
     </div>
 
     <div>
-        <label class="text-sm text-black-600 font-bold mb-1 block">Tanggal Selesai</label>
-        <input type="date" name="tanggal_selesai" class="w-full border rounded-lg p-2">
-    </div>
+        <label class="text-sm text-black-600 mb-1 block">Tanggal Selesai</label>
+        <input type="date" name="tanggal_selesai"
+            value="{{ old('tanggal_selesai') }}"
+            class="w-full border rounded-lg p-2 text-sm @error('tanggal_selesai') border-red-500 @enderror">
 
+        @error('tanggal_selesai')
+            <small class="text-red-500 text-xs">{{ $message }}</small>
+        @enderror
+    </div>
 </div>
 
-            <!-- Waktu -->
-            <div class="grid grid-cols-2 gap-4">
-    
+<!-- Waktu -->
+<div class="grid grid-cols-2 gap-4">
     <div>
-        <label class="text-sm text-black-600 font-bold mb-1 block">Waktu Mulai</label>
-        <input type="time" name="waktu_mulai" class="w-full border rounded-lg p-2">
+        <label class="text-sm text-black-600 mb-1 block">Waktu Mulai</label>
+        <input type="time" name="waktu_mulai"
+            value="{{ old('waktu_mulai') }}"
+            class="w-full border rounded-lg p-2 text-sm @error('waktu_mulai') border-red-500 @enderror">
+
+        @error('waktu_mulai')
+            <small class="text-red-500 text-xs">{{ $message }}</small>
+        @enderror
     </div>
 
     <div>
-        <label class="text-sm text-black-600 font-bold mb-1 block">Waktu Selesai</label>
-        <input type="time" name="waktu_selesai" class="w-full border rounded-lg p-2">
-    </div>
+        <label class="text-sm text-black-600 mb-1 block">Waktu Selesai</label>
+        <input type="time" name="waktu_selesai"
+            value="{{ old('waktu_selesai') }}"
+            class="w-full border rounded-lg p-2 text-sm @error('waktu_selesai') border-red-500 @enderror">
 
+        @error('waktu_selesai')
+            <small class="text-red-500 text-xs">{{ $message }}</small>
+        @enderror
+    </div>
 </div>
 
-            <!-- Lokasi -->
-             <div>
-             <label class="text-sm text-black-600 font-bold mb-1 block">Lokasi</label>
-            <input name="lokasi" type="text" placeholder="Lokasi"
-                class="w-full border p-2 mb-2 rounded">
-            </div>
+<!-- Lokasi -->
+<div>
+    <label class="text-sm text-black-600 mb-1 block">Lokasi</label>
+    <input type="text" name="lokasi"
+        placeholder="Lokasi"
+        value="{{ old('lokasi') }}"
+        class="w-full border rounded-lg p-2 placeholder-gray-400 text-sm @error('lokasi') border-red-500 @enderror">
 
+    @error('lokasi')
+        <small class="text-red-500 text-xs">{{ $message }}</small>
+    @enderror
+</div>
             <!-- Poster -->
             <input type="file" name="poster"
                 class="w-full border p-2 mb-3 rounded">
@@ -251,10 +295,30 @@ document.addEventListener('DOMContentLoaded', function () {
         form.reset();
 
         if (mode === 'tambah') {
-            if (title) title.innerText = 'Tambah Event';
-            form.action = '{{ route("panitia.event.store") }}';
-            if (methodInput) methodInput.value = 'POST';
-        }
+    if (title) title.innerText = 'Tambah Event';
+    form.action = '{{ route("panitia.event.store") }}';
+    if (methodInput) methodInput.value = 'POST';
+
+    form.reset();
+
+    form.judul.value = '';
+    form.kategori.value = '';
+    form.deskripsi.value = '';
+    form.tanggal_mulai.value = '';
+    form.tanggal_selesai.value = '';
+    form.waktu_mulai.value = '';
+    form.waktu_selesai.value = '';
+    form.lokasi.value = '';
+
+    // hapus error visual
+    form.querySelectorAll('.border-red-500').forEach(el => {
+        el.classList.remove('border-red-500');
+    });
+
+    form.querySelectorAll('small.text-red-500').forEach(el => {
+        el.remove();
+    });
+}
 
         if (mode === 'edit') {
             if (title) title.innerText = 'Edit Event';
@@ -382,5 +446,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
 });
 </script>
-
+{{-- ✅ FIX: AUTO BUKA MODAL KALAU ADA ERROR --}}
+@if ($errors->any())
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const modal = document.getElementById('eventModal');
+        if (modal) {
+            modal.classList.remove('hidden');
+        }
+    });
+</script>
+@endif
 @endsection
