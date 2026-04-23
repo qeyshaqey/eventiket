@@ -228,5 +228,11 @@
                 closeEditModal();
             }
         });
+
+        @if(session('success'))
+            window.addEventListener('DOMContentLoaded', (event) => {
+                showToast("{{ session('success') }}");
+            });
+        @endif
     </script>
 @endpush

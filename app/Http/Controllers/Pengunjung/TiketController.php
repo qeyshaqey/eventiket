@@ -120,6 +120,6 @@ class TiketController extends Controller
             }
         }
 
-        return view('Pengunjung.tiket', compact('activeEvents', 'historyEvents'));
+        return view('pages.pengunjung.tiket', compact('activeEvents', 'historyEvents'));
     }
 }

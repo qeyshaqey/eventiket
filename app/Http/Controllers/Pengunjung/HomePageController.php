@@ -28,7 +28,7 @@ class HomePageController extends Controller
                 'query' => $request->query(),
             ]
         );
-        return view('Pengunjung.home_page', compact('paginatedEvents'));
+        return view('pages.pengunjung.home_page', compact('paginatedEvents'));
     }
 
     public function showDetail($id)
@@ -39,6 +39,6 @@ class HomePageController extends Controller
             abort(404);
         }
 
-        return view('Pengunjung.detail_event', compact('event'));
+        return view('pages.pengunjung.detail_event', compact('event'));
     }
 }

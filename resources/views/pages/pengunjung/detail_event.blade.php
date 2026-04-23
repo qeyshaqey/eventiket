@@ -117,9 +117,10 @@
                 Beli Tiket
             </button>
         @else
-            <a href="{{ route('login') }}" class="inline-flex w-full items-center justify-center bg-navy text-white py-4 rounded-full text-lg font-semibold hover:bg-yellow hover:text-navy transition">
+            <button onclick="redirectToLogin()"
+                class="inline-flex w-full items-center justify-center bg-navy text-white py-4 rounded-full text-lg font-semibold hover:bg-yellow hover:text-navy transition">
                 Beli Tiket
-            </a>
+            </button>
         @endif
     </div>
 
@@ -333,7 +334,7 @@ function confirmCheckout() {
     closeCheckout();
     showToast('Pesanan tiket berhasil dibuat.');
     setTimeout(() => {
-        window.location.href = '/tiket_aktif';
+        window.location.href = "{{ route('pengunjung.tiket') }}";
     }, 200);
 }
 
@@ -344,6 +345,13 @@ if (checkoutModal) {
             closeCheckout();
         }
     });
+}
+
+function redirectToLogin() {
+    showToast('Login terlebih dahulu!', 'error');
+    setTimeout(() => {
+        window.location.href = "{{ route('login') }}";
+    }, 1500);
 }
 </script>
 @endpush
