@@ -25,25 +25,32 @@
         <section id="event" class="bg-[#EFF8FF] py-12">
             <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <div class="mb-8 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-                    <form id="search-form" action="{{ route('pengunjung.dashboard') }}#event" method="GET" class="flex w-full gap-3 md:w-auto md:flex-1">
-                        <div class="relative w-full md:flex md:items-center md:gap-3">
-                            <div class="relative w-full md:w-auto md:flex-1">
-                                <input id="search-input" name="search" value="{{ $search ?? '' }}" type="text" placeholder="Cari event..." class="w-full rounded-full border border-[#cbd5e1] bg-white px-4 py-3 pr-12 text-sm text-[#192853] shadow-sm focus:border-[#192853] focus:outline-none" autocomplete="off" />
-                                <button type="submit" class="absolute right-2 top-1/2 -translate-y-1/2 rounded-full bg-[#192853] px-3 py-2 text-white transition hover:bg-[#111827]">
-                                    <i class="fa-solid fa-search"></i>
+                    <form id="search-form" action="{{ route('pengunjung.dashboard') }}#event" method="GET" class="w-full">
+                        <div class="flex flex-col sm:flex-row gap-3">
+                            <!-- SEARCH INPUT -->
+                            <div class="relative flex-1">
+                                <input id="search-input" name="search" value="{{ $search ?? '' }}" type="text" placeholder="Cari event..." class="w-full h-12 rounded-full border border-slate-300 bg-white pl-6 pr-14 text-sm text-[#192853] shadow-sm focus:border-[#192853] focus:outline-none transition" autocomplete="off" />
+                                <button type="submit" class="absolute right-1.5 top-1.5 bottom-1.5 aspect-square rounded-full bg-[#192853] flex items-center justify-center text-white transition hover:bg-[#FFE14E] hover:text-[#192853]">
+                                    <i class="fa-solid fa-search text-sm"></i>
                                 </button>
                             </div>
 
                             <!-- FILTER KATEGORI -->
-                            <select id="category-select" name="category" class="rounded-full border border-[#cbd5e1] bg-white px-4 py-3 text-sm text-[#192853] shadow-sm focus:border-[#192853] focus:outline-none">
-                                <option value="semua" {{ ($category ?? 'semua') === 'semua' ? 'selected' : '' }}>Semua Kategori</option>
-                                <option value="Seminar" {{ ($category ?? '') === 'Seminar' ? 'selected' : '' }}>Seminar</option>
-                                <option value="Sosial" {{ ($category ?? '') === 'Sosial' ? 'selected' : '' }}>Sosial</option>
-                                <option value="Olahraga" {{ ($category ?? '') === 'Olahraga' ? 'selected' : '' }}>Olahraga</option>
-                                <option value="Hiburan" {{ ($category ?? '') === 'Hiburan' ? 'selected' : '' }}>Hiburan</option>
-                                <option value="Kompetisi" {{ ($category ?? '') === 'Kompetisi' ? 'selected' : '' }}>Kompetisi</option>
-                                <option value="Religi" {{ ($category ?? '') === 'Religi' ? 'selected' : '' }}>Religi</option>
-                            </select>
+                            <div class="relative w-full sm:w-56 shrink-0">
+                                <select id="category-select" name="category" onchange="this.form.submit()" class="w-full h-12 appearance-none rounded-full border border-slate-300 bg-white pl-6 pr-10 text-sm font-medium text-[#192853] shadow-sm focus:border-[#192853] focus:outline-none transition cursor-pointer">
+                                    <option value="semua" {{ ($category ?? 'semua') === 'semua' ? 'selected' : '' }}>Semua Kategori</option>
+                                    <option value="Seminar" {{ ($category ?? '') === 'Seminar' ? 'selected' : '' }}>Seminar</option>
+                                    <option value="Sosial" {{ ($category ?? '') === 'Sosial' ? 'selected' : '' }}>Sosial</option>
+                                    <option value="Olahraga" {{ ($category ?? '') === 'Olahraga' ? 'selected' : '' }}>Olahraga</option>
+                                    <option value="Hiburan" {{ ($category ?? '') === 'Hiburan' ? 'selected' : '' }}>Hiburan</option>
+                                    <option value="Kompetisi" {{ ($category ?? '') === 'Kompetisi' ? 'selected' : '' }}>Kompetisi</option>
+                                    <option value="Religi" {{ ($category ?? '') === 'Religi' ? 'selected' : '' }}>Religi</option>
+                                </select>
+                                <!-- Custom Dropdown Icon -->
+                                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-slate-500">
+                                    <i class="fa-solid fa-chevron-down text-xs"></i>
+                                </div>
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -61,6 +68,7 @@
 
 @push('scripts')
 <script>
+    document.addEventListener('DOMContentLoaded', function() {
         const searchInput = document.getElementById('search-input');
         const categorySelect = document.getElementById('category-select');
         const searchForm = document.getElementById('search-form');
@@ -73,23 +81,33 @@
         }
 
         async function fetchResults(page = 1) {
-            const query = buildQuery({
-                search: searchInput.value.trim(),
-                category: categorySelect.value,
-                page,
-            });
+            try {
+                const query = buildQuery({
+                    search: searchInput.value.trim(),
+                    category: categorySelect.value,
+                    page,
+                });
 
-            const response = await fetch(`${ajaxUrl}?${query}`);
-            if (!response.ok) {
-                return;
+                const response = await fetch(`${ajaxUrl}?${query}`, {
+                    headers: { 'X-Requested-With': 'XMLHttpRequest' }
+                });
+                
+                if (!response.ok) return;
+
+                const result = await response.json();
+                if (dashboardResults && result.html !== undefined) {
+                    dashboardResults.innerHTML = result.html;
+                    attachPaginationLinks();
+                }
+            } catch (error) {
+                console.error("AJAX Error:", error);
+                // Fallback to normal form submit if AJAX fails
+                searchForm.submit();
             }
-
-            const result = await response.json();
-            dashboardResults.innerHTML = result.html;
-            attachPaginationLinks();
         }
 
         function attachPaginationLinks() {
+            if (!dashboardResults) return;
             const links = dashboardResults.querySelectorAll('a.paginate-link');
             links.forEach(link => {
                 link.addEventListener('click', function (event) {
@@ -109,20 +127,24 @@
         }
 
         if (searchInput) {
+            // Live Search (tanpa enter)
             searchInput.addEventListener('input', function () {
                 clearTimeout(timeoutId);
                 timeoutId = setTimeout(function () {
                     fetchResults(1);
-                }, 200);
+                }, 400); // 400ms debounce
             });
         }
 
         if (categorySelect) {
+            // Live Filter (tanpa reload penuh jika AJAX berhasil)
+            categorySelect.removeAttribute('onchange'); // Hapus fallback native submit jika JS jalan
             categorySelect.addEventListener('change', function () {
                 fetchResults(1);
             });
         }
 
         attachPaginationLinks();
-    </script>
+    });
+</script>
 

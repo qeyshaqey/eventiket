@@ -54,8 +54,10 @@ Route::prefix('panitia')->name('panitia.')->group(function () {
 //===============================================================//
 // Halaman awal
 Route::get('/', function () {
-    return redirect('/login');
+    return redirect('/home_page');
 });
+
+Route::get('/home_page', [HomePageController::class, 'index'])->name('home');
 
 // Contact
 Route::get('/contact', [ContactController::class, 'index'])->name('contact.index');
@@ -132,7 +134,6 @@ Route::post('/lupa-password', [ForgotPasswordController::class, 'sendResetLink']
 
 // ── Dashboard Pengunjung ──
 Route::prefix('pengunjung')->name('pengunjung.')->group(function () {
-    Route::get('/home_page', [HomePageController::class, 'index'])->name('home');
     Route::get('/dashboard_pengunjung', [DashboardPengunjungController::class, 'index'])->name('dashboard');
     Route::get('/dashboard_pengunjung/ajax', [DashboardPengunjungController::class, 'ajaxSearch'])->name('dashboard.ajax');
     Route::get('/detail_event/{id}', [HomePageController::class, 'showDetail'])->name('detail.event');

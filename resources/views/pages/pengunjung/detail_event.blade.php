@@ -4,6 +4,26 @@
 
 @section('body_class', 'bg-cream font-poppins')
 
+@push('styles')
+<style>
+    @keyframes posterPulse {
+        0%   { box-shadow: 0 0 0 0px rgba(255,225,78,0.7); }
+        50%  { box-shadow: 0 0 0 8px rgba(255,225,78,0.25); }
+        100% { box-shadow: 0 0 0 14px rgba(255,225,78,0); }
+    }
+    #poster-card {
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        cursor: pointer;
+        outline: none;
+    }
+    #poster-card:focus {
+        border-color: #FFE14E !important;
+        animation: posterPulse 0.6s ease-out forwards;
+        box-shadow: 0 0 0 3px rgba(255,225,78,0.5), 0 4px 24px rgba(25,40,83,0.10);
+    }
+</style>
+@endpush
+
 @section('content')
 <!-- CONTENT -->
 <div class="max-w-7xl mx-auto px-6 py-12">
@@ -14,10 +34,14 @@
         <div class="space-y-6">
 
             <!-- IMAGE -->
-            <div class="bg-white rounded-2xl h-[450px] overflow-hidden shadow-sm flex items-center justify-center">
-                <img src="{{ asset('image/' . ($event['image'] ?? 'default.jpg')) }}"
-                     alt="{{ $event['title'] }}"
-                     class="w-full h-full object-contain">
+            <div id="poster-card" tabindex="0"
+                 class="relative w-full h-[450px] sm:h-[500px] bg-white rounded-[2rem] border-2 border-slate-200/60 shadow-sm overflow-hidden group flex items-center justify-center p-3 select-none">
+
+                <div class="w-full h-full bg-slate-50/80 rounded-3xl overflow-hidden relative flex items-center justify-center">
+                    <img src="{{ asset('image/' . ($event['image'] ?? 'default.jpg')) }}"
+                         alt="{{ $event['title'] }}"
+                         class="w-full h-full object-contain transition duration-500 group-hover:scale-[1.03]">
+                </div>
             </div>
 
             <!-- DESKRIPSI -->
@@ -128,6 +152,7 @@
 
 <div id="toast-notice" class="fixed top-6 right-6 z-50 w-[min(360px,calc(100%-2rem))] opacity-0 pointer-events-none transform rounded-[24px] border border-slate-200 border-r-8 border-yellow bg-white/95 px-5 py-4 text-sm text-slate-900 shadow-2xl backdrop-blur-sm transition duration-300 ease-out">
     <p id="toast-notice-text" class="font-medium"></p>
+    <span class="hidden !border-red-500 !border-yellow"></span>
 </div>
 
 <div id="checkout-modal" class="fixed inset-0 hidden items-center justify-center bg-black/40 p-4 z-50">
@@ -194,6 +219,7 @@
 
 @push('scripts')
 <script>
+
 let prices = @json(array_column($event['tickets'], 'price'));
 let quotas = @json(array_column($event['tickets'], 'quota'));
 let ticketTypes = @json(array_column($event['tickets'], 'type'));
@@ -211,9 +237,17 @@ function showToast(message, type = 'success') {
     toastNoticeText.innerText = message;
     
     if (type === 'error') {
-        toastNotice.classList.replace('border-yellow', 'border-red-500');
+        toastNotice.classList.replace('!border-yellow', '!border-red-500');
+        if (!toastNotice.classList.contains('!border-red-500')) {
+            toastNotice.classList.remove('border-yellow');
+            toastNotice.classList.add('!border-red-500');
+        }
     } else {
-        toastNotice.classList.replace('border-red-500', 'border-yellow');
+        toastNotice.classList.replace('!border-red-500', '!border-yellow');
+        if (!toastNotice.classList.contains('!border-yellow')) {
+            toastNotice.classList.remove('!border-red-500');
+            toastNotice.classList.add('!border-yellow');
+        }
     }
 
     toastNotice.classList.remove('opacity-0', 'pointer-events-none');
@@ -281,7 +315,7 @@ function decrease(i) {
 function openCheckout() {
     const totalQty = quantities.reduce((a, b) => a + b, 0);
     if (totalQty <= 0) {
-        showToast('Pilih minimal 1 tiket terlebih dahulu.', 'error');
+        showToast('Pilih minimal 1 tiket terlebih dahulu', 'error');
         return;
     }
 

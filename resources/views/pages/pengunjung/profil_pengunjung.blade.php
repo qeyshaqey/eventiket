@@ -52,10 +52,13 @@
                         class="w-full sm:w-auto inline-flex justify-center rounded-full bg-navy px-6 py-3 text-sm font-semibold text-white transition hover:bg-yellow hover:text-navy shadow-md">
                         Edit Profil
                     </button>
-                    <button
-                        class="w-full sm:w-auto inline-flex justify-center rounded-full border border-slate-300 bg-white px-6 py-3 text-sm font-semibold text-grayCustom transition hover:border-yellow hover:bg-yellow/10 shadow-sm">
-                        Keluar
-                    </button>
+                    <form action="{{ route('logout') }}" method="POST" class="w-full sm:w-auto" id="logout-form">
+                        @csrf
+                        <button type="button" onclick="openLogoutModal()"
+                            class="w-full inline-flex justify-center rounded-full border border-slate-300 bg-white px-6 py-3 text-sm font-semibold text-grayCustom transition hover:border-yellow hover:bg-yellow/10 shadow-sm">
+                            Keluar
+                        </button>
+                    </form>
                 </div>
             </div>
 
@@ -161,6 +164,32 @@
         </div>
     </div>
 
+    <!-- Modal Konfirmasi Logout -->
+    <div id="logout-modal"
+        class="fixed inset-0 bg-black/60 z-[70] flex items-center justify-center hidden opacity-0 transition-opacity duration-300 p-4">
+        <div
+            class="bg-white w-full max-w-sm rounded-[24px] p-6 sm:p-8 shadow-2xl relative transform scale-95 transition-transform duration-300 text-center">
+            
+            <div class="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-red-50 mb-5 border border-red-100">
+                <i class="fa-solid fa-arrow-right-from-bracket text-2xl text-red-500"></i>
+            </div>
+            
+            <h3 class="text-xl font-bold text-navy mb-2 tracking-tight">Konfirmasi Keluar</h3>
+            <p class="text-sm text-grayCustom mb-8 font-medium">Apakah Anda yakin ingin keluar dari akun Anda? Anda harus login kembali untuk memesan tiket.</p>
+            
+            <div class="flex flex-col sm:flex-row gap-3 justify-center">
+                <button type="button" onclick="closeLogoutModal()"
+                    class="w-full sm:w-1/2 inline-flex justify-center rounded-full border border-slate-300 bg-white px-6 py-3 text-sm font-semibold text-grayCustom transition hover:border-yellow hover:bg-yellow/10 shadow-sm">
+                    Batal
+                </button>
+                <button type="button" onclick="submitLogout()"
+                    class="w-full sm:w-1/2 inline-flex justify-center rounded-full bg-red-500 px-5 py-3 text-sm font-semibold text-white transition hover:bg-red-600 shadow-md">
+                    Ya, Keluar
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- TOAST NOTIFICATION -->
     <div id="toast-notice" class="fixed top-24 right-6 z-[70] w-[min(360px,calc(100%-2rem))] opacity-0 pointer-events-none transform rounded-[24px] border border-slate-200 border-r-8 border-yellow bg-white/95 px-5 py-4 text-sm text-navy shadow-2xl backdrop-blur-sm transition duration-300 ease-out">
         <p id="toast-notice-text" class="font-medium"></p>
@@ -222,10 +251,40 @@
             }, 300);
         }
 
-        // Menutup modal jika klik di luar area container putih
+        // Menutup modal edit jika klik di luar area container putih
         editModal.addEventListener('click', function (e) {
             if (e.target === editModal) {
                 closeEditModal();
+            }
+        });
+
+        const logoutModal = document.getElementById('logout-modal');
+        const logoutModalContent = logoutModal.querySelector('div');
+
+        function openLogoutModal() {
+            logoutModal.classList.remove('hidden');
+            setTimeout(() => {
+                logoutModal.classList.remove('opacity-0');
+                logoutModalContent.classList.remove('scale-95');
+            }, 10);
+        }
+
+        function closeLogoutModal() {
+            logoutModal.classList.add('opacity-0');
+            logoutModalContent.classList.add('scale-95');
+            setTimeout(() => {
+                logoutModal.classList.add('hidden');
+            }, 300);
+        }
+
+        function submitLogout() {
+            document.getElementById('logout-form').submit();
+        }
+
+        // Menutup modal logout jika klik di luar area container putih
+        logoutModal.addEventListener('click', function (e) {
+            if (e.target === logoutModal) {
+                closeLogoutModal();
             }
         });
 

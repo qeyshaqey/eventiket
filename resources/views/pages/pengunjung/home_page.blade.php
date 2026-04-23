@@ -1,17 +1,33 @@
-@extends('layouts.pengunjung')
-
-@section('title', 'Home - Eventiket')
-
-@section('body_class', 'min-h-screen bg-[#EFF8FF] text-[#192853]')
-
-@push('styles')
-<style>
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - Eventiket</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    @vite('resources/css/app.css')
+    <style>
         body { font-family: 'Poppins', sans-serif; }
     </style>
-@endpush
+</head>
+<body class="min-h-screen bg-[#EFF8FF] text-[#192853]">
+    <header class="sticky top-0 z-50 bg-[#192853] text-white shadow-sm">
+        <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-5 sm:px-6 lg:px-8">
+            <a href="/home_page" class="text-xl font-semibold tracking-tight">Eventiket</a>
+            <nav class="hidden items-center gap-4 md:flex">
+                <a href="#home" class="rounded-full border border-white px-4 py-2 text-sm font-medium transition hover:bg-white hover:text-[#192853]">Home</a>
+                <a href="#event" class="rounded-full border border-white px-4 py-2 text-sm font-medium transition hover:bg-white hover:text-[#192853]">Event</a>
+                <a href="#about" class="rounded-full border border-white px-4 py-2 text-sm font-medium transition hover:bg-white hover:text-[#192853]">Tentang</a>
+                <a href="#contact" class="rounded-full border border-white px-4 py-2 text-sm font-medium transition hover:bg-white hover:text-[#192853]">Hubungi Kami</a>
+                <a href="/login" class="rounded-full border border-white px-4 py-2 text-sm font-semibold transition hover:bg-white hover:text-[#192853]">Masuk</a>
+            </nav>
+       </div>
+    </header>
 
-@section('content')
-<main>
+    <main>
         <section id="home" class="relative overflow-hidden bg-[#192853] text-white" style="background-image: radial-gradient(circle at top, rgba(255,225,78,0.14), transparent 40%), linear-gradient(180deg, rgba(25,40,83,0.95), rgba(25,40,83,0.8));">
             <div class="mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
                 <div class="max-w-3xl">
@@ -291,10 +307,62 @@
 
     </main>
 
-    <footer class="bg-[#192853] text-[#EFF8FF]">
-        <div class="mx-auto max-w-7xl px-4 py-6 text-center sm:px-6 lg:px-8">
-            <p>© 2026 Eventiket</p>
+    <footer class="bg-[#192853] py-8 border-t border-white/10 mt-auto">
+        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-start gap-8 mb-6">
+                
+                <!-- BRANDING -->
+                <div class="md:w-1/3">
+                    <a href="/home_page" class="text-xl font-bold tracking-tight text-white mb-2 inline-block">
+                        Eventiket<span class="text-[#FFE14E]">.</span>
+                    </a>
+                    <p class="text-sm leading-6 text-[#EFF8FF]/80 mt-1 max-w-xs">
+                        Platform terpercaya menemukan event menarik di kampus. Bergabunglah dengan ribuan mahasiswa lainnya!
+                    </p>
+                </div>
+
+                <!-- MENU -->
+                <div class="flex gap-12 md:w-2/3 md:justify-end">
+                    <!-- NAVIGASI -->
+                    <div>
+                        <h3 class="text-base font-semibold text-white mb-3">Navigasi</h3>
+                        <ul class="space-y-2">
+                            <li><a href="#home" class="text-sm text-[#EFF8FF]/80 hover:text-[#FFE14E] transition">Beranda</a></li>
+                            <li><a href="#event" class="text-sm text-[#EFF8FF]/80 hover:text-[#FFE14E] transition">Etalase</a></li>
+                            <li><a href="#about" class="text-sm text-[#EFF8FF]/80 hover:text-[#FFE14E] transition">Tentang Kami</a></li>
+                        </ul>
+                    </div>
+
+                    <!-- BANTUAN -->
+                    <div>
+                        <h3 class="text-base font-semibold text-white mb-3">Pusat Bantuan</h3>
+                        <ul class="space-y-2 text-sm text-[#EFF8FF]/80">
+                            <li><i class="fa-solid fa-envelope w-4 text-[#FFE14E]"></i> eventiket@gmail.com</li>
+                            <li><i class="fa-solid fa-phone w-4 text-[#FFE14E]"></i> +62 21 123 4567</li>
+                            <li><i class="fa-solid fa-location-dot w-4 text-[#FFE14E]"></i> Batam Center</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- COPYRIGHT -->
+            <div class="pt-4 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-4">
+                <p class="text-xs text-[#EFF8FF]/50 text-center md:text-left">
+                    &copy; 2026 Eventiket. Hak Cipta Dilindungi.
+                </p>
+                <div class="flex gap-4 text-sm">
+                    <a href="#" aria-label="WhatsApp" class="text-[#EFF8FF]/70 hover:text-[#FFE14E] transition hover:-translate-y-0.5">
+                        <i class="fa-brands fa-whatsapp"></i>
+                    </a>
+                    <a href="#" aria-label="Instagram" class="text-[#EFF8FF]/70 hover:text-[#FFE14E] transition hover:-translate-y-0.5">
+                        <i class="fa-brands fa-instagram"></i>
+                    </a>
+                    <a href="#" aria-label="YouTube" class="text-[#EFF8FF]/70 hover:text-[#FFE14E] transition hover:-translate-y-0.5">
+                        <i class="fa-brands fa-youtube"></i>
+                    </a>
+                </div>
+            </div>
         </div>
     </footer>
-@endsection
-
+</body>
+</html>

@@ -160,6 +160,7 @@
     <!-- TOAST NOTIFICATION -->
     <div id="toast-notice" class="fixed top-24 right-6 z-[60] w-[min(360px,calc(100%-2rem))] opacity-0 pointer-events-none transform rounded-[24px] border border-slate-200 border-r-8 border-yellow bg-white/95 px-5 py-4 text-sm text-navy shadow-2xl backdrop-blur-sm transition duration-300 ease-out">
         <p id="toast-notice-text" class="font-medium"></p>
+        <span class="hidden !border-red-500 !border-yellow"></span>
     </div>
 
     <!-- SCRIPTS -->
@@ -177,11 +178,17 @@
             
             // Ubah gaya warna batas berdasarkan tipe (error = merah, success = kuning)
             if (type === 'error') {
-                toastNotice.classList.replace('border-yellow', 'border-red-500');
-                toastNoticeText.classList.replace('text-navy', 'text-red-600');
+                toastNotice.classList.replace('!border-yellow', '!border-red-500');
+                if (!toastNotice.classList.contains('!border-red-500')) {
+                    toastNotice.classList.remove('border-yellow');
+                    toastNotice.classList.add('!border-red-500');
+                }
             } else {
-                toastNotice.classList.replace('border-red-500', 'border-yellow');
-                toastNoticeText.classList.replace('text-red-600', 'text-navy');
+                toastNotice.classList.replace('!border-red-500', '!border-yellow');
+                if (!toastNotice.classList.contains('!border-yellow')) {
+                    toastNotice.classList.remove('!border-red-500');
+                    toastNotice.classList.add('!border-yellow');
+                }
             }
 
             toastNotice.classList.remove('opacity-0', 'pointer-events-none');
