@@ -152,7 +152,7 @@ Route::prefix('pengunjung')->name('pengunjung.')->group(function () {
 
     Route::post('/daftar_panitia', function (\Illuminate\Http\Request $request) {
         // Di sini akan ditaruh logika untuk menyimpan ke database nanti.
-        return back()->with('success', 'Pengajuan panitia berhasil dikirim!');
+        return redirect()->route('pengunjung.profil')->with('success', 'Pengajuan panitia berhasil dikirim!');
     })->name('daftar_panitia.store');
 });
 

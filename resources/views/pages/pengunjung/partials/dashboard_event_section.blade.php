@@ -2,7 +2,7 @@
     <div class="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
         @foreach ($paginatedEvents as $event)
             <article class="group overflow-hidden rounded-[32px] border border-[#cbd5e1] bg-white shadow-[0_25px_60px_rgba(25,40,83,0.08)] transition duration-300 hover:-translate-y-1">
-                <a href="{{ route('detail.event', ['id' => $event['id']]) }}" class="block">
+                <a href="{{ route('pengunjung.detail.event', ['id' => $event['id']]) }}" class="block">
                     <div class="overflow-hidden">
                         <img src="{{ asset('image/' . $event['image']) }}" alt="{{ $event['title'] }}" class="h-64 w-full object-cover transition duration-500 group-hover:scale-105" />
                     </div>

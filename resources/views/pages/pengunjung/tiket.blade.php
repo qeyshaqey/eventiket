@@ -5,6 +5,52 @@
 @section('body_class', 'bg-cream font-poppins')
 
 @section('content')
+    @php
+        $activeTab = request('tab', 'aktif');
+        $currentCategory = request('category');
+        $eventsToShow = $activeTab === 'riwayat' ? $historyEvents : $activeEvents;
+    @endphp
+
+    <!-- TAB PILIHAN -->
+    <div class="px-6 mt-6">
+        <div class="mx-auto flex w-full max-w-xl items-center justify-between pb-3">
+            <a href="{{ route('pengunjung.tiket') }}?tab=aktif{{ $currentCategory ? '&category='.$currentCategory : '' }}"
+               class="text-sm font-semibold transition {{ $activeTab === 'aktif' ? 'text-navy border-b-4 border-yellow pb-2' : 'text-slate-500 hover:text-slate-700' }}">
+                TIKET AKTIF
+            </a>
+            <a href="{{ route('pengunjung.tiket') }}?tab=riwayat{{ $currentCategory ? '&category='.$currentCategory : '' }}"
+               class="text-sm font-semibold transition {{ $activeTab === 'riwayat' ? 'text-navy border-b-4 border-yellow pb-2' : 'text-slate-500 hover:text-slate-700' }}">
+                RIWAYAT TRANSAKSI
+            </a>
+        </div>
+    </div>
+
+    <!-- FILTER CATEGORY --> 
+    <div class="px-6 mt-6">
+        <div class="flex gap-3 flex-wrap">
+
+            <!-- BUTTON SEMUA -->
+            <a href="{{ route('pengunjung.tiket') }}?tab={{ $activeTab }}"
+               class="px-4 py-2 rounded-full text-sm transition
+               {{ $currentCategory == null ? 'bg-navy text-white' : 'bg-white hover:bg-yellow' }}">
+                Semua
+            </a>
+
+            @php
+                $categories = ['Seminar','Sosial','Olahraga','Hiburan','Kompetisi','Keagamaan'];
+            @endphp
+
+            @foreach($categories as $cat)
+                <a href="{{ route('pengunjung.tiket') }}?tab={{ $activeTab }}&category={{ $cat }}"
+                   class="px-4 py-2 rounded-full text-sm transition
+                   {{ $currentCategory == $cat ? 'bg-navy text-white' : 'bg-white hover:bg-yellow' }}">
+                    {{ $cat }}
+                </a>
+            @endforeach
+
+        </div>
+    </div>
+
     <!-- CONTENT -->
     <div class="px-4 py-8">
         <div class="max-w-3xl mx-auto space-y-6">

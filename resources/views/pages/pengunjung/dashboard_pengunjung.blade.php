@@ -50,7 +50,7 @@
 
                 <!-- CARD EVENT -->
                 <div id="dashboard-results">
-                    @include('Pengunjung.partials.dashboard_event_section')
+                    @include('pages.pengunjung.partials.dashboard_event_section')
                 </div>
             </div>
         </section>
@@ -125,4 +125,4 @@
 
         attachPaginationLinks();
     </script>
-@endpush
+

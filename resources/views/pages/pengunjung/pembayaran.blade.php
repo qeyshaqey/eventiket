@@ -114,6 +114,26 @@
 
                 <form action="#" method="POST" enctype="multipart/form-data" class="space-y-4">
 
+                    <!-- Pilih Bank -->
+                    <div class="space-y-1.5 group">
+                        <label class="block text-xs font-semibold text-navy ml-1">Bank Pengembalian Dana</label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+                                <i class="bi bi-bank2 text-gray-400 group-focus-within:text-navy transition-colors"></i>
+                            </div>
+                            <select id="bank_pengembalian" 
+                                    class="w-full bg-white/80 border-2 border-transparent focus:border-navy focus:bg-white rounded-xl py-2.5 pl-10 pr-4 outline-none transition-all duration-300 shadow-sm text-sm text-navy font-medium appearance-none cursor-pointer">
+                                <option value="" disabled selected>Pilih Bank</option>
+                                <option value="BNI">BNI</option>
+                                <option value="BCA">BCA</option>
+                                <option value="MANDIRI">MANDIRI</option>
+                            </select>
+                            <div class="absolute inset-y-0 right-0 pr-3.5 flex items-center pointer-events-none">
+                                <i class="bi bi-chevron-down text-gray-400"></i>
+                            </div>
+                        </div>
+                    </div>
+
                     <!-- Rekening Tujuan -->
                     <div class="space-y-1.5 group">
                         <label class="block text-xs font-semibold text-navy ml-1">Rekening Pengembalian Dana</label>
@@ -308,16 +328,19 @@
     }
 
     const form = document.querySelector('form');
+    const bankInput = document.getElementById('bank_pengembalian');
     const rekeningInput = document.getElementById('rekening_pengembalian');
 
     form.addEventListener('submit', function(e) {
         e.preventDefault();
         
-        if (!rekeningInput.value.trim() || !inputFile.files || inputFile.files.length === 0) {
+        if (!bankInput.value || !rekeningInput.value.trim() || !inputFile.files || inputFile.files.length === 0) {
             showToast('Silahkan lengkapi form terlebih dahulu', 'error');
         } else {
             showToast('Konfirmasi pembayaran berhasil dikirim.', 'success');
-           
+            setTimeout(() => {
+                window.location.href = "{{ route('pengunjung.tiket') }}";
+            }, 1500);
         }
     });
 </script>

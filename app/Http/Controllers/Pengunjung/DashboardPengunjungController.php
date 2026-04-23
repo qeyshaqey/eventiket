@@ -32,7 +32,7 @@ class DashboardPengunjungController extends Controller
 
         $paginatedEvents = $this->paginateEvents($events, $request);
 
-        return view('Pengunjung.dashboard_pengunjung', compact('paginatedEvents', 'search', 'category'));
+        return view('pages.pengunjung.dashboard_pengunjung', compact('paginatedEvents', 'search', 'category'));
     }
 
     public function ajaxSearch(Request $request)
@@ -57,7 +57,7 @@ class DashboardPengunjungController extends Controller
 
         $paginatedEvents = $this->paginateEvents($events, $request);
 
-        $html = view('Pengunjung.partials.dashboard_event_section', compact('paginatedEvents', 'search', 'category'))->render();
+        $html = view('pages.pengunjung.partials.dashboard_event_section', compact('paginatedEvents', 'search', 'category'))->render();
 
         return response()->json(['html' => $html]);
     }
