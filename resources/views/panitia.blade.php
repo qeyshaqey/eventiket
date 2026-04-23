@@ -79,7 +79,7 @@
 
 
     <!-- ================= DITOLAK ================= -->
-    <div id="t" class="bg-white p-5 rounded-xl shadow border">
+    <div id="t" class="bg-white p-5 rounded-xl shadow border hidden">
 
         <div class="mb-3">
             <input type="text" id="searchDitolak" placeholder="Cari panitia ditolak..."
@@ -186,10 +186,10 @@
 
         <div class="flex justify-end gap-2 mt-4">
             <button onclick="closeModal()" class="px-3 py-1.5 text-sm rounded-lg bg-gray-200">Batal</button>
-            <button onclick="submitAlasan()"
-                class="px-3 py-1.5 text-sm rounded-lg bg-[#192853] text-yellow-400 hover:bg-[#0f1a3a] transition">
-                Kirim
-            </button>
+            <button onclick="submitAlasan()" 
+    class="px-3 py-1.5 text-sm rounded-lg bg-[#192853] text-yellow-400 hover:bg-[#0f1a3a] transition">
+    Kirim
+</button>
         </div>
     </div>
 </div>
