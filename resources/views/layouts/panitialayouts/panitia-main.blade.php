@@ -65,10 +65,10 @@ function active($route) {
                 <i class="bi bi-ticket-perforated"></i>Tiket
             </a>
 
-            <!-- VERIFIKASI -->
-            <a href="{{ route('panitia.verifikasi') }}"
-                class="flex items-center gap-3 px-5 py-3 {{ active('verifikasi') }}">
-                <i class="bi bi-check2-square"></i> Verifikasi
+            <!-- TRANSAKSI -->
+            <a href="{{ route('panitia.transaksi') }}"
+                class="flex items-center gap-3 px-5 py-3 {{ active('transaksi') }}">
+                <i class="bi bi-credit-card"></i> Data Transaksi
             </a>
 
             <!-- RIWAYAT -->

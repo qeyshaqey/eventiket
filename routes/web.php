@@ -25,36 +25,33 @@ use App\Http\Controllers\PanitiaController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\KategoriController;
 
-
-//===========PANITIA SIDE===================//
+//============PANITIA SIDE=========================//
 use App\Http\Controllers\panitia\EventPanitiaController;
 use App\Http\Controllers\panitia\TiketPanitiaController;
-use App\Http\Controllers\panitia\VerifikasiController;
-Route::prefix('panitia')->group(function () {
+use App\Http\Controllers\panitia\TransaksiController;
+Route::prefix('panitia')->name('panitia.')->group(function () {
 
-    Route::view('/beranda', 'panitia.berandapanitia')->name('panitia.beranda');
+    Route::view('/beranda', 'pages.panitia.berandapanitia')->name('beranda');
 
-    // Event routes - modal based
-    Route::get('/event', [EventPanitiaController::class, 'index'])->name('panitia.event');
-    Route::post('/event', [EventPanitiaController::class, 'store'])->name('panitia.event.store');
-    Route::put('/event/{event}', [EventPanitiaController::class, 'update'])->name('panitia.event.update');
-    Route::delete('/event/{event}', [EventPanitiaController::class, 'destroy'])->name('panitia.event.destroy');
-    Route::post('/event/{event}/kirim', [EventPanitiaController::class, 'kirim'])->name('panitia.event.kirim');
+    // Event
+    Route::get('/event', [EventPanitiaController::class, 'index'])->name('event');
+    Route::post('/event', [EventPanitiaController::class, 'store'])->name('event.store');
+    Route::put('/event/{event}', [EventPanitiaController::class, 'update'])->name('event.update');
+    Route::delete('/event/{event}', [EventPanitiaController::class, 'destroy'])->name('event.destroy');
+    Route::post('/event/{event}/kirim', [EventPanitiaController::class, 'kirim'])->name('event.kirim');
 
-    // Tiket routes
-    Route::get('/tiket', [TiketPanitiaController::class, 'index'])->name('panitia.tiket');
-    Route::post('/tiket', [TiketPanitiaController::class, 'store'])->name('panitia.tiket.store');
-    Route::put('/tiket/{tiket}', [TiketPanitiaController::class, 'update'])->name('panitia.tiket.update');
-    Route::delete('/tiket/{tiket}', [TiketPanitiaController::class, 'destroy'])->name('panitia.tiket.destroy');
+    // Tiket
+    Route::get('/tiket', [TiketPanitiaController::class, 'index'])->name('tiket');
+    Route::post('/tiket', [TiketPanitiaController::class, 'store'])->name('tiket.store');
+    Route::put('/tiket/{tiket}', [TiketPanitiaController::class, 'update'])->name('tiket.update');
+    Route::delete('/tiket/{tiket}', [TiketPanitiaController::class, 'destroy'])->name('tiket.destroy');
 
-    // Verifikasi routes (pembayaran)
-    Route::get('/verifikasi', [VerifikasiController::class, 'index'])->name('panitia.verifikasi');
-    Route::post('/verifikasi/{id}/konfirmasi', [VerifikasiController::class, 'konfirmasi'])->name('panitia.verifikasi.konfirmasi');
-    Route::post('/verifikasi/{id}/tolak', [VerifikasiController::class, 'tolak'])->name('panitia.verifikasi.tolak');
+    // Transaksi
+    Route::get('/transaksi', [TransaksiController::class, 'index'])
+        ->name('transaksi');
 
 });
-//=========================================//
-
+//===============================================================//
 // Halaman awal
 Route::get('/', function () {
     return redirect('/login');
