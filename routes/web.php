@@ -140,6 +140,10 @@ Route::get('/profil_pengunjung', function () {
     return view('Pengunjung.profil_pengunjung');
 })->name('pengunjung.profil');
 
+Route::get('/pembayaran', function () {
+    return view('Pengunjung.pembayaran');
+})->name('pengunjung.pembayaran');
+
 Route::get('/daftar_panitia', function () {
     return view('Pengunjung.daftar_panitia');
 })->name('pengunjung.daftar_panitia');

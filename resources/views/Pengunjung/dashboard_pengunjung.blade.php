@@ -13,6 +13,8 @@
         body { font-family: 'Poppins', sans-serif; }
     </style>
 </head>
+
+<!-- NAVBAR -->
 <body class="min-h-screen bg-[#EFF8FF] text-[#192853]">
     <header class="sticky top-0 z-50 bg-[#192853] text-white shadow-sm">
         <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-5">
@@ -29,7 +31,7 @@
         </div>
     </header>
 
-
+<!-- HERO SECTION -->
     <main>
         <section class="relative overflow-hidden bg-[#192853] text-white" style="background-image: radial-gradient(circle at top, rgba(255,225,78,0.14), transparent 40%), linear-gradient(180deg, rgba(25,40,83,0.95), rgba(25,40,83,0.8));">
             <div class="mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
@@ -51,6 +53,8 @@
                                     <i class="fa-solid fa-search"></i>
                                 </button>
                             </div>
+
+                            <!-- FILTER KATEGORI -->
                             <select id="category-select" name="category" class="rounded-full border border-[#cbd5e1] bg-white px-4 py-3 text-sm text-[#192853] shadow-sm focus:border-[#192853] focus:outline-none">
                                 <option value="semua" {{ ($category ?? 'semua') === 'semua' ? 'selected' : '' }}>Semua Kategori</option>
                                 <option value="Seminar" {{ ($category ?? '') === 'Seminar' ? 'selected' : '' }}>Seminar</option>
@@ -64,6 +68,7 @@
                     </form>
                 </div>
 
+                <!-- CARD EVENT -->
                 <div id="dashboard-results">
                     @include('Pengunjung.partials.dashboard_event_section')
                 </div>
@@ -71,6 +76,7 @@
         </section>
     </main>
 
+    <!-- JAVASCRIPT -->
     <script>
         const searchInput = document.getElementById('search-input');
         const categorySelect = document.getElementById('category-select');
