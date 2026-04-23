@@ -13,6 +13,7 @@
         body { font-family: 'Poppins', sans-serif; }
     </style>
 </head>
+
 <body class="min-h-screen bg-[#EFF8FF] text-[#192853]">
     <header class="sticky top-0 z-50 bg-white shadow-sm">
         <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">

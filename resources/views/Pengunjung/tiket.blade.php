@@ -160,10 +160,10 @@
 
     <!-- BUTTON -->
     @if($event['status'] == 'Belum Bayar')
-    <button class="mt-5 w-full bg-navy text-white py-2 rounded-full text-sm
+    <a href="/pembayaran" class="mt-5 w-full bg-navy text-white py-2 rounded-full text-sm text-center block font-medium
         hover:bg-yellow hover:text-navy transition">
         LAKUKAN PEMBAYARAN
-    </button>
+    </a>
     @endif
 
     <!-- BADGE STATUS AKTIF / SELESAI -->
