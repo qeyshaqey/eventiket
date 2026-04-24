@@ -38,7 +38,7 @@
                 class="w-full px-3 py-2 border rounded-lg text-sm">
         </div>
 
-        <div class="max-h-[400px] overflow-y-auto">
+        <div class="max-h-[400px] overflow-y-auto overflow-x-auto">
             <table class="w-full text-sm border-collapse" id="tableKelola">
                 <thead class="text-gray-500 border-b bg-gray-50 sticky top-0">
                     <tr>
@@ -86,7 +86,7 @@
                 class="w-full px-3 py-2 border rounded-lg text-sm">
         </div>
 
-        <div class="max-h-[400px] overflow-y-auto">
+        <div class="max-h-[400px] overflow-y-auto overflow-x-auto">
             <table class="w-full text-sm border-collapse" id="tableDitolak">
 
                 <!-- HEADER FIX -->
@@ -126,7 +126,7 @@
                 class="w-full px-3 py-2 border rounded-lg text-sm">
         </div>
 
-        <div class="max-h-[400px] overflow-y-auto">
+        <div class="max-h-[400px] overflow-y-auto overflow-x-auto">
             <table class="w-full text-sm border-collapse" id="tablePengajuan">
                 <thead class="text-gray-500 border-b bg-gray-50 sticky top-0">
                     <tr>
@@ -176,7 +176,7 @@
 <div id="modalTolak" class="fixed inset-0 hidden z-50 items-center justify-center">
     <div class="absolute inset-0 bg-black/40" onclick="closeModal()"></div>
 
-    <div class="relative bg-white rounded-xl shadow-lg w-full max-w-sm p-5">
+    <div class="relative bg-white rounded-xl shadow-lg w-full max-w-sm p-5 mx-4">
         <h2 class="text-base font-semibold text-gray-700 mb-2">Alasan Penolakan</h2>
         <p id="namaPanitia" class="text-sm text-gray-500 mb-3"></p>
 

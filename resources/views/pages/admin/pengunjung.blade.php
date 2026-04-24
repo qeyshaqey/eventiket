@@ -5,24 +5,26 @@
 <h1 class="text-xl font-semibold mb-6">Data Pengunjung</h1>
 
 <!-- FILTER -->
-<div class="bg-white p-4 rounded-xl border shadow mb-5 flex gap-3">
+<div class="bg-white p-4 rounded-xl border shadow mb-5 flex flex-col md:flex-row gap-3">
 
     <input id="search" type="text" placeholder="Cari pengunjung..."
-        class="px-4 py-2 border rounded-lg text-sm flex-1 focus:ring-2 focus:ring-yellow-300">
+        class="px-4 py-2 border rounded-lg text-sm flex-1 focus:ring-2 focus:ring-yellow-300 w-full md:w-auto">
 
-    <select id="kategori" class="px-3 py-2 border rounded-lg text-sm">
-        <option value="">Kategori</option>
-        <option>Seminar</option>
-        <option>Workshop</option>
-        <option>Pameran</option>
-    </select>
+    <div class="grid grid-cols-2 md:flex gap-3 w-full md:w-auto">
+        <select id="kategori" class="px-3 py-2 border rounded-lg text-sm min-w-0 w-full md:w-auto">
+            <option value="">Kategori</option>
+            <option>Seminar</option>
+            <option>Workshop</option>
+            <option>Pameran</option>
+        </select>
 
-    <select id="event" class="px-3 py-2 border rounded-lg text-sm">
-        <option value="">Event</option>
-        <option>Seminar Kewirausahaan</option>
-        <option>Workshop UI/UX Design</option>
-        <option>Pameran Teknologi</option>
-    </select>
+        <select id="event" class="px-3 py-2 border rounded-lg text-sm min-w-0 w-full md:w-auto">
+            <option value="">Event</option>
+            <option>Seminar Kewirausahaan</option>
+            <option>Workshop UI/UX Design</option>
+            <option>Pameran Teknologi</option>
+        </select>
+    </div>
 
 </div>
 

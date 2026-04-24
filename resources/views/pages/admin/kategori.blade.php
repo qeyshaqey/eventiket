@@ -18,7 +18,7 @@
     </div>
 
     <!-- SCROLL TABLE -->
-    <div class="max-h-[65vh] overflow-y-auto rounded-lg border">
+    <div class="max-h-[65vh] overflow-y-auto overflow-x-auto rounded-lg border">
 
         <table class="w-full text-sm border-collapse">
 
@@ -80,7 +80,7 @@
 <div id="modal" class="fixed inset-0 bg-black/40 hidden items-center justify-center z-50">
 
     <div id="modalBox"
-        class="bg-white w-full max-w-sm rounded-xl p-6 shadow-xl scale-95 opacity-0 transition">
+        class="bg-white w-full max-w-sm rounded-xl p-6 shadow-xl scale-95 opacity-0 transition mx-4">
 
         <h3 class="text-sm font-semibold mb-4">Kategori Event</h3>
 

@@ -104,7 +104,7 @@
 
 <!-- MODAL -->
 <div id="modal" class="fixed inset-0 bg-black/40 hidden items-center justify-center z-50">
-    <div class="bg-white w-full max-w-sm rounded-lg shadow-xl overflow-hidden">
+    <div class="bg-white w-full max-w-sm rounded-lg shadow-xl overflow-hidden mx-4">
 
         <div class="bg-[#192853] p-3 flex justify-between">
             <div>
