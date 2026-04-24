@@ -6,12 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Tiket extends Model
 {
-    protected $fillable = [
-        'event_id',
-        'nama',
-        'harga',
-        'kuota'
-    ];
+    protected $fillable = ['nama', 'harga', 'kuota', 'event_id'];
 
     // relasi ke event
     public function event()

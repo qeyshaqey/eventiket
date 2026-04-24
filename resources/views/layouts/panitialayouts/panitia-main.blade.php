@@ -78,6 +78,6 @@ function showToast(message, type = 'success', duration = 3000) {
     showToast('{{ session('error') }}', 'error', 5000);
 @endif
 </script>
-
+@yield('script')
 </body>
 </html>
