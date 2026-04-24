@@ -53,7 +53,7 @@ $eventPending = [
                 class="w-full px-3 py-2 border rounded-lg text-sm">
         </div>
 
-        <div class="max-h-[400px] overflow-y-auto">
+        <div class="max-h-[400px] overflow-y-auto overflow-x-auto">
             <table class="w-full text-sm border-collapse" id="tableAktif">
                 <thead class="text-gray-500 border-b bg-gray-50 sticky top-0">
                     <tr>
@@ -89,7 +89,7 @@ $eventPending = [
                 class="w-full px-3 py-2 border rounded-lg text-sm">
         </div>
 
-        <div class="max-h-[400px] overflow-y-auto">
+        <div class="max-h-[400px] overflow-y-auto overflow-x-auto">
             <table class="w-full text-sm border-collapse" id="tableDitolak">
                 <thead class="text-gray-500 border-b bg-gray-50 sticky top-0">
                     <tr>
@@ -124,7 +124,7 @@ $eventPending = [
                 class="w-full px-3 py-2 border rounded-lg text-sm">
         </div>
 
-        <div class="max-h-[400px] overflow-y-auto">
+        <div class="max-h-[400px] overflow-y-auto overflow-x-auto">
             <table class="w-full text-sm border-collapse" id="tablePengajuan">
                 <thead class="text-gray-500 border-b bg-gray-50 sticky top-0">
                     <tr>
@@ -167,7 +167,7 @@ $eventPending = [
 
 <!-- ================= MODAL DETAIL ================= -->
 <div id="modal" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50">
-    <div class="bg-white rounded-2xl w-full max-w-md shadow-lg overflow-hidden">
+    <div class="bg-white rounded-2xl w-full max-w-md shadow-lg overflow-hidden mx-4">
 
         <div class="bg-[#192853] p-4 flex justify-between items-center">
             <h3 id="m_nama" class="text-yellow-400 font-semibold text-lg"></h3>
@@ -189,7 +189,7 @@ $eventPending = [
 <div id="rejectModal" class="fixed inset-0 hidden z-50 items-center justify-center">
     <div class="absolute inset-0 bg-black/40" onclick="closeRejectModal()"></div>
 
-    <div class="relative bg-white rounded-xl shadow-lg w-full max-w-sm p-5">
+    <div class="relative bg-white rounded-xl shadow-lg w-full max-w-sm p-5 mx-4">
         <h2 class="text-base font-semibold text-gray-700 mb-3">Alasan Penolakan</h2>
 
         <textarea id="rejectInput" class="w-full border rounded-lg p-2 text-sm focus:ring-1 focus:ring-red-400" placeholder="Masukkan alasan penolakan..."></textarea>
@@ -203,40 +203,7 @@ $eventPending = [
 
 <!-- ================= JS ================= -->
 <script>
-    function tab(x) {
-        const sections = ['k', 't', 'p'];
-        const buttons = ['b1', 'b2', 'b3'];
-
-        sections.forEach(id => document.getElementById(id).classList.add('hidden'));
-        buttons.forEach(id => {
-            let btn = document.getElementById(id);
-            btn.classList.remove('bg-[#192853]', 'text-white');
-            btn.classList.add('bg-white', 'text-yellow-400');
-        });
-
-        document.getElementById(x).classList.remove('hidden');
-
-        let active = {
-            k: 'b1',
-            t: 'b2',
-            p: 'b3'
-        };
-        let btn = document.getElementById(active[x]);
-        btn.classList.remove('bg-white', 'text-yellow-400');
-        btn.classList.add('bg-[#192853]', 'text-white');
-    }
-
-    // SEARCH
-    function setupSearch(inputId, tableId) {
-        document.getElementById(inputId).addEventListener('keyup', function() {
-            let value = this.value.toLowerCase();
-            let rows = document.querySelectorAll(`#${tableId} tbody tr`);
-            rows.forEach(row => {
-                let text = row.innerText.toLowerCase();
-                row.style.display = text.includes(value) ? '' : 'none';
-            });
-        });
-    }
+    <x-admin.tab-search-script />
 
     setupSearch('searchAktif', 'tableAktif');
     setupSearch('searchPengajuan', 'tablePengajuan');

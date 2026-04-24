@@ -45,6 +45,6 @@ class PanitiaController extends Controller
             ["nama" => "Ahmad Fauzi", "email" => "ahmad@gmail.com", "nim" => "2210112364", "ukm" => "HMTI", "alasan" => "Dokumen tidak valid"],
         ];
 
-        return view('panitia', compact('kelola', 'pengajuan', 'ditolak'));
+        return view('pages.admin.panitia', compact('kelola', 'pengajuan', 'ditolak'));
     }
 }

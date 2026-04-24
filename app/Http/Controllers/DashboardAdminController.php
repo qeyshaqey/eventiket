@@ -23,7 +23,7 @@ class DashboardAdminController extends Controller
             ["tanggal"=>"25 Aug","nama"=>"Workshop Fotografi","kategori"=>"Workshop","waktu"=>"10:00","lokasi"=>"Studio","deskripsi"=>"Belajar teknik dasar fotografi dan editing foto."],
         ];
 
-        return view('dashboard-admin', compact(
+        return view('pages.admin.dashboard', compact(
             'total_pengunjung',
             'pengunjung_growth',
             'total_panitia',
