@@ -24,4 +24,8 @@ class Event extends Model
     {
         return $this->hasMany(Tiket::class);
     }
+    public function transaksis()
+{
+    return $this->hasMany(Transaksi::class);
+}
 }
