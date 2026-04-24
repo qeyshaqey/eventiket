@@ -14,7 +14,7 @@
         <thead class="bg-gray-100">
             <tr>
                 <th class="border p-2">NO</th>
-                <th class="border p-2">PEMBELI</th>
+                <th class="border p-2">NAMA PEMBELI</th>
                 <th class="border p-2">EVENT</th>
                 <th class="border p-2">TIKET</th>
                 <th class="border p-2">TANGGAL</th>

@@ -7,43 +7,34 @@
 <div class="grid grid-cols-3 gap-6 mb-10">
 
     <!-- EVENT AKTIF -->
-    <div class="bg-gradient-to-r from-blue-500 to-blue-600 text-white p-6 rounded-2xl shadow-lg hover:scale-105 transition duration-300">
+    <div class="bg-white p-3 rounded-lg shadow-lg hover:scale-105 transition duration-300">
         <div class="flex items-center justify-between">
             <div>
                 <p class="text-sm opacity-90">EVENT TERDEKAT</p>
                 <p class="text-xl font-bold mt-1">CODING CAMP</p>
                 <p class="text-sm opacity-80">20 April </p>
             </div>
-            <div class="bg-white/20 p-3 rounded-full text-xl">
-                📅
-            </div>
         </div>
     </div>
 
     <!-- TIKET TERJUAL -->
-    <div class="bg-gradient-to-r from-green-500 to-green-600 text-white p-6 rounded-2xl shadow-lg hover:scale-105 transition duration-300">
+    <div class="bg-white p-3 rounded-lg shadow-lg hover:scale-105 transition duration-300">
         <div class="flex items-center justify-between">
             <div>
                 <p class="text-sm opacity-90">TIKET TERJUAL</p>
                 <p class="text-xl font-bold mt-1">40</p>
                 <p class="text-sm opacity-80">+12% dari minggu lalu</p>
             </div>
-            <div class="bg-white/20 p-3 rounded-full text-xl">
-                🎟️
-            </div>
         </div>
     </div>
 
     <!-- PENDING -->
-    <div class="bg-gradient-to-r from-yellow-400 to-orange-500 text-white p-6 rounded-2xl shadow-lg hover:scale-105 transition duration-300">
+    <div class="bg-white p-3 rounded-lg shadow-sm hover:scale-105 transition duration-300">
     <div class="flex items-center justify-between">
         <div>
             <p class="text-sm opacity-90">EVENT TERLARIS</p>
             <p class="text-xl font-bold mt-1">Music Festival</p>
             <p class="text-sm opacity-80">50 tiket</p>
-        </div>
-        <div class="bg-white/20 p-3 rounded-full text-xl">
-            🚀
         </div>
     </div>
 </div>

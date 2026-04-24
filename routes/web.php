@@ -50,6 +50,10 @@ Route::prefix('panitia')->name('panitia.')->group(function () {
     Route::get('/transaksi', [TransaksiController::class, 'index'])
         ->name('transaksi');
 
+    // Riwayat
+Route::get('/riwayat', [EventPanitiaController::class, 'riwayat'])
+    ->name('riwayat');
+
 });
 //===============================================================//
 // Halaman awal

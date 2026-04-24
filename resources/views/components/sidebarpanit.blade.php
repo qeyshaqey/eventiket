@@ -56,6 +56,13 @@
                 Transaksi
             </a>
 
+            <!-- RIWAYAT -->
+            <a href="{{ route('panitia.riwayat') }}" 
+   class="flex items-center gap-3 px-4 py-2 hover:bg-[#0f1a35]">
+    <i class="bi bi-clock-history"></i>
+    Riwayat
+</a>
+
         </div>
     </div>
 
