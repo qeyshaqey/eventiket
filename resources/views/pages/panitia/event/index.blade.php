@@ -13,101 +13,128 @@
         </button>
     </div>
 
-    <!-- TABLE -->
-    <table class="w-full text-sm border">
-        <thead class="bg-gray-100">
-            <tr>
-                <th class="border p-2">NO</th>
-                <th class="border p-2">JUDUL EVENT</th>
-                <th class="border p-2">KATEGORI</th>
-                <th class="border p-2">DESKRIPSI</th>
-                <th class="border p-2">TANGGAL</th>
-                <th class="border p-2">WAKTU</th>
-                <th class="border p-2">LOKASI</th>
-                <th class="border p-2">STATUS</th>
-                <th class="border p-2">AKSI</th>
-            </tr>
-        </thead>
+    <div class="overflow-x-auto rounded-xl border border-gray-200 shadow-sm">
 
-        <tbody class="text-center">
-            @forelse($events as $index => $event)
-            @php
-                $tikets = collect($event->tikets ?? []);
-                $isPublished = $tikets->count() > 0;
-            @endphp
+<table class="min-w-full text-sm text-left bg-white">
 
-            <tr>
-                <td class="border p-2">{{ $index + 1 }}</td>
-                <td class="border p-2">{{ $event->judul }}</td>
-                <td class="border p-2">{{ $event->kategori }}</td>
+    <!-- HEADER -->
+    <thead class="bg-[#192853] text-white text-xs uppercase tracking-wider">
+        <tr>
+            <th class="px-4 py-3">NO</th>
+            <th class="px-4 py-3">JUDUL EVENT</th>
+            <th class="px-4 py-3">KATEGORI</th>
+            <th class="px-4 py-3">DESKRIPSI</th>
+            <th class="px-4 py-3">TANGGAL</th>
+            <th class="px-4 py-3">WAKTU</th>
+            <th class="px-4 py-3">LOKASI</th>
+            <th class="px-4 py-3">STATUS</th>
+            <th class="px-4 py-3 text-center">AKSI</th>
+        </tr>
+    </thead>
 
-                <td class="border p-2 text-left">
-                    {{ \Illuminate\Support\Str::limit($event->deskripsi, 30) }}
-                </td>
+    <!-- BODY -->
+    <tbody class="divide-y divide-gray-100">
 
-                <td class="border p-2">
-                    {{ \Carbon\Carbon::parse($event->tanggal_mulai)->format('d M Y') }}
-                    {{ $event->tanggal_selesai ? ' - ' . \Carbon\Carbon::parse($event->tanggal_selesai)->format('d M Y') : '' }}
-                </td>
+        @forelse($events as $index => $event)
+        @php
+            $tikets = collect($event->tikets ?? []);
+            $isPublished = $tikets->count() > 0;
+        @endphp
 
-                <td class="border p-2">
-                    {{ \Carbon\Carbon::parse($event->waktu_mulai)->format('H:i') }}
-                    {{ $event->waktu_selesai ? ' - ' . \Carbon\Carbon::parse($event->waktu_selesai)->format('H:i') : '' }}
-                </td>
+        <tr class="hover:bg-gray-50 transition">
 
-                <td class="border p-2">{{ $event->lokasi }}</td>
+            <td class="px-4 py-3 font-medium text-gray-700">
+                {{ $index + 1 }}
+            </td>
 
-                <!-- STATUS -->
-                <td class="border p-2">
-                    @if($isPublished)
-                        <span class="text-green-600 font-semibold">Published</span>
-                    @else
-                        <span class="text-yellow-600 font-semibold">Draft</span>
-                    @endif
-                </td>
+            <td class="px-4 py-3 font-semibold text-gray-900">
+                {{ $event->judul }}
+            </td>
 
-                <!-- AKSI -->
-                <td class="border p-2 space-x-1">
+            <td class="px-4 py-3">
+                <span class="px-2 py-1 rounded-full bg-blue-50 text-blue-600 text-xs">
+                    {{ $event->kategori }}
+                </span>
+            </td>
 
-                    <!-- Tambah Tiket -->
+            <td class="px-4 py-3 text-gray-600">
+                {{ \Illuminate\Support\Str::limit($event->deskripsi, 40) }}
+            </td>
+
+            <td class="px-4 py-3 text-gray-600">
+                {{ \Carbon\Carbon::parse($event->tanggal_mulai)->format('d M Y') }}
+                {{ $event->tanggal_selesai ? ' - ' . \Carbon\Carbon::parse($event->tanggal_selesai)->format('d M Y') : '' }}
+            </td>
+
+            <td class="px-4 py-3 text-gray-600">
+                {{ \Carbon\Carbon::parse($event->waktu_mulai)->format('H:i') }}
+                {{ $event->waktu_selesai ? ' - ' . \Carbon\Carbon::parse($event->waktu_selesai)->format('H:i') : '' }}
+            </td>
+
+            <td class="px-4 py-3 text-gray-600">
+                {{ $event->lokasi }}
+            </td>
+
+            <!-- STATUS -->
+            <td class="px-4 py-3">
+                @if($isPublished)
+                    <span class="px-2 py-1 text-xs rounded-full bg-green-100 text-green-600 font-semibold">
+                        Published
+                    </span>
+                @else
+                    <span class="px-2 py-1 text-xs rounded-full bg-yellow-100 text-yellow-700 font-semibold">
+                        Draft
+                    </span>
+                @endif
+            </td>
+
+            <!-- AKSI -->
+            <td class="px-4 py-3">
+                <div class="flex items-center justify-center gap-3">
+
                     @if(($event->status ?? '') === 'Draft')
-<button 
-    onclick="window.location.href='{{ route('panitia.tiket') }}?event_id={{ $event->id }}'"
-    class="text-green-500 hover:text-green-700" 
-    title="Tambah Tiket">
-    <i class="bi bi-ticket-perforated"></i>
-</button>
-@endif
+                    <button 
+                        onclick="window.location.href='{{ route('panitia.tiket') }}?event_id={{ $event->id }}'"
+                        class="text-green-500 hover:text-green-700 transition"
+                        title="Tambah Tiket">
+                        <i class="bi bi-ticket-perforated"></i>
+                    </button>
+                    @endif
 
-                    <!-- Edit -->
                     <button onclick="openModal('edit', {{ $event->id }})" 
-                        class="text-yellow-500 hover:text-yellow-700">
+                        class="text-yellow-500 hover:text-yellow-600 transition">
                         <i class="bi bi-pencil-square"></i>
                     </button>
 
-                    <!-- Upload -->
                     <button 
-    onclick="{{ $isPublished ? "openDetailModal($event->id)" : '' }}"
-    class="text-blue-500 {{ !$isPublished ? 'opacity-30 cursor-not-allowed' : 'hover:text-blue-700' }}"
-    title="{{ $isPublished ? 'Kirim ke Admin' : 'Tambah tiket dulu' }}">
-    <i class="bi bi-upload"></i>
-</button>
+                        onclick="{{ $isPublished ? "openDetailModal($event->id)" : '' }}"
+                        class="text-blue-500 {{ !$isPublished ? 'opacity-30 cursor-not-allowed' : 'hover:text-blue-700' }}"
+                        title="{{ $isPublished ? 'Kirim ke Admin' : 'Tambah tiket dulu' }}">
+                        <i class="bi bi-upload"></i>
+                    </button>
 
-                    <!-- Hapus -->
                     <button onclick="openDeleteModal({{ $event->id }})" 
-                        class="text-red-500 hover:text-red-700">
+                        class="text-red-500 hover:text-red-600 transition">
                         <i class="bi bi-trash"></i>
                     </button>
 
-                </td>
-            </tr>
-            @empty
-            <tr>
-                <td colspan="9" class="border p-4 text-center">Belum ada event</td>
-            </tr>
-            @endforelse
-        </tbody>
-    </table>
+                </div>
+            </td>
+
+        </tr>
+
+        @empty
+        <tr>
+            <td colspan="9" class="px-4 py-6 text-center text-gray-400">
+                Belum ada event
+            </td>
+        </tr>
+        @endforelse
+
+    </tbody>
+</table>
+
+</div>
 
 </div>
 <!-- MODAL TAMBAH / EDIT EVENT -->
