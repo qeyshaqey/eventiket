@@ -23,7 +23,7 @@ class KategoriController extends Controller
 
         ]);
 
-        return view('kategori', compact('kategori'));
+        return view('pages.admin.kategori', compact('kategori'));
     }
 
     public function store(Request $request)

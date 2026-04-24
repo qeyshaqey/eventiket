@@ -13,7 +13,7 @@ class EventController extends Controller
             ["tanggal"=>"15 Nov","nama"=>"Seminar Meraih Mimpi"],
         ];
 
-        return view('kelola-event', compact('events'));
+        return view('pages.admin.kelola-event', compact('events'));
     }
 
     public function approve($id)

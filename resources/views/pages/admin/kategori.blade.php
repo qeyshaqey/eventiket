@@ -84,7 +84,7 @@
 
         <h3 class="text-sm font-semibold mb-4">Kategori Event</h3>
 
-        <form method="POST" action="{{ route('kategori.store') }}">
+        <form method="POST" action="{{ route('admin.kategori.store') }}">
             @csrf
 
             <input type="hidden" name="id" id="id">

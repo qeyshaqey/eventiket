@@ -203,40 +203,7 @@ $eventPending = [
 
 <!-- ================= JS ================= -->
 <script>
-    function tab(x) {
-        const sections = ['k', 't', 'p'];
-        const buttons = ['b1', 'b2', 'b3'];
-
-        sections.forEach(id => document.getElementById(id).classList.add('hidden'));
-        buttons.forEach(id => {
-            let btn = document.getElementById(id);
-            btn.classList.remove('bg-[#192853]', 'text-white');
-            btn.classList.add('bg-white', 'text-yellow-400');
-        });
-
-        document.getElementById(x).classList.remove('hidden');
-
-        let active = {
-            k: 'b1',
-            t: 'b2',
-            p: 'b3'
-        };
-        let btn = document.getElementById(active[x]);
-        btn.classList.remove('bg-white', 'text-yellow-400');
-        btn.classList.add('bg-[#192853]', 'text-white');
-    }
-
-    // SEARCH
-    function setupSearch(inputId, tableId) {
-        document.getElementById(inputId).addEventListener('keyup', function() {
-            let value = this.value.toLowerCase();
-            let rows = document.querySelectorAll(`#${tableId} tbody tr`);
-            rows.forEach(row => {
-                let text = row.innerText.toLowerCase();
-                row.style.display = text.includes(value) ? '' : 'none';
-            });
-        });
-    }
+    <x-admin.tab-search-script />
 
     setupSearch('searchAktif', 'tableAktif');
     setupSearch('searchPengajuan', 'tablePengajuan');

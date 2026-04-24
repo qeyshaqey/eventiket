@@ -32,7 +32,7 @@ class PengunjungController extends Controller
     ["nama"=>"Iqbal Ramadhan","email"=>"iqbal@gmail.com","nim"=>"2122232425","event"=>"Talkshow Startup","kategori"=>"Talkshow"],
 ];
 
-    return view('pengunjung', compact('data'));
+    return view('pages.admin.pengunjung', compact('data'));
 }    public function create()
     {
         return view('pengunjung_create');

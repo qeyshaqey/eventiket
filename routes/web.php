@@ -69,26 +69,28 @@ Route::get('/etalase_event', [EtalaseEventController::class, 'index'])->name('et
 // Dashboard 
 Route::get('/dashboard', [DashboardController::class, 'index']);
 
-// Dashboard Admin 
-Route::get('/dashboard-admin', [DashboardAdminController::class, 'index']);
+// ============ ADMIN SIDE =========================//
+Route::prefix('admin')->name('admin.')->group(function () {
+    // Dashboard Admin 
+    Route::get('/dashboard', [DashboardAdminController::class, 'index'])->name('dashboard');
 
-// Data Pengunjung
-Route::get('/data-pengunjung', [PengunjungController::class, 'index'])
-    ->name('data.pengunjung');
+    // Data Pengunjung
+    Route::get('/data-pengunjung', [PengunjungController::class, 'index'])->name('data.pengunjung');
 
-// Data Panitia
-Route::get('/data-panitia', [PanitiaController::class, 'index'])
-    ->name('data.panitia');
+    // Data Panitia
+    Route::get('/data-panitia', [PanitiaController::class, 'index'])->name('data.panitia');
 
-// Event
-Route::get('/kelola-event', [EventController::class, 'index'])->name('kelola.event');
-Route::get('/event-approve/{id}', [EventController::class, 'approve'])->name('event.approve');
-Route::get('/event-delete/{id}', [EventController::class, 'delete'])->name('event.delete');
+    // Event
+    Route::get('/kelola-event', [EventController::class, 'index'])->name('kelola.event');
+    Route::get('/event-approve/{id}', [EventController::class, 'approve'])->name('event.approve');
+    Route::get('/event-delete/{id}', [EventController::class, 'delete'])->name('event.delete');
 
-// Kategori
-Route::get('/kategori', [KategoriController::class, 'index'])->name('kategori');
-Route::post('/kategori/store', [KategoriController::class, 'store'])->name('kategori.store');
-Route::get('/kategori/delete/{id}', [KategoriController::class, 'destroy'])->name('kategori.delete');
+    // Kategori
+    Route::get('/kategori', [KategoriController::class, 'index'])->name('kategori');
+    Route::post('/kategori/store', [KategoriController::class, 'store'])->name('kategori.store');
+    Route::get('/kategori/delete/{id}', [KategoriController::class, 'destroy'])->name('kategori.delete');
+});
+// ===============================================================//
 
 // Lainnya
 Route::get('/jenistiket', [JenisTiketController::class, 'index']);
@@ -109,7 +111,7 @@ Route::post('/login', function (Request $request) {
 
     if ($username === 'admin' && $password === 'password123') {
         session(['user' => $username, 'role' => 'admin']);
-        return redirect('/dashboard-admin');
+        return redirect()->route('admin.dashboard');
     }
 
     $user = User::where('name', $username)->first();
