@@ -250,15 +250,51 @@
 </div>
 
 <!-- MODAL DETAIL -->
-<div id="detailModal" class="fixed inset-0 bg-black/50 hidden flex justify-center items-center">
-    <div class="bg-white p-6 rounded w-96">
-        <h2 class="font-bold mb-3">Detail Event</h2>
-        <div id="detailContent"></div>
+<div id="modalDetail" class="fixed inset-0 bg-black/50 hidden flex justify-center items-center z-50">
+    <div class="bg-white p-6 rounded-xl w-[600px] max-h-[90vh] overflow-y-auto">
 
-        <div class="flex justify-end gap-2 mt-4">
-            <button onclick="closeDetailModal()" class="bg-gray-300 px-3 py-1 rounded">Batal</button>
-            <button onclick="kirimKeAdmin()" class="bg-blue-500 text-white px-3 py-1 rounded">Kirim</button>
+        <h2 class="text-lg font-bold mb-3">Detail Event</h2>
+        <hr class="mb-4">
+
+        <!-- ATAS: POSTER + INFO -->
+        <div class="flex gap-4 mb-4">
+
+            <!-- POSTER -->
+            <img id="detailPoster" class="w-40 h-40 object-cover rounded">
+
+            <!-- INFO -->
+            <div class="flex-1 text-sm space-y-1">
+                <p><b>Judul:</b> <span id="detailJudul"></span></p>
+                <p><b>Kategori:</b> <span id="detailKategori"></span></p>
+                <p><b>Lokasi:</b> <span id="detailLokasi"></span></p>
+                <p><b>Tanggal:</b> <span id="detailTanggal"></span></p>
+                <p><b>Waktu:</b> <span id="detailWaktu"></span></p>
+            </div>
+
         </div>
+
+        <!-- DESKRIPSI -->
+        <div class="mb-4">
+            <b>Deskripsi:</b>
+            <p id="detailDeskripsi" class="text-sm mt-1"></p>
+        </div>
+
+        <!-- TIKET -->
+        <div class="mb-4">
+            <b>Daftar Tiket:</b>
+            <div id="detailTiket" class="mt-2"></div>
+        </div>
+
+        <!-- BUTTON -->
+        <div class="flex justify-end gap-2 mt-4">
+            <button onclick="closeDetailModal()" class="bg-gray-300 px-3 py-1 rounded">
+                Batal
+            </button>
+            <button onclick="kirimKeAdmin()" class="bg-blue-500 text-white px-3 py-1 rounded">
+                Kirim
+            </button>
+        </div>
+
     </div>
 </div>
 
@@ -387,31 +423,61 @@ document.addEventListener('DOMContentLoaded', function () {
     let selectedEventId = null;
 
     function openDetailModal(id) {
-        selectedEventId = id;
+    selectedEventId = id;
 
-        const modal = document.getElementById('detailModal');
-        const content = document.getElementById('detailContent');
+    const event = window.events.find(e => e.id == id);
+    if (!event) return;
 
-        const event = window.events.find(e => e.id == id);
-        if (!event) return;
+    // POSTER
+    document.getElementById('detailPoster').src = event.poster 
+        ? '/storage/' + event.poster 
+        : 'https://via.placeholder.com/400x200?text=No+Image';
 
-        if (content) {
-            content.innerHTML = `
-                <p><b>Judul:</b> ${event.judul}</p>
-                <p><b>Kategori:</b> ${event.kategori}</p>
-                <p><b>Tanggal:</b> ${event.tanggal_mulai ?? '-'} ${event.tanggal_selesai ? ' - ' + event.tanggal_selesai : ''}</p>
-                <p><b>Waktu:</b> ${event.waktu_mulai ?? '-'} ${event.waktu_selesai ? ' - ' + event.waktu_selesai : ''}</p>
-                <p><b>Lokasi:</b> ${event.lokasi}</p>
-                <p><b>Deskripsi:</b> ${event.deskripsi}</p>
+    // TEXT
+    document.getElementById('detailJudul').innerText = event.judul;
+    document.getElementById('detailKategori').innerText = event.kategori;
+    document.getElementById('detailLokasi').innerText = event.lokasi;
+
+    document.getElementById('detailTanggal').innerText =
+        (event.tanggal_mulai ?? '-') + 
+        (event.tanggal_selesai ? ' - ' + event.tanggal_selesai : '');
+
+    document.getElementById('detailWaktu').innerText =
+        (event.waktu_mulai ?? '-') + 
+        (event.waktu_selesai ? ' - ' + event.waktu_selesai : '');
+
+    document.getElementById('detailDeskripsi').innerText = event.deskripsi;
+
+    // =========================
+    // TIKET
+    // =========================
+    let tiketHTML = '';
+
+    if (event.tikets && event.tikets.length > 0) {
+        event.tikets.forEach(t => {
+            tiketHTML += `
+                <div class="border rounded p-2 mb-2 text-sm">
+                    <b>${t.nama}</b><br>
+                    Rp ${Number(t.harga).toLocaleString()} • Kuota: ${t.kuota}
+                </div>
             `;
-        }
-
-        modal?.classList.remove('hidden');
+        });
+    } else {
+        tiketHTML = `<p class="text-gray-400 text-sm">Belum ada tiket</p>`;
     }
+
+    document.getElementById('detailTiket').innerHTML = tiketHTML;
+
+    // TAMPILKAN MODAL
+    document.getElementById('modalDetail').classList.remove('hidden');
+}
 
     function closeDetailModal() {
-        document.getElementById('detailModal')?.classList.add('hidden');
-    }
+    document.getElementById('modalDetail').classList.add('hidden');
+}
+
+// BIKIN GLOBAL
+window.closeDetailModal = closeDetailModal;
 
     function kirimKeAdmin() {
         if (!selectedEventId) return;
@@ -446,7 +512,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
 });
 </script>
-{{-- ✅ FIX: AUTO BUKA MODAL KALAU ADA ERROR --}}
 @if ($errors->any())
 <script>
     document.addEventListener("DOMContentLoaded", function () {
