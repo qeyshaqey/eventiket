@@ -29,7 +29,7 @@
     </div>
 
     <!-- PENDING -->
-    <div class="bg-white p-3 rounded-lg shadow-sm hover:scale-105 transition duration-300">
+    <div class="bg-white p-3 rounded-lg shadow-lg hover:scale-105 transition duration-300">
     <div class="flex items-center justify-between">
         <div>
             <p class="text-sm opacity-90">EVENT TERLARIS</p>
