@@ -57,14 +57,11 @@
                         <i class="bi bi-pencil-square"></i>
                     </button>
 
-                    <form action="{{ route('panitia.tiket.destroy', $tiket->id) }}" method="POST">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" onclick="return confirm('Hapus tiket ini?')"
-                            class="text-red-500 hover:scale-110 transition">
-                            <i class="bi bi-trash"></i>
-                        </button>
-                    </form>
+                    <!-- DELETE BUTTON (UPDATED) -->
+                    <button onclick="openDeleteModal({{ $tiket->id }})"
+                        class="text-red-500 hover:scale-110 transition">
+                        <i class="bi bi-trash"></i>
+                    </button>
                 </div>
             </div>
             @empty
@@ -90,113 +87,127 @@
 
 </div>
 
-<!-- MODAL TAMBAH -->
+<!-- ================= MODAL TAMBAH ================= -->
 <div id="modalTiket" class="fixed inset-0 bg-black/50 hidden flex justify-center items-center z-50" onclick="closeModal()">
+    <div class="bg-white p-6 rounded-2xl shadow-2xl w-[400px] relative animate-fadeIn" onclick="event.stopPropagation()">
 
-    <div class="bg-white p-6 rounded-xl shadow w-96" onclick="event.stopPropagation()">
+        <button onclick="closeModal()" class="absolute top-3 right-3 text-gray-400 hover:text-black text-lg">&times;</button>
+
+        <h2 class="text-lg font-bold text-[#192853] mb-3">Tambah Tiket</h2>
 
         <form method="POST" action="{{ route('panitia.tiket.store') }}">
             @csrf
             <input type="hidden" name="event_id" id="eventId">
 
-            <!-- JUDUL -->
-            <h2 class="text-lg font-bold mb-2">Tambah Tiket</h2>
-            <hr class="mb-4">
+            <div class="space-y-3">
+                <input name="nama" type="text" placeholder="Nama Tiket"
+                    class="w-full border rounded-lg p-2 text-sm focus:ring-2 focus:ring-[#192853] outline-none">
 
-            <!-- NAMA -->
-            <label class="text-sm text-black-600 mb-1 block">Nama Tiket</label>
-            <input name="nama" type="text"
-                class="w-full border rounded-lg p-2 placeholder-gray-400 text-sm">
+                <input name="harga" type="text" placeholder="Harga"
+                    class="w-full border rounded-lg p-2 text-sm focus:ring-2 focus:ring-[#192853] outline-none">
 
-            <!--Harga -->
-            <label class="text-sm text-black-600 mb-1 block">Harga</label>
-            <input name="harga" type="text"
-                class="w-full border rounded-lg p-2 placeholder-gray-400 text-sm">
-
-            <!-- KUOTA -->
-            <label class="text-sm text-black-600 mb-1 block">Kuota</label>
-            <input name="kuota" type="number"
-                class="w-full border rounded-lg p-2 placeholder-gray-400 text-sm">
-
-            <!-- BUTTON -->
-            <div class="flex justify-end gap-2 mt-4">
-                <button type="button" onclick="closeModal()" class="bg-gray-400 text-white px-3 py-1 rounded">
-                    Batal
-                </button>
-                <button type="submit" class="bg-blue-500 text-white px-3 py-1 rounded">
-                    Simpan
-                </button>
+                <input name="kuota" type="number" placeholder="Kuota"
+                    class="w-full border rounded-lg p-2 text-sm focus:ring-2 focus:ring-[#192853] outline-none">
             </div>
 
+            <div class="flex justify-end gap-3 mt-5">
+                <button type="button" onclick="closeModal()" class="px-4 py-2 bg-gray-200 rounded-lg">Batal</button>
+                <button type="submit" class="px-4 py-2 bg-[#192853] text-yellow-400 rounded-lg">Simpan</button>
+            </div>
         </form>
     </div>
 </div>
-<!-- MODAL EDIT -->
+
+<!-- ================= MODAL EDIT ================= -->
 <div id="modalEditTiket" class="fixed inset-0 bg-black/50 hidden flex justify-center items-center z-50" onclick="closeEditModal()">
+    <div class="bg-white p-6 rounded-2xl shadow-2xl w-[400px] relative animate-fadeIn" onclick="event.stopPropagation()">
 
-    <div class="bg-white p-6 rounded-xl shadow w-96" onclick="event.stopPropagation()">
+        <button onclick="closeEditModal()" class="absolute top-3 right-3 text-gray-400 hover:text-black text-lg">&times;</button>
 
-        <!-- JUDUL -->
-        <h2 class="text-lg font-bold mb-2">Edit Tiket</h2>
-        <hr class="mb-4">
+        <h2 class="text-lg font-bold text-[#192853] mb-3">Edit Tiket</h2>
 
         <form id="formEdit" method="POST">
             @csrf
             @method('PUT')
 
-            <!-- NAMA -->
-            <label class="text-sm font-medium">Nama Tiket</label>
-            <input id="editNama" name="nama" type="text"
-                class="w-full border rounded-lg p-2 placeholder-gray-400 text-sm">
-
-            <!-- HARGA -->
-            <label class="text-sm font-medium">Harga</label>
-            <input id="editHarga" name="harga" type="text"
-                class="w-full border rounded-lg p-2 placeholder-gray-400 text-sm">
-
-            <!-- KUOTA -->
-            <label class="text-sm font-medium">Kuota</label>
-            <input id="editKuota" name="kuota" type="number"
-                class="w-full border rounded-lg p-2 placeholder-gray-400 text-sm">
-
-            <!-- BUTTON -->
-            <div class="flex justify-end gap-2 mt-4">
-                <button type="button" onclick="closeEditModal()" class="bg-gray-400 text-white px-3 py-1 rounded">
-                    Batal
-                </button>
-                <button type="submit" class="bg-blue-500 text-white px-3 py-1 rounded">
-                    Simpan
-                </button>
+            <div class="space-y-3">
+                <input id="editNama" name="nama" type="text" class="w-full border p-2 rounded-lg">
+                <input id="editHarga" name="harga" type="text" class="w-full border p-2 rounded-lg">
+                <input id="editKuota" name="kuota" type="number" class="w-full border p-2 rounded-lg">
             </div>
 
+            <div class="flex justify-end gap-3 mt-5">
+                <button type="button" onclick="closeEditModal()" class="px-4 py-2 bg-gray-200 rounded-lg">Batal</button>
+                <button type="submit" class="px-4 py-2 bg-[#192853] text-yellow-400 rounded-lg">Simpan</button>
+            </div>
         </form>
+    </div>
+</div>
+
+<!-- ================= MODAL DELETE ================= -->
+<div id="modalDelete" class="fixed inset-0 bg-black/50 hidden flex justify-center items-center z-50">
+    <div class="bg-white w-[360px] rounded-2xl shadow-2xl p-6 text-center animate-fadeIn">
+
+        <div class="flex justify-center mb-4">
+            <div class="w-12 h-12 flex items-center justify-center rounded-full bg-red-100">
+                <i class="bi bi-trash text-red-500 text-lg"></i>
+            </div>
+        </div>
+
+        <h2 class="font-bold text-[#192853] text-lg">Hapus Tiket?</h2>
+        <p class="text-sm text-gray-500 mt-1">Data tidak bisa dikembalikan</p>
+
+        <div class="flex gap-3 mt-6">
+            <button onclick="closeDeleteModal()" class="w-full py-2 bg-gray-100 rounded-lg">Batal</button>
+            <button onclick="submitDelete()" class="w-full py-2 bg-red-500 text-white rounded-lg">Hapus</button>
+        </div>
 
     </div>
 </div>
+
+<form id="deleteForm" method="POST" class="hidden">
+    @csrf
+    @method('DELETE')
+</form>
+
 @endsection
 
 
 @section('script')
 <script>
-function openModal(eventId) {
-    document.getElementById('eventId').value = eventId;
+function openModal(id){
+    document.getElementById('eventId').value = id;
     document.getElementById('modalTiket').classList.remove('hidden');
 }
-
-function closeModal() {
+function closeModal(){
     document.getElementById('modalTiket').classList.add('hidden');
 }
 
-function openEditModal(id, nama, harga, kuota) {
+function openEditModal(id,nama,harga,kuota){
     document.getElementById('editNama').value = nama;
     document.getElementById('editHarga').value = harga;
     document.getElementById('editKuota').value = kuota;
     document.getElementById('formEdit').action = '/panitia/tiket/' + id;
     document.getElementById('modalEditTiket').classList.remove('hidden');
 }
-
-function closeEditModal() {
+function closeEditModal(){
     document.getElementById('modalEditTiket').classList.add('hidden');
+}
+
+let deleteId = null;
+function openDeleteModal(id){
+    deleteId = id;
+    document.getElementById('modalDelete').classList.remove('hidden');
+    document.getElementById('modalDelete').classList.add('flex');
+}
+function closeDeleteModal(){
+    document.getElementById('modalDelete').classList.add('hidden');
+    document.getElementById('modalDelete').classList.remove('flex');
+}
+function submitDelete(){
+    const form = document.getElementById('deleteForm');
+    form.action = '/panitia/tiket/' + deleteId;
+    form.submit();
 }
 </script>
 @endsection

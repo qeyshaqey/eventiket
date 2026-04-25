@@ -58,37 +58,28 @@
 
         <div class="flex items-center justify-between">
 
-            <!-- PROFILE -->
-            <a href="{{ route('panitia.profil') }}"
-               class="flex items-center gap-3 hover:opacity-80 transition">
+           <!-- PROFILE -->
+<a href="{{ route('panitia.profil') }}"
+   class="flex items-center gap-3 hover:opacity-80 transition">
 
-                <div class="w-9 h-9 rounded-full bg-yellow-400 text-[#192853]
-                    flex items-center justify-center font-bold text-sm">
-                    {{ strtoupper(substr(Auth::user()->name ?? 'U', 0, 1)) }}
-                </div>
+    <img src="https://ui-avatars.com/api/?name={{ session('user') }}" 
+         class="w-10 h-10 rounded-full object-cover shadow-md border">
 
-                <div class="leading-tight">
-                    <p class="text-sm font-semibold text-white">
-                        {{ Auth::user()->name ?? 'User' }}
-                    </p>
-                    <p class="text-xs text-white/40">
-                        Panitia
-                    </p>
-                </div>
-
-            </a>
+    <div class="leading-tight">
+        <p class="text-sm font-semibold text-white">
+            {{ session('user') ?? 'User' }}
+        </p>
+        <p class="text-xs text-white/40">
+            Panitia
+        </p>
+    </div>
+</a>
 
             <!-- LOGOUT -->
-            <form action="{{ route('logout') }}" method="POST">
-                @csrf
-
-                <button type="submit"
-                    class="w-9 h-9 flex items-center justify-center rounded-lg
-                    bg-red-500/10 text-red-400 hover:bg-red-500 hover:text-white transition"
-                    title="Logout">
-
-                    <i class="bi bi-box-arrow-right"></i>
-                </button>
+            <button onclick="openLogoutModal()" 
+    class="flex items-center gap-2 text-red-500 hover:text-red-600">
+    <i class="bi bi-box-arrow-right"></i>
+</button>
 
             </form>
 

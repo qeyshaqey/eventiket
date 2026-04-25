@@ -79,5 +79,78 @@ function showToast(message, type = 'success', duration = 3000) {
 @endif
 </script>
 @yield('script')
+
+<!-- ================= LOGOUT MODAL ================= -->
+<div id="logoutModal" class="fixed inset-0 hidden z-50 items-center justify-center">
+
+    <!-- BACKDROP -->
+    <div class="absolute inset-0 bg-black/50" onclick="closeLogoutModal()"></div>
+
+    <!-- CONTENT -->
+    <div class="relative bg-white w-[380px] rounded-2xl shadow-xl p-6 animate-fadeIn">
+
+        <div class="flex justify-center mb-4">
+            <div class="w-12 h-12 flex items-center justify-center rounded-full bg-red-100">
+                <i class="bi bi-box-arrow-right text-red-500 text-lg"></i>
+            </div>
+        </div>
+
+        <h2 class="text-center font-bold text-[#192853] text-lg">
+            Keluar dari akun?
+        </h2>
+
+        <p class="text-center text-sm text-gray-500 mt-1">
+            Kamu akan keluar dari sistem Eventix
+        </p>
+
+        <div class="flex gap-3 mt-6">
+            <button onclick="closeLogoutModal()"
+                class="w-full py-2 rounded-lg bg-gray-100 text-gray-600 hover:bg-gray-200 transition">
+                Batal
+            </button>
+
+            <button onclick="document.getElementById('logoutForm').submit()"
+                class="w-full py-2 rounded-lg bg-red-500 text-white hover:bg-red-600 transition">
+                Keluar
+            </button>
+        </div>
+
+    </div>
+</div>
+
+<!-- FORM LOGOUT -->
+<form id="logoutForm" action="{{ route('logout') }}" method="POST" class="hidden">
+    @csrf
+</form>
+
+<!-- SCRIPT LOGOUT -->
+<script>
+function openLogoutModal(){
+    const modal = document.getElementById('logoutModal');
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+}
+
+function closeLogoutModal(){
+    const modal = document.getElementById('logoutModal');
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
+}
+
+document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape') closeLogoutModal();
+});
+</script>
+
+<!-- ANIMASI -->
+<style>
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+}
+.animate-fadeIn {
+    animation: fadeIn 0.2s ease-out;
+}
+</style>
 </body>
 </html>
