@@ -5,12 +5,14 @@ namespace App\Http\Controllers\panitia;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Event;
+use App\Models\Transaksi;
 
 class EventPanitiaController extends Controller
 {
     public function index()
     {
-        $events = Event::with('tikets')->latest()->get(); // biar tiket ikut kebaca
+        $events = Event::with('tikets')->latest()->get();
+
         return view('pages.panitia.event.index', compact('events'));
     }
 
@@ -33,7 +35,6 @@ class EventPanitiaController extends Controller
             $validated['poster'] = $request->file('poster')->store('poster', 'public');
         }
 
-        // default status
         $validated['status'] = 'Draft';
 
         Event::create($validated);
@@ -57,7 +58,6 @@ class EventPanitiaController extends Controller
 
         $event = Event::findOrFail($id);
 
-        // update poster kalau ada
         if ($request->hasFile('poster')) {
             $validated['poster'] = $request->file('poster')->store('poster', 'public');
         }
@@ -66,14 +66,17 @@ class EventPanitiaController extends Controller
 
         return back()->with('success', 'Event berhasil diupdate');
     }
+
     public function riwayat()
-{
-    // ambil event + tiket
-    $events = Event::with('tikets')->latest()->get();
+    {
+        $events = Event::with('tikets')->latest()->get();
+        $transaksis = Transaksi::latest()->get();
 
-    // ambil transaksi (kalau sudah ada tabel transaksi)
-    $transaksis = \App\Models\Transaksi::latest()->get();
+        return view('pages.panitia.riwayat', compact('events', 'transaksis'));
+    }
 
-    return view('pages.panitia.riwayat', compact('events', 'transaksis'));
-}
+    public function profil()
+    {
+        return view('pages.panitia.profil');
+    }
 }

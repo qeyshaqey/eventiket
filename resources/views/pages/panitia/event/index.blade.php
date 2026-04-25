@@ -138,201 +138,168 @@
 
 </div>
 <!-- MODAL TAMBAH / EDIT EVENT -->
-<div id="eventModal" class="fixed inset-0 bg-black/50 hidden flex justify-center items-center z-50">
-    <div class="bg-white p-6 rounded-xl shadow w-[420px]" onclick="event.stopPropagation()">
+<div id="eventModal" class="fixed inset-0 hidden z-50">
+    
+    <!-- BACKDROP -->
+    <div class="absolute inset-0 bg-black/50" onclick="closeModal()"></div>
 
-        <!-- HEADER -->
-        <div class="flex justify-between items-center mb-4">
-            <h2 id="modalTitle" class="font-bold text-lg">Tambah Event</h2>
-            <button onclick="closeModal()" class="text-red-500 text-xl">&times;</button>
-        </div>
+    <!-- MODAL BOX -->
+    <div class="relative flex items-center justify-center min-h-screen p-4">
+        <div class="w-full max-w-lg bg-white/95 rounded-2xl shadow-2xl border border-gray-200 overflow-hidden animate-[fadeIn_0.2s_ease]">
 
-        <!-- FORM -->
-        <form id="eventForm" method="POST" action="{{ route('panitia.event.store') }}" enctype="multipart/form-data">
-            @csrf
-            <input type="hidden" id="methodOverride" name="_method" value="POST">
-
-            <!-- Judul -->
-
-<div>
-    <label class="text-sm text-black-600 mb-1 block">Judul Event</label>
-    <input type="text" name="judul"
-        placeholder="Judul Event"
-        value="{{ old('judul') }}"
-        class="w-full border rounded-lg p-2 placeholder-gray-400 text-sm @error('judul') border-red-500 @enderror">
-
-    @error('judul')
-        <small class="text-red-500 text-xs">{{ $message }}</small>
-    @enderror
-</div>
-
-<!-- Kategori -->
-<div>
-    <label class="text-sm text-black-600 mb-1 block">Kategori</label>
-    <select name="kategori"
-        class="w-full border rounded-lg p-2 text-sm @error('kategori') border-red-500 @enderror">
-        
-        <option value="">Pilih Kategori</option>
-        <option value="Seminar" {{ old('kategori') == 'Seminar' ? 'selected' : '' }}>Seminar</option>
-        <option value="Workshop" {{ old('kategori') == 'Workshop' ? 'selected' : '' }}>Workshop</option>
-    </select>
-
-    @error('kategori')
-        <small class="text-red-500 text-xs">{{ $message }}</small>
-    @enderror
-</div>
-
-<!-- Deskripsi -->
-<div>
-    <label class="text-sm text-black-600 mb-1 block">Deskripsi</label>
-    <textarea name="deskripsi"
-        placeholder="Deskripsi"
-        class="w-full border rounded-lg p-2 placeholder-gray-400 text-sm @error('deskripsi') border-red-500 @enderror">{{ old('deskripsi') }}</textarea>
-
-    @error('deskripsi')
-        <small class="text-red-500 text-xs">{{ $message }}</small>
-    @enderror
-</div>
-
-<!-- Tanggal -->
-<div class="grid grid-cols-2 gap-4">
-    <div>
-        <label class="text-sm text-black-600 mb-1 block">Tanggal Mulai</label>
-        <input type="date" name="tanggal_mulai"
-            value="{{ old('tanggal_mulai') }}"
-            class="w-full border rounded-lg p-2 text-sm @error('tanggal_mulai') border-red-500 @enderror">
-
-        @error('tanggal_mulai')
-            <small class="text-red-500 text-xs">{{ $message }}</small>
-        @enderror
-    </div>
-
-    <div>
-        <label class="text-sm text-black-600 mb-1 block">Tanggal Selesai</label>
-        <input type="date" name="tanggal_selesai"
-            value="{{ old('tanggal_selesai') }}"
-            class="w-full border rounded-lg p-2 text-sm @error('tanggal_selesai') border-red-500 @enderror">
-
-        @error('tanggal_selesai')
-            <small class="text-red-500 text-xs">{{ $message }}</small>
-        @enderror
-    </div>
-</div>
-
-<!-- Waktu -->
-<div class="grid grid-cols-2 gap-4">
-    <div>
-        <label class="text-sm text-black-600 mb-1 block">Waktu Mulai</label>
-        <input type="time" name="waktu_mulai"
-            value="{{ old('waktu_mulai') }}"
-            class="w-full border rounded-lg p-2 text-sm @error('waktu_mulai') border-red-500 @enderror">
-
-        @error('waktu_mulai')
-            <small class="text-red-500 text-xs">{{ $message }}</small>
-        @enderror
-    </div>
-
-    <div>
-        <label class="text-sm text-black-600 mb-1 block">Waktu Selesai</label>
-        <input type="time" name="waktu_selesai"
-            value="{{ old('waktu_selesai') }}"
-            class="w-full border rounded-lg p-2 text-sm @error('waktu_selesai') border-red-500 @enderror">
-
-        @error('waktu_selesai')
-            <small class="text-red-500 text-xs">{{ $message }}</small>
-        @enderror
-    </div>
-</div>
-
-<!-- Lokasi -->
-<div>
-    <label class="text-sm text-black-600 mb-1 block">Lokasi</label>
-    <input type="text" name="lokasi"
-        placeholder="Lokasi"
-        value="{{ old('lokasi') }}"
-        class="w-full border rounded-lg p-2 placeholder-gray-400 text-sm @error('lokasi') border-red-500 @enderror">
-
-    @error('lokasi')
-        <small class="text-red-500 text-xs">{{ $message }}</small>
-    @enderror
-</div>
-            <!-- Poster -->
-            <input type="file" name="poster"
-                class="w-full border p-2 mb-3 rounded">
-
-            <!-- BUTTON -->
-            <div class="flex justify-end gap-2">
-                <button type="button" onclick="closeModal()" 
-                    class="bg-gray-300 px-3 py-1 rounded">
-                    Batal
-                </button>
-
-                <button type="submit" 
-                    class="bg-[#192853] text-yellow-400 px-3 py-1 rounded">
-                    Simpan
-                </button>
+            <!-- HEADER -->
+            <div class="flex justify-between items-center px-6 py-4 border-b bg-[#192853] text-white">
+                <h2 id="modalTitle" class="font-semibold text-lg">Tambah Event</h2>
+                <button onclick="closeModal()" class="text-white/80 hover:text-white text-2xl">&times;</button>
             </div>
-        </form>
+
+            <!-- FORM -->
+            <form id="eventForm" method="POST" action="{{ route('panitia.event.store') }}" enctype="multipart/form-data"
+                class="p-6 space-y-4 max-h-[75vh] overflow-y-auto">
+
+                @csrf
+                <input type="hidden" id="methodOverride" name="_method" value="POST">
+
+                <!-- INPUT STYLE UNIFORM -->
+                <div>
+                    <label class="text-sm font-medium">Judul Event</label>
+                    <input type="text" name="judul"
+                        class="w-full mt-1 border rounded-xl p-2.5 text-sm focus:ring-2 focus:ring-[#192853] outline-none">
+                </div>
+
+                <div>
+                    <label class="text-sm font-medium">Kategori</label>
+                    <select name="kategori"
+                        class="w-full mt-1 border rounded-xl p-2.5 text-sm focus:ring-2 focus:ring-[#192853] outline-none">
+                        <option value="">Pilih Kategori</option>
+                        <option value="Seminar">Seminar</option>
+                        <option value="Workshop">Workshop</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="text-sm font-medium">Deskripsi</label>
+                    <textarea name="deskripsi"
+                        class="w-full mt-1 border rounded-xl p-2.5 text-sm focus:ring-2 focus:ring-[#192853] outline-none"></textarea>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="text-sm font-medium">Tanggal Mulai</label>
+                        <input type="date" name="tanggal_mulai"
+                            class="w-full mt-1 border rounded-xl p-2.5 text-sm">
+                    </div>
+                    <div>
+                        <label class="text-sm font-medium">Tanggal Selesai</label>
+                        <input type="date" name="tanggal_selesai"
+                            class="w-full mt-1 border rounded-xl p-2.5 text-sm">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="text-sm font-medium">Waktu Mulai</label>
+                        <input type="time" name="waktu_mulai"
+                            class="w-full mt-1 border rounded-xl p-2.5 text-sm">
+                    </div>
+                    <div>
+                        <label class="text-sm font-medium">Waktu Selesai</label>
+                        <input type="time" name="waktu_selesai"
+                            class="w-full mt-1 border rounded-xl p-2.5 text-sm">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="text-sm font-medium">Lokasi</label>
+                    <input type="text" name="lokasi"
+                        class="w-full mt-1 border rounded-xl p-2.5 text-sm">
+                </div>
+
+                <input type="file" name="poster"
+                    class="w-full border rounded-xl p-2 text-sm">
+
+                <!-- BUTTON -->
+                <div class="flex justify-end gap-2 pt-2">
+                    <button type="button" onclick="closeModal()"
+                        class="px-4 py-2 rounded-xl bg-gray-200 hover:bg-gray-300 text-sm">
+                        Batal
+                    </button>
+
+                    <button type="submit"
+                        class="px-4 py-2 rounded-xl bg-[#192853] text-yellow-400 hover:opacity-90 text-sm">
+                        Simpan
+                    </button>
+                </div>
+
+            </form>
+        </div>
     </div>
 </div>
-
 <!-- MODAL DETAIL -->
-<div id="modalDetail" class="fixed inset-0 bg-black/50 hidden flex justify-center items-center z-50">
-    <div class="bg-white p-6 rounded-xl w-[600px] max-h-[90vh] overflow-y-auto">
+<div id="modalDetail" class="fixed inset-0 hidden z-50">
+    <div class="absolute inset-0 bg-black/50" onclick="closeDetailModal()"></div>
 
-        <h2 class="text-lg font-bold mb-3">Detail Event</h2>
-        <hr class="mb-4">
+    <div class="relative flex items-center justify-center min-h-screen p-4">
+        <div class="w-full max-w-2xl bg-white rounded-2xl shadow-2xl overflow-hidden">
 
-        <!-- ATAS: POSTER + INFO -->
-        <div class="flex gap-4 mb-4">
-
-            <!-- POSTER -->
-            <img id="detailPoster" class="w-40 h-40 object-cover rounded">
-
-            <!-- INFO -->
-            <div class="flex-1 text-sm space-y-1">
-                <p><b>Judul:</b> <span id="detailJudul"></span></p>
-                <p><b>Kategori:</b> <span id="detailKategori"></span></p>
-                <p><b>Lokasi:</b> <span id="detailLokasi"></span></p>
-                <p><b>Tanggal:</b> <span id="detailTanggal"></span></p>
-                <p><b>Waktu:</b> <span id="detailWaktu"></span></p>
+            <div class="px-6 py-4 bg-[#192853] text-white flex justify-between items-center">
+                <h2 class="font-semibold">Detail Event</h2>
+                <button onclick="closeDetailModal()" class="text-white text-2xl">&times;</button>
             </div>
 
-        </div>
+            <div class="p-6 space-y-4 max-h-[75vh] overflow-y-auto">
 
-        <!-- DESKRIPSI -->
-        <div class="mb-4">
-            <b>Deskripsi:</b>
-            <p id="detailDeskripsi" class="text-sm mt-1"></p>
-        </div>
+                <div class="flex gap-4">
+                    <img id="detailPoster" class="w-44 h-44 object-cover rounded-xl shadow">
 
-        <!-- TIKET -->
-        <div class="mb-4">
-            <b>Daftar Tiket:</b>
-            <div id="detailTiket" class="mt-2"></div>
-        </div>
+                    <div class="text-sm space-y-1">
+                        <p><b>Judul:</b> <span id="detailJudul"></span></p>
+                        <p><b>Kategori:</b> <span id="detailKategori"></span></p>
+                        <p><b>Lokasi:</b> <span id="detailLokasi"></span></p>
+                        <p><b>Tanggal:</b> <span id="detailTanggal"></span></p>
+                        <p><b>Waktu:</b> <span id="detailWaktu"></span></p>
+                    </div>
+                </div>
 
-        <!-- BUTTON -->
-        <div class="flex justify-end gap-2 mt-4">
-            <button onclick="closeDetailModal()" class="bg-gray-300 px-3 py-1 rounded">
-                Batal
-            </button>
-            <button onclick="kirimKeAdmin()" class="bg-blue-500 text-white px-3 py-1 rounded">
-                Kirim
-            </button>
-        </div>
+                <div>
+                    <b>Deskripsi</b>
+                    <p id="detailDeskripsi" class="text-sm text-gray-600 mt-1"></p>
+                </div>
 
+                <div>
+                    <b>Tiket</b>
+                    <div id="detailTiket" class="mt-2"></div>
+                </div>
+                    <button onclick="kirimKeAdmin()" class="px-4 py-2 bg-blue-500 text-white rounded-xl text-sm">
+                        Kirim
+                    </button>
+                </div>
+
+            </div>
+        </div>
     </div>
 </div>
 
 <!-- MODAL DELETE -->
-<div id="deleteModal" class="fixed inset-0 bg-black/50 hidden flex justify-center items-center">
-    <div class="bg-white p-6 rounded text-center w-80">
-        <h2 class="font-bold mb-2">Hapus Event?</h2>
-        <p class="text-sm text-gray-500 mb-4">Tidak bisa dikembalikan</p>
+<div id="deleteModal" class="fixed inset-0 hidden z-50">
+    <div class="absolute inset-0 bg-black/50" onclick="closeDeleteModal()"></div>
 
-        <button onclick="closeDeleteModal()" class="bg-gray-300 px-3 py-1 rounded">Batal</button>
-        <button onclick="confirmDelete()" class="bg-red-500 text-white px-3 py-1 rounded">Hapus</button>
+    <div class="relative flex items-center justify-center min-h-screen p-4">
+        <div class="bg-white rounded-2xl shadow-2xl p-6 w-80 text-center">
+
+            <h2 class="font-bold text-lg mb-2">Hapus Event?</h2>
+            <p class="text-sm text-gray-500 mb-5">Data tidak bisa dikembalikan</p>
+
+            <div class="flex justify-center gap-2">
+                <button onclick="closeDeleteModal()" class="px-4 py-2 bg-gray-200 rounded-xl text-sm">
+                    Batal
+                </button>
+                <button onclick="confirmDelete()" class="px-4 py-2 bg-red-500 text-white rounded-xl text-sm">
+                    Hapus
+                </button>
+            </div>
+
+        </div>
     </div>
 </div>
 

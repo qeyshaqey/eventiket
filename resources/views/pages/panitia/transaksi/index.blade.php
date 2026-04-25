@@ -2,70 +2,100 @@
 
 @section('content')
 
-<div class="bg-white rounded shadow p-4">
+<div class="bg-[#EFF8FF] min-h-screen p-6">
 
     <!-- HEADER -->
-    <div class="mb-4">
-        <h1 class="text-xl font-bold mb-3">Data Transaksi</h1>
+    <div class="flex items-center justify-between mb-6">
+        <h1 class="text-xl font-bold text-[#192853]">
+            DATA TRANSAKSI
+        </h1>
     </div>
 
-    <!-- TABLE -->
-    <table class="w-full text-sm border">
-        <thead class="bg-gray-100">
-            <tr>
-                <th class="border p-2">NO</th>
-                <th class="border p-2">NAMA PEMBELI</th>
-                <th class="border p-2">EVENT</th>
-                <th class="border p-2">TIKET</th>
-                <th class="border p-2">TANGGAL</th>
-                <th class="border p-2">TOTAL</th>
-                <th class="border p-2">STATUS</th>
-            </tr>
-        </thead>
+    <!-- TABLE WRAPPER -->
+    <div class="bg-white rounded-2xl shadow-md overflow-hidden border border-gray-100">
 
-        <tbody class="text-center">
+        <!-- TABLE HEADER -->
+        <div class="bg-[#192853] text-white text-xs uppercase grid grid-cols-7 px-4 py-3 font-semibold">
+            <div>No</div>
+            <div>Nama Pembeli</div>
+            <div>Event</div>
+            <div>Tiket</div>
+            <div>Tanggal</div>
+            <div>Total</div>
+            <div>Status</div>
+        </div>
+
+        <!-- TABLE BODY -->
+        <div class="divide-y">
+
             @forelse($transaksis as $index => $trx)
-            <tr>
-                <td class="border p-2">{{ $index + 1 }}</td>
+            <div class="grid grid-cols-7 px-4 py-4 items-center hover:bg-gray-50 transition text-sm">
 
-                <td class="border p-2 text-left">
-                    <div class="font-semibold">{{ $trx->user->name }}</div>
-                    <div class="text-xs text-gray-500">{{ $trx->user->email }}</div>
-                </td>
+                <!-- NO -->
+                <div class="text-gray-600 font-medium">
+                    {{ $index + 1 }}
+                </div>
 
-                <td class="border p-2">{{ $trx->event->judul ?? '-' }}</td>
+                <!-- USER -->
+                <div>
+                    <p class="font-semibold text-gray-800">
+                        {{ $trx->user->name }}
+                    </p>
+                    <p class="text-xs text-gray-500">
+                        {{ $trx->user->email }}
+                    </p>
+                </div>
 
-                <td class="border p-2">
+                <!-- EVENT -->
+                <div class="text-gray-700">
+                    {{ $trx->event->judul ?? '-' }}
+                </div>
+
+                <!-- TIKET -->
+                <div class="text-gray-700">
                     {{ $trx->jumlah_tiket }} tiket
-                </td>
+                </div>
 
-                <td class="border p-2">
+                <!-- TANGGAL -->
+                <div class="text-gray-600 text-xs">
                     {{ \Carbon\Carbon::parse($trx->created_at)->format('d M Y') }}
-                </td>
+                </div>
 
-                <td class="border p-2">
+                <!-- TOTAL -->
+                <div class="font-semibold text-gray-800">
                     Rp {{ number_format($trx->total_harga, 0, ',', '.') }}
-                </td>
+                </div>
 
-                <td class="border p-2">
+                <!-- STATUS -->
+                <div>
                     @if($trx->status == 'pending')
-                        <span class="text-yellow-500 font-semibold">Pending</span>
+                        <span class="px-3 py-1 text-xs rounded-full bg-yellow-100 text-yellow-700 font-semibold">
+                            Pending
+                        </span>
+
                     @elseif($trx->status == 'paid')
-                        <span class="text-green-500 font-semibold">Paid</span>
+                        <span class="px-3 py-1 text-xs rounded-full bg-green-100 text-green-700 font-semibold">
+                            Paid
+                        </span>
+
                     @else
-                        <span class="text-red-500 font-semibold">Failed</span>
+                        <span class="px-3 py-1 text-xs rounded-full bg-red-100 text-red-700 font-semibold">
+                            Failed
+                        </span>
                     @endif
-                </td>
-            </tr>
+                </div>
+
+            </div>
             @empty
-            <tr>
-                <td colspan="7" class="border p-4 text-center text-gray-500">
-                    Tidak ada transaksi
-                </td>
-            </tr>
+
+            <div class="p-6 text-center text-gray-400 text-sm">
+                Tidak ada transaksi
+            </div>
+
             @endforelse
-        </tbody>
-    </table>
+
+        </div>
+    </div>
 
 </div>
 

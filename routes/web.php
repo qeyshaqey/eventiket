@@ -54,6 +54,11 @@ Route::prefix('panitia')->name('panitia.')->group(function () {
 Route::get('/riwayat', [EventPanitiaController::class, 'riwayat'])
     ->name('riwayat');
 
+   // Profil
+Route::get('/profil', [EventPanitiaController::class, 'profil'])->name('profil');
+// PROFIL UPDATE
+    Route::post('/profil/update', [EventPanitiaController::class, 'updateProfil'])
+        ->name('profil.update');
 });
 //===============================================================//
 // Halaman awal

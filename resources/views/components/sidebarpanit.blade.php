@@ -1,76 +1,99 @@
-<div class="w-64 bg-[#192853] text-white flex flex-col justify-between min-h-screen">
+<div class="w-64 bg-[#192853] text-white flex flex-col h-screen">
 
     <!-- TOP -->
-    <div>
+    <div class="flex-1 flex flex-col overflow-y-auto">
+
         <!-- LOGO -->
-        <div class="p-4 border-b border-gray-500">
-    
-    <!-- JUDUL -->
-    <div class="text-lg font-bold text-yellow-400">
-        EventiX <span class="text-white">Panitia</span>
-    </div>
-
-    <!-- SUBTITLE -->
-    <div class="text-xs font-light text-gray-300 mt-1">
-        Manajemen Event dan Tiket
-    </div>
-
-</div>
+        <div class="p-5 border-b border-yellow-300/20">
+            <div class="text-lg font-bold text-yellow-400">
+                EventiX <span class="text-white">Panitia</span>
+            </div>
+            <div class="text-xs font-light text-white/40 mt-1">
+                Manajemen Event dan Tiket
+            </div>
+        </div>
 
         <!-- MENU -->
-        <div class="mt-4 flex flex-col text-sm">
+        <nav class="mt-4 flex flex-col text-sm px-2 space-y-1">
 
-            <!-- BERANDA -->
+            @php
+                function activePanitia($route) {
+                    return request()->routeIs($route)
+                        ? 'bg-yellow-400/10 text-yellow-400 border-l-4 border-yellow-400'
+                        : 'text-white/60 hover:bg-yellow-400/10 hover:text-white transition';
+                }
+            @endphp
+
             <a href="{{ route('panitia.beranda') }}"
-                class="flex items-center gap-3 px-4 py-2 
-                hover:bg-[#0f1a35] hover:text-yellow-400
-                {{ request()->routeIs('panitia.beranda') ? 'bg-[#0f1a35] text-yellow-400' : '' }}">
-                <i class="bi bi-house"></i>
-                Beranda
+               class="flex items-center gap-3 px-4 py-3 rounded-r-lg {{ activePanitia('panitia.beranda') }}">
+                <i class="bi bi-house"></i> Beranda
             </a>
 
-            <!-- EVENT -->
             <a href="{{ route('panitia.event') }}"
-                class="flex items-center gap-3 px-4 py-2 
-                hover:bg-[#0f1a35] hover:text-yellow-400
-                {{ request()->routeIs('panitia.event') ? 'bg-[#0f1a35] text-yellow-400' : '' }}">
-                <i class="bi bi-calendar-event"></i>
-                Event
+               class="flex items-center gap-3 px-4 py-3 rounded-r-lg {{ activePanitia('panitia.event') }}">
+                <i class="bi bi-calendar-event"></i> Event
             </a>
 
-            <!-- TIKET -->
             <a href="{{ route('panitia.tiket') }}"
-                class="flex items-center gap-3 px-4 py-2 
-                hover:bg-[#0f1a35] hover:text-yellow-400
-                {{ request()->routeIs('panitia.tiket') ? 'bg-[#0f1a35] text-yellow-400' : '' }}">
-                <i class="bi bi-ticket-perforated"></i>
-                Tiket
+               class="flex items-center gap-3 px-4 py-3 rounded-r-lg {{ activePanitia('panitia.tiket') }}">
+                <i class="bi bi-ticket-perforated"></i> Tiket
             </a>
 
-            <!-- TRANSAKSI -->
             <a href="{{ route('panitia.transaksi') }}"
-                class="flex items-center gap-3 px-4 py-2 
-                hover:bg-[#0f1a35] hover:text-yellow-400
-                {{ request()->routeIs('panitia.transaksi') ? 'bg-[#0f1a35] text-yellow-400' : '' }}">
-                <i class="bi bi-cash-stack"></i>
-                Transaksi
+               class="flex items-center gap-3 px-4 py-3 rounded-r-lg {{ activePanitia('panitia.transaksi') }}">
+                <i class="bi bi-cash-stack"></i> Transaksi
             </a>
 
-            <!-- RIWAYAT -->
-            <a href="{{ route('panitia.riwayat') }}" 
-   class="flex items-center gap-3 px-4 py-2 hover:bg-[#0f1a35]">
-    <i class="bi bi-clock-history"></i>
-    Riwayat
-</a>
+            <a href="{{ route('panitia.riwayat') }}"
+               class="flex items-center gap-3 px-4 py-3 rounded-r-lg {{ activePanitia('panitia.riwayat') }}">
+                <i class="bi bi-clock-history"></i> Riwayat
+            </a>
 
-        </div>
+        </nav>
+
     </div>
 
     <!-- BOTTOM -->
-    <div class="p-4 border-t border-gray-500 text-sm">
-        <button class="w-full text-left hover:text-red-400">
-            <i class="bi bi-box-arrow-right"></i> Logout
-        </button>
+    <div class="p-4 border-t border-white/10">
+
+        <div class="flex items-center justify-between">
+
+            <!-- PROFILE -->
+            <a href="{{ route('panitia.profil') }}"
+               class="flex items-center gap-3 hover:opacity-80 transition">
+
+                <div class="w-9 h-9 rounded-full bg-yellow-400 text-[#192853]
+                    flex items-center justify-center font-bold text-sm">
+                    {{ strtoupper(substr(Auth::user()->name ?? 'U', 0, 1)) }}
+                </div>
+
+                <div class="leading-tight">
+                    <p class="text-sm font-semibold text-white">
+                        {{ Auth::user()->name ?? 'User' }}
+                    </p>
+                    <p class="text-xs text-white/40">
+                        Panitia
+                    </p>
+                </div>
+
+            </a>
+
+            <!-- LOGOUT -->
+            <form action="{{ route('logout') }}" method="POST">
+                @csrf
+
+                <button type="submit"
+                    class="w-9 h-9 flex items-center justify-center rounded-lg
+                    bg-red-500/10 text-red-400 hover:bg-red-500 hover:text-white transition"
+                    title="Logout">
+
+                    <i class="bi bi-box-arrow-right"></i>
+                </button>
+
+            </form>
+
+        </div>
+
     </div>
 
 </div>
