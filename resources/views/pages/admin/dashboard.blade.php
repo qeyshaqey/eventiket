@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+<div style="font-family: 'Poppins', sans-serif;">
 
 
     <!-- HEADER -->
@@ -203,4 +204,5 @@
     });
 </script>
 
+</div>
 @endsection

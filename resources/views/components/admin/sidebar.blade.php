@@ -5,7 +5,7 @@
 <div id="adminSidebar" class="fixed inset-y-0 left-0 z-50 h-full w-[230px] bg-[#192853] text-white flex flex-col shadow-lg transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out">
 
     <!-- LOGO -->
-    <div class="p-5 bg-[#0f1a35] border-b border-yellow-300/20 flex items-center justify-between">
+    <div class="p-5 border-b border-yellow-300/20 flex items-center justify-between">
         <div>
             <h2 class="text-yellow-400 font-semibold text-sm">Eventix Admin</h2>
             <p class="text-xs text-white/40">Sistem Manajemen Event</p>

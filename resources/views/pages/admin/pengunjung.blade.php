@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+<div style="font-family: 'Poppins', sans-serif;">
 
 <h1 class="text-xl font-semibold mb-6">Data Pengunjung</h1>
 
@@ -99,4 +100,5 @@ function filter(){
 }
 </script>
 
+</div>
 @endsection
