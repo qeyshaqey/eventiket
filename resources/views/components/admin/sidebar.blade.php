@@ -8,7 +8,7 @@
     <div class="p-5 border-b border-yellow-300/20 flex items-center justify-between">
         <div>
             <h2 class="text-yellow-400 font-semibold text-sm">Eventix Admin</h2>
-            <p class="text-xs text-white/40">Sistem Manajemen Event</p>
+            <p class="text-xs text-white/40">Manajemen Event dan Tiket</p>
         </div>
         <button onclick="toggleSidebar()" class="md:hidden text-gray-400 hover:text-white transition">
             <i class="fa-solid fa-xmark text-lg"></i>

@@ -18,6 +18,7 @@
     <style>
         body {
             font-family: 'Poppins', sans-serif;
+            font-weight: bold;
         }
     </style>
 </head>

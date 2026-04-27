@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div style="font-family: 'Poppins', sans-serif;">
+<div style="font-family: 'Poppins', sans-serif; font-weight: bold;">
 
 <h1 class="text-xl font-semibold mb-6">Data Pengunjung</h1>
 
