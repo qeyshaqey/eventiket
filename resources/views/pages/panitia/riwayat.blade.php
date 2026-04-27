@@ -1,29 +1,25 @@
 @extends('layouts.panitialayouts.panitia-main')
 
 @section('content')
-<div class="bg-[#EFF8FF] min-h-screen p-6">
+<div class="p-4 md:p-6">
 
     <!-- TABS -->
-    <div class="flex gap-3 mb-5">
-
+    <div class="flex flex-wrap gap-3 mb-5">
         <button onclick="showTab('event')"
             id="tabBtn-event"
-            class="tab-btn px-5 py-2 rounded-full text-sm font-semibold transition bg-[#192853] text-yellow-400 shadow">
-
+            class="px-5 py-2 rounded-full text-sm font-semibold transition bg-[#192853] text-yellow-400 shadow">
             Riwayat Event
         </button>
 
         <button onclick="showTab('transaksi')"
             id="tabBtn-transaksi"
-            class="tab-btn px-5 py-2 rounded-full text-sm font-semibold transition bg-white text-gray-600 shadow">
-
+            class="px-5 py-2 rounded-full text-sm font-semibold transition bg-white text-gray-600 shadow">
             Riwayat Transaksi
         </button>
-
     </div>
 
     <!-- CARD -->
-    <div class="bg-white rounded-2xl shadow-md border border-gray-100 p-6">
+    <div class="bg-white rounded-2xl shadow-md border border-gray-100 p-4 md:p-6">
 
         <h2 id="cardTitle" class="text-lg font-bold text-[#192853] mb-4">
             Riwayat Event
@@ -34,9 +30,8 @@
         <!-- ===================== -->
         <div id="tab-event">
 
-            <div class="overflow-hidden rounded-xl border">
-
-                <table class="w-full text-sm">
+            <div class="overflow-x-auto rounded-xl border">
+                <table class="min-w-[600px] w-full text-sm">
 
                     <thead class="bg-[#192853] text-white text-xs uppercase">
                         <tr>
@@ -95,9 +90,8 @@
         <!-- ===================== -->
         <div id="tab-transaksi" class="hidden">
 
-            <div class="overflow-hidden rounded-xl border">
-
-                <table class="w-full text-sm">
+            <div class="overflow-x-auto rounded-xl border">
+                <table class="min-w-[800px] w-full text-sm">
 
                     <thead class="bg-[#192853] text-white text-xs uppercase">
                         <tr>
@@ -119,10 +113,8 @@
                                 {{ $index + 1 }}
                             </td>
 
-                            <td class="p-3">
-                                <p class="font-semibold text-gray-800">
-                                    {{ $trx->nama }}
-                                </p>
+                            <td class="p-3 font-semibold text-gray-800">
+                                {{ $trx->nama }}
                             </td>
 
                             <td class="p-3 text-gray-700">
@@ -153,7 +145,6 @@
                     </tbody>
 
                 </table>
-
             </div>
 
         </div>
@@ -163,7 +154,6 @@
 
 <!-- SCRIPT -->
 <script>
-
 function showTab(tab) {
 
     const tabs = ['event', 'transaksi'];
@@ -172,11 +162,8 @@ function showTab(tab) {
         document.getElementById('tab-' + t).classList.add('hidden');
 
         const btn = document.getElementById('tabBtn-' + t);
-
-        if (btn) {
-            btn.classList.remove('bg-[#192853]', 'text-yellow-400');
-            btn.classList.add('bg-white', 'text-gray-600');
-        }
+        btn.classList.remove('bg-[#192853]', 'text-yellow-400');
+        btn.classList.add('bg-white', 'text-gray-600');
     });
 
     document.getElementById('tab-' + tab).classList.remove('hidden');
@@ -188,7 +175,6 @@ function showTab(tab) {
     document.getElementById('cardTitle').innerText =
         tab === 'event' ? 'Riwayat Event' : 'Riwayat Transaksi';
 }
-
 </script>
 
 @endsection
