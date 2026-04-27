@@ -7,39 +7,39 @@
 @section('content')
 <!-- CONTENT -->
     <div class="flex-grow flex items-center justify-center p-4 sm:p-10 py-10">
-        <div class="bg-white w-full max-w-4xl rounded-[2.5rem] p-6 sm:p-14 shadow-xl border border-slate-100">
+        <div class="bg-white w-full max-w-3xl rounded-2xl p-6 sm:p-12 shadow-xl border border-slate-100">
 
             <!-- Profile Section -->
-            <div class="flex flex-col items-center mb-10">
+            <div class="flex flex-col items-center mb-6">
                 <!-- Profile Image -->
-                <div class="w-32 h-32 sm:w-40 sm:h-40 rounded-full overflow-hidden border-4 border-slate-100 shadow-md">
+                <div class="w-32 h-32 rounded-full overflow-hidden border-4 border-slate-100 shadow-md">
                     <img src="" alt="Profile" class="w-full h-full object-cover">
                 </div>
-                <h2 class="mt-6 text-2xl sm:text-3xl font-bold text-navy text-center tracking-tight">Yohana Abigail
+                <h2 class="mt-5 text-2xl sm:text-3xl font-bold text-navy text-center tracking-tight">Yohana Abigail
                     Napitu</h2>
             </div>
 
-            <hr class="border-t-[1.5px] border-slate-200 mb-10">
+            <hr class="border-t-[1.5px] border-slate-200 mb-8">
 
             <!-- Form Section -->
-            <div class="space-y-6 max-w-2xl mx-auto">
+            <div class="space-y-5 max-w-2xl mx-auto">
                 <!-- NIM -->
                 <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-6">
-                    <label class="font-semibold text-navy w-32 shrink-0 text-lg">NIM</label>
+                    <label class="font-semibold text-navy w-24 shrink-0 text-base">NIM</label>
                     <input type="text" value="3312501008" readonly
-                        class="w-full border border-grayCustom rounded-xl px-5 py-3.5 text-grayCustom font-medium focus:outline-none bg-slate-50 transition">
+                        class="w-full border border-grayCustom rounded-xl px-5 py-3 text-grayCustom font-medium focus:outline-none bg-slate-50 transition text-sm">
                 </div>
 
                 <!-- Email -->
                 <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-6">
-                    <label class="font-semibold text-navy w-32 shrink-0 text-lg">Email</label>
+                    <label class="font-semibold text-navy w-24 shrink-0 text-base">Email</label>
                     <input type="email" value="yohana@gmail.com" readonly
-                        class="w-full border border-grayCustom rounded-xl px-5 py-3.5 text-grayCustom font-medium focus:outline-none bg-slate-50 transition">
+                        class="w-full border border-grayCustom rounded-xl px-5 py-3 text-grayCustom font-medium focus:outline-none bg-slate-50 transition text-sm">
                 </div>
             </div>
 
             <!-- Action Button -->
-            <div class="mt-16 flex flex-col sm:flex-row justify-between items-center gap-5">
+            <div class="mt-10 flex flex-col sm:flex-row justify-between items-center gap-4">
                 <!-- Left Button -->
                 <a href="{{ route('pengunjung.daftar_panitia') }}"
                     class="w-full sm:w-auto inline-flex justify-center rounded-full bg-navy px-6 py-3 text-sm font-semibold text-white transition hover:bg-yellow hover:text-navy shadow-md">

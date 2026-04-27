@@ -1,6 +1,6 @@
 <!-- ===== MODAL LOGOUT ===== -->
 <div id="logoutModal" class="fixed inset-0 hidden z-[999] items-center justify-center">
-    <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" onclick="closeLogoutModal()"></div>
+    <div class="absolute inset-0 bg-black/50 " onclick="closeLogoutModal()"></div>
 
     <div class="relative bg-white rounded-2xl shadow-2xl w-full max-w-sm mx-4 overflow-hidden">
         <!-- Header -->

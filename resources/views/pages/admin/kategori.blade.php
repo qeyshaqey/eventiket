@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+<div style="font-family: 'Poppins', sans-serif; font-weight: bold;">
 
 <h1 class="text-[18px] font-semibold mb-6">Kategori Event</h1>
 
@@ -146,4 +147,5 @@ modal.addEventListener('click', function(e) {
 })
 </script>
 
+</div>
 @endsection
