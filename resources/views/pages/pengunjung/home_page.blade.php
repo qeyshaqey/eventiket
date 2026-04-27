@@ -16,7 +16,9 @@
 <body class="min-h-screen bg-[#EFF8FF] text-[#192853]">
     <header class="sticky top-0 z-50 bg-[#192853] text-white shadow-sm">
         <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-5 sm:px-6 lg:px-8">
-            <a href="/home_page" class="text-xl font-semibold tracking-tight">Eventiket</a>
+            <a href="/home_page" class="text-xl font-bold tracking-tight">Eventiket</a>
+            
+            <!-- Desktop Nav -->
             <nav class="hidden items-center gap-4 md:flex">
                 <a href="#home" class="rounded-full border border-white px-4 py-2 text-sm font-medium transition hover:bg-white hover:text-[#192853]">Home</a>
                 <a href="#event" class="rounded-full border border-white px-4 py-2 text-sm font-medium transition hover:bg-white hover:text-[#192853]">Event</a>
@@ -24,8 +26,87 @@
                 <a href="#contact" class="rounded-full border border-white px-4 py-2 text-sm font-medium transition hover:bg-white hover:text-[#192853]">Hubungi Kami</a>
                 <a href="/login" class="rounded-full border border-white px-4 py-2 text-sm font-semibold transition hover:bg-white hover:text-[#192853]">Masuk</a>
             </nav>
+
+            <!-- Mobile Menu Button -->
+            <button type="button" id="mobile-menu-btn" class="inline-flex items-center justify-center rounded-xl p-2.5 text-white bg-white/5 border border-white/10 hover:bg-white/10 md:hidden transition active:scale-95">
+                <i class="fa-solid fa-bars text-lg" id="menu-icon"></i>
+            </button>
+       </div>
+
+       <!-- Mobile Nav Overlay -->
+       <div id="mobile-menu" class="fixed inset-0 z-[60] hidden md:hidden">
+            <!-- Blur Backdrop -->
+            <div class="absolute inset-0 bg-[#192853]/95 backdrop-blur-md opacity-0 transition-opacity duration-300" id="mobile-menu-backdrop"></div>
+            
+            <!-- Content Container -->
+            <div class="relative h-full flex flex-col p-6 transform translate-y-10 opacity-0 transition-all duration-300" id="mobile-menu-content">
+                <div class="flex items-center justify-between mb-12">
+                    <span class="text-xl font-bold text-white">Eventiket</span>
+                    <button type="button" onclick="closeMobileMenu()" class="w-10 h-10 flex items-center justify-center rounded-full bg-white/5 border border-white/10 text-white transition active:scale-90">
+                        <i class="fa-solid fa-xmark text-xl"></i>
+                    </button>
+                </div>
+
+                <nav class="flex flex-col gap-1">
+                    <a href="#home" onclick="closeMobileMenu()" class="group flex items-center justify-between p-4 rounded-2xl hover:bg-white/5 transition">
+                        <span class="text-2xl font-semibold text-white">Home</span>
+                        <i class="fa-solid fa-arrow-right text-[#FFE14E] opacity-0 -translate-x-4 transition-all group-hover:opacity-100 group-hover:translate-x-0"></i>
+                    </a>
+                    <a href="#event" onclick="closeMobileMenu()" class="group flex items-center justify-between p-4 rounded-2xl hover:bg-white/5 transition">
+                        <span class="text-2xl font-semibold text-white">Event</span>
+                        <i class="fa-solid fa-arrow-right text-[#FFE14E] opacity-0 -translate-x-4 transition-all group-hover:opacity-100 group-hover:translate-x-0"></i>
+                    </a>
+                    <a href="#about" onclick="closeMobileMenu()" class="group flex items-center justify-between p-4 rounded-2xl hover:bg-white/5 transition">
+                        <span class="text-2xl font-semibold text-white">Tentang</span>
+                        <i class="fa-solid fa-arrow-right text-[#FFE14E] opacity-0 -translate-x-4 transition-all group-hover:opacity-100 group-hover:translate-x-0"></i>
+                    </a>
+                    <a href="#contact" onclick="closeMobileMenu()" class="group flex items-center justify-between p-4 rounded-2xl hover:bg-white/5 transition">
+                        <span class="text-2xl font-semibold text-white">Hubungi Kami</span>
+                        <i class="fa-solid fa-arrow-right text-[#FFE14E] opacity-0 -translate-x-4 transition-all group-hover:opacity-100 group-hover:translate-x-0"></i>
+                    </a>
+                </nav>
+
+                <div class="mt-auto pb-8">
+                    <a href="/login" class="flex items-center justify-center w-full rounded-2xl bg-white py-4 text-lg font-bold text-[#192853] transition-all hover:bg-[#FFE14E] active:scale-[0.98] shadow-lg">
+                        Masuk Sekarang
+                    </a>
+                    <p class="text-center text-white/40 text-xs mt-6 uppercase tracking-widest font-semibold">Eventiket &copy; 2026</p>
+                </div>
+            </div>
        </div>
     </header>
+
+    <!-- NAVBAR MOBILE  -->
+    <script>
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const menuBackdrop = document.getElementById('mobile-menu-backdrop');
+        const menuContent = document.getElementById('mobile-menu-content');
+
+        function openMobileMenu() {
+            mobileMenu.classList.remove('hidden');
+            setTimeout(() => {
+                menuBackdrop.classList.replace('opacity-0', 'opacity-100');
+                menuContent.classList.replace('translate-y-10', 'translate-y-0');
+                menuContent.classList.replace('opacity-0', 'opacity-100');
+            }, 10);
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeMobileMenu() {
+            menuBackdrop.classList.replace('opacity-100', 'opacity-0');
+            menuContent.classList.replace('translate-y-0', 'translate-y-10');
+            menuContent.classList.replace('opacity-100', 'opacity-0');
+            setTimeout(() => {
+                mobileMenu.classList.add('hidden');
+            }, 300);
+            document.body.style.overflow = '';
+        }
+
+        if (mobileMenuBtn) {
+            mobileMenuBtn.addEventListener('click', openMobileMenu);
+        }
+    </script>
 
     <main>
         <section id="home" class="relative overflow-hidden bg-[#192853] text-white" style="background-image: radial-gradient(circle at top, rgba(255,225,78,0.14), transparent 40%), linear-gradient(180deg, rgba(25,40,83,0.95), rgba(25,40,83,0.8));">

@@ -71,36 +71,42 @@
                 <h3 class="font-semibold mb-6 text-lg">Pilih Jenis Tiket</h3>
 
                 @foreach($event['tickets'] as $i => $ticket)
-                <div class="flex items-center justify-between bg-[#F8FAFC] rounded-xl px-5 py-4 mb-4">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between bg-white sm:bg-[#F8FAFC] rounded-2xl sm:rounded-xl p-5 sm:px-5 sm:py-4 mb-4 border border-slate-100 sm:border-none shadow-[0_8px_30px_rgb(0,0,0,0.04)] sm:shadow-none gap-5 sm:gap-0 transition-all hover:border-[#FFE14E]/50">
 
                     <!-- INFO -->
-                    <div>
-                        <p class="font-semibold text-navy text-[15px]">{{ $ticket['type'] }}</p>
-                        <p class="text-sm text-grayCustom">
+                    <div class="flex flex-col sm:block">
+                        <div class="flex items-center justify-between sm:block mb-1 sm:mb-0">
+                            <p class="font-bold sm:font-semibold text-navy text-lg sm:text-[15px]">{{ $ticket['type'] }}</p>
+                            <!-- KUOTA MOBILE -->
+                            <div class="sm:hidden text-[10px] font-bold bg-[#EFF8FF] text-[#192853] px-3 py-1 rounded-lg">
+                                Kuota {{ $ticket['quota'] }}
+                            </div>
+                        </div>
+                        <p class="text-base sm:text-sm font-semibold sm:font-normal text-[#192853]/70 sm:text-grayCustom">
                             Rp {{ number_format($ticket['price'],0,',','.') }}
                         </p>
                     </div>
 
                     <!-- ACTION -->
-                    <div class="flex items-center gap-4">
+                    <div class="flex items-center justify-between sm:justify-end gap-4">
 
-                        <!-- KUOTA -->
-                        <div class="text-xs bg-white px-3 py-1 rounded-full shadow-sm">
+                        <!-- KUOTA DESKTOP -->
+                        <div class="hidden sm:block text-xs font-medium bg-white px-3 py-1 rounded-full shadow-sm">
                             Kuota {{ $ticket['quota'] }}
                         </div>
 
                         <!-- COUNTER -->
-                        <div class="flex items-center bg-white rounded-full px-2 py-1 shadow-sm">
+                        <div class="flex items-center bg-white sm:bg-white rounded-2xl sm:rounded-full p-1 sm:px-2 sm:py-1 shadow-sm border border-slate-100 sm:border-none">
 
-                            <button onclick="decrease({{ $i }})"
-                                class="w-8 h-8 rounded-full hover:bg-gray-100 text-lg">-</button>
+                            <button type="button" onclick="decrease({{ $i }})"
+                                class="w-10 h-10 sm:w-8 sm:h-8 flex items-center justify-center rounded-xl sm:rounded-full bg-slate-50 sm:bg-transparent hover:bg-[#FFE14E] hover:text-navy transition-all active:scale-90 text-lg font-bold">-</button>
 
                             <input id="qty-{{ $i }}" type="text" inputmode="numeric" pattern="[0-9]*" value="0"
-                                class="mx-2 w-16 bg-transparent text-center font-medium outline-none"
+                                class="w-12 sm:w-16 bg-transparent text-center font-bold sm:font-medium text-navy outline-none text-base"
                                 onchange="setQuantity({{ $i }}, this.value)" oninput="setQuantity({{ $i }}, this.value)">
 
-                            <button onclick="increase({{ $i }})"
-                                class="w-8 h-8 rounded-full hover:bg-gray-100 text-lg">+</button>
+                            <button type="button" onclick="increase({{ $i }})"
+                                class="w-10 h-10 sm:w-8 sm:h-8 flex items-center justify-center rounded-xl sm:rounded-full bg-slate-50 sm:bg-transparent hover:bg-[#FFE14E] hover:text-navy transition-all active:scale-90 text-lg font-bold">+</button>
 
                         </div>
 
