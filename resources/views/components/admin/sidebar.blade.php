@@ -63,7 +63,7 @@
             @csrf
             <button type="button" onclick="openLogoutModal()"
                 class="w-9 h-9 flex items-center justify-center rounded-lg bg-red-500/10 text-red-400 hover:bg-red-500 hover:text-white transition">
-                <i class="fa-solid fa-right-from-bracket"></i>
+                <i class="bi bi-box-arrow-right text-lg"></i>
             </button>
         </form>
     </div>

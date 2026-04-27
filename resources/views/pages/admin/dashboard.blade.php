@@ -10,17 +10,17 @@
     <!-- CARDS -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mb-3">
 
-        <div class="bg-white p-3 rounded-lg shadow-sm">
+        <div class="bg-white p-3 rounded-lg shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md cursor-pointer">
             <div class="text-[10px] text-gray-500 uppercase">Total Pengunjung</div>
             <div class="text-xl font-semibold">1248</div>
         </div>
 
-        <div class="bg-white p-3 rounded-lg shadow-sm">
+        <div class="bg-white p-3 rounded-lg shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md cursor-pointer">
             <div class="text-[10px] text-gray-500 uppercase">Total Panitia</div>
             <div class="text-xl font-semibold">20</div>
         </div>
 
-        <div class="bg-white p-3 rounded-lg shadow-sm">
+        <div class="bg-white p-3 rounded-lg shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md cursor-pointer">
             <div class="text-[10px] text-gray-500 uppercase">Total Event</div>
             <div class="text-xl font-semibold">15</div>
         </div>

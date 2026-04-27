@@ -11,15 +11,15 @@
     <input id="search" type="text" placeholder="Cari pengunjung..."
         class="px-4 py-2 border rounded-lg text-sm flex-1 focus:ring-2 focus:ring-yellow-300 w-full md:w-auto">
 
-    <div class="grid grid-cols-2 md:flex gap-3 w-full md:w-auto">
-        <select id="kategori" class="px-3 py-2 border rounded-lg text-sm min-w-0 w-full md:w-auto">
+    <div class="flex flex-col md:flex-row gap-3 w-full md:w-auto">
+        <select id="kategori" class="px-3 py-2 border rounded-lg text-sm w-full md:w-auto">
             <option value="">Kategori</option>
             <option>Seminar</option>
             <option>Workshop</option>
             <option>Pameran</option>
         </select>
 
-        <select id="event" class="px-3 py-2 border rounded-lg text-sm min-w-0 w-full md:w-auto">
+        <select id="event" class="px-3 py-2 border rounded-lg text-sm w-full md:w-auto">
             <option value="">Event</option>
             <option>Seminar Kewirausahaan</option>
             <option>Workshop UI/UX Design</option>
@@ -35,7 +35,7 @@
     <!-- SCROLL AREA (DITINGGIKAN) -->
     <div class="max-h-[420px] overflow-y-auto overflow-x-auto rounded-xl">
 
-        <table class="w-full text-sm min-w-[700px]">
+        <table class="w-full text-sm">
             <thead class="bg-[#f5f9ff] text-gray-500 sticky top-0 z-10">
                 <tr>
                     <th class="p-4 text-left">No</th>
