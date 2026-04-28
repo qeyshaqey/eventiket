@@ -16,7 +16,7 @@
 
     body {
         margin: 0;
-        font-family: 'Inter', system-ui, sans-serif;
+        font-family: 'Poppins', sans-serif;
         background: #f8fbff;
         color: var(--navy);
     }
@@ -121,7 +121,7 @@
         color: var(--yellow);
     }
     .info-text h4 {
-        font-family: 'Syne', sans-serif;
+        font-family: 'Poppins', sans-serif;
         font-size: 15px;
         font-weight: 700;
         color: var(--navy);
@@ -141,7 +141,7 @@
     }
 
     .social-card h4 {
-        font-family: 'Syne', sans-serif;
+        font-family: 'Poppins', sans-serif;
         font-size: 15px;
         font-weight: 700;
         color: var(--white);
@@ -176,7 +176,7 @@
     }
 
     .contact-form h3 {
-        font-family: 'Syne', sans-serif;
+        font-family: 'Poppins', sans-serif;
         font-size: 24px;
         font-weight: 800;
         color: var(--navy);
@@ -195,7 +195,7 @@
         font-weight: 600;
         color: var(--navy);
         margin-bottom: 9px;
-        font-family: 'Syne', sans-serif;
+        font-family: 'Poppins', sans-serif;
     }
 
     .form-group label .req { color: #ef4444; margin-left: 3px; }
@@ -208,7 +208,7 @@
         border: 2px solid #e2e8f0;
         border-radius: 14px;
         font-size: 15px;
-        font-family: 'DM Sans', sans-serif;
+        font-family: 'Poppins', sans-serif;
         color: var(--navy);
         outline: none;
         transition: border-color 0.2s;
@@ -231,7 +231,7 @@
         border-radius: 10px;
         font-size: 15px;
         font-weight: 700;
-        font-family: 'Syne', sans-serif;
+        font-family: 'Poppins', sans-serif;
         cursor: pointer;
         transition: all 0.2s;
         display: flex;
