@@ -60,6 +60,7 @@
 
                             <!-- DELETE -->
                             <button
+                                onclick='openDeleteModal({{ $k["id"] }}, @json($k["nama_kategori"]))'
                                 class="w-9 h-9 flex items-center justify-center rounded-lg bg-red-500/10 text-red-500 hover:bg-red-100 transition">
                                 <i class="fa-solid fa-trash"></i>
                             </button>
@@ -107,6 +108,31 @@
             </div>
         </form>
     </div>
+    </div>
+</div>
+
+<!-- ================= MODAL HAPUS ================= -->
+<div id="modalHapus" class="fixed inset-0 hidden z-50 items-center justify-center">
+    <div class="absolute inset-0 bg-black/40" onclick="closeDeleteModal()"></div>
+
+    <div class="relative bg-white rounded-xl shadow-lg w-full max-w-sm p-6 mx-4 text-center">
+        <div class="w-16 h-16 bg-red-100 text-red-500 rounded-full flex items-center justify-center mx-auto mb-4">
+            <i class="fa-solid fa-trash-can text-2xl"></i>
+        </div>
+        <h2 class="text-lg font-semibold text-gray-700 mb-2">Hapus Kategori?</h2>
+        <p class="text-sm text-gray-500 mb-6">Apakah Anda yakin ingin menghapus kategori <span id="namaKategoriHapus" class="font-bold text-gray-700"></span>?</p>
+
+        <div class="flex justify-center gap-3">
+            <button onclick="closeDeleteModal()" 
+                class="px-6 py-2 text-sm font-medium rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200 transition">
+                Batal
+            </button>
+            <button onclick="confirmDelete()" 
+                class="px-6 py-2 text-sm font-medium rounded-lg bg-red-500 text-white hover:bg-red-600 transition shadow-md shadow-red-200">
+                Iya, Hapus
+            </button>
+        </div>
+    </div>
 </div>
 
 <!-- SCRIPT -->
@@ -145,6 +171,29 @@ function editData(id, namaVal) {
 modal.addEventListener('click', function(e) {
     if (e.target === modal) closeModal()
 })
+
+// MODAL HAPUS
+let deleteId = null;
+
+function openDeleteModal(id, namaVal) {
+    deleteId = id;
+    document.getElementById('namaKategoriHapus').innerText = namaVal;
+    document.getElementById('modalHapus').classList.remove('hidden');
+    document.getElementById('modalHapus').classList.add('flex');
+}
+
+function closeDeleteModal() {
+    document.getElementById('modalHapus').classList.add('hidden');
+    document.getElementById('modalHapus').classList.remove('flex');
+}
+
+function confirmDelete() {
+    if (deleteId) {
+        console.log("Menghapus kategori dengan ID:", deleteId);
+        // Logika hapus bisa diarahkan ke route delete jika sudah ada
+    }
+    closeDeleteModal();
+}
 </script>
 
 </div>

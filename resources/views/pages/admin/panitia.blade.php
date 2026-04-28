@@ -67,7 +67,8 @@
                             </span>
                         </td>
                         <td class="p-3 text-center">
-                            <button class="w-9 h-9 flex items-center justify-center rounded-lg bg-red-100 text-red-500 hover:bg-red-200 transition">
+                            <button onclick="openDeleteModal('{{ $d['nama'] }}')" 
+                                class="w-9 h-9 flex items-center justify-center rounded-lg bg-red-100 text-red-500 hover:bg-red-200 transition">
                                 <i class="fa-solid fa-trash"></i>
                             </button>
                         </td>
@@ -195,6 +196,30 @@
     </div>
 </div>
 
+<!-- ================= MODAL HAPUS ================= -->
+<div id="modalHapus" class="fixed inset-0 hidden z-50 items-center justify-center">
+    <div class="absolute inset-0 bg-black/40" onclick="closeDeleteModal()"></div>
+
+    <div class="relative bg-white rounded-xl shadow-lg w-full max-w-sm p-6 mx-4 text-center">
+        <div class="w-16 h-16 bg-red-100 text-red-500 rounded-full flex items-center justify-center mx-auto mb-4">
+            <i class="fa-solid fa-trash-can text-2xl"></i>
+        </div>
+        <h2 class="text-lg font-semibold text-gray-700 mb-2">Hapus Panitia?</h2>
+        <p class="text-sm text-gray-500 mb-6">Apakah Anda yakin ingin menghapus <span id="namaPanitiaHapus" class="font-bold text-gray-700"></span> dari daftar panitia aktif?</p>
+
+        <div class="flex justify-center gap-3">
+            <button onclick="closeDeleteModal()" 
+                class="px-6 py-2 text-sm font-medium rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200 transition">
+                Batal
+            </button>
+            <button onclick="confirmDelete()" 
+                class="px-6 py-2 text-sm font-medium rounded-lg bg-red-500 text-white hover:bg-red-600 transition shadow-md shadow-red-200">
+                Iya, Hapus
+            </button>
+        </div>
+    </div>
+</div>
+
 <script>
     <x-admin.tab-search-script />
 
@@ -216,6 +241,27 @@
         document.getElementById('modalTolak').classList.add('hidden');
         document.getElementById('modalTolak').classList.remove('flex');
         document.getElementById('alasanInput').value = '';
+    }
+
+    // MODAL HAPUS
+    let deleteNama = '';
+
+    function openDeleteModal(nama) {
+        deleteNama = nama;
+        document.getElementById('modalHapus').classList.remove('hidden');
+        document.getElementById('modalHapus').classList.add('flex');
+        document.getElementById('namaPanitiaHapus').innerText = nama;
+    }
+
+    function closeDeleteModal() {
+        document.getElementById('modalHapus').classList.add('hidden');
+        document.getElementById('modalHapus').classList.remove('flex');
+    }
+
+    function confirmDelete() {
+        console.log("Menghapus panitia:", deleteNama);
+        // Tambahkan logika penghapusan di sini
+        closeDeleteModal();
     }
 
     function submitAlasan() {
