@@ -8,20 +8,26 @@
 <div class="bg-white rounded-[16px] border border-[#e6eef8] shadow p-6">
 
     <!-- HEADER -->
-    <div class="flex justify-between items-center mb-5">
-        <h2 class="text-sm font-semibold">Buat Kategori</h2>
+    <div class="flex flex-col md:flex-row justify-between items-center gap-4 mb-5">
+        <div class="w-full md:flex-1">
+            <div class="relative">
+                <input type="text" id="searchKategori" placeholder="Cari kategori..." 
+                    class="w-full pl-10 pr-4 py-2 border rounded-xl text-sm focus:ring-1 focus:ring-[#192853] outline-none font-normal">
+                <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+            </div>
+        </div>
 
         <button type="button" onclick="openModal()"
-            class="flex items-center gap-2 bg-[#192853] text-yellow-400 px-3 py-2 rounded-lg text-sm hover:bg-[#0f1a35] transition">
+            class="flex items-center gap-2 bg-[#192853] text-yellow-400 px-4 py-2 rounded-xl text-sm hover:bg-[#0f1a35] transition shrink-0">
             <i class="fa-solid fa-plus text-xs"></i>
-            Tambah
+            Tambah Kategori
         </button>
     </div>
 
     <!-- SCROLL TABLE -->
     <div class="max-h-[65vh] overflow-y-auto overflow-x-auto rounded-lg border">
 
-        <table class="w-full text-sm border-collapse">
+        <table class="w-full text-sm border-collapse" id="tableKategori">
 
             <!-- HEADER (STICKY) -->
             <thead class="sticky top-0 bg-white z-10">
@@ -187,13 +193,17 @@ function closeDeleteModal() {
     document.getElementById('modalHapus').classList.remove('flex');
 }
 
-function confirmDelete() {
-    if (deleteId) {
-        console.log("Menghapus kategori dengan ID:", deleteId);
-        // Logika hapus bisa diarahkan ke route delete jika sudah ada
+    function confirmDelete() {
+        if (deleteId) {
+            console.log("Menghapus kategori dengan ID:", deleteId);
+            // Logika hapus bisa diarahkan ke route delete jika sudah ada
+        }
+        closeDeleteModal();
     }
-    closeDeleteModal();
-}
+
+    // SEARCH
+    <x-admin.tab-search-script />
+    setupSearch('searchKategori', 'tableKategori');
 </script>
 
 </div>

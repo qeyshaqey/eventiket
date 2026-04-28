@@ -8,21 +8,30 @@
     <h1 class="text-lg font-semibold mb-3">Beranda</h1>
 
     <!-- CARDS -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mb-3">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
 
-        <div class="bg-white p-3 rounded-lg shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md cursor-pointer">
-            <div class="text-[10px] text-gray-500 uppercase">Total Pengunjung</div>
-            <div class="text-xl font-semibold">1248</div>
+        <div class="bg-white p-5 rounded-xl shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md cursor-pointer flex flex-col items-center text-center">
+            <div class="bg-yellow-100 text-yellow-600 w-12 h-12 rounded-full flex items-center justify-center mb-3 text-xl">
+                <i class="fa-solid fa-users"></i>
+            </div>
+            <div class="text-[10px] text-gray-500 uppercase tracking-wider mb-1">Total Pengunjung</div>
+            <div class="text-2xl font-bold">1,248</div>
         </div>
 
-        <div class="bg-white p-3 rounded-lg shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md cursor-pointer">
-            <div class="text-[10px] text-gray-500 uppercase">Total Panitia</div>
-            <div class="text-xl font-semibold">20</div>
+        <div class="bg-white p-5 rounded-xl shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md cursor-pointer flex flex-col items-center text-center">
+            <div class="bg-yellow-100 text-yellow-600 w-12 h-12 rounded-full flex items-center justify-center mb-3 text-xl">
+                <i class="fa-solid fa-user-tie"></i>
+            </div>
+            <div class="text-[10px] text-gray-500 uppercase tracking-wider mb-1">Total Panitia</div>
+            <div class="text-2xl font-bold">20</div>
         </div>
 
-        <div class="bg-white p-3 rounded-lg shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md cursor-pointer">
-            <div class="text-[10px] text-gray-500 uppercase">Total Event</div>
-            <div class="text-xl font-semibold">15</div>
+        <div class="bg-white p-5 rounded-xl shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md cursor-pointer flex flex-col items-center text-center">
+            <div class="bg-yellow-100 text-yellow-600 w-12 h-12 rounded-full flex items-center justify-center mb-3 text-xl">
+                <i class="fa-solid fa-calendar-check"></i>
+            </div>
+            <div class="text-[10px] text-gray-500 uppercase tracking-wider mb-1">Total Event</div>
+            <div class="text-2xl font-bold">15</div>
         </div>
 
     </div>
@@ -35,12 +44,21 @@
 
             <h2 class="text-xs font-semibold mb-2">Event Disetujui</h2>
 
-            <div class="bg-white rounded-lg shadow-sm">
-                <div class="max-h-[400px] overflow-y-auto p-2 space-y-2">
+            <div class="bg-white rounded-lg shadow-sm overflow-hidden">
+                <!-- SEARCH -->
+                <div class="p-3 border-b">
+                    <div class="relative">
+                        <input type="text" id="searchEvent" placeholder="Cari event..." 
+                            class="w-full pl-9 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-lg text-xs focus:ring-1 focus:ring-[#192853] outline-none">
+                        <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                    </div>
+                </div>
+
+                <div id="eventList" class="h-[340px] overflow-y-auto p-2 space-y-2">
 
                     @foreach ($events as $event)
                     <div 
-                        class="flex items-center gap-2 p-2 rounded-lg hover:bg-blue-50 cursor-pointer border text-xs transition active:scale-[0.97]"
+                        class="event-card flex items-center gap-2 p-2 rounded-lg hover:bg-blue-50 cursor-pointer border text-xs transition active:scale-[0.97]"
                         onclick='showModal(
                             @json($event["nama"]),
                             @json($event["kategori"]),
@@ -201,6 +219,16 @@
 
     document.getElementById('modal').addEventListener('click', function(e) {
         if (e.target === this) closeModal();
+    });
+
+    // SEARCH EVENT
+    document.getElementById('searchEvent').addEventListener('keyup', function() {
+        let value = this.value.toLowerCase();
+        let cards = document.querySelectorAll('.event-card');
+        cards.forEach(card => {
+            let text = card.innerText.toLowerCase();
+            card.style.display = text.includes(value) ? 'flex' : 'none';
+        });
     });
 </script>
 
