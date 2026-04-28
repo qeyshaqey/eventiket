@@ -47,7 +47,7 @@
                                 <div id="category-menu" class="absolute left-0 right-0 top-full mt-2 z-50 hidden opacity-0 translate-y-2 transition-all duration-200">
                                     <div class="bg-white rounded-2xl shadow-xl border border-slate-200 overflow-hidden">
                                         <div class="p-2">
-                                            @foreach(['semua', 'Seminar', 'Sosial', 'Olahraga', 'Hiburan', 'Kompetisi', 'Religi'] as $cat)
+                                            @foreach(['semua', 'Seminar', 'Sosial', 'Olahraga', 'Hiburan', 'Kompetisi', 'Keagamaan'] as $cat)
                                                 <button type="button" 
                                                     onclick="selectCategory('{{ $cat }}')"
                                                     class="w-full text-left px-4 py-2.5 text-sm rounded-xl transition hover:bg-[#EFF8FF] hover:text-[#192853] {{ ($category ?? 'semua') === $cat ? 'bg-[#EFF8FF] text-[#192853] font-semibold' : 'text-slate-600' }}">

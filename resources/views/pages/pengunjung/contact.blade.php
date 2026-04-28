@@ -1,6 +1,6 @@
 @extends('layouts.pengunjung')
 
-@section('title', 'Contact | Eventiket')
+@section('title', 'Kontak | Eventiket')
 
 @push('styles')
 <style>
@@ -306,7 +306,7 @@
                     <div class="form-row">
                         <div class="form-group">
                             <label>Nama Lengkap <span class="req">*</span></label>
-                            <input type="text" name="name" placeholder="Masukkan namu" required>
+                            <input type="text" name="name" placeholder="Masukkan nama" required>
                         </div>
 
                         <div class="form-group">

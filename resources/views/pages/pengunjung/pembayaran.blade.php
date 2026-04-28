@@ -374,7 +374,7 @@
 
         const noBank = !bankInput || !bankInput.value;
         const noRek  = !rekeningInput.value.trim();
-        const noFile  !inputFile.files || inputFile.files.length === 0;
+        const noFile = !inputFile.files || inputFile.files.length === 0;
 
         if (noBank || noRek || noFile) {
             showToast('Silahkan lengkapi form terlebih dahulu', 'error');

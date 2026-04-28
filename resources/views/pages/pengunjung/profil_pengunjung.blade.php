@@ -13,7 +13,7 @@
             <div class="flex flex-col items-center mb-6">
                 <!-- Profile Image -->
                 <div class="w-32 h-32 rounded-full overflow-hidden border-4 border-slate-100 shadow-md">
-                    <img src="" alt="Profile" class="w-full h-full object-cover">
+                    <img src="" alt="Profil" class="w-full h-full object-cover">
                 </div>
                 <h2 class="mt-5 text-2xl sm:text-3xl font-bold text-navy text-center tracking-tight">Yohana Abigail
                     Napitu</h2>
@@ -77,18 +77,18 @@
                 <div class="flex flex-col items-center mb-4 mt-2">
                     <div
                         class="w-20 h-20 sm:w-24 sm:h-24 rounded-full overflow-hidden border border-slate-200 shadow-md">
-                        <img src="" alt="Profile" class="w-full h-full object-cover" id="preview-image">
+                        <img src="" alt="Profil" class="w-full h-full object-cover" id="preview-image">
                     </div>
 
                     <div class="mt-3 text-center">
                         <label
                             class="inline-flex items-center border border-grayCustom rounded-xl overflow-hidden cursor-pointer hover:bg-slate-50 transition shadow-sm mb-1">
                             <span
-                                class="bg-[#E2E8F0] px-4 py-1.5 font-semibold text-grayCustom border-r border-grayCustom text-sm">Browse</span>
+                                class="bg-[#E2E8F0] px-4 py-1.5 font-semibold text-grayCustom border-r border-grayCustom text-sm">Pilih File</span>
                             <span class="px-4 py-1.5 text-grayCustom font-medium text-xs sm:text-sm" id="file-name">No
                                 file selected.</span>
                             <input type="file" class="hidden" accept=".jpg,.png"
-                                onchange="document.getElementById('file-name').innerText = this.files[0] ? this.files[0].name : 'No file selected.'">
+                                onchange="document.getElementById('file-name').innerText = this.files[0] ? this.files[0].name : 'Tidak ada file dipilih.'">
                         </label>
                         <p class="text-[10px] sm:text-xs text-grayCustom mt-1">*kosongkan jika tidak ingin mengubah
                             foto. Format: JPG, PNG, Maks: 2MB</p>
