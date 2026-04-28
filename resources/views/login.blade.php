@@ -193,7 +193,7 @@
 
         .inp-wrap input {
             width: 100%;
-            padding: 13px 14px 13px 42px;
+            padding: 13px 40px 13px 42px; /* Ditambah padding kanan agar tidak tertutup icon mata */
             border: 1.5px solid #e2e8f0;
             border-radius: 12px;
             font-size: 14px;
@@ -382,17 +382,20 @@
         }
 
         /* ── Responsive ── */
-        @media (max-width: 640px) {
+        @media (max-width: 768px) {
+            body {
+                padding: 16px;
+            }
+            .wrap {
+                flex-direction: column;
+                border-radius: 20px;
+                width: 100%;
+            }
             .left {
                 display: none;
             }
-
             .right {
-                padding: 40px 28px;
-            }
-
-            .wrap {
-                border-radius: 20px;
+                padding: 32px 20px;
             }
         }
     </style>
@@ -548,15 +551,15 @@
 
                         <!-- ICON MATA -->
                         <label for="togglePass" class="eye">
-                            <!-- eye -->
+                            <!-- eye open -->
                             <svg class="eye-open" viewBox="0 0 24 24">
                                 <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
                                 <circle cx="12" cy="12" r="3" />
                             </svg>
 
-                            <!-- eye off -->
+                            <!-- eye close -->
                             <svg class="eye-close" viewBox="0 0 24 24">
-                                <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8" />
+                                <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8s4-8 11-8a10 10 0 0 1 5.94 2" />
                                 <line x1="1" y1="1" x2="23" y2="23" />
                             </svg>
                         </label>
@@ -579,18 +582,14 @@
     </div>
 
     <script>
-        function togglePass() {
-            var input = document.getElementById('password');
-            var icon = document.getElementById('eye-icon');
-
-            if (input.type === 'password') {
-                input.type = 'text';
-                icon.innerHTML = '<line x1="1" y1="1" x2="23" y2="23"/>';
+        document.getElementById('togglePass').addEventListener('change', function() {
+            const passwordInput = document.getElementById('password');
+            if (this.checked) {
+                passwordInput.type = 'text';
             } else {
-                input.type = 'password';
-                icon.innerHTML = '<circle cx="12" cy="12" r="3"/>';
+                passwordInput.type = 'password';
             }
-        }
+        });
     </script>
 
 </body>

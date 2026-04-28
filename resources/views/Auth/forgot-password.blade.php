@@ -35,6 +35,7 @@
         .wrap {
             display: flex;
             width: 900px;
+            max-width: 100%;
             border-radius: 24px;
             overflow: hidden;
             box-shadow: 0 32px 80px rgba(25, 40, 83, .18);
@@ -204,6 +205,24 @@
             color: var(--navy);
             font-weight: 700;
             text-decoration: none;
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 768px) {
+            body {
+                padding: 16px;
+            }
+            .wrap {
+                flex-direction: column;
+                border-radius: 20px;
+                width: 100%;
+            }
+            .left {
+                display: none;
+            }
+            .right {
+                padding: 32px 20px;
+            }
         }
     </style>
 </head>

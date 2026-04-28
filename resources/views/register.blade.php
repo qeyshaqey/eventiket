@@ -42,7 +42,14 @@
         .login-link{text-align:center;margin-top:15px;font-size:13px;color:#7a84a0}
         .login-link a{color:#1a2340;font-weight:600;text-decoration:none}
         .login-link a:hover{text-decoration:underline}
-        @media(max-width:680px){.wrap{flex-direction:column}.left{width:100%;min-height:210px}.right{padding:24px 20px}.form-row{flex-direction:column;gap:0}}
+        /* ── Responsive ── */
+        @media (max-width: 768px) {
+            body { padding: 16px; }
+            .wrap { flex-direction: column; border-radius: 20px; width: 100%; max-width: 100%; }
+            .left { display: none; }
+            .right { padding: 32px 20px; }
+            .form-row { flex-direction: column; gap: 0; }
+        }
     </style>
 </head>
 
