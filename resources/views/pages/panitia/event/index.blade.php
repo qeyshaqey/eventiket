@@ -3,15 +3,29 @@
 @section('content')
 
 <div class="bg-white rounded shadow p-4">
-
     <!-- HEADER -->
-    <div class="mb-4">
-        <h1 class="text-xl font-bold mb-3">Event Yang Dikelola</h1>
-        <button onclick="openModal('tambah')" 
-            class="flex items-center gap-2 bg-[#192853] text-yellow-400 px-3 py-2 rounded-lg text-sm hover:bg-[#0f1a35] transition">
-            + Tambah Event
-        </button>
+<div class="mb-4">
+
+    <!-- BARIS ATAS -->
+    <div class="flex justify-between items-center mb-3">
+        <h1 class="text-xl font-bold">Event Yang Dikelola</h1>
+
+        <select id="filterKategori"
+            class="border rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-[#192853]">
+            <option value="">Semua</option>
+            <option value="Seminar">Seminar</option>
+            <option value="Workshop">Workshop</option>
+        </select>
     </div>
+
+    <!-- BARIS BAWAH -->
+    <div class="flex justify-between items-center">
+    <button onclick="openModal('tambah')" 
+        class="bg-[#192853] text-yellow-400 px-4 py-2 rounded-lg text-sm hover:bg-[#0f1a35] transition">
+        + Tambah Event
+    </button>
+</div>
+</div>
 
     <div class="overflow-x-auto rounded-xl border border-gray-200 shadow-sm">
 
@@ -215,8 +229,14 @@
                         class="w-full mt-1 border rounded-xl p-2.5 text-sm">
                 </div>
 
-                <input type="file" name="poster"
-                    class="w-full border rounded-xl p-2 text-sm">
+                <div>
+    <label class="text-sm font-medium">Poster Event</label>
+    <input type="file" name="poster"
+        class="w-full mt-1 border rounded-xl p-2.5 text-sm focus:ring-2 focus:ring-[#192853]">
+        <p class="text-xs text-gray-400 mt-1">
+    Format: JPG/PNG, max 2MB
+</p>
+</div>
 
                 <!-- BUTTON -->
                 <div class="flex justify-end gap-2 pt-2">
