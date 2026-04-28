@@ -104,33 +104,38 @@
 
                         <span>Status</span><span>:</span>
                         <span class="font-medium
-                    @if($event['status'] == 'Belum Bayar') text-red-500
-                    @elseif($event['status'] == 'Menunggu Verifikasi') text-yellow-500
-                    @elseif($event['status'] == 'Ditolak') text-gray-400
-                    @elseif($event['status'] == 'Berhasil Diverifikasi') text-green-500
-                    @endif
-                ">
+                            @if($event['status'] == 'Belum Bayar') text-red-500
+                            @elseif($event['status'] == 'Menunggu Verifikasi') text-yellow-500
+                            @elseif($event['status'] == 'Ditolak') text-gray-400
+                            @elseif($event['status'] == 'Berhasil Diverifikasi') text-green-500
+                            @endif
+                        ">
                             {{ $event['status'] }}
+                            {{-- Badge AKTIF/SELESAI: hanya muncul di mobile, inline --}}
+                            @if($event['status'] == 'Berhasil Diverifikasi')
+                                <span class="sm:hidden inline-flex items-center ml-1 bg-gray-200 text-navy text-[10px] px-3 py-0.5 rounded-full font-bold tracking-wide align-middle">
+                                    {{ $activeTab === 'riwayat' ? 'SELESAI' : 'AKTIF' }}
+                                </span>
+                            @endif
                         </span>
 
                     </div>
 
-                    <!-- BUTTON -->
+                    <!-- BUTTON BAYAR -->
                     @if($event['status'] == 'Belum Bayar')
-                            <a href="{{ route('pengunjung.pembayaran') }}" class="mt-5 w-full bg-navy text-white py-2 rounded-full text-sm text-center block font-medium
-                        hover:bg-yellow hover:text-navy transition">
-                                LAKUKAN PEMBAYARAN
-                            </a>
+                        <a href="{{ route('pengunjung.pembayaran') }}" class="mt-5 w-full bg-navy text-white py-2 rounded-full text-sm text-center block font-medium hover:bg-yellow hover:text-navy transition">
+                            LAKUKAN PEMBAYARAN
+                        </a>
                     @endif
 
-                    <!-- BADGE STATUS AKTIF / SELESAI -->
+                    {{-- Badge AKTIF/SELESAI: hanya muncul di desktop, absolute --}}
                     @if($event['status'] == 'Berhasil Diverifikasi')
-                        <div class="absolute bottom-4 right-4 bg-gray-200 text-xs px-4 py-1 rounded-full font-medium">
+                        <div class="hidden sm:block absolute bottom-4 right-4 bg-gray-200 text-xs px-4 py-1 rounded-full font-medium">
                             {{ $activeTab === 'riwayat' ? 'SELESAI' : 'AKTIF' }}
                         </div>
                     @endif
 
-                </div>
+                </div>{{-- end card --}}
 
             @endforeach
 

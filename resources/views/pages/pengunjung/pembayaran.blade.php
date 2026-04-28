@@ -114,22 +114,35 @@
 
                 <form action="#" method="POST" enctype="multipart/form-data" class="space-y-4">
 
-                    <!-- Pilih Bank -->
-                    <div class="space-y-1.5 group">
+                    <!-- Pilih Bank (Custom Dropdown) -->
+                    <div class="space-y-1.5">
                         <label class="block text-xs font-semibold text-navy ml-1">Bank Pengembalian Dana</label>
-                        <div class="relative">
+                        <div class="relative w-full">
+                            <input type="hidden" id="bank-input" name="bank_pengembalian" value="">
+
+                            <!-- Trigger Button -->
+                            <button type="button" id="bank-btn" onclick="toggleBankMenu()"
+                                class="w-full flex items-center justify-between bg-white/80 border-2 border-transparent hover:border-navy/30 rounded-xl py-2.5 pl-10 pr-4 shadow-sm text-sm font-medium transition-all duration-200 text-left cursor-pointer">
+                                <span id="bank-label" class="text-gray-400 font-normal">Pilih Bank</span>
+                                <i id="bank-icon" class="bi bi-chevron-down text-gray-400 transition-transform duration-200"></i>
+                            </button>
+
+                            <!-- Ikon bank di kiri -->
                             <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
-                                <i class="bi bi-bank2 text-gray-400 group-focus-within:text-navy transition-colors"></i>
+                                <i class="bi bi-bank2 text-gray-400"></i>
                             </div>
-                            <select id="bank_pengembalian" 
-                                    class="w-full bg-white/80 border-2 border-transparent focus:border-navy focus:bg-white rounded-xl py-2.5 pl-10 pr-4 outline-none transition-all duration-300 shadow-sm text-sm text-navy font-medium appearance-none cursor-pointer">
-                                <option value="" disabled selected>Pilih Bank</option>
-                                <option value="BNI">BNI</option>
-                                <option value="BCA">BCA</option>
-                                <option value="MANDIRI">MANDIRI</option>
-                            </select>
-                            <div class="absolute inset-y-0 right-0 pr-3.5 flex items-center pointer-events-none">
-                                <i class="bi bi-chevron-down text-gray-400"></i>
+
+                            <!-- Dropdown Menu: w-full agar tidak melebar keluar -->
+                            <div id="bank-menu"
+                                class="absolute left-0 right-0 top-full mt-1.5 z-[100] hidden bg-white rounded-2xl shadow-2xl border border-slate-100 overflow-hidden">
+                                <div class="p-1.5">
+                                    @foreach(['BNI', 'BCA', 'MANDIRI'] as $bank)
+                                    <button type="button" onclick="selectBank('{{ $bank }}')"
+                                        class="w-full text-left px-4 py-2.5 rounded-xl text-sm font-medium text-navy hover:bg-[#EFF8FF] transition-colors duration-150">
+                                        {{ $bank }}
+                                    </button>
+                                    @endforeach
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -220,10 +233,32 @@
 <div id="toast-notice" class="fixed top-6 right-6 z-50 w-[min(360px,calc(100%-2rem))] opacity-0 pointer-events-none transform rounded-[24px] border border-slate-200 border-r-8 border-yellow bg-white/95 px-5 py-4 text-sm text-slate-900 shadow-2xl backdrop-blur-sm transition duration-300 ease-out">
     <p id="toast-notice-text" class="font-medium"></p>
 </div>
+<span class="hidden !border-red-500 !border-yellow"></span>
 @endsection
 
 @push('scripts')
 <script>
+    // Bank Dropdown
+    function toggleBankMenu() {
+        document.getElementById('bank-menu').classList.toggle('hidden');
+        document.getElementById('bank-icon').classList.toggle('rotate-180');
+    }
+    function selectBank(v) {
+        document.getElementById('bank-input').value = v;
+        const lbl = document.getElementById('bank-label');
+        lbl.textContent = v;
+        lbl.className = 'text-navy font-medium';
+        document.getElementById('bank-menu').classList.add('hidden');
+        document.getElementById('bank-icon').classList.remove('rotate-180');
+    }
+    document.addEventListener('click', function(e) {
+        const btn = document.getElementById('bank-btn'), menu = document.getElementById('bank-menu');
+        if (btn && menu && !btn.contains(e.target) && !menu.contains(e.target)) {
+            menu.classList.add('hidden');
+            document.getElementById('bank-icon').classList.remove('rotate-180');
+        }
+    });
+
     const inputFile = document.getElementById('bukti_transfer');
     const previewContainer = document.getElementById('image-preview');
     const fileNameDisplay = document.getElementById('file-name');
@@ -313,9 +348,11 @@
         toastNoticeText.innerText = message;
         
         if (type === 'error') {
-            toastNotice.classList.replace('border-yellow', 'border-red-500');
+            toastNotice.classList.remove('!border-yellow');
+            toastNotice.classList.add('!border-red-500');
         } else {
-            toastNotice.classList.replace('border-red-500', 'border-yellow');
+            toastNotice.classList.remove('!border-red-500');
+            toastNotice.classList.add('!border-yellow');
         }
 
         toastNotice.classList.remove('opacity-0', 'pointer-events-none');
@@ -328,20 +365,26 @@
     }
 
     const form = document.querySelector('form');
-    const bankInput = document.getElementById('bank_pengembalian');
+    const bankInput = document.getElementById('bank-input');
     const rekeningInput = document.getElementById('rekening_pengembalian');
 
-    form.addEventListener('submit', function(e) {
+    form.addEventListener('submit', function(e) {\
+
         e.preventDefault();
-        
-        if (!bankInput.value || !rekeningInput.value.trim() || !inputFile.files || inputFile.files.length === 0) {
+
+        const noBank = !bankInput || !bankInput.value;
+        const noRek  = !rekeningInput.value.trim();
+        const noFile = !inputFile.files || inputFile.files.length === 0;
+
+        if (noBank || noRek || noFile) {
             showToast('Silahkan lengkapi form terlebih dahulu', 'error');
-        } else {
-            showToast('Konfirmasi pembayaran berhasil dikirim.', 'success');
-            setTimeout(() => {
-                window.location.href = "{{ route('pengunjung.tiket') }}";
-            }, 1500);
+            return;
         }
+
+        showToast('Konfirmasi pembayaran berhasil dikirim.', 'success');
+        setTimeout(() => {
+            window.location.href = "{{ route('pengunjung.tiket') }}";
+        }, 1500);=
     });
 </script>
 @endpush

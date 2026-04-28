@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home - Eventiket</title>
+    <title>Beranda - Eventiket</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -20,7 +20,7 @@
             
             <!-- Desktop Nav -->
             <nav class="hidden items-center gap-4 md:flex">
-                <a href="#home" class="rounded-full border border-white px-4 py-2 text-sm font-medium transition hover:bg-white hover:text-[#192853]">Home</a>
+                <a href="#home" class="rounded-full border border-white px-4 py-2 text-sm font-medium transition hover:bg-white hover:text-[#192853]">Beranda</a>
                 <a href="#event" class="rounded-full border border-white px-4 py-2 text-sm font-medium transition hover:bg-white hover:text-[#192853]">Event</a>
                 <a href="#about" class="rounded-full border border-white px-4 py-2 text-sm font-medium transition hover:bg-white hover:text-[#192853]">Tentang</a>
                 <a href="#contact" class="rounded-full border border-white px-4 py-2 text-sm font-medium transition hover:bg-white hover:text-[#192853]">Hubungi Kami</a>
@@ -49,7 +49,7 @@
 
                 <nav class="flex flex-col gap-1">
                     <a href="#home" onclick="closeMobileMenu()" class="group flex items-center justify-between p-4 rounded-2xl hover:bg-white/5 transition">
-                        <span class="text-2xl font-semibold text-white">Home</span>
+                        <span class="text-2xl font-semibold text-white">Beranda</span>
                         <i class="fa-solid fa-arrow-right text-[#FFE14E] opacity-0 -translate-x-4 transition-all group-hover:opacity-100 group-hover:translate-x-0"></i>
                     </a>
                     <a href="#event" onclick="closeMobileMenu()" class="group flex items-center justify-between p-4 rounded-2xl hover:bg-white/5 transition">

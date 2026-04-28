@@ -3,6 +3,10 @@
 
 <head>
     <meta charset="UTF-8">
+    
+    <!-- RESPONSIVE -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Eventix Panitia</title>
 
     <!-- FONT -->
@@ -18,20 +22,34 @@
 <body class="bg-[#EFF8FF] font-[poppins] font-semibold">
 
 <!-- TOAST -->
-<div id="toast-notice" class="fixed top-6 right-6 z-50 w-[min(360px,calc(100%-2rem))] opacity-0 pointer-events-none transform translate-y-2 rounded-[24px] border border-slate-200 border-r-8 bg-white/95 px-5 py-4 text-sm text-slate-900 shadow-2xl backdrop-blur-sm transition duration-300 ease-out">
+<div id="toast-notice"
+    class="fixed top-6 right-6 z-50 w-[min(360px,calc(100%-2rem))] opacity-0 pointer-events-none transform translate-y-2 rounded-[24px] border border-slate-200 border-r-8 bg-white/95 px-5 py-4 text-sm text-slate-900 shadow-2xl backdrop-blur-sm transition duration-300 ease-out">
     <div class="flex items-center gap-3">
         <i id="toast-icon" class="bi bi-bell-fill text-lg"></i>
         <span id="toast-message"></span>
     </div>
 </div>
 
-<div class="flex">
+<!-- SIDEBAR -->
+<x-sidebarpanit />
 
-    <!-- SIDEBAR COMPONENT -->
-    <x-sidebarpanit />
+<!-- CONTENT -->
+<!-- SIDEBAR -->
+<x-sidebarpanit />
+
+<!-- MAIN WRAPPER (INI YANG PENTING) -->
+<div class="md:ml-[260px] min-h-screen flex flex-col transition-all duration-300">
+
+    <!-- TOPBAR MOBILE -->
+    <div class="md:hidden bg-white border-b px-4 py-3 flex items-center justify-between shadow-sm sticky top-0 z-30">
+        <h1 class="font-bold text-[#192853]">Menu</h1>
+        <button onclick="toggleSidebar()" class="text-2xl text-[#192853]">
+            <i class="bi bi-list"></i>
+        </button>
+    </div>
 
     <!-- CONTENT -->
-    <div class="flex-1 p-6 overflow-y-auto h-screen">
+    <div class="p-4 md:p-6 flex-1 w-full overflow-x-hidden">
         @yield('content')
     </div>
 
@@ -69,88 +87,55 @@ function showToast(message, type = 'success', duration = 3000) {
         toast.classList.remove('opacity-100', 'pointer-events-auto', 'translate-y-0');
     }, duration);
 }
-
-@if(session('success'))
-    showToast('{{ session('success') }}', 'success');
-@endif
-
-@if(session('error'))
-    showToast('{{ session('error') }}', 'error', 5000);
-@endif
 </script>
+
 @yield('script')
 
-<!-- ================= LOGOUT MODAL ================= -->
+<!-- LOGOUT MODAL -->
 <div id="logoutModal" class="fixed inset-0 hidden z-50 items-center justify-center">
 
-    <!-- BACKDROP -->
     <div class="absolute inset-0 bg-black/50" onclick="closeLogoutModal()"></div>
 
-    <!-- CONTENT -->
-    <div class="relative bg-white w-[380px] rounded-2xl shadow-xl p-6 animate-fadeIn">
-
-        <div class="flex justify-center mb-4">
-            <div class="w-12 h-12 flex items-center justify-center rounded-full bg-red-100">
-                <i class="bi bi-box-arrow-right text-red-500 text-lg"></i>
-            </div>
-        </div>
-
-        <h2 class="text-center font-bold text-[#192853] text-lg">
-            Keluar dari akun?
-        </h2>
-
-        <p class="text-center text-sm text-gray-500 mt-1">
-            Kamu akan keluar dari sistem Eventix
-        </p>
+    <div class="relative bg-white w-[90%] max-w-[380px] rounded-2xl shadow-xl p-6">
+        <h2 class="text-center font-bold text-[#192853] text-lg">Keluar dari akun?</h2>
 
         <div class="flex gap-3 mt-6">
-            <button onclick="closeLogoutModal()"
-                class="w-full py-2 rounded-lg bg-gray-100 text-gray-600 hover:bg-gray-200 transition">
+            <button onclick="closeLogoutModal()" class="w-full py-2 bg-gray-100 rounded-lg">
                 Batal
             </button>
 
-            <button onclick="document.getElementById('logoutForm').submit()"
-                class="w-full py-2 rounded-lg bg-red-500 text-white hover:bg-red-600 transition">
+            <button onclick="document.getElementById('logoutForm').submit()" 
+                class="w-full py-2 bg-red-500 text-white rounded-lg">
                 Keluar
             </button>
         </div>
-
     </div>
 </div>
 
-<!-- FORM LOGOUT -->
 <form id="logoutForm" action="{{ route('logout') }}" method="POST" class="hidden">
     @csrf
 </form>
 
-<!-- SCRIPT LOGOUT -->
+<!-- SCRIPT -->
 <script>
 function openLogoutModal(){
-    const modal = document.getElementById('logoutModal');
-    modal.classList.remove('hidden');
-    modal.classList.add('flex');
+    document.getElementById('logoutModal').classList.remove('hidden');
+    document.getElementById('logoutModal').classList.add('flex');
 }
 
 function closeLogoutModal(){
-    const modal = document.getElementById('logoutModal');
-    modal.classList.add('hidden');
-    modal.classList.remove('flex');
+    document.getElementById('logoutModal').classList.add('hidden');
+    document.getElementById('logoutModal').classList.remove('flex');
 }
 
-document.addEventListener('keydown', function(e){
-    if(e.key === 'Escape') closeLogoutModal();
-});
+function toggleSidebar() {
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('sidebarOverlay');
+
+    sidebar.classList.toggle('-translate-x-full');
+    overlay.classList.toggle('hidden');
+}
 </script>
 
-<!-- ANIMASI -->
-<style>
-@keyframes fadeIn {
-    from { opacity: 0; transform: scale(0.95); }
-    to { opacity: 1; transform: scale(1); }
-}
-.animate-fadeIn {
-    animation: fadeIn 0.2s ease-out;
-}
-</style>
 </body>
 </html>
