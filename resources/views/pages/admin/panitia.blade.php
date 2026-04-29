@@ -35,8 +35,11 @@
     <!-- ================= TERIMA ================= -->
     <div id="k" class="bg-white p-5 rounded-xl shadow border">
         <div class="mb-3">
-            <input type="text" id="searchKelola" placeholder="Cari panitia..."
-                class="w-full px-3 py-2 border rounded-lg text-sm">
+            <div class="relative">
+                <input type="text" id="searchKelola" placeholder="Cari panitia..."
+                    class="w-full pl-10 pr-4 py-2 border rounded-lg text-sm font-bold">
+                <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+            </div>
         </div>
 
         <div class="max-h-[400px] overflow-y-auto overflow-x-auto">
@@ -86,8 +89,11 @@
     <div id="t" class="bg-white p-5 rounded-xl shadow border hidden">
 
         <div class="mb-3">
-            <input type="text" id="searchDitolak" placeholder="Cari panitia ditolak..."
-                class="w-full px-3 py-2 border rounded-lg text-sm">
+            <div class="relative">
+                <input type="text" id="searchDitolak" placeholder="Cari panitia ditolak..."
+                    class="w-full pl-10 pr-4 py-2 border rounded-lg text-sm font-bold">
+                <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+            </div>
         </div>
 
         <div class="max-h-[400px] overflow-y-auto overflow-x-auto">
@@ -126,8 +132,11 @@
     <!-- ================= PENGAJUAN ================= -->
     <div id="p" class="bg-white p-5 rounded-xl shadow border hidden">
         <div class="mb-3">
-            <input type="text" id="searchPengajuan" placeholder="Cari pengajuan..."
-                class="w-full px-3 py-2 border rounded-lg text-sm">
+            <div class="relative">
+                <input type="text" id="searchPengajuan" placeholder="Cari pengajuan..."
+                    class="w-full pl-10 pr-4 py-2 border rounded-lg text-sm font-bold">
+                <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+            </div>
         </div>
 
         <div class="max-h-[400px] overflow-y-auto overflow-x-auto">

@@ -40,7 +40,7 @@ $eventPending = [
 
     <!-- HEADER -->
     <div class="mb-4">
-        <h1 class="text-xl font-semibold text-[#192853]">Kelola Event</h1>
+        <h1 class="text-xl font-bold text-[#192853]">Kelola Event</h1>
     </div>
 
     <!-- TAB -->
@@ -62,8 +62,11 @@ $eventPending = [
     <!-- ================= SEMUA EVENT ================= -->
     <div id="k" class="bg-white p-5 rounded-xl shadow border">
         <div class="mb-3">
-            <input type="text" id="searchAktif" placeholder="Cari semua event..."
-                class="w-full px-3 py-2 border rounded-lg text-sm">
+            <div class="relative">
+                <input type="text" id="searchAktif" placeholder="Cari semua event..."
+                    class="w-full pl-10 pr-4 py-2 border rounded-lg text-sm font-bold">
+                <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+            </div>
         </div>
 
         <div class="max-h-[400px] overflow-y-auto overflow-x-auto">
@@ -82,12 +85,12 @@ $eventPending = [
                     @foreach ($eventDisetujui as $i => $e)
                     <tr onclick="showModal('{{ $e['nama'] }}','{{ $e['tanggal'] }}','09:00','Aula','{{ $e['panitia'] }}','Event aktif')" class="border-b hover:bg-blue-50 transition cursor-pointer">
                         <td class="p-3 text-center">{{ $i+1 }}</td>
-                        <td class="p-3 font-medium text-gray-700">{{ $e['nama'] }}</td>
+                        <td class="p-3 font-bold text-gray-700">{{ $e['nama'] }}</td>
                         <td class="p-3 text-gray-500">{{ $e['tanggal'] }}</td>
                         <td class="p-3 text-gray-600">{{ $e['panitia'] }}</td>
                         <td class="p-3">{{ $e['kategori'] }}</td>
                         <td class="p-3">
-                            <span class="px-3 py-1 rounded-full text-xs font-medium 
+                            <span class="px-3 py-1 rounded-full text-xs font-bold 
                                 {{ $e['status'] == 'Aktif' ? 'bg-green-100 text-green-600' : 'bg-gray-100 text-gray-500' }}">
                                 {{ $e['status'] }}
                             </span>
@@ -103,8 +106,11 @@ $eventPending = [
     <!-- ================= DITOLAK ================= -->
     <div id="t" class="bg-white p-5 rounded-xl shadow border hidden">
         <div class="mb-3">
-            <input type="text" id="searchDitolak" placeholder="Cari event ditolak..."
-                class="w-full px-3 py-2 border rounded-lg text-sm">
+            <div class="relative">
+                <input type="text" id="searchDitolak" placeholder="Cari event ditolak..."
+                    class="w-full pl-10 pr-4 py-2 border rounded-lg text-sm font-bold">
+                <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+            </div>
         </div>
 
         <div class="max-h-[400px] overflow-y-auto overflow-x-auto">
@@ -123,7 +129,7 @@ $eventPending = [
                     @foreach ($eventDitolak as $i => $e)
                     <tr onclick="showModal('{{ $e['nama'] }}','{{ $e['tanggal'] }}','09:00','Aula','{{ $e['panitia'] }}','{{ $e['alasan'] }}')" class="border-b hover:bg-red-50 transition cursor-pointer">
                         <td class="p-3 text-center">{{ $i+1 }}</td>
-                        <td class="p-3 font-medium text-gray-700">{{ $e['nama'] }}</td>
+                        <td class="p-3 font-bold text-gray-700">{{ $e['nama'] }}</td>
                         <td class="p-3 text-gray-500">{{ $e['tanggal'] }}</td>
                         <td class="p-3 text-gray-600">{{ $e['panitia'] }}</td>
                         <td class="p-3">{{ $e['kategori'] }}</td>
@@ -138,8 +144,11 @@ $eventPending = [
     <!-- ================= PENGAJUAN ================= -->
     <div id="p" class="bg-white p-5 rounded-xl shadow border hidden">
         <div class="mb-3">
-            <input type="text" id="searchPengajuan" placeholder="Cari pengajuan..."
-                class="w-full px-3 py-2 border rounded-lg text-sm">
+            <div class="relative">
+                <input type="text" id="searchPengajuan" placeholder="Cari pengajuan..."
+                    class="w-full pl-10 pr-4 py-2 border rounded-lg text-sm font-bold">
+                <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+            </div>
         </div>
 
         <div class="max-h-[400px] overflow-y-auto overflow-x-auto">
@@ -160,11 +169,11 @@ $eventPending = [
                     @foreach ($eventPending as $i => $e)
                     <tr onclick="showModal('{{ $e['nama'] }}','{{ $e['tanggal'] }}','09:00','Aula','{{ $e['panitia'] }}','Menunggu persetujuan')" class="border-b hover:bg-blue-50 transition cursor-pointer">
                         <td class="p-3 text-center">{{ $i+1 }}</td>
-                        <td class="p-3 font-medium text-gray-700">{{ $e['nama'] }}</td>
+                        <td class="p-3 font-bold text-gray-700">{{ $e['nama'] }}</td>
                         <td class="p-3 text-gray-500">{{ $e['tanggal'] }}</td>
                         <td class="p-3 text-gray-600">{{ $e['panitia'] }}</td>
                         <td class="p-3">{{ $e['kategori'] }}</td>
-                        <td class="p-3"><span class="text-yellow-600 text-xs font-medium bg-yellow-100 px-3 py-1 rounded-full">Pending</span></td>
+                        <td class="p-3"><span class="text-yellow-600 text-xs font-bold bg-yellow-100 px-3 py-1 rounded-full">Pending</span></td>
 
                         <td class="p-3 flex gap-2 justify-center">
                             <button onclick="event.stopPropagation()" class="w-9 h-9 flex items-center justify-center rounded-lg bg-green-100 text-green-600 hover:bg-green-200 transition">
@@ -188,7 +197,7 @@ $eventPending = [
     <div class="bg-white rounded-2xl w-full max-w-md shadow-lg overflow-hidden mx-4">
 
         <div class="bg-[#192853] p-4 flex justify-between items-center">
-            <h3 id="m_nama" class="text-yellow-400 font-semibold text-lg"></h3>
+            <h3 id="m_nama" class="text-yellow-400 font-bold text-lg"></h3>
             <button onclick="closeModal()" class="text-white hover:text-gray-300 transition text-xl">&times;</button>
         </div>
 
@@ -208,7 +217,7 @@ $eventPending = [
     <div class="absolute inset-0 bg-black/40" onclick="closeRejectModal()"></div>
 
     <div class="relative bg-white rounded-xl shadow-lg w-full max-w-sm p-5 mx-4">
-        <h2 class="text-base font-semibold text-gray-700 mb-3">Alasan Penolakan</h2>
+        <h2 class="text-base font-bold text-gray-700 mb-3">Alasan Penolakan</h2>
 
         <textarea id="rejectInput" class="w-full border rounded-lg p-2 text-sm focus:ring-1 focus:ring-red-400" placeholder="Masukkan alasan penolakan..."></textarea>
 

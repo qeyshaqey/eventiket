@@ -12,7 +12,7 @@
         <div class="w-full md:flex-1">
             <div class="relative">
                 <input type="text" id="searchKategori" placeholder="Cari kategori..." 
-                    class="w-full pl-10 pr-4 py-2 border rounded-xl text-sm focus:ring-1 focus:ring-[#192853] outline-none font-normal">
+                    class="w-full pl-10 pr-4 py-2 border rounded-xl text-sm focus:ring-1 focus:ring-[#192853] outline-none font-bold">
                 <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
             </div>
         </div>
