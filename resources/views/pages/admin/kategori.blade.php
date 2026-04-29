@@ -41,7 +41,7 @@
             <!-- BODY -->
             <tbody>
                 @foreach ($kategori as $k)
-                <tr class="border-b hover:bg-[#f9fbff] transition">
+                <tr class="border-b transition">
 
                     <!-- NO -->
                     <td class="py-3 pl-4 text-left">

@@ -48,7 +48,7 @@
 
             <tbody id="tableBody">
                 @foreach($data as $i => $d)
-                <tr class="border-t hover:bg-[#EFF8FF]"
+                <tr class="border-t"
                     data-kategori="{{ $d['kategori'] }}"
                     data-event="{{ $d['event'] }}">
 

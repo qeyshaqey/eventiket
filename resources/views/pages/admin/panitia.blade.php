@@ -54,7 +54,7 @@
                 </thead>
                 <tbody>
                     @foreach($kelola as $i => $d)
-                    <tr class="border-b hover:bg-blue-50 transition">
+                    <tr class="border-b transition">
                         <td class="p-3 text-center">{{ $i+1 }}</td>
                         <td class="p-3 font-medium text-gray-700">{{ $d['nama'] }}</td>
                         <td class="p-3 text-gray-500">{{ $d['email'] }}</td>
@@ -108,7 +108,7 @@
                 <!-- BODY FIX -->
                 <tbody id="tbodyDitolak">
                     @foreach($ditolak as $i => $d)
-                    <tr class="border-b hover:bg-red-50 transition">
+                    <tr class="border-b transition">
                         <td class="p-3 text-center">{{ $i+1 }}</td>
                         <td class="p-3 font-medium text-gray-700">{{ $d['nama'] }}</td>
                         <td class="p-3 text-gray-500">{{ $d['email'] }}</td>
@@ -146,7 +146,7 @@
 
                 <tbody>
                     @foreach($pengajuan as $i => $d)
-                    <tr class="border-b hover:bg-blue-50 transition">
+                    <tr class="border-b transition">
                         <td class="p-3 text-center">{{ $i+1 }}</td>
                         <td class="p-3 font-medium text-gray-700">{{ $d['nama'] }}</td>
                         <td class="p-3 text-gray-500">{{ $d['email'] }}</td>
