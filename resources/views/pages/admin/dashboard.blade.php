@@ -1,6 +1,22 @@
 @extends('layouts.app')
 
 @section('content')
+<style>
+    .custom-scrollbar::-webkit-scrollbar {
+        width: 4px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+        background: transparent;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+        background: #e5e7eb;
+        border-radius: 10px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+        background: #d1d5db;
+    }
+</style>
+
 <div style="font-family: 'Poppins', sans-serif; font-weight: bold;">
 
 
@@ -31,7 +47,7 @@
                 <i class="fa-solid fa-calendar-check"></i>
             </div>
             <div class="text-[10px] text-gray-500 uppercase tracking-wider mb-1">Total Event</div>
-            <div class="text-2xl font-bold">15</div>
+            <div class="text-2xl font-bold">98</div>
         </div>
 
     </div>
@@ -40,25 +56,26 @@
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-3">
 
         <!-- LEFT -->
-        <div class="lg:col-span-2">
+        <div class="lg:col-span-2 flex flex-col">
 
-            <h2 class="text-xs font-semibold mb-2">Event Disetujui</h2>
-
-            <div class="bg-white rounded-lg shadow-sm overflow-hidden">
-                <!-- SEARCH -->
-                <div class="p-3 border-b">
+            <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden flex-1 flex flex-col transition-all duration-300 hover:shadow-md">
+                <!-- HEADER & SEARCH -->
+                <div class="p-4 border-b border-gray-50 bg-gray-50/30">
+                    <div class="flex items-center justify-between mb-3">
+                        <h2 class="text-xs font-bold text-[#192853] uppercase tracking-wider">Event Disetujui</h2>
+                    </div>
                     <div class="relative">
                         <input type="text" id="searchEvent" placeholder="Cari event..." 
-                            class="w-full pl-9 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-lg text-xs focus:ring-1 focus:ring-[#192853] outline-none">
+                            class="w-full pl-9 pr-4 py-2 bg-white border border-gray-200 rounded-lg text-xs focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 outline-none transition-all shadow-sm">
                         <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
                     </div>
                 </div>
 
-                <div id="eventList" class="h-[340px] overflow-y-auto p-2 space-y-2">
+                <div id="eventList" class="h-[450px] overflow-y-auto p-3 space-y-2 custom-scrollbar">
 
                     @foreach ($events as $event)
                     <div 
-                        class="event-card flex items-center gap-2 p-2 rounded-lg hover:bg-blue-50 cursor-pointer border text-xs transition active:scale-[0.97]"
+                        class="event-card flex items-center gap-3 p-3 rounded-xl hover:bg-blue-50 cursor-pointer border border-gray-100 text-xs transition-all hover:border-blue-200 active:scale-[0.98]"
                         onclick='showModal(
                             @json($event["nama"]),
                             @json($event["kategori"]),
@@ -99,8 +116,13 @@
         <div class="space-y-3">
 
             <!-- LINE CHART -->
-            <div class="bg-white p-3 rounded-lg shadow-sm">
-                <h3 class="text-xs font-semibold mb-2">Statistik Pengunjung</h3>
+            <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 transition-all duration-300 hover:shadow-md">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-xs font-bold text-[#192853] uppercase tracking-wider">Statistik Pengunjung</h3>
+                    <div class="bg-yellow-50 text-yellow-600 p-1.5 rounded-lg text-xs">
+                        <i class="fa-solid fa-chart-line"></i>
+                    </div>
+                </div>
 
                 <div class="h-[150px]">
                     <canvas id="visitorChart"></canvas>
@@ -108,11 +130,51 @@
             </div>
 
             <!-- PIE CHART -->
-            <div class="bg-white p-3 rounded-lg shadow-sm">
-                <h3 class="text-xs font-semibold mb-2">Event Berdasarkan Kategori</h3>
+            <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 transition-all duration-300 hover:shadow-md">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-xs font-bold text-[#192853] uppercase tracking-wider">Event Berdasarkan Kategori</h3>
+                    <div class="bg-yellow-50 text-yellow-600 p-1.5 rounded-lg text-xs">
+                        <i class="fa-solid fa-chart-pie"></i>
+                    </div>
+                </div>
 
-                <div class="h-[170px]">
+                <div class="relative h-[180px] flex items-center justify-center">
                     <canvas id="categoryChart"></canvas>
+                    <div class="absolute flex flex-col items-center">
+                        <span class="text-2xl font-black text-[#192853]">98</span>
+                        <span class="text-[8px] text-gray-400 font-bold uppercase tracking-widest">Total</span>
+                    </div>
+                </div>
+
+                <div class="mt-5 grid grid-cols-2 gap-x-4 gap-y-2">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-2">
+                            <div class="w-2 h-2 rounded-full bg-[#bfdbfe]"></div>
+                            <span class="text-[10px] text-gray-500 font-medium">Workshop</span>
+                        </div>
+                        <span class="text-[10px] font-bold text-[#192853]">30</span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-2">
+                            <div class="w-2 h-2 rounded-full bg-[#60a5fa]"></div>
+                            <span class="text-[10px] text-gray-500 font-medium">Seminar</span>
+                        </div>
+                        <span class="text-[10px] font-bold text-[#192853]">25</span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-2">
+                            <div class="w-2 h-2 rounded-full bg-[#3b82f6]"></div>
+                            <span class="text-[10px] text-gray-500 font-medium">Festival</span>
+                        </div>
+                        <span class="text-[10px] font-bold text-[#192853]">22</span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-2">
+                            <div class="w-2 h-2 rounded-full bg-[#1d4ed8]"></div>
+                            <span class="text-[10px] text-gray-500 font-medium">Konser</span>
+                        </div>
+                        <span class="text-[10px] font-bold text-[#192853]">21</span>
+                    </div>
                 </div>
             </div>
 
@@ -184,19 +246,47 @@
         }
     });
 
-    // PIE CHART
+    // PIE CHART -> DOUGHNUT
     new Chart(document.getElementById('categoryChart'), {
-        type: 'pie',
+        type: 'doughnut',
         data: {
             labels: ['Workshop','Seminar','Festival','Konser'],
             datasets: [{
-                data: [30,25,22,21],
-                backgroundColor: ['#3b82f6','#8b5cf6','#facc15','#f87171']
+                data: [30, 25, 22, 21],
+                backgroundColor: [
+                    '#bfdbfe', // blue-200
+                    '#60a5fa', // blue-400
+                    '#3b82f6', // blue-500
+                    '#1d4ed8'  // blue-700
+                ],
+                borderWidth: 0,
+                hoverOffset: 10,
+                borderRadius: 4,
+                spacing: 2
             }]
         },
         options: {
             responsive: true,
-            maintainAspectRatio: false
+            maintainAspectRatio: false,
+            cutout: '80%',
+            plugins: {
+                legend: {
+                    display: false
+                },
+                tooltip: {
+                    backgroundColor: '#192853',
+                    titleFont: { size: 12, weight: 'bold', family: 'Poppins' },
+                    bodyFont: { size: 11, family: 'Poppins' },
+                    padding: 12,
+                    cornerRadius: 10,
+                    displayColors: true,
+                    boxPadding: 6
+                }
+            },
+            animation: {
+                animateScale: true,
+                animateRotate: true
+            }
         }
     });
 
