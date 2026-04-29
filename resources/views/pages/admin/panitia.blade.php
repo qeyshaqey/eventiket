@@ -66,11 +66,13 @@
                                 {{ $d['status'] }}
                             </span>
                         </td>
-                        <td class="p-3 text-center">
-                            <button onclick="openDeleteModal('{{ $d['nama'] }}')" 
-                                class="w-9 h-9 flex items-center justify-center rounded-lg bg-red-100 text-red-500 hover:bg-red-200 transition">
-                                <i class="fa-solid fa-trash"></i>
-                            </button>
+                        <td class="p-3">
+                            <div class="flex justify-center">
+                                <button onclick="openDeleteModal('{{ $d['nama'] }}')" 
+                                    class="w-9 h-9 flex items-center justify-center rounded-lg bg-red-100 text-red-500 hover:bg-red-200 transition">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                            </div>
                         </td>
                     </tr>
                     @endforeach
@@ -152,17 +154,17 @@
                         <td class="p-3">{{ $d['tanggal'] }}</td>
                         <td class="p-3">{{ $d['ukm'] }}</td>
 
-                        <td class="p-3 flex gap-2 justify-center">
+                        <td class="p-3">
+                            <div class="flex gap-2 justify-center">
+                                <button class="w-9 h-9 flex items-center justify-center rounded-lg bg-green-100 text-green-600 hover:bg-green-200 transition">
+                                    <i class="fa-solid fa-check"></i>
+                                </button>
 
-                            <button class="w-9 h-9 flex items-center justify-center rounded-lg bg-green-100 text-green-600 hover:bg-green-200 transition">
-                                <i class="fa-solid fa-check"></i>
-                            </button>
-
-                            <button onclick="openModal('{{ $d['nama'] }}')"
-                                class="w-9 h-9 flex items-center justify-center rounded-lg bg-red-100 text-red-500 hover:bg-red-200 transition">
-                                <i class="fa-solid fa-xmark"></i>
-                            </button>
-
+                                <button onclick="openModal('{{ $d['nama'] }}')"
+                                    class="w-9 h-9 flex items-center justify-center rounded-lg bg-red-100 text-red-500 hover:bg-red-200 transition">
+                                    <i class="fa-solid fa-xmark"></i>
+                                </button>
+                            </div>
                         </td>
                     </tr>
                     @endforeach

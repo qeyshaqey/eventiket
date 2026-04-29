@@ -34,7 +34,7 @@
                 <tr class="text-gray-500 border-b">
                     <th class="py-3 text-left pl-4 w-12">No</th>
                     <th class="py-3 text-center">Nama Kategori</th>
-                    <th class="py-3 text-right pr-6 w-32">Aksi</th>
+                    <th class="py-3 text-center w-32">Aksi</th>
                 </tr>
             </thead>
 
@@ -49,13 +49,13 @@
                     </td>
 
                     <!-- NAMA -->
-                    <td class="text-center">
+                    <td class="py-3 text-center">
                         {{ $k['nama_kategori'] }}
                     </td>
 
                     <!-- AKSI -->
-                    <td class="py-3 pr-6 text-right">
-                        <div class="inline-flex gap-2">
+                    <td class="py-3 text-center">
+                        <div class="flex justify-center gap-2">
 
                             <!-- EDIT -->
                             <button

@@ -41,7 +41,7 @@
                     <th class="p-4 text-left">No</th>
                     <th class="p-4 text-left">Nama</th>
                     <th class="p-4 text-left">Email</th>
-                    <th class="p-4 text-left">NIM</th>
+                    <th class="p-4 text-left">Kategori</th>
                     <th class="p-4 text-left">Event</th>
                 </tr>
             </thead>
@@ -55,7 +55,7 @@
                     <td class="p-4">{{ $i+1 }}</td>
                     <td class="p-4">{{ $d['nama'] }}</td>
                     <td class="p-4 text-gray-500">{{ $d['email'] }}</td>
-                    <td class="p-4">{{ $d['nim'] }}</td>
+                    <td class="p-4 text-gray-500">{{ $d['kategori'] }}</td>
                     <td class="p-4">
                         <span class="bg-yellow-200 text-xs px-3 py-1 rounded-full">
                             {{ $d['event'] }}

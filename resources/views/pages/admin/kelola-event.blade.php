@@ -8,19 +8,31 @@
 
 @php
 $eventDisetujui = [
-["nama"=>"Workshop UI/UX","tanggal"=>"12 Apr","panitia"=>"Inessa","kategori"=>"Workshop"],
-["nama"=>"Seminar Digital Marketing","tanggal"=>"20 Apr","panitia"=>"Andi","kategori"=>"Seminar"],
-["nama"=>"Talkshow Startup","tanggal"=>"25 Apr","panitia"=>"Fajar","kategori"=>"Talkshow"],
+    ["nama"=>"Workshop UI/UX","tanggal"=>"12 Apr","panitia"=>"Inessa","kategori"=>"Workshop", "status"=>"Aktif"],
+    ["nama"=>"Seminar Digital Marketing","tanggal"=>"20 Apr","panitia"=>"Andi","kategori"=>"Seminar", "status"=>"Aktif"],
+    ["nama"=>"Talkshow Startup","tanggal"=>"25 Apr","panitia"=>"Fajar","kategori"=>"Talkshow", "status"=>"Non aktif"],
+    ["nama"=>"Music Festival 2024","tanggal"=>"30 Apr","panitia"=>"Budi","kategori"=>"Festival", "status"=>"Aktif"],
+    ["nama"=>"Hackathon Competition","tanggal"=>"05 Mei","panitia"=>"Citra","kategori"=>"Competition", "status"=>"Non aktif"],
+    ["nama"=>"Workshop Web Development","tanggal"=>"10 Mei","panitia"=>"Deni","kategori"=>"Workshop", "status"=>"Aktif"],
+    ["nama"=>"Seminar AI & Machine Learning","tanggal"=>"15 Mei","panitia"=>"Eka","kategori"=>"Seminar", "status"=>"Non aktif"],
+    ["nama"=>"Photography Exhibition","tanggal"=>"18 Mei","panitia"=>"Fira","kategori"=>"Art", "status"=>"Aktif"],
 ];
 
 $eventDitolak = [
-["nama"=>"Festival Kampus","tanggal"=>"10 Mei","panitia"=>"Puji","kategori"=>"Festival","alasan"=>"Bentrok jadwal"],
-["nama"=>"Seminar AI","tanggal"=>"12 Mei","panitia"=>"Raka","kategori"=>"Seminar","alasan"=>"Kuota penuh"],
+    ["nama"=>"Festival Kampus","tanggal"=>"10 Mei","panitia"=>"Puji","kategori"=>"Festival","alasan"=>"Bentrok jadwal"],
+    ["nama"=>"Seminar AI","tanggal"=>"12 Mei","panitia"=>"Raka","kategori"=>"Seminar","alasan"=>"Kuota penuh"],
+    ["nama"=>"Charity Run 2024","tanggal"=>"15 Mei","panitia"=>"Gita","kategori"=>"Olahraga","alasan"=>"Izin tidak lengkap"],
+    ["nama"=>"Tech Conference","tanggal"=>"20 Mei","panitia"=>"Haryo","kategori"=>"Technology","alasan"=>"Dana tidak mencukupi"],
+    ["nama"=>"Art Performance","tanggal"=>"22 Mei","panitia"=>"Indra","kategori"=>"Art","alasan"=>"Lokasi sudah dibooking"],
 ];
 
 $eventPending = [
-["nama"=>"Seminar Kewirausahaan","tanggal"=>"18 Mei","panitia"=>"Fariz","kategori"=>"Seminar"],
-["nama"=>"Workshop Mobile App","tanggal"=>"20 Mei","panitia"=>"Laras","kategori"=>"Workshop"],
+    ["nama"=>"Seminar Kewirausahaan","tanggal"=>"18 Mei","panitia"=>"Fariz","kategori"=>"Seminar"],
+    ["nama"=>"Workshop Mobile App","tanggal"=>"20 Mei","panitia"=>"Laras","kategori"=>"Workshop"],
+    ["nama"=>"Webinar Cyber Security","tanggal"=>"22 Mei","panitia"=>"Maya","kategori"=>"Webinar"],
+    ["nama"=>"Photography Workshop","tanggal"=>"25 Mei","panitia"=>"Naufal","kategori"=>"Art"],
+    ["nama"=>"Coding Bootcamp","tanggal"=>"01 Jun","panitia"=>"Olivia","kategori"=>"Education"],
+    ["nama"=>"Business Plan Competition","tanggal"=>"05 Jun","panitia"=>"Putra","kategori"=>"Competition"],
 ];
 @endphp
 
@@ -35,7 +47,7 @@ $eventPending = [
     <div class="flex gap-2 mb-4">
         <button id="b1" onclick="tab('k')"
             class="px-4 py-2 text-sm rounded-full border bg-[#192853] text-white transition-all">
-            Event Aktif
+            Semua Event
         </button>
         <button id="b2" onclick="tab('t')"
             class="px-4 py-2 text-sm rounded-full border bg-white text-yellow-400 transition-all">
@@ -47,10 +59,10 @@ $eventPending = [
         </button>
     </div>
 
-    <!-- ================= EVENT AKTIF ================= -->
+    <!-- ================= SEMUA EVENT ================= -->
     <div id="k" class="bg-white p-5 rounded-xl shadow border">
         <div class="mb-3">
-            <input type="text" id="searchAktif" placeholder="Cari event aktif..."
+            <input type="text" id="searchAktif" placeholder="Cari semua event..."
                 class="w-full px-3 py-2 border rounded-lg text-sm">
         </div>
 
@@ -63,7 +75,7 @@ $eventPending = [
                         <th class="p-3 text-left">Tanggal</th>
                         <th class="p-3 text-left">Panitia</th>
                         <th class="p-3 text-left">Kategori</th>
-                        <th class="p-3 text-left">Info</th>
+                        <th class="p-3 text-left">Status</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -74,7 +86,12 @@ $eventPending = [
                         <td class="p-3 text-gray-500">{{ $e['tanggal'] }}</td>
                         <td class="p-3 text-gray-600">{{ $e['panitia'] }}</td>
                         <td class="p-3">{{ $e['kategori'] }}</td>
-                        <td class="p-3"><span class="text-green-600 text-xs font-medium bg-green-100 px-3 py-1 rounded-full">Aktif</span></td>
+                        <td class="p-3">
+                            <span class="px-3 py-1 rounded-full text-xs font-medium 
+                                {{ $e['status'] == 'Aktif' ? 'bg-green-100 text-green-600' : 'bg-gray-100 text-gray-500' }}">
+                                {{ $e['status'] }}
+                            </span>
+                        </td>
                     </tr>
                     @endforeach
                 </tbody>
