@@ -368,7 +368,7 @@
     const bankInput = document.getElementById('bank-input');
     const rekeningInput = document.getElementById('rekening_pengembalian');
 
-    form.addEventListener('submit', function(e) {\
+    form.addEventListener('submit', function(e) {
 
         e.preventDefault();
 
@@ -384,7 +384,7 @@
         showToast('Konfirmasi pembayaran berhasil dikirim.', 'success');
         setTimeout(() => {
             window.location.href = "{{ route('pengunjung.tiket') }}";
-        }, 1500);=
+        }, 1500);
     });
 </script>
 @endpush
