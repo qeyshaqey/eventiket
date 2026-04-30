@@ -1,4 +1,4 @@
-@extends('layouts.pengunjung')
+@extends('layouts.pengunjung.pengunjung')
 
 @section('title', 'Pembayaran Tiket - Eventiket')
 

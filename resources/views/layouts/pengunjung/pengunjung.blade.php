@@ -24,9 +24,13 @@
 </head>
 <body class="@yield('body_class')">
 
-    <x-navbar-pengunjung />
+    <x-pengunjung.navbar-pengunjung />
 
     @yield('content')
+
+    @if(request()->routeIs('home'))
+        <x-pengunjung.footer-pengunjung />
+    @endif
 
     @stack('scripts')
 </body>
