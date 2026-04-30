@@ -83,7 +83,7 @@ $eventPending = [
                 </thead>
                 <tbody>
                     @foreach ($eventDisetujui as $i => $e)
-                    <tr onclick="showModal('{{ $e['nama'] }}','{{ $e['tanggal'] }}','09:00','Aula','{{ $e['panitia'] }}','Event aktif')" class="border-b hover:bg-blue-50 transition cursor-pointer">
+                    <tr data-modal-target="modal" data-modal-toggle="modal" onclick="showModal('{{ $e['nama'] }}','{{ $e['tanggal'] }}','09:00','Aula','{{ $e['panitia'] }}','Event aktif')" class="border-b hover:bg-blue-50 transition cursor-pointer">
                         <td class="p-3 text-center">{{ $i+1 }}</td>
                         <td class="p-3 font-bold text-gray-700">{{ $e['nama'] }}</td>
                         <td class="p-3 text-gray-500">{{ $e['tanggal'] }}</td>
@@ -127,7 +127,7 @@ $eventPending = [
                 </thead>
                 <tbody>
                     @foreach ($eventDitolak as $i => $e)
-                    <tr onclick="showModal('{{ $e['nama'] }}','{{ $e['tanggal'] }}','09:00','Aula','{{ $e['panitia'] }}','{{ $e['alasan'] }}')" class="border-b hover:bg-red-50 transition cursor-pointer">
+                    <tr data-modal-target="modal" data-modal-toggle="modal" onclick="showModal('{{ $e['nama'] }}','{{ $e['tanggal'] }}','09:00','Aula','{{ $e['panitia'] }}','{{ $e['alasan'] }}')" class="border-b hover:bg-red-50 transition cursor-pointer">
                         <td class="p-3 text-center">{{ $i+1 }}</td>
                         <td class="p-3 font-bold text-gray-700">{{ $e['nama'] }}</td>
                         <td class="p-3 text-gray-500">{{ $e['tanggal'] }}</td>
@@ -167,7 +167,7 @@ $eventPending = [
 
                 <tbody>
                     @foreach ($eventPending as $i => $e)
-                    <tr onclick="showModal('{{ $e['nama'] }}','{{ $e['tanggal'] }}','09:00','Aula','{{ $e['panitia'] }}','Menunggu persetujuan')" class="border-b hover:bg-blue-50 transition cursor-pointer">
+                    <tr data-modal-target="modal" data-modal-toggle="modal" onclick="showModal('{{ $e['nama'] }}','{{ $e['tanggal'] }}','09:00','Aula','{{ $e['panitia'] }}','Menunggu persetujuan')" class="border-b hover:bg-blue-50 transition cursor-pointer">
                         <td class="p-3 text-center">{{ $i+1 }}</td>
                         <td class="p-3 font-bold text-gray-700">{{ $e['nama'] }}</td>
                         <td class="p-3 text-gray-500">{{ $e['tanggal'] }}</td>
@@ -179,7 +179,7 @@ $eventPending = [
                             <button onclick="event.stopPropagation()" class="w-9 h-9 flex items-center justify-center rounded-lg bg-green-100 text-green-600 hover:bg-green-200 transition">
                                 <i class="fa-solid fa-check"></i>
                             </button>
-                            <button onclick="event.stopPropagation(); openRejectModal()" class="w-9 h-9 flex items-center justify-center rounded-lg bg-red-100 text-red-500 hover:bg-red-200 transition">
+                            <button onclick="event.stopPropagation(); openRejectModal()" data-modal-target="rejectModal" data-modal-toggle="rejectModal" class="w-9 h-9 flex items-center justify-center rounded-lg bg-red-100 text-red-500 hover:bg-red-200 transition">
                                 <i class="fa-solid fa-xmark"></i>
                             </button>
                         </td>
@@ -193,37 +193,41 @@ $eventPending = [
 </div>
 
 <!-- ================= MODAL DETAIL ================= -->
-<div id="modal" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50">
-    <div class="bg-white rounded-2xl w-full max-w-md shadow-lg overflow-hidden mx-4">
+<div id="modal" tabindex="-1" aria-hidden="true" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50 overflow-y-auto overflow-x-hidden">
+    <div class="relative p-4 w-full max-w-md h-full md:h-auto flex items-center justify-center">
+        <div class="relative bg-white rounded-2xl w-full shadow-lg overflow-hidden">
 
-        <div class="bg-[#192853] p-4 flex justify-between items-center">
-            <h3 id="m_nama" class="text-yellow-400 font-bold text-lg"></h3>
-            <button onclick="closeModal()" class="text-white hover:text-gray-300 transition text-xl">&times;</button>
+            <div class="bg-[#192853] p-4 flex justify-between items-center">
+                <h3 id="m_nama" class="text-yellow-400 font-bold text-lg"></h3>
+                <button type="button" data-modal-hide="modal" class="text-white hover:text-gray-300 transition text-xl">&times;</button>
+            </div>
+
+            <div class="p-5 text-sm space-y-3 text-gray-700">
+                <p class="flex items-start"><b class="w-24 text-gray-900">Tanggal</b> <span class="mr-2">:</span> <span id="m_tanggal"></span></p>
+                <p class="flex items-start"><b class="w-24 text-gray-900">Waktu</b> <span class="mr-2">:</span> <span id="m_waktu"></span></p>
+                <p class="flex items-start"><b class="w-24 text-gray-900">Lokasi</b> <span class="mr-2">:</span> <span id="m_lokasi"></span></p>
+                <p class="flex items-start"><b class="w-24 text-gray-900">Panitia</b> <span class="mr-2">:</span> <span id="m_panitia"></span></p>
+                <p class="flex items-start"><b class="w-24 text-gray-900">Deskripsi</b> <span class="mr-2">:</span> <span id="m_deskripsi"></span></p>
+            </div>
+
         </div>
-
-        <div class="p-5 text-sm space-y-3 text-gray-700">
-            <p class="flex items-start"><b class="w-24 text-gray-900">Tanggal</b> <span class="mr-2">:</span> <span id="m_tanggal"></span></p>
-            <p class="flex items-start"><b class="w-24 text-gray-900">Waktu</b> <span class="mr-2">:</span> <span id="m_waktu"></span></p>
-            <p class="flex items-start"><b class="w-24 text-gray-900">Lokasi</b> <span class="mr-2">:</span> <span id="m_lokasi"></span></p>
-            <p class="flex items-start"><b class="w-24 text-gray-900">Panitia</b> <span class="mr-2">:</span> <span id="m_panitia"></span></p>
-            <p class="flex items-start"><b class="w-24 text-gray-900">Deskripsi</b> <span class="mr-2">:</span> <span id="m_deskripsi"></span></p>
-        </div>
-
     </div>
 </div>
 
 <!-- ================= MODAL REJECT ================= -->
-<div id="rejectModal" class="fixed inset-0 hidden z-50 items-center justify-center">
-    <div class="absolute inset-0 bg-black/40" onclick="closeRejectModal()"></div>
+<div id="rejectModal" tabindex="-1" aria-hidden="true" class="fixed inset-0 hidden z-50 items-center justify-center overflow-y-auto overflow-x-hidden">
+    <div class="relative p-4 w-full max-w-sm h-full md:h-auto flex items-center justify-center">
+        <div class="fixed inset-0 bg-black/40" data-modal-hide="rejectModal"></div>
 
-    <div class="relative bg-white rounded-xl shadow-lg w-full max-w-sm p-5 mx-4">
-        <h2 class="text-base font-bold text-gray-700 mb-3">Alasan Penolakan</h2>
+        <div class="relative bg-white rounded-xl shadow-lg w-full p-5 text-left">
+            <h2 class="text-base font-bold text-gray-700 mb-3">Alasan Penolakan</h2>
 
-        <textarea id="rejectInput" class="w-full border rounded-lg p-2 text-sm focus:ring-1 focus:ring-red-400" placeholder="Masukkan alasan penolakan..."></textarea>
+            <textarea id="rejectInput" class="w-full border rounded-lg p-2 text-sm focus:ring-1 focus:ring-red-400" placeholder="Masukkan alasan penolakan..."></textarea>
 
-        <div class="flex justify-end gap-2 mt-4">
-            <button onclick="closeRejectModal()" class="px-3 py-1.5 text-sm rounded-lg bg-gray-200 hover:bg-gray-300 transition">Batal</button>
-            <button onclick="submitReject()" class="px-3 py-1.5 text-sm rounded-lg bg-[#192853] text-yellow-400 hover:bg-[#0f1a3a] transition">Kirim</button>
+            <div class="flex justify-end gap-2 mt-4">
+                <button type="button" data-modal-hide="rejectModal" class="px-3 py-1.5 text-sm rounded-lg bg-gray-200 hover:bg-gray-300 transition">Batal</button>
+                <button onclick="submitReject()" class="px-3 py-1.5 text-sm rounded-lg bg-[#192853] text-yellow-400 hover:bg-[#0f1a3a] transition">Kirim</button>
+            </div>
         </div>
     </div>
 </div>
@@ -244,25 +248,17 @@ $eventPending = [
         document.getElementById('m_lokasi').innerText = l;
         document.getElementById('m_panitia').innerText = p;
         document.getElementById('m_deskripsi').innerText = d;
-        document.getElementById('modal').classList.remove('hidden');
-        document.getElementById('modal').classList.add('flex');
-    }
-
-    function closeModal() {
-        document.getElementById('modal').classList.add('hidden');
-        document.getElementById('modal').classList.remove('flex');
     }
 
     // MODAL REJECT
     function openRejectModal() {
-        document.getElementById('rejectModal').classList.remove('hidden');
-        document.getElementById('rejectModal').classList.add('flex');
+        // Just for data prep if needed, Flowbite handles showing
     }
 
     function closeRejectModal() {
-        document.getElementById('rejectModal').classList.add('hidden');
-        document.getElementById('rejectModal').classList.remove('flex');
         document.getElementById('rejectInput').value = '';
+        const modal = FlowbiteInstances.getInstance('Modal', 'rejectModal');
+        if (modal) modal.hide();
     }
 
     function submitReject() {

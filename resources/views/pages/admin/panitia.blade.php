@@ -71,7 +71,7 @@
                         </td>
                         <td class="p-3">
                             <div class="flex justify-center">
-                                <button onclick="openDeleteModal('{{ $d['nama'] }}')" 
+                                <button data-modal-target="modalHapus" data-modal-toggle="modalHapus" onclick="openDeleteModal('{{ $d['nama'] }}')" 
                                     class="w-9 h-9 flex items-center justify-center rounded-lg bg-red-100 text-red-500 hover:bg-red-200 transition">
                                     <i class="fa-solid fa-trash"></i>
                                 </button>
@@ -169,7 +169,7 @@
                                     <i class="fa-solid fa-check"></i>
                                 </button>
 
-                                <button onclick="openModal('{{ $d['nama'] }}')"
+                                <button data-modal-target="modalTolak" data-modal-toggle="modalTolak" onclick="openModal('{{ $d['nama'] }}')"
                                     class="w-9 h-9 flex items-center justify-center rounded-lg bg-red-100 text-red-500 hover:bg-red-200 transition">
                                     <i class="fa-solid fa-xmark"></i>
                                 </button>
@@ -186,47 +186,51 @@
 </div>
 
 <!-- ================= MODAL ================= -->
-<div id="modalTolak" class="fixed inset-0 hidden z-50 items-center justify-center">
-    <div class="absolute inset-0 bg-black/40" onclick="closeModal()"></div>
+<div id="modalTolak" tabindex="-1" aria-hidden="true" class="fixed inset-0 hidden z-50 items-center justify-center overflow-y-auto overflow-x-hidden">
+    <div class="relative p-4 w-full max-w-sm h-full md:h-auto flex items-center justify-center">
+        <div class="fixed inset-0 bg-black/40" data-modal-hide="modalTolak"></div>
 
-    <div class="relative bg-white rounded-xl shadow-lg w-full max-w-sm p-5 mx-4">
-        <h2 class="text-base font-semibold text-gray-700 mb-2">Alasan Penolakan</h2>
-        <p id="namaPanitia" class="text-sm text-gray-500 mb-3"></p>
+        <div class="relative bg-white rounded-xl shadow-lg w-full p-5 text-left">
+            <h2 class="text-base font-semibold text-gray-700 mb-2">Alasan Penolakan</h2>
+            <p id="namaPanitia" class="text-sm text-gray-500 mb-3"></p>
 
-        <textarea id="alasanInput"
-            class="w-full border rounded-lg p-2 text-sm focus:ring-1 focus:ring-red-400"
-            placeholder="Masukkan alasan..."></textarea>
+            <textarea id="alasanInput"
+                class="w-full border rounded-lg p-2 text-sm focus:ring-1 focus:ring-red-400"
+                placeholder="Masukkan alasan..."></textarea>
 
-        <div class="flex justify-end gap-2 mt-4">
-            <button onclick="closeModal()" class="px-3 py-1.5 text-sm rounded-lg bg-gray-200">Batal</button>
-            <button onclick="submitAlasan()" 
-    class="px-3 py-1.5 text-sm rounded-lg bg-[#192853] text-yellow-400 hover:bg-[#0f1a3a] transition">
-    Kirim
-</button>
+            <div class="flex justify-end gap-2 mt-4">
+                <button type="button" data-modal-hide="modalTolak" class="px-3 py-1.5 text-sm rounded-lg bg-gray-200">Batal</button>
+                <button onclick="submitAlasan()" 
+                    class="px-3 py-1.5 text-sm rounded-lg bg-[#192853] text-yellow-400 hover:bg-[#0f1a3a] transition">
+                    Kirim
+                </button>
+            </div>
         </div>
     </div>
 </div>
 
 <!-- ================= MODAL HAPUS ================= -->
-<div id="modalHapus" class="fixed inset-0 hidden z-50 items-center justify-center">
-    <div class="absolute inset-0 bg-black/40" onclick="closeDeleteModal()"></div>
+<div id="modalHapus" tabindex="-1" aria-hidden="true" class="fixed inset-0 hidden z-50 items-center justify-center overflow-y-auto overflow-x-hidden">
+    <div class="relative p-4 w-full max-w-sm h-full md:h-auto flex items-center justify-center">
+        <div class="fixed inset-0 bg-black/40" data-modal-hide="modalHapus"></div>
 
-    <div class="relative bg-white rounded-xl shadow-lg w-full max-w-sm p-6 mx-4 text-center">
-        <div class="w-16 h-16 bg-red-100 text-red-500 rounded-full flex items-center justify-center mx-auto mb-4">
-            <i class="fa-solid fa-trash-can text-2xl"></i>
-        </div>
-        <h2 class="text-lg font-semibold text-gray-700 mb-2">Hapus Panitia?</h2>
-        <p class="text-sm text-gray-500 mb-6">Apakah Anda yakin ingin menghapus <span id="namaPanitiaHapus" class="font-bold text-gray-700"></span> dari daftar panitia aktif?</p>
+        <div class="relative bg-white rounded-xl shadow-lg w-full p-6 text-center">
+            <div class="w-16 h-16 bg-red-100 text-red-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                <i class="fa-solid fa-trash-can text-2xl"></i>
+            </div>
+            <h2 class="text-lg font-semibold text-gray-700 mb-2">Hapus Panitia?</h2>
+            <p class="text-sm text-gray-500 mb-6">Apakah Anda yakin ingin menghapus <span id="namaPanitiaHapus" class="font-bold text-gray-700"></span> dari daftar panitia aktif?</p>
 
-        <div class="flex justify-center gap-3">
-            <button onclick="closeDeleteModal()" 
-                class="px-6 py-2 text-sm font-medium rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200 transition">
-                Batal
-            </button>
-            <button onclick="confirmDelete()" 
-                class="px-6 py-2 text-sm font-medium rounded-lg bg-red-500 text-white hover:bg-red-600 transition shadow-md shadow-red-200">
-                Iya, Hapus
-            </button>
+            <div class="flex justify-center gap-3">
+                <button type="button" data-modal-hide="modalHapus" 
+                    class="px-6 py-2 text-sm font-medium rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200 transition">
+                    Batal
+                </button>
+                <button onclick="confirmDelete()" 
+                    class="px-6 py-2 text-sm font-medium rounded-lg bg-red-500 text-white hover:bg-red-600 transition shadow-md shadow-red-200">
+                    Iya, Hapus
+                </button>
+            </div>
         </div>
     </div>
 </div>
@@ -243,15 +247,13 @@
 
     function openModal(nama) {
         selectedNama = nama;
-        document.getElementById('modalTolak').classList.remove('hidden');
-        document.getElementById('modalTolak').classList.add('flex');
         document.getElementById('namaPanitia').innerText = "Nama: " + nama;
     }
 
     function closeModal() {
-        document.getElementById('modalTolak').classList.add('hidden');
-        document.getElementById('modalTolak').classList.remove('flex');
         document.getElementById('alasanInput').value = '';
+        const modal = FlowbiteInstances.getInstance('Modal', 'modalTolak');
+        if (modal) modal.hide();
     }
 
     // MODAL HAPUS
@@ -259,14 +261,12 @@
 
     function openDeleteModal(nama) {
         deleteNama = nama;
-        document.getElementById('modalHapus').classList.remove('hidden');
-        document.getElementById('modalHapus').classList.add('flex');
         document.getElementById('namaPanitiaHapus').innerText = nama;
     }
 
     function closeDeleteModal() {
-        document.getElementById('modalHapus').classList.add('hidden');
-        document.getElementById('modalHapus').classList.remove('flex');
+        const modal = FlowbiteInstances.getInstance('Modal', 'modalHapus');
+        if (modal) modal.hide();
     }
 
     function confirmDelete() {

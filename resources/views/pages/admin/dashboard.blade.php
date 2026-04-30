@@ -76,6 +76,7 @@
                     @foreach ($events as $event)
                     <div 
                         class="event-card flex items-center gap-3 p-3 rounded-xl hover:bg-blue-50 cursor-pointer border border-gray-100 text-xs transition-all hover:border-blue-200 active:scale-[0.98]"
+                        data-modal-target="modal" data-modal-toggle="modal"
                         onclick='showModal(
                             @json($event["nama"]),
                             @json($event["kategori"]),
@@ -184,41 +185,43 @@
 
 
 <!-- MODAL -->
-<div id="modal" class="fixed inset-0 bg-black/40 hidden items-center justify-center z-50">
-    <div class="bg-white w-full max-w-sm rounded-lg shadow-xl overflow-hidden mx-4">
+<div id="modal" tabindex="-1" aria-hidden="true" class="fixed inset-0 bg-black/40 hidden items-center justify-center z-50 overflow-y-auto overflow-x-hidden">
+    <div class="relative p-4 w-full max-w-sm h-full md:h-auto flex items-center justify-center">
+        <div class="relative bg-white w-full rounded-lg shadow-xl overflow-hidden">
 
-        <div class="bg-[#192853] p-3 flex justify-between">
-            <div>
-                <h3 id="m_nama" class="text-yellow-400 font-semibold text-sm"></h3>
-                <p id="m_kategori" class="text-white/60 text-xs"></p>
+            <div class="bg-[#192853] p-3 flex justify-between">
+                <div>
+                    <h3 id="m_nama" class="text-yellow-400 font-semibold text-sm"></h3>
+                    <p id="m_kategori" class="text-white/60 text-xs"></p>
+                </div>
+                <button type="button" data-modal-hide="modal" class="text-white text-lg">&times;</button>
             </div>
-            <button onclick="closeModal()" class="text-white text-lg">&times;</button>
+
+            <div class="p-3 space-y-2 text-xs">
+
+                <div class="flex justify-between">
+                    <span class="text-gray-500">Tanggal</span>
+                    <span id="m_tanggal"></span>
+                </div>
+
+                <div class="flex justify-between">
+                    <span class="text-gray-500">Waktu</span>
+                    <span id="m_waktu"></span>
+                </div>
+
+                <div class="flex justify-between">
+                    <span class="text-gray-500">Lokasi</span>
+                    <span id="m_lokasi"></span>
+                </div>
+
+                <div>
+                    <span class="text-gray-500">Deskripsi</span>
+                    <p id="m_deskripsi"></p>
+                </div>
+
+            </div>
+
         </div>
-
-        <div class="p-3 space-y-2 text-xs">
-
-            <div class="flex justify-between">
-                <span class="text-gray-500">Tanggal</span>
-                <span id="m_tanggal"></span>
-            </div>
-
-            <div class="flex justify-between">
-                <span class="text-gray-500">Waktu</span>
-                <span id="m_waktu"></span>
-            </div>
-
-            <div class="flex justify-between">
-                <span class="text-gray-500">Lokasi</span>
-                <span id="m_lokasi"></span>
-            </div>
-
-            <div>
-                <span class="text-gray-500">Deskripsi</span>
-                <p id="m_deskripsi"></p>
-            </div>
-
-        </div>
-
     </div>
 </div>
 
@@ -298,17 +301,13 @@
         document.getElementById('m_waktu').textContent = waktu;
         document.getElementById('m_lokasi').textContent = lokasi;
         document.getElementById('m_deskripsi').textContent = deskripsi;
-
-        document.getElementById('modal').classList.remove('hidden');
-        document.getElementById('modal').classList.add('flex');
-    }
-
-    function closeModal() {
-        document.getElementById('modal').classList.add('hidden');
     }
 
     document.getElementById('modal').addEventListener('click', function(e) {
-        if (e.target === this) closeModal();
+        if (e.target === this) {
+             const modal = FlowbiteInstances.getInstance('Modal', 'modal');
+             if (modal) modal.hide();
+        }
     });
 
     // SEARCH EVENT

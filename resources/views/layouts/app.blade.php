@@ -37,7 +37,7 @@
         <!-- MOBILE HEADER -->
         <div class="md:hidden bg-white border-b px-6 py-4 flex items-center justify-between shadow-sm sticky top-0 z-30">
             <h1 class="text-[#192853] font-bold text-lg">Eventix Admin</h1>
-            <button onclick="toggleSidebar()" class="text-gray-500 hover:text-[#192853] transition">
+            <button data-drawer-target="adminSidebar" data-drawer-toggle="adminSidebar" aria-controls="adminSidebar" type="button" class="text-gray-500 hover:text-[#192853] transition">
                 <i class="fa-solid fa-bars text-xl"></i>
             </button>
         </div>
@@ -52,20 +52,8 @@
 <!-- ===== MODAL LOGOUT ===== -->
 <x-admin.logout-modal />
 
-<script>
-    function toggleSidebar() {
-        const sidebar = document.getElementById('adminSidebar');
-        const overlay = document.getElementById('sidebarOverlay');
-        
-        if (sidebar.classList.contains('-translate-x-full')) {
-            sidebar.classList.remove('-translate-x-full');
-            overlay.classList.remove('hidden');
-        } else {
-            sidebar.classList.add('-translate-x-full');
-            overlay.classList.add('hidden');
-        }
-    }
-</script>
+<!-- Flowbite -->
+<script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
 
 </body>
 

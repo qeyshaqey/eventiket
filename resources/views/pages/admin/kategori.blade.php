@@ -17,7 +17,7 @@
             </div>
         </div>
 
-        <button type="button" onclick="openModal()"
+        <button type="button" data-modal-target="modal" data-modal-toggle="modal" onclick="openModal()"
             class="flex items-center gap-2 bg-[#192853] text-yellow-400 px-4 py-2 rounded-xl text-sm hover:bg-[#0f1a35] transition shrink-0">
             <i class="fa-solid fa-plus text-xs"></i>
             Tambah Kategori
@@ -58,7 +58,8 @@
                         <div class="flex justify-center gap-2">
 
                             <!-- EDIT -->
-                            <button
+                             <button
+                                data-modal-target="modal" data-modal-toggle="modal"
                                 onclick='editData({{ $k["id"] }}, @json($k["nama_kategori"]))'
                                 class="w-9 h-9 flex items-center justify-center rounded-lg bg-blue-500/10 text-blue-500 hover:bg-blue-100 transition">
                                 <i class="fa-solid fa-pen"></i>
@@ -66,6 +67,7 @@
 
                             <!-- DELETE -->
                             <button
+                                data-modal-target="modalHapus" data-modal-toggle="modalHapus"
                                 onclick='openDeleteModal({{ $k["id"] }}, @json($k["nama_kategori"]))'
                                 class="w-9 h-9 flex items-center justify-center rounded-lg bg-red-500/10 text-red-500 hover:bg-red-100 transition">
                                 <i class="fa-solid fa-trash"></i>
@@ -85,58 +87,61 @@
 </div>
 
 <!-- MODAL -->
-<div id="modal" class="fixed inset-0 bg-black/40 hidden items-center justify-center z-50">
+<div id="modal" tabindex="-1" aria-hidden="true" class="fixed inset-0 bg-black/40 hidden items-center justify-center z-50 overflow-y-auto overflow-x-hidden">
 
-    <div id="modalBox"
-        class="bg-white w-full max-w-sm rounded-xl p-6 shadow-xl scale-95 opacity-0 transition mx-4">
+    <div class="relative p-4 w-full max-w-sm h-full md:h-auto flex items-center justify-center">
+        <div id="modalBox"
+            class="relative bg-white w-full rounded-xl p-6 shadow-xl transition">
 
-        <h3 class="text-sm font-semibold mb-4">Kategori Event</h3>
+            <h3 class="text-sm font-semibold mb-4">Kategori Event</h3>
 
-        <form method="POST" action="{{ route('admin.kategori.store') }}">
-            @csrf
+            <form method="POST" action="{{ route('admin.kategori.store') }}">
+                @csrf
 
-            <input type="hidden" name="id" id="id">
+                <input type="hidden" name="id" id="id">
 
-            <input type="text" name="nama" id="nama"
-                class="w-full border rounded-lg p-2 mb-4"
-                placeholder="Nama kategori">
+                <input type="text" name="nama" id="nama"
+                    class="w-full border rounded-lg p-2 mb-4"
+                    placeholder="Nama kategori">
 
-            <div class="flex justify-end gap-2">
-                <button type="submit"
-                    class="bg-[#192853] text-yellow-400 px-4 py-2 rounded">
-                    Simpan
-                </button>
+                <div class="flex justify-end gap-2">
+                    <button type="submit"
+                        class="bg-[#192853] text-yellow-400 px-4 py-2 rounded">
+                        Simpan
+                    </button>
 
-                <button type="button" onclick="closeModal()"
-                    class="bg-gray-300 px-4 py-2 rounded">
-                    Batal
-                </button>
-            </div>
-        </form>
-    </div>
+                    <button type="button" data-modal-hide="modal"
+                        class="bg-gray-300 px-4 py-2 rounded">
+                        Batal
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 
 <!-- ================= MODAL HAPUS ================= -->
-<div id="modalHapus" class="fixed inset-0 hidden z-50 items-center justify-center">
-    <div class="absolute inset-0 bg-black/40" onclick="closeDeleteModal()"></div>
+<div id="modalHapus" tabindex="-1" aria-hidden="true" class="fixed inset-0 hidden z-50 items-center justify-center overflow-y-auto overflow-x-hidden">
+    <div class="relative p-4 w-full max-w-sm h-full md:h-auto flex items-center justify-center">
+        <div class="fixed inset-0 bg-black/40" data-modal-hide="modalHapus"></div>
 
-    <div class="relative bg-white rounded-xl shadow-lg w-full max-w-sm p-6 mx-4 text-center">
-        <div class="w-16 h-16 bg-red-100 text-red-500 rounded-full flex items-center justify-center mx-auto mb-4">
-            <i class="fa-solid fa-trash-can text-2xl"></i>
-        </div>
-        <h2 class="text-lg font-semibold text-gray-700 mb-2">Hapus Kategori?</h2>
-        <p class="text-sm text-gray-500 mb-6">Apakah Anda yakin ingin menghapus kategori <span id="namaKategoriHapus" class="font-bold text-gray-700"></span>?</p>
+        <div class="relative bg-white rounded-xl shadow-lg w-full p-6 text-center">
+            <div class="w-16 h-16 bg-red-100 text-red-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                <i class="fa-solid fa-trash-can text-2xl"></i>
+            </div>
+            <h2 class="text-lg font-semibold text-gray-700 mb-2">Hapus Kategori?</h2>
+            <p class="text-sm text-gray-500 mb-6">Apakah Anda yakin ingin menghapus kategori <span id="namaKategoriHapus" class="font-bold text-gray-700"></span>?</p>
 
-        <div class="flex justify-center gap-3">
-            <button onclick="closeDeleteModal()" 
-                class="px-6 py-2 text-sm font-medium rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200 transition">
-                Batal
-            </button>
-            <button onclick="confirmDelete()" 
-                class="px-6 py-2 text-sm font-medium rounded-lg bg-red-500 text-white hover:bg-red-600 transition shadow-md shadow-red-200">
-                Iya, Hapus
-            </button>
+            <div class="flex justify-center gap-3">
+                <button data-modal-hide="modalHapus" 
+                    class="px-6 py-2 text-sm font-medium rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200 transition">
+                    Batal
+                </button>
+                <button onclick="confirmDelete()" 
+                    class="px-6 py-2 text-sm font-medium rounded-lg bg-red-500 text-white hover:bg-red-600 transition shadow-md shadow-red-200">
+                    Iya, Hapus
+                </button>
+            </div>
         </div>
     </div>
 </div>
@@ -149,33 +154,20 @@ const nama = document.getElementById('nama')
 const idInput = document.getElementById('id')
 
 function openModal() {
-    modal.classList.remove('hidden')
-    modal.classList.add('flex')
-
-    setTimeout(() => {
-        modalBox.classList.remove('scale-95', 'opacity-0')
-    }, 10)
-
     nama.value = ''
     idInput.value = ''
 }
 
-function closeModal() {
-    modalBox.classList.add('scale-95', 'opacity-0')
-
-    setTimeout(() => {
-        modal.classList.add('hidden')
-    }, 150)
-}
-
 function editData(id, namaVal) {
-    openModal()
     nama.value = namaVal
     idInput.value = id
 }
 
-modal.addEventListener('click', function(e) {
-    if (e.target === modal) closeModal()
+document.getElementById('modal').addEventListener('click', function(e) {
+    if (e.target === this) {
+         const modal = FlowbiteInstances.getInstance('Modal', 'modal');
+         if (modal) modal.hide();
+    }
 })
 
 // MODAL HAPUS
@@ -184,13 +176,6 @@ let deleteId = null;
 function openDeleteModal(id, namaVal) {
     deleteId = id;
     document.getElementById('namaKategoriHapus').innerText = namaVal;
-    document.getElementById('modalHapus').classList.remove('hidden');
-    document.getElementById('modalHapus').classList.add('flex');
-}
-
-function closeDeleteModal() {
-    document.getElementById('modalHapus').classList.add('hidden');
-    document.getElementById('modalHapus').classList.remove('flex');
 }
 
     function confirmDelete() {
@@ -198,7 +183,8 @@ function closeDeleteModal() {
             console.log("Menghapus kategori dengan ID:", deleteId);
             // Logika hapus bisa diarahkan ke route delete jika sudah ada
         }
-        closeDeleteModal();
+        const modal = FlowbiteInstances.getInstance('Modal', 'modalHapus');
+        if (modal) modal.hide();
     }
 
     // SEARCH
