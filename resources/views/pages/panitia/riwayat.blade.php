@@ -13,24 +13,20 @@
     data-tabs-target="#tab-event"
     id="tabBtn-event"
     class="px-5 py-2 rounded-full text-sm font-semibold transition bg-[#192853] text-yellow-400 shadow">
-            Riwayat Event
+    Event
         </button>
 
         <button onclick="showTab('transaksi')"
     data-tabs-target="#tab-transaksi"
     id="tabBtn-transaksi"
     class="px-5 py-2 rounded-full text-sm font-semibold transition bg-white text-gray-600 shadow">
-            Riwayat Transaksi
+    Transaksi
         </button>
     </div>
     </div>
 
     <!-- CARD -->
     <div class="bg-white rounded-2xl shadow-md border border-gray-100 p-4 md:p-6">
-
-        <h2 id="cardTitle" class="text-lg font-bold text-[#192853] mb-4">
-            Riwayat Event
-        </h2>
 
         <!-- ===================== -->
         <!-- EVENT -->

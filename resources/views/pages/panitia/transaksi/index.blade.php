@@ -12,6 +12,7 @@
     </div>
 
     <!-- TABLE WRAPPER -->
+     <div class="bg-white rounded-2xl shadow-md border border-gray-100 p-4 md:p-6">
     <div class="bg-white rounded-2xl shadow-md border border-gray-100 overflow-x-auto">
 
         <!-- TABLE HEADER -->
@@ -88,6 +89,7 @@
         </div>
     </div>
 
+</div>
 </div>
 
 @endsection
