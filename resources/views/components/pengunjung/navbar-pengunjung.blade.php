@@ -21,39 +21,39 @@
             </nav>
 
             <!-- Mobile Menu Button -->
-            <button type="button" id="mobile-menu-btn" class="inline-flex items-center justify-center rounded-xl p-2.5 text-white bg-white/5 border border-white/10 hover:bg-white/10 md:hidden transition active:scale-95">
-                <i class="fa-solid fa-bars text-lg" id="menu-icon"></i>
+            <button type="button" data-collapse-toggle="mobile-menu" class="inline-flex items-center justify-center rounded-xl p-2.5 text-white bg-white/5 border border-white/10 hover:bg-white/10 md:hidden transition active:scale-95">
+                <i class="fa-solid fa-bars text-lg"></i>
             </button>
        </div>
 
        <!-- Mobile Nav Overlay -->
        <div id="mobile-menu" class="fixed inset-0 z-[60] hidden md:hidden">
             <!-- Blur Backdrop -->
-            <div class="absolute inset-0 bg-[#192853]/95 backdrop-blur-md opacity-0 transition-opacity duration-300" id="mobile-menu-backdrop"></div>
+            <div class="absolute inset-0 bg-[#192853]/95 backdrop-blur-md opacity-100"></div>
             
             <!-- Content Container -->
-            <div class="relative h-full flex flex-col p-6 transform translate-y-10 opacity-0 transition-all duration-300" id="mobile-menu-content">
+            <div class="relative h-full flex flex-col p-6 transform translate-y-0 opacity-100">
                 <div class="flex items-center justify-between mb-12">
                     <span class="text-xl font-bold text-white">Eventiket</span>
-                    <button type="button" onclick="closeMobileMenu()" class="w-10 h-10 flex items-center justify-center rounded-full bg-white/5 border border-white/10 text-white transition active:scale-90">
+                    <button type="button" data-collapse-toggle="mobile-menu" class="w-10 h-10 flex items-center justify-center rounded-full bg-white/5 border border-white/10 text-white transition active:scale-90">
                         <i class="fa-solid fa-xmark text-xl"></i>
                     </button>
                 </div>
 
                 <nav class="flex flex-col gap-1">
-                    <a href="#home" onclick="closeMobileMenu()" class="group flex items-center justify-between p-4 rounded-2xl hover:bg-white/5 transition">
+                    <a href="#home" data-collapse-toggle="mobile-menu" class="group flex items-center justify-between p-4 rounded-2xl hover:bg-white/5 transition">
                         <span class="text-2xl font-semibold text-white">Beranda</span>
                         <i class="fa-solid fa-arrow-right text-[#FFE14E] opacity-0 -translate-x-4 transition-all group-hover:opacity-100 group-hover:translate-x-0"></i>
                     </a>
-                    <a href="#event" onclick="closeMobileMenu()" class="group flex items-center justify-between p-4 rounded-2xl hover:bg-white/5 transition">
+                    <a href="#event" data-collapse-toggle="mobile-menu" class="group flex items-center justify-between p-4 rounded-2xl hover:bg-white/5 transition">
                         <span class="text-2xl font-semibold text-white">Event</span>
                         <i class="fa-solid fa-arrow-right text-[#FFE14E] opacity-0 -translate-x-4 transition-all group-hover:opacity-100 group-hover:translate-x-0"></i>
                     </a>
-                    <a href="#about" onclick="closeMobileMenu()" class="group flex items-center justify-between p-4 rounded-2xl hover:bg-white/5 transition">
+                    <a href="#about" data-collapse-toggle="mobile-menu" class="group flex items-center justify-between p-4 rounded-2xl hover:bg-white/5 transition">
                         <span class="text-2xl font-semibold text-white">Tentang</span>
                         <i class="fa-solid fa-arrow-right text-[#FFE14E] opacity-0 -translate-x-4 transition-all group-hover:opacity-100 group-hover:translate-x-0"></i>
                     </a>
-                    <a href="#contact" onclick="closeMobileMenu()" class="group flex items-center justify-between p-4 rounded-2xl hover:bg-white/5 transition">
+                    <a href="#contact" data-collapse-toggle="mobile-menu" class="group flex items-center justify-between p-4 rounded-2xl hover:bg-white/5 transition">
                         <span class="text-2xl font-semibold text-white">Hubungi Kami</span>
                         <i class="fa-solid fa-arrow-right text-[#FFE14E] opacity-0 -translate-x-4 transition-all group-hover:opacity-100 group-hover:translate-x-0"></i>
                     </a>
@@ -75,39 +75,7 @@
        </div>
     </header>
 
-    <!-- NAVBAR MOBILE  -->
-    <script>
-        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-        const mobileMenu = document.getElementById('mobile-menu');
-        const menuBackdrop = document.getElementById('mobile-menu-backdrop');
-        const menuContent = document.getElementById('mobile-menu-content');
-
-        function openMobileMenu() {
-            if(!mobileMenu) return;
-            mobileMenu.classList.remove('hidden');
-            setTimeout(() => {
-                if(menuBackdrop) menuBackdrop.classList.replace('opacity-0', 'opacity-100');
-                if(menuContent) menuContent.classList.replace('translate-y-10', 'translate-y-0');
-                if(menuContent) menuContent.classList.replace('opacity-0', 'opacity-100');
-            }, 10);
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeMobileMenu() {
-            if(!menuBackdrop || !menuContent) return;
-            menuBackdrop.classList.replace('opacity-100', 'opacity-0');
-            menuContent.classList.replace('translate-y-0', 'translate-y-10');
-            menuContent.classList.replace('opacity-100', 'opacity-0');
-            setTimeout(() => {
-                if(mobileMenu) mobileMenu.classList.add('hidden');
-            }, 300);
-            document.body.style.overflow = '';
-        }
-
-        if (mobileMenuBtn) {
-            mobileMenuBtn.addEventListener('click', openMobileMenu);
-        }
-    </script>
+    <!-- NAVBAR MOBILE (FLOWBITE IMPLEMENTED) -->
 @else
     <header class="sticky top-0 z-50 bg-[#192853] text-white shadow-sm">
         <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-5">

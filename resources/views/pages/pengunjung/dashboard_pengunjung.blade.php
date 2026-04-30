@@ -38,13 +38,13 @@
                             <!-- FILTER KATEGORI (CUSTOM DROPDOWN) -->
                             <div class="relative w-full md:w-64 shrink-0" id="category-dropdown-container">
                                 <input type="hidden" name="category" id="category-input" value="{{ $category ?? 'semua' }}">
-                                <button type="button" id="category-btn" class="flex items-center justify-between w-full h-11 sm:h-12 rounded-full border border-slate-300 bg-white px-5 sm:px-6 text-sm font-medium text-[#192853] shadow-sm focus:border-[#192853] focus:outline-none transition text-left">
+                                <button type="button" id="category-btn" data-dropdown-toggle="category-menu" class="flex items-center justify-between w-full h-11 sm:h-12 rounded-full border border-slate-300 bg-white px-5 sm:px-6 text-sm font-medium text-[#192853] shadow-sm focus:border-[#192853] focus:outline-none transition text-left">
                                     <span id="category-label">{{ ($category ?? 'semua') === 'semua' ? 'Semua Kategori' : $category }}</span>
                                     <i class="fa-solid fa-chevron-down text-xs text-slate-500 transition-transform duration-300" id="category-icon"></i>
                                 </button>
 
                                 <!-- Dropdown Menu -->
-                                <div id="category-menu" class="absolute left-0 right-0 top-full mt-2 z-50 hidden opacity-0 translate-y-2 transition-all duration-200">
+                                <div id="category-menu" class="absolute left-0 right-0 top-full mt-2 z-50 hidden">
                                     <div class="bg-white rounded-2xl shadow-xl border border-slate-200 overflow-hidden">
                                         <div class="p-2">
                                             @foreach(['semua', 'Seminar', 'Sosial', 'Olahraga', 'Hiburan', 'Kompetisi', 'Keagamaan'] as $cat)
@@ -75,35 +75,6 @@
 
 @push('scripts')
 <script>
-    // Fungsi global agar bisa dipanggil dari onclick="..."
-    function toggleCategoryMenu() {
-        const menu = document.getElementById('category-menu');
-        const icon = document.getElementById('category-icon');
-        if (!menu || !icon) return;
-
-        const isHidden = menu.classList.contains('hidden');
-        if (isHidden) {
-            menu.classList.remove('hidden');
-            setTimeout(() => {
-                menu.classList.remove('opacity-0', 'translate-y-2');
-                icon.classList.add('rotate-180');
-            }, 10);
-        } else {
-            closeCategoryMenu();
-        }
-    }
-
-    function closeCategoryMenu() {
-        const menu = document.getElementById('category-menu');
-        const icon = document.getElementById('category-icon');
-        if (!menu || !icon) return;
-
-        menu.classList.add('opacity-0', 'translate-y-2');
-        icon.classList.remove('rotate-180');
-        setTimeout(() => {
-            menu.classList.add('hidden');
-        }, 200);
-    }
 
     function selectCategory(value) {
         const input = document.getElementById('category-input');
@@ -112,7 +83,10 @@
 
         input.value = value;
         label.innerText = value === 'semua' ? 'Semua Kategori' : value;
-        closeCategoryMenu();
+        
+        // Hide dropdown by simulating a click on the trigger (Flowbite will handle it)
+        const btn = document.getElementById('category-btn');
+        if (btn) btn.click();
         
         // Trigger AJAX fetch
         input.dispatchEvent(new Event('change'));
@@ -128,18 +102,7 @@
         const ajaxUrl = "{{ route('pengunjung.dashboard.ajax') }}";
         let timeoutId = null;
 
-        if (categoryBtn) {
-            categoryBtn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                toggleCategoryMenu();
-            });
-        }
 
-        document.addEventListener('click', (e) => {
-            if (categoryMenu && !categoryMenu.contains(e.target) && e.target !== categoryBtn) {
-                closeCategoryMenu();
-            }
-        });
 
         function buildQuery(params) {
             return new URLSearchParams(params).toString();
