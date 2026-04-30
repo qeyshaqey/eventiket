@@ -3,10 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    
-    <!-- RESPONSIVE -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Eventix Panitia</title>
 
     <!-- FONT -->
@@ -33,17 +30,15 @@
 <!-- SIDEBAR -->
 <x-sidebarpanit />
 
-<!-- CONTENT -->
-<!-- SIDEBAR -->
-<x-sidebarpanit />
-
-<!-- MAIN WRAPPER (INI YANG PENTING) -->
+<!-- MAIN WRAPPER -->
 <div class="md:ml-[260px] min-h-screen flex flex-col transition-all duration-300">
 
     <!-- TOPBAR MOBILE -->
     <div class="md:hidden bg-white border-b px-4 py-3 flex items-center justify-between shadow-sm sticky top-0 z-30">
         <h1 class="font-bold text-[#192853]">Menu</h1>
-        <button onclick="toggleSidebar()" class="text-2xl text-[#192853]">
+
+        <!-- ✅ FLOWBITE DRAWER -->
+        <button data-drawer-target="sidebar" data-drawer-toggle="sidebar" class="text-2xl text-[#192853]">
             <i class="bi bi-list"></i>
         </button>
     </div>
@@ -55,55 +50,52 @@
 
 </div>
 
-<!-- TOAST SCRIPT -->
+<!-- TOAST SCRIPT (INI BOLEH, bukan UI toggle) -->
 <script>
 function showToast(message, type = 'success', duration = 3000) {
     const toast = document.getElementById('toast-notice');
     const toastMessage = document.getElementById('toast-message');
     const toastIcon = document.getElementById('toast-icon');
-    
+
     if (type === 'error') {
-        toast.classList.remove('border-yellow');
         toast.classList.add('border-red-500');
-        toastIcon.classList.remove('text-yellow-500');
-        toastIcon.classList.add('text-red-500');
-        toastIcon.classList.remove('bi-bell-fill');
-        toastIcon.classList.add('bi-exclamation-circle-fill');
+        toastIcon.classList.add('text-red-500','bi-exclamation-circle-fill');
     } else {
-        toast.classList.remove('border-red-500');
         toast.classList.add('border-yellow');
-        toastIcon.classList.remove('text-red-500');
-        toastIcon.classList.add('text-yellow-500');
-        toastIcon.classList.remove('bi-exclamation-circle-fill');
-        toastIcon.classList.add('bi-bell-fill');
+        toastIcon.classList.add('text-yellow-500','bi-bell-fill');
     }
-    
+
     toastMessage.textContent = message;
-    toast.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-2');
-    toast.classList.add('opacity-100', 'pointer-events-auto', 'translate-y-0');
-    
+    toast.classList.remove('opacity-0','pointer-events-none','translate-y-2');
+    toast.classList.add('opacity-100','pointer-events-auto','translate-y-0');
+
     setTimeout(() => {
-        toast.classList.add('opacity-0', 'pointer-events-none', 'translate-y-2');
-        toast.classList.remove('opacity-100', 'pointer-events-auto', 'translate-y-0');
+        toast.classList.add('opacity-0','pointer-events-none','translate-y-2');
+        toast.classList.remove('opacity-100','pointer-events-auto','translate-y-0');
     }, duration);
 }
 </script>
 
 @yield('script')
 
-<!-- LOGOUT MODAL -->
-<div id="logoutModal" class="fixed inset-0 hidden z-50 items-center justify-center">
+<!-- FLOWBITE MODAL -->
+<div id="logoutModal"
+    tabindex="-1"
+    class="fixed inset-0 hidden z-50 items-center justify-center">
 
-    <div class="absolute inset-0 bg-black/50" onclick="closeLogoutModal()"></div>
+    <!-- overlay (Flowbite auto close) -->
+    <div class="absolute inset-0 bg-black/50" data-modal-hide="logoutModal"></div>
 
     <div class="relative bg-white w-[90%] max-w-[380px] rounded-2xl shadow-xl p-6">
         <h2 class="text-center font-bold text-[#192853] text-lg">Keluar dari akun?</h2>
 
         <div class="flex gap-3 mt-6">
-            <button onclick="closeLogoutModal()" class="w-full py-2 bg-gray-100 rounded-lg">
+            <!-- CLOSE -->
+            <button data-modal-hide="logoutModal" class="w-full py-2 bg-gray-100 rounded-lg">
                 Batal
             </button>
 
+            <!-- tetap submit -->
             <button onclick="document.getElementById('logoutForm').submit()" 
                 class="w-full py-2 bg-red-500 text-white rounded-lg">
                 Keluar
@@ -116,26 +108,8 @@ function showToast(message, type = 'success', duration = 3000) {
     @csrf
 </form>
 
-<!-- SCRIPT -->
-<script>
-function openLogoutModal(){
-    document.getElementById('logoutModal').classList.remove('hidden');
-    document.getElementById('logoutModal').classList.add('flex');
-}
-
-function closeLogoutModal(){
-    document.getElementById('logoutModal').classList.add('hidden');
-    document.getElementById('logoutModal').classList.remove('flex');
-}
-
-function toggleSidebar() {
-    const sidebar = document.getElementById('sidebar');
-    const overlay = document.getElementById('sidebarOverlay');
-
-    sidebar.classList.toggle('-translate-x-full');
-    overlay.classList.toggle('hidden');
-}
-</script>
+<!-- FLOWBITE -->
+<script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
 
 </body>
 </html>
