@@ -2,20 +2,27 @@
 
 @section('content')
 <div class="p-4 md:p-6">
+    <h1 class="text-xl font-bold text-[#192853] mb-4 font-[Poppins]">
+        Riwayat
+    </h1>
 
+    <div data-tabs-toggle="#tab-content">
     <!-- TABS -->
     <div class="flex flex-wrap gap-3 mb-5">
         <button onclick="showTab('event')"
-            id="tabBtn-event"
-            class="px-5 py-2 rounded-full text-sm font-semibold transition bg-[#192853] text-yellow-400 shadow">
+    data-tabs-target="#tab-event"
+    id="tabBtn-event"
+    class="px-5 py-2 rounded-full text-sm font-semibold transition bg-[#192853] text-yellow-400 shadow">
             Riwayat Event
         </button>
 
         <button onclick="showTab('transaksi')"
-            id="tabBtn-transaksi"
-            class="px-5 py-2 rounded-full text-sm font-semibold transition bg-white text-gray-600 shadow">
+    data-tabs-target="#tab-transaksi"
+    id="tabBtn-transaksi"
+    class="px-5 py-2 rounded-full text-sm font-semibold transition bg-white text-gray-600 shadow">
             Riwayat Transaksi
         </button>
+    </div>
     </div>
 
     <!-- CARD -->
