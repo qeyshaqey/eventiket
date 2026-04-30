@@ -143,7 +143,7 @@ Route::get('/lupa-password', [ForgotPasswordController::class, 'showForm'])
 Route::post('/lupa-password', [ForgotPasswordController::class, 'sendResetLink'])
     ->name('password.forgot.send');
 
-// ── Dashboard Pengunjung ──
+// ── PENGUNJUNG SIDE ──
 Route::prefix('pengunjung')->name('pengunjung.')->group(function () {
     Route::get('/dashboard_pengunjung', [DashboardPengunjungController::class, 'index'])->name('dashboard');
     Route::get('/dashboard_pengunjung/ajax', [DashboardPengunjungController::class, 'ajaxSearch'])->name('dashboard.ajax');

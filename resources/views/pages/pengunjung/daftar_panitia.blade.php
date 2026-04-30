@@ -1,4 +1,4 @@
-@extends('layouts.pengunjung')
+@extends('layouts.pengunjung.pengunjung')
 
 @section('title', 'Daftar Kepanitiaan Event')
 

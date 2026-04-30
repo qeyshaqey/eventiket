@@ -1,4 +1,4 @@
-@extends('layouts.pengunjung')
+@extends('layouts.pengunjung.pengunjung')
 
 @section('title', 'Pembayaran Tiket - Eventiket')
 
@@ -121,7 +121,7 @@
                             <input type="hidden" id="bank-input" name="bank_pengembalian" value="">
 
                             <!-- Trigger Button -->
-                            <button type="button" id="bank-btn" onclick="toggleBankMenu()"
+                            <button type="button" id="bank-btn" data-dropdown-toggle="bank-menu"
                                 class="w-full flex items-center justify-between bg-white/80 border-2 border-transparent hover:border-navy/30 rounded-xl py-2.5 pl-10 pr-4 shadow-sm text-sm font-medium transition-all duration-200 text-left cursor-pointer">
                                 <span id="bank-label" class="text-gray-400 font-normal">Pilih Bank</span>
                                 <i id="bank-icon" class="bi bi-chevron-down text-gray-400 transition-transform duration-200"></i>
@@ -239,25 +239,16 @@
 @push('scripts')
 <script>
     // Bank Dropdown
-    function toggleBankMenu() {
-        document.getElementById('bank-menu').classList.toggle('hidden');
-        document.getElementById('bank-icon').classList.toggle('rotate-180');
-    }
     function selectBank(v) {
         document.getElementById('bank-input').value = v;
         const lbl = document.getElementById('bank-label');
         lbl.textContent = v;
         lbl.className = 'text-navy font-medium';
-        document.getElementById('bank-menu').classList.add('hidden');
-        document.getElementById('bank-icon').classList.remove('rotate-180');
+        
+        // Hide dropdown (Flowbite)
+        const btn = document.getElementById('bank-btn');
+        if (btn) btn.click();
     }
-    document.addEventListener('click', function(e) {
-        const btn = document.getElementById('bank-btn'), menu = document.getElementById('bank-menu');
-        if (btn && menu && !btn.contains(e.target) && !menu.contains(e.target)) {
-            menu.classList.add('hidden');
-            document.getElementById('bank-icon').classList.remove('rotate-180');
-        }
-    });
 
     const inputFile = document.getElementById('bukti_transfer');
     const previewContainer = document.getElementById('image-preview');
@@ -368,7 +359,7 @@
     const bankInput = document.getElementById('bank-input');
     const rekeningInput = document.getElementById('rekening_pengembalian');
 
-    form.addEventListener('submit', function(e) {\
+    form.addEventListener('submit', function(e) {
 
         e.preventDefault();
 
@@ -384,7 +375,7 @@
         showToast('Konfirmasi pembayaran berhasil dikirim.', 'success');
         setTimeout(() => {
             window.location.href = "{{ route('pengunjung.tiket') }}";
-        }, 1500);=
+        }, 1500);
     });
 </script>
 @endpush

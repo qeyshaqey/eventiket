@@ -1,4 +1,4 @@
-@extends('layouts.pengunjung')
+@extends('layouts.pengunjung.pengunjung')
 
 @section('title', 'Detail Event')
 
@@ -161,9 +161,11 @@
     <span class="hidden !border-red-500 !border-yellow"></span>
 </div>
 
-<div id="checkout-modal" class="fixed inset-0 hidden items-center justify-center bg-black/40 p-4 z-50">
+<div id="checkout-modal" tabindex="-1" aria-hidden="true" class="fixed inset-0 hidden items-center justify-center bg-black/40 p-4 z-50">
+    <!-- Hidden trigger for Flowbite -->
+    <button id="checkout-trigger-btn" data-modal-target="checkout-modal" data-modal-toggle="checkout-modal" class="hidden"></button>
     <div class="w-full max-w-2xl rounded-[28px] bg-white p-5 shadow-2xl relative max-h-[calc(100vh-5rem)] overflow-hidden">
-        <button type="button" onclick="closeCheckout()" class="absolute right-4 top-4 text-3xl text-slate-400 transition hover:text-navy">&times;</button>
+        <button type="button" data-modal-hide="checkout-modal" class="absolute right-4 top-4 text-3xl text-slate-400 transition hover:text-navy">&times;</button>
 
         <div class="mb-4">
             <h2 class="text-2xl font-semibold text-[#192853]">Konfirmasi Pembelian</h2>
@@ -213,7 +215,7 @@
             </div>
 
             <div class="mt-4 flex flex-col gap-2 sm:flex-row sm:justify-between">
-                <button type="button" onclick="closeCheckout()" class="inline-flex w-full justify-center rounded-full border border-slate-300 bg-white px-5 py-2.5 text-sm font-semibold text-[#475569] transition hover:border-yellow hover:bg-yellow/10 sm:w-[48%]">Batal</button>
+                <button type="button" data-modal-hide="checkout-modal" class="inline-flex w-full justify-center rounded-full border border-slate-300 bg-white px-5 py-2.5 text-sm font-semibold text-[#475569] transition hover:border-yellow hover:bg-yellow/10 sm:w-[48%]">Batal</button>
                 <button type="submit" class="inline-flex w-full justify-center rounded-full bg-navy px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-yellow hover:text-navy sm:w-[48%]">PESAN TIKET</button>
             </div>
         </form>
@@ -359,32 +361,16 @@ function openCheckout() {
     document.getElementById('checkoutTotalQty').innerText = totalQty;
     document.getElementById('checkoutTotalPrice').innerText = 'Rp ' + formatRupiah(quantities.reduce((sum, qty, i) => sum + qty * prices[i], 0));
 
-    const modal = document.getElementById('checkout-modal');
-    modal.classList.remove('hidden');
-    modal.classList.add('flex');
-}
-
-function closeCheckout() {
-    const modal = document.getElementById('checkout-modal');
-    modal.classList.add('hidden');
-    modal.classList.remove('flex');
+    document.getElementById('checkout-trigger-btn').click();
 }
 
 function confirmCheckout() {
-    closeCheckout();
+    const closeBtn = document.querySelector('[data-modal-hide="checkout-modal"]');
+    if (closeBtn) closeBtn.click();
     showToast('Pesanan tiket berhasil dibuat.');
     setTimeout(() => {
         window.location.href = "{{ route('pengunjung.tiket') }}";
     }, 200);
-}
-
-const checkoutModal = document.getElementById('checkout-modal');
-if (checkoutModal) {
-    checkoutModal.addEventListener('click', function(e) {
-        if (e.target === this) {
-            closeCheckout();
-        }
-    });
 }
 
 function redirectToLogin() {
