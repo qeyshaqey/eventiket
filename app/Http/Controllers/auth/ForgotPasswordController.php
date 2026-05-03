@@ -36,6 +36,7 @@ class ForgotPasswordController extends Controller
         ]);
 
         // Cari user berdasarkan email
+        $user = \App\Models\User::where('email', $request->email)->first();
 
         if (! $user) {
             return back()
