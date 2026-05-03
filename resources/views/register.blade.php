@@ -8,7 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,700&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet" />
     <style>
         *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-        body{min-height:100vh;display:flex;align-items:center;justify-content:center;background:#e8ecf5;font-family:'DM Sans',sans-serif}
+        body{min-height:100vh;display:flex;align-items:center;justify-content:center;background:#EFF8FF;font-family:'DM Sans',sans-serif}
         .wrap{display:flex;width:900px;max-width:95vw;min-height:520px;border-radius:24px;overflow:hidden;box-shadow:0 32px 80px rgba(25,40,83,.18),0 8px 24px rgba(25,40,83,.10)}
         .left{flex:0 0 46%;background:#192853;position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 24px}
         .blob-top{position:absolute;top:-60px;right:-60px;width:200px;height:200px;background:#FFE14E;border-radius:50%;opacity:.12}
@@ -25,7 +25,7 @@
         .form-group{display:flex;flex-direction:column;margin-bottom:13px;flex:1}
         .form-group label{font-size:11px;font-weight:600;color:#1a2340;letter-spacing:.6px;text-transform:uppercase;margin-bottom:4px}
         .input-wrap{position:relative}
-        .input-wrap input{width:100%;padding:10px 40px 10px 13px;border:1.5px solid #dde3f0;border-radius:9px;font-size:13.5px;font-family:'DM Sans',sans-serif;color:#1a2340;background:#f4f6fb;outline:none;transition:border .17s,box-shadow .17s,background .17s}
+        .input-wrap input{width:100%;padding:10px 40px 10px 13px;border:1.5px solid #dde3f0;border-radius:9px;font-size:13.5px;font-family:'DM Sans',sans-serif;color:#1a2340;background:#EFF8FF;outline:none;transition:border .17s,box-shadow .17s,background .17s}
         .input-wrap input::placeholder{color:#b0b8cc}
         .input-wrap input:focus{border-color:#f5c800;box-shadow:0 0 0 3px rgba(245,200,0,.15);background:#fff}
         .input-wrap input.err{border-color:#e5414a;box-shadow:0 0 0 3px rgba(229,65,74,.10)}

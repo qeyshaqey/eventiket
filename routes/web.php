@@ -16,6 +16,7 @@ use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Pengunjung\HomePageController;
 use App\Http\Controllers\Pengunjung\DashboardPengunjungController;
 use App\Http\Controllers\Pengunjung\TiketController;
+use App\Http\Controllers\Pengunjung\PaymentController;
 use App\Http\Controllers\BerandaPanitiaController;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
@@ -129,6 +130,8 @@ Route::post('/login', function (Request $request) {
     }
 
     session(['user' => $user->name, 'role' => 'pengunjung', 'user_id' => $user->id]);
+    
+    // Setelah login berhasil, arahkan pengunjung ke dashboard mereka
     return redirect()->route('pengunjung.dashboard');
 });
 
@@ -140,8 +143,22 @@ Route::post('/register', [RegisterController::class, 'store'])->name('register.s
 Route::get('/lupa-password', [ForgotPasswordController::class, 'showForm'])
     ->name('password.forgot');
 
-Route::post('/lupa-password', [ForgotPasswordController::class, 'sendResetLink'])
+Route::post('/lupa-password', [ForgotPasswordController::class, 'sendOtp'])
     ->name('password.forgot.send');
+
+// ── Verifikasi OTP ──
+Route::get('/verify-otp', [ForgotPasswordController::class, 'showVerifyOtpForm'])
+    ->name('password.verify.form');
+
+Route::post('/verify-otp', [ForgotPasswordController::class, 'verifyOtp'])
+    ->name('password.verify');
+
+// ── Reset Password ──
+Route::get('/reset-password', [ForgotPasswordController::class, 'showResetForm'])
+    ->name('password.reset.form');
+
+Route::post('/reset-password', [ForgotPasswordController::class, 'resetPassword'])
+    ->name('password.reset');
 
 // ── PENGUNJUNG SIDE ──
 Route::prefix('pengunjung')->name('pengunjung.')->group(function () {
@@ -154,9 +171,7 @@ Route::prefix('pengunjung')->name('pengunjung.')->group(function () {
         return view('pages.pengunjung.profil_pengunjung');
     })->name('profil');
 
-    Route::get('/pembayaran', function () {
-        return view('pages.pengunjung.pembayaran');
-    })->name('pembayaran');
+    Route::get('/pembayaran', [PaymentController::class, 'initiatePayment'])->name('pembayaran');
 
     Route::get('/daftar_panitia', function () {
         return view('pages.pengunjung.daftar_panitia');
@@ -176,3 +191,6 @@ Route::post('/logout', function () {
     session()->flush();
     return redirect('/login');
 })->name('logout');
+
+// Midtrans Callback
+Route::post('/payment/callback', [PaymentController::class, 'callback']);

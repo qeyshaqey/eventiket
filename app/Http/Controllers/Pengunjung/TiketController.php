@@ -10,113 +10,60 @@ class TiketController extends Controller
 {
     public function index()
     {
+        $userId = session('user_id');
         $today = Carbon::today();
 
-        $events = [
-            [
-                "title" => "Festival Musik Mapala",
-                "category" => "Seminar",
-                "date" => "02 - 05 Mei 2026",
-                "date_start" => "2026-05-02",
-                "date_end" => "2026-05-05",
-                "time" => "10.00 - 16.00 WIB",
-                "location" => "Auditorium Gedung Utama Lantai 2",
-                "tickets" => [
-                    ["name" => "Tiket Perdana", "qty" => 1],
-                    ["name" => "Tiket Umum", "qty" => 1],
-                    ["name" => "Tiket Premium", "qty" => 1]
-                ],
-                "status" => "Belum Bayar"
-            ],
-            [
-                "title" => "Jalan Sehat Komite Olahraga Polibatam",
-                "category" => "Sosial",
-                "date" => "02 - 05 Mei 2026",
-                "date_start" => "2026-05-02",
-                "date_end" => "2026-05-05",
-                "time" => "10.00 - 16.00 WIB",
-                "location" => "Auditorium Gedung Utama Lantai 2",
-                "tickets" => [
-                    ["name" => "Tiket Perdana", "qty" => 1],
-                    ["name" => "Tiket Umum", "qty" => 1],
-                    ["name" => "Tiket Premium", "qty" => 1]
-                ],
-                "status" => "Ditolak"
-            ],
-            [
-                "title" => "Event Naya Senam",
-                "category" => "Olahraga",
-                "date" => "02 - 05 Mei 2026",
-                "date_start" => "2026-05-02",
-                "date_end" => "2026-05-05",
-                "time" => "10.00 - 16.00 WIB",
-                "location" => "Auditorium Gedung Utama Lantai 2",
-                "tickets" => [
-                    ["name" => "Tiket Perdana", "qty" => 1],
-                    ["name" => "Tiket Umum", "qty" => 1],
-                    ["name" => "Tiket Premium", "qty" => 1]
-                ],
-                "status" => "Menunggu Verifikasi"
-            ],
-            [
-                "title" => "Festival Musik Mapala",
-                "category" => "Hiburan",
-                "date" => "10 April 2026",
-                "date_start" => "2026-04-10",
-                "date_end" => "2026-04-10",
-                "time" => "10.00 - 16.00 WIB",
-                "location" => "Auditorium Gedung Utama Lantai 2",
-                "tickets" => [
-                    ["name" => "Tiket Perdana", "qty" => 1],
-                    ["name" => "Tiket Umum", "qty" => 1],
-                    ["name" => "Tiket Premium", "qty" => 1]
-                ],
-                "status" => "Berhasil Diverifikasi",
-                "kode_order" => "000963962"
-            ],
-            [
-                "title" => "Festival Musik Mapala",
-                "category" => "Kompetisi",
-                "date" => "04 April 2026",
-                "date_start" => "2026-04-04",
-                "date_end" => "2026-04-04",
-                "time" => "10.00 - 16.00 WIB",
-                "location" => "Auditorium Gedung Utama Lantai 2",
-                "tickets" => [
-                    ["name" => "Tiket Perdana", "qty" => 1],
-                    ["name" => "Tiket Umum", "qty" => 1],
-                    ["name" => "Tiket Premium", "qty" => 1]
-                ],
-                "status" => "Ditolak",
-                "kode_order" => "000963963"
-            ],
-            [
-                "title" => "Festival Musik Mapala",
-                "category" => "Keagamaan",
-                "date" => "02 - 05 Mei 2026",
-                "date_start" => "2026-05-02",
-                "date_end" => "2026-05-05",
-                "time" => "10.00 - 16.00 WIB",
-                "location" => "Auditorium Gedung Utama Lantai 2",
-                "tickets" => [
-                    ["name" => "Tiket Perdana", "qty" => 1],
-                    ["name" => "Tiket Umum", "qty" => 1],
-                    ["name" => "Tiket Premium", "qty" => 1]
-                ],
-                "status" => "Berhasil Diverifikasi",
-                "kode_order" => "000963964"
-            ]
-        ];
+        // CEK: Jika user belum punya tiket sama sekali di database
+        $cekPembayaran = \App\Models\Pembayaran::where('user_id', $userId)->exists();
+        
+        if (!$cekPembayaran) {
+            // Kita ambil event pertama dan tiket pertama dari database buat contoh
+            $eventContoh = \App\Models\Event::first();
+            $tiketContoh = \App\Models\Tiket::where('event_id', $eventContoh->id)->first();
+            
+            if ($eventContoh && $tiketContoh) {
+                \App\Models\Pembayaran::create([
+                    'user_id' => $userId,
+                    'tiket_id' => $tiketContoh->id,
+                    'jumlah' => $tiketContoh->harga,
+                    'status' => 'pending'
+                ]);
+            }
+        }
+
+        // Ambil data pembayaran asli dari database milik user yang sedang login
+        $pembayarans = \App\Models\Pembayaran::with(['tiket.event'])
+            ->where('user_id', $userId)
+            ->get();
 
         $activeEvents = [];
         $historyEvents = [];
 
-        foreach ($events as $event) {
-            $endDate = Carbon::parse($event['date_end']);
+        foreach ($pembayarans as $p) {
+            $event = $p->tiket->event;
+            if (!$event) continue;
+
+            // Format data agar sesuai dengan tampilan blade Anda
+            $data = [
+                "id" => $p->id,
+                "title" => $event->judul,
+                "category" => $event->kategori,
+                "date" => Carbon::parse($event->tanggal_mulai)->translatedFormat('d M Y'),
+                "date_end" => $event->tanggal_selesai,
+                "time" => substr($event->waktu_mulai, 0, 5) . " - " . substr($event->waktu_selesai, 0, 5) . " WIB",
+                "location" => $event->lokasi,
+                "tickets" => [
+                    ["name" => $p->tiket->nama, "qty" => 1]
+                ],
+                "status" => $p->status == 'pending' ? 'Belum Bayar' : ($p->status == 'success' ? 'Berhasil Diverifikasi' : 'Gagal'),
+                "kode_order" => $p->order_id
+            ];
+
+            $endDate = Carbon::parse($event->tanggal_selesai);
             if ($endDate->gte($today)) {
-                $activeEvents[] = $event;
+                $activeEvents[] = $data;
             } else {
-                $historyEvents[] = $event;
+                $historyEvents[] = $data;
             }
         }
 
