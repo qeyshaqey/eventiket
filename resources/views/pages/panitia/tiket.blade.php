@@ -5,6 +5,28 @@
 
     <h1 class="text-xl font-bold mb-6">TIKET YANG DIKELOLA</h1>
 
+    @if(session('success'))
+    <div id="toastSuccess" class="fixed top-5 right-5 z-[9999] bg-green-500 text-white px-6 py-4 rounded-xl shadow-2xl flex items-center gap-4 animate-fadeIn transition-all duration-500">
+        <div class="bg-white/20 p-2 rounded-full flex items-center justify-center">
+            <i class="bi bi-check-lg text-xl"></i>
+        </div>
+        <div>
+            <h4 class="font-bold text-sm">Berhasil!</h4>
+            <span class="block text-sm">{{ session('success') }}</span>
+        </div>
+        <button onclick="document.getElementById('toastSuccess').remove()" class="ml-4 text-white/80 hover:text-white text-2xl leading-none">&times;</button>
+    </div>
+    <script>
+        setTimeout(() => {
+            const toast = document.getElementById('toastSuccess');
+            if(toast) {
+                toast.classList.add('opacity-0', '-translate-y-5');
+                setTimeout(() => toast.remove(), 500);
+            }
+        }, 3000);
+    </script>
+    @endif
+
     @forelse($events as $event)
     <div id="event-{{ $event->id }}" class="bg-white rounded-xl shadow p-4 mb-6 {{ isset($highlightEventId) && $highlightEventId == $event->id ? 'ring-4 ring-blue-400' : '' }}">
 
