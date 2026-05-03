@@ -35,7 +35,7 @@ class TiketPanitiaController extends Controller
 
     return redirect()->route('panitia.tiket', [
         'event_id' => $validated['event_id']
-    ]);
+    ])->with('success', 'Jenis tiket berhasil ditambahkan');
 }
 
     public function update(Request $request, Tiket $tiket)

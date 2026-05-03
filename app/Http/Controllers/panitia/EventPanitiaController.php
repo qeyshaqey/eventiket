@@ -67,6 +67,22 @@ class EventPanitiaController extends Controller
         return back()->with('success', 'Event berhasil diupdate');
     }
 
+    public function destroy($id)
+    {
+        $event = Event::findOrFail($id);
+        $event->delete();
+
+        return back()->with('success', 'Event berhasil dihapus');
+    }
+
+    public function kirim($id)
+    {
+        $event = Event::findOrFail($id);
+        $event->update(['status' => 'Pending']); // atau status yang sesuai
+        
+        return back()->with('success', 'Event berhasil dikirim ke Admin');
+    }
+
     public function riwayat()
     {
         $events = Event::with('tikets')->latest()->get();
