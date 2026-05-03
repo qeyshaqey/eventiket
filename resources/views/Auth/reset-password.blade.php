@@ -175,16 +175,38 @@
             border-color: var(--navy);
         }
 
-        /* Toggle show/hide password */
+        /* posisi eye */
         .toggle-pw {
             position: absolute;
-            right: 14px;
+            right: 12px;
             top: 50%;
             transform: translateY(-50%);
             cursor: pointer;
-            color: #8a96b0;
-            font-size: 18px;
-            user-select: none;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 5;
+        }
+
+        .toggle-pw svg {
+            width: 100%;
+            height: 100%;
+            stroke: #94a3b8;
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            transition: 0.2s;
+        }
+
+        .toggle-pw:hover svg {
+            stroke: var(--navy);
+        }
+
+        .eye-close {
+            display: none;
         }
 
         /* Password strength bar */
@@ -321,7 +343,16 @@
                             placeholder="Minimal 8 karakter"
                             autocomplete="new-password"
                         >
-                        <span class="toggle-pw" onclick="togglePw('password', this)">👁</span>
+                        <div class="toggle-pw" onclick="togglePw('password', this)">
+                            <svg class="eye-open" viewBox="0 0 24 24">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                                <circle cx="12" cy="12" r="3" />
+                            </svg>
+                            <svg class="eye-close" viewBox="0 0 24 24">
+                                <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8s4-8 11-8a10 10 0 0 1 5.94 2" />
+                                <line x1="1" y1="1" x2="23" y2="23" />
+                            </svg>
+                        </div>
                     </div>
                     <div class="strength-bar">
                         <div class="strength-fill" id="strengthFill"></div>
@@ -341,7 +372,16 @@
                             placeholder="Ulangi password baru"
                             autocomplete="new-password"
                         >
-                        <span class="toggle-pw" onclick="togglePw('password_confirmation', this)">👁</span>
+                        <div class="toggle-pw" onclick="togglePw('password_confirmation', this)">
+                            <svg class="eye-open" viewBox="0 0 24 24">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                                <circle cx="12" cy="12" r="3" />
+                            </svg>
+                            <svg class="eye-close" viewBox="0 0 24 24">
+                                <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8s4-8 11-8a10 10 0 0 1 5.94 2" />
+                                <line x1="1" y1="1" x2="23" y2="23" />
+                            </svg>
+                        </div>
                     </div>
                 </div>
 
@@ -358,14 +398,19 @@
 
     <script>
         // Toggle show/hide password
-        function togglePw(fieldId, icon) {
+        function togglePw(fieldId, wrapper) {
             const field = document.getElementById(fieldId);
+            const eyeOpen = wrapper.querySelector('.eye-open');
+            const eyeClose = wrapper.querySelector('.eye-close');
+
             if (field.type === 'password') {
                 field.type = 'text';
-                icon.textContent = '🙈';
+                eyeOpen.style.display = 'none';
+                eyeClose.style.display = 'block';
             } else {
                 field.type = 'password';
-                icon.textContent = '👁';
+                eyeOpen.style.display = 'block';
+                eyeClose.style.display = 'none';
             }
         }
 
