@@ -14,7 +14,7 @@
                 <a href="#about" class="rounded-full border border-white px-4 py-2 text-sm font-medium transition hover:bg-white hover:text-[#192853]">Tentang</a>
                 <a href="#contact" class="rounded-full border border-white px-4 py-2 text-sm font-medium transition hover:bg-white hover:text-[#192853]">Hubungi Kami</a>
                 @if($isLoggedIn)
-                    <a href="{{ route('pengunjung.dashboard') }}" class="rounded-full border border-white px-4 py-2 text-sm font-semibold transition hover:bg-white hover:text-[#192853]">Dashboard</a>
+                    <a href="{{ route('pengunjung.dashboard') }}" class="rounded-full border border-white px-4 py-2 text-sm font-semibold transition hover:bg-white hover:text-[#192853]">Masuk</a>
                 @else
                     <a href="{{ route('login') }}" class="rounded-full border border-white px-4 py-2 text-sm font-semibold transition hover:bg-white hover:text-[#192853]">Masuk</a>
                 @endif
@@ -62,7 +62,7 @@
                 <div class="mt-auto pb-8">
                     @if($isLoggedIn)
                         <a href="{{ route('pengunjung.dashboard') }}" class="flex items-center justify-center w-full rounded-2xl bg-white py-4 text-lg font-bold text-[#192853] transition-all hover:bg-[#FFE14E] active:scale-[0.98] shadow-lg">
-                            Ke Dashboard
+                            Masuk
                         </a>
                     @else
                         <a href="{{ route('login') }}" class="flex items-center justify-center w-full rounded-2xl bg-white py-4 text-lg font-bold text-[#192853] transition-all hover:bg-[#FFE14E] active:scale-[0.98] shadow-lg">

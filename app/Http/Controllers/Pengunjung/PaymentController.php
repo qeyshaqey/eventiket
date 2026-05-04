@@ -38,8 +38,22 @@ class PaymentController extends Controller
                                 ->latest()
                                 ->first();
 
+        // JIKA TIDAK ADA TRANSAKSI, KITA BUATKAN OTOMATIS (Sama seperti di TiketController)
         if (!$pembayaran) {
-            return redirect()->back()->with('error', 'Tidak ada transaksi yang ditemukan.');
+            $eventContoh = \App\Models\Event::first();
+            $tiketContoh = \App\Models\Tiket::where('event_id', $eventContoh?->id)->first();
+            
+            if ($eventContoh && $tiketContoh) {
+                $pembayaran = Pembayaran::create([
+                    'user_id' => $user->id,
+                    'tiket_id' => $tiketContoh->id,
+                    'jumlah' => $tiketContoh->harga,
+                    'status' => 'pending',
+                    'order_id' => 'TRX-' . \Illuminate\Support\Str::upper(\Illuminate\Support\Str::random(10))
+                ]);
+            } else {
+                return redirect()->back()->with('error', 'Data event/tiket tidak ditemukan. Silakan jalankan seeder.');
+            }
         }
 
         // Selalu buat Order ID baru buat ngetes ganti-ganti metode pembayaran di Midtrans

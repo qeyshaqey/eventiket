@@ -27,6 +27,18 @@
     <x-pengunjung.navbar-pengunjung />
 
     @yield('content')
+    
+    {{-- Notifikasi Error/Sukses --}}
+    @if(session('error'))
+        <div class="fixed bottom-5 right-5 z-[9999] bg-red-500 text-white px-6 py-3 rounded-lg shadow-lg animate-bounce">
+            <i class="fas fa-exclamation-circle mr-2"></i> {{ session('error') }}
+        </div>
+    @endif
+    @if(session('success'))
+        <div class="fixed bottom-5 right-5 z-[9999] bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg">
+            <i class="fas fa-check-circle mr-2"></i> {{ session('success') }}
+        </div>
+    @endif
 
     @if(request()->routeIs('home'))
         <x-pengunjung.footer-pengunjung />
