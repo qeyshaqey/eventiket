@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jenis Tiket - Eventiket</title>
+    <title>Jenis Tiket - EventiX</title>
     <style>
         * {
             margin: 0;
@@ -171,7 +171,7 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1> Eventix</h1>
+            <h1> EventiX</h1>
             <p>Pilih jenis tiket yang sesuai dengan kebutuhanmu</p>
         </div>
 
@@ -208,7 +208,7 @@
         </div>
 
         <div class="footer">
-            <p>© 2026 Eventiket. All rights reserved.</p>
+            <p>© 2026 EventiX. All rights reserved.</p>
         </div>
     </div>
 </body>

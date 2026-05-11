@@ -1,6 +1,6 @@
 @extends('layouts.pengunjung.pengunjung')
 
-@section('title', 'Beranda - Eventiket')
+@section('title', 'Beranda - EventiX')
 
 @section('body_class', 'min-h-screen bg-[#EFF8FF] text-[#192853]')
 
@@ -78,9 +78,9 @@
         <section id="about" class="bg-white py-20">
             <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <div class="mb-12 text-center">
-                    <p class="mx-auto inline-flex rounded-full bg-[#FFE14E] px-4 py-2 text-xs font-semibold uppercase tracking-[0.28em] text-[#192853] shadow-sm">Tentang Eventiket</p>
+                    <p class="mx-auto inline-flex rounded-full bg-[#FFE14E] px-4 py-2 text-xs font-semibold uppercase tracking-[0.28em] text-[#192853] shadow-sm">Tentang EventiX</p>
                     <h2 class="mt-4 text-3xl font-bold tracking-tight text-[#192853] sm:text-4xl">Platform Inovatif Untuk Event Kampus</h2>
-                    <p class="mx-auto mt-4 max-w-2xl text-sm leading-7 text-[#475569] sm:text-base">Eventiket membantu Anda menemukan event dengan tampilan modern dan navigasi yang responsif, tanpa gangguan padding berlebih.</p>
+                    <p class="mx-auto mt-4 max-w-2xl text-sm leading-7 text-[#475569] sm:text-base">EventiX membantu Anda menemukan event dengan tampilan modern dan navigasi yang responsif, tanpa gangguan padding berlebih.</p>
                 </div>
                 <div class="grid gap-6 md:grid-cols-3">
                     <div class="rounded-[32px] border border-[#cbd5e1] bg-white p-8 shadow-sm">

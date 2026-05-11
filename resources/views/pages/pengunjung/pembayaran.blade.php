@@ -1,6 +1,6 @@
 @extends('layouts.pengunjung.pengunjung')
 
-@section('title', 'Pembayaran Tiket - Eventiket')
+@section('title', 'Pembayaran Tiket - EventiX')
 
 @section('body_class', 'bg-cream font-poppins min-h-screen text-grayCustom relative overflow-x-hidden selection:bg-yellow selection:text-navy pb-16')
 

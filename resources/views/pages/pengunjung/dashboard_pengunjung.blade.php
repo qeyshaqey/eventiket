@@ -1,6 +1,6 @@
 @extends('layouts.pengunjung.pengunjung')
 
-@section('title', 'Dashboard Pengunjung - Eventiket')
+@section('title', 'Dashboard Pengunjung - EventiX')
 
 @section('body_class', 'min-h-screen bg-[#EFF8FF] text-[#192853]')
 

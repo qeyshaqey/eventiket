@@ -1,6 +1,6 @@
 @extends('layouts.pengunjung.pengunjung')
 
-@section('title', 'Kontak | Eventiket')
+@section('title', 'Kontak | EventiX')
 
 @push('styles')
 <style>
@@ -277,7 +277,7 @@
     <div class="page-content">
       <span class="badge">Hubungi Kami</span>
       <h1>Ada Pertanyaan?</h1>
-      <p>Kami siap membantu kamu. Hubungi tim Eventiket kapan saja!</p>
+      <p>Kami siap membantu kamu. Hubungi tim EventiX kapan saja!</p>
     </div>
   </section>
 

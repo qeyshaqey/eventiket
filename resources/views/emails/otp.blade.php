@@ -98,14 +98,14 @@
     <div class="wrapper">
         <!-- Header -->
         <div class="header">
-            <h1>🎟 Eventiket</h1>
+            <h1>🎟 EventiX</h1>
             <p>Permintaan Reset Password</p>
         </div>
 
         <!-- Body -->
         <div class="body">
             <p>Halo,</p>
-            <p>Kami menerima permintaan untuk mereset password akun Eventiket Anda. Gunakan kode OTP berikut untuk melanjutkan proses verifikasi:</p>
+            <p>Kami menerima permintaan untuk mereset password akun EventiX Anda. Gunakan kode OTP berikut untuk melanjutkan proses verifikasi:</p>
 
             <!-- OTP Code Box -->
             <div class="otp-box">
@@ -115,7 +115,7 @@
             </div>
 
             <div class="warning">
-                ⚠️ <strong>Jangan bagikan kode ini kepada siapapun.</strong> Tim Eventiket tidak akan pernah meminta kode OTP Anda.
+                ⚠️ <strong>Jangan bagikan kode ini kepada siapapun.</strong> Tim EventiX tidak akan pernah meminta kode OTP Anda.
             </div>
 
             <p style="margin-top: 20px;">Jika Anda tidak merasa melakukan permintaan ini, abaikan email ini. Password Anda tidak akan berubah.</p>
@@ -123,7 +123,7 @@
 
         <!-- Footer -->
         <div class="footer">
-            <p>Email ini dikirim secara otomatis oleh <strong>Eventiket</strong>. Mohon jangan membalas email ini.</p>
+            <p>Email ini dikirim secara otomatis oleh <strong>EventiX</strong>. Mohon jangan membalas email ini.</p>
         </div>
     </div>
 </body>

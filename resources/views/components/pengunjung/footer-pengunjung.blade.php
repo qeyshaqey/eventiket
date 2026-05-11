@@ -5,7 +5,7 @@
             <!-- BRANDING -->
             <div class="md:w-1/3">
                 <a href="/home_page" class="text-xl font-bold tracking-tight text-white mb-2 inline-block">
-                    Eventiket<span class="text-[#FFE14E]">.</span>
+                    EventiX<span class="text-[#FFE14E]">.</span>
                 </a>
                 <p class="text-sm leading-6 text-[#EFF8FF]/80 mt-1 max-w-xs">
                     Platform terpercaya menemukan event menarik di kampus. Bergabunglah dengan ribuan mahasiswa lainnya!
@@ -39,7 +39,7 @@
         <!-- COPYRIGHT -->
         <div class="pt-4 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-4">
             <p class="text-xs text-[#EFF8FF]/50 text-center md:text-left">
-                &copy; 2026 Eventiket. Hak Cipta Dilindungi.
+                &copy; 2026 EventiX. Hak Cipta Dilindungi.
             </p>
             <div class="flex gap-4 text-sm">
                 <a href="#" aria-label="WhatsApp" class="text-[#EFF8FF]/70 hover:text-[#FFE14E] transition hover:-translate-y-0.5">

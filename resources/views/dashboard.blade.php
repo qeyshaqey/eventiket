@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Home - Eventiket</title>
+    <title>Home - EventiX</title>
 
     <style>
 
@@ -204,7 +204,7 @@
 
 <!-- NAVBAR -->
 <div class="navbar">
-    <div class="logo">Eventiket</div>
+    <div class="logo">EventiX</div>
 
     <div class="nav-right">
         <a href="/home">Home</a>
@@ -248,9 +248,9 @@
 
 <!-- ABOUT -->
 <div class="about">
-    <h2>Tentang Eventiket</h2>
+    <h2>Tentang EventiX</h2>
     <p>
-        Eventiket adalah platform manajemen event dan pemesanan tiket online 
+        EventiX adalah platform manajemen event dan pemesanan tiket online 
         yang membantu pengguna menemukan dan membeli tiket dengan mudah.
     </p>
 </div>
@@ -258,7 +258,7 @@
 
 <!-- FOOTER -->
 <footer>
-    <p>© 2026 Eventiket</p>
+    <p>© 2026 EventiX</p>
 </footer>
 
 </body>

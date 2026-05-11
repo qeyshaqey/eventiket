@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Etalase Event | Eventiket</title>
+  <title>Etalase Event | EventiX</title>
   <style>
     :root {
       --navy: #192853;
@@ -294,7 +294,7 @@
   <main class="content">
     <div class="summary-card">
       <!-- <h3>Pilih event favoritmu</h3>
-      <p>Eventiket menghadirkan etalase event yang mudah dijelajahi. Temukan agenda terbaru, lokasi, dan status pendaftaran tanpa repot.</p> -->
+      <p>EventiX menghadirkan etalase event yang mudah dijelajahi. Temukan agenda terbaru, lokasi, dan status pendaftaran tanpa repot.</p> -->
     </div>
 
     <div class="event-grid">
