@@ -315,8 +315,8 @@
         <!-- RIGHT -->
         <div class="right">
 
-            <h1>Lupa Password</h1>
-            <p class="sub">Masukkan email untuk reset password Anda.</p>
+            <h1>Lupa Kata Sandi</h1>
+            <p class="sub">Masukkan email untuk reset kata sandi Anda.</p>
 
             {{-- Menampilkan pesan error dari session --}}
             @if (session('error'))

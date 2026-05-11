@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Password Baru – EventiX</title>
+    <title>Kata Sandi Baru – EventiX</title>
 
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&family=Playfair+Display:ital@1&display=swap" rel="stylesheet">
 
@@ -303,16 +303,16 @@
             </div>
 
             <div class="left-label">
-                <h2>Password Baru</h2>
-                <p>Buat password yang kuat dan mudah Anda ingat. Minimal 8 karakter.</p>
+                <h2>Kata Sandi Baru</h2>
+                <p>Buat kata sandi yang kuat dan mudah Anda ingat. Minimal 8 karakter.</p>
             </div>
         </div>
 
         <!-- ═══ Right Panel ═══ -->
         <div class="right">
 
-            <h1>Buat Password Baru</h1>
-            <p class="sub">Masukkan password baru untuk akun Anda.</p>
+            <h1>Buat Kata Sandi Baru</h1>
+            <p class="sub">Masukkan kata sandi baru untuk akun Anda.</p>
 
             {{-- Alerts --}}
             @if (session('error'))
@@ -333,7 +333,7 @@
 
                 {{-- Password Baru --}}
                 <div class="field">
-                    <label for="password">Password Baru</label>
+                    <label for="password">Kata Sandi Baru</label>
                     <div class="input-wrap">
                         <input
                             type="password"
@@ -357,12 +357,12 @@
                     <div class="strength-bar">
                         <div class="strength-fill" id="strengthFill"></div>
                     </div>
-                    <div class="strength-text" id="strengthText">Masukkan password untuk melihat kekuatan.</div>
+                    <div class="strength-text" id="strengthText">Masukkan kata sandi untuk melihat kekuatan.</div>
                 </div>
 
                 {{-- Konfirmasi Password --}}
                 <div class="field">
-                    <label for="password_confirmation">Konfirmasi Password</label>
+                    <label for="password_confirmation">Konfirmasi Kata Sandi</label>
                     <div class="input-wrap">
                         <input
                             type="password"
@@ -385,12 +385,12 @@
                     </div>
                 </div>
 
-                <button type="submit" class="btn">Simpan Password →</button>
+                <button type="submit" class="btn">Simpan Kata Sandi →</button>
 
             </form>
 
             <div class="back">
-                <a href="{{ route('login') }}">← Kembali ke Login</a>
+                <a href="{{ route('login') }}">← Kembali ke Halaman Masuk</a>
             </div>
 
         </div>
