@@ -1,5 +1,6 @@
 @php
-    $isLoggedIn = session()->has('user') && session('role') === 'pengunjung';
+    $isLoggedIn = session()->has('user');
+    $userRole = session('role');
 @endphp
 
 @if(request()->routeIs('home'))
@@ -83,10 +84,16 @@
 
             <div class="flex items-center gap-3">
                 @if($isLoggedIn)
-                    <a href="{{ route('pengunjung.tiket') }}" class="rounded-full border border-white px-4 py-2 text-sm font-medium text-white transition hover:bg-white hover:text-[#192853]">TIKET SAYA</a>
+                    @if($userRole === 'panitia')
+                        <a href="{{ route('panitia.beranda') }}" class="hidden sm:block rounded-full border border-[#FFE14E] px-4 py-2 text-sm font-medium text-[#FFE14E] transition hover:bg-[#FFE14E] hover:text-[#192853]">DASHBOARD PANITIA</a>
+                    @endif
+                    
+                    @if($userRole === 'pengunjung' || $userRole === 'panitia')
+                        <a href="{{ route('pengunjung.tiket') }}" class="rounded-full border border-white px-4 py-2 text-sm font-medium text-white transition hover:bg-white hover:text-[#192853]">TIKET SAYA</a>
+                    @endif
 
                     <!-- ICON USER -->
-                    <a href="{{ route('pengunjung.profil') }}" class="w-10 h-10 rounded-full border border-white bg-transparent text-white flex items-center justify-center transition hover:bg-white hover:text-[#192853]">
+                    <a href="{{ $userRole === 'admin' ? route('admin.dashboard') : route('pengunjung.profil') }}" class="w-10 h-10 rounded-full border border-white bg-transparent text-white flex items-center justify-center transition hover:bg-white hover:text-[#192853]">
                         <i class="fa-solid fa-user-circle text-lg"></i>
                     </a>
                 @else
