@@ -92,13 +92,6 @@
                         Bayar Sekarang
                         <i class="bi bi-arrow-right group-hover:translate-x-1 transition-transform"></i>
                     </button>
-                    
-                    <div class="flex items-center justify-center gap-4 mt-6 opacity-60">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/e/eb/Logo_ovo.svg" class="h-4" alt="OVO">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/7/72/Logo_dana.svg" class="h-4" alt="DANA">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/e/eb/Logo_gopay.svg" class="h-4" alt="GOPAY">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/a/a2/Logo_LinkAja.svg" class="h-4" alt="LinkAja">
-                    </div>
                 </div>
             </div>
 

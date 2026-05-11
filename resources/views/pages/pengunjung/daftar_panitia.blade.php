@@ -40,9 +40,9 @@
                 @csrf
                 <div class="space-y-10">
 
-                    <!-- 1. IDENTITAS PENGAJU -->
+                    <!-- 1. IDENTITAS PENDAFTAR -->
                     <div>
-                        <h3 class="text-xl font-bold text-navy mb-5 tracking-wide">IDENTITAS PENGAJU</h3>
+                        <h3 class="text-xl font-bold text-navy mb-5 tracking-wide">IDENTITAS PENDAFTAR</h3>
                         <div class="space-y-5">
 
                             <div>
