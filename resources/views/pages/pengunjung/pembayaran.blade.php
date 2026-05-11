@@ -57,7 +57,7 @@
                     </div>
                     <div>
                         <h2 class="font-bold text-navy text-lg">Ringkasan Pesanan</h2>
-                        <p class="text-xs text-gray-500">Order ID: {{ $pembayaran->order_id }}</p>
+                        <p class="text-xs text-gray-500">ID Pesanan: {{ $pembayaran->order_id }}</p>
                     </div>
                 </div>
                 

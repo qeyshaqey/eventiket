@@ -85,8 +85,7 @@
                             class="inline-flex items-center border border-grayCustom rounded-xl overflow-hidden cursor-pointer hover:bg-slate-50 transition shadow-sm mb-1">
                             <span
                                 class="bg-[#E2E8F0] px-4 py-1.5 font-semibold text-grayCustom border-r border-grayCustom text-sm">Pilih File</span>
-                            <span class="px-4 py-1.5 text-grayCustom font-medium text-xs sm:text-sm" id="file-name">No
-                                file selected.</span>
+                            <span class="px-4 py-1.5 text-grayCustom font-medium text-xs sm:text-sm" id="file-name">Tidak ada file dipilih.</span>
                             <input type="file" class="hidden" accept=".jpg,.png"
                                 onchange="document.getElementById('file-name').innerText = this.files[0] ? this.files[0].name : 'Tidak ada file dipilih.'">
                         </label>
