@@ -61,7 +61,7 @@
         <!-- FILTER -->
         <select id="filterKategori"
             class="border rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-[#192853]">
-            <option value="">Semua</option>
+            <option value="">Semua Kategori</option>
             <option value="Seminar">Seminar</option>
             <option value="Workshop">Workshop</option>
         </select>
@@ -342,7 +342,7 @@ onclick="{{ $isPublished ? 'openDetailModal(' . $event->id . ')' : '' }}"
                     <b>Tiket</b>
                     <div id="detailTiket" class="mt-2"></div>
                 </div>
-                    <button onclick="kirimKeAdmin()" class="px-4 py-2 bg-blue-500 text-white rounded-xl text-sm">
+                    <button onclick="kirimKeAdmin()" class="px-6 py-2 bg-[#192853] text-yellow-400 rounded-xl text-sm font-bold shadow hover:opacity-90 transition">
                         Kirim
                     </button>
                 </div>

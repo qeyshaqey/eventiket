@@ -83,10 +83,17 @@ class EventPanitiaController extends Controller
         return back()->with('success', 'Event berhasil dikirim ke Admin');
     }
 
-    public function riwayat()
+    public function riwayat(Request $request)
     {
         $events = Event::with('tikets')->latest()->get();
-        $transaksis = Transaksi::latest()->get();
+        
+        $query = Transaksi::with('event')->latest();
+
+        if ($request->has('event_id') && $request->event_id != '') {
+            $query->where('event_id', $request->event_id);
+        }
+
+        $transaksis = $query->get();
 
         return view('pages.panitia.riwayat', compact('events', 'transaksis'));
     }

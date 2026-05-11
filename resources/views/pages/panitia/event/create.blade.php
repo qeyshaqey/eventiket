@@ -91,11 +91,13 @@
         </div>
 
         <!-- BUTTON -->
-        <div class="flex justify-end gap-2">
-            <a href="{{ route('panitia.event') }}" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
+        <div class="flex justify-end gap-3 pt-4">
+            <a href="{{ route('panitia.event') }}" 
+                class="px-6 py-2 bg-gray-200 text-gray-700 rounded-xl text-sm font-semibold hover:bg-gray-300 transition">
                 BATAL
             </a>
-            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+            <button type="submit" 
+                class="px-6 py-2 bg-[#192853] text-yellow-400 rounded-xl text-sm font-bold shadow hover:opacity-90 transition">
                 SIMPAN
             </button>
         </div>
