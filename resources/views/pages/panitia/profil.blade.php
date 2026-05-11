@@ -3,18 +3,17 @@
 @section('content')
 <div class="p-6 bg-[#EFF8FF] min-h-screen">
 
-    @php
-        $user = (object)[
-            'name' => session('user'),
-            'email' => '-',
-            'nim' => '-'
-        ];
-    @endphp
 
     <!-- HEADER -->
     <div class="mb-6">
         <h1 class="text-xl font-bold text-[#192853]">Profil Panitia</h1>
     </div>
+
+    @if(session('success'))
+    <div class="mb-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded-lg">
+        {{ session('success') }}
+    </div>
+    @endif
 
     <!-- CARD -->
     <div class="bg-white rounded-2xl shadow-lg p-6 flex flex-col md:flex-row gap-8">
@@ -22,7 +21,7 @@
         <!-- AVATAR -->
         <div class="flex flex-col items-center md:w-1/4">
 
-            <img src="https://ui-avatars.com/api/?name={{ $user->name }}" class="w-28 h-28 rounded-full object-cover shadow-md border">
+            <img src="{{ ($user->photo ?? null) ? asset('storage/' . $user->photo) : 'https://ui-avatars.com/api/?name=' . ($user->name ?? 'Guest') }}" class="w-28 h-28 rounded-full object-cover shadow-md border">
 
             <!-- BUTTON EDIT PROFIL -->
             <button onclick="openModal()"
@@ -39,17 +38,17 @@
 
                 <div class="p-4 bg-[#F8FAFF] rounded-xl border">
                     <p class="text-xs text-gray-500">Nama</p>
-                    <p class="font-semibold text-[#192853]">{{ $user->name ?? '-' }}</p>
+                    <p class="font-semibold text-[#192853]">{{ $user?->name ?? '-' }}</p>
                 </div>
 
                 <div class="p-4 bg-[#F8FAFF] rounded-xl border">
                     <p class="text-xs text-gray-500">NIM</p>
-                    <p class="font-semibold text-[#192853]">{{ $user->nim ?? '-' }}</p>
+                    <p class="font-semibold text-[#192853]">{{ $user?->nim ?? '-' }}</p>
                 </div>
 
                 <div class="p-4 bg-[#F8FAFF] rounded-xl border">
                     <p class="text-xs text-gray-500">Email</p>
-                    <p class="font-semibold text-[#192853]">{{ $user->email ?? '-' }}</p>
+                    <p class="font-semibold text-[#192853]">{{ $user?->email ?? '-' }}</p>
                 </div>
 
                 <div class="p-4 bg-[#F8FAFF] rounded-xl border">
@@ -78,7 +77,7 @@
 
         <h2 class="text-xl font-bold text-[#192853] mb-4">Edit Profil</h2>
 
-        <form action="#" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('panitia.profil.update') }}" method="POST" enctype="multipart/form-data">
             @csrf
 
             <!-- FOTO PROFIL -->
@@ -86,7 +85,7 @@
 
                 <div class="relative">
                     <img id="previewImage"
-                        src="https://ui-avatars.com/api/?name={{ $user->name }}"
+                        src="{{ ($user->photo ?? null) ? asset('storage/' . $user->photo) : 'https://ui-avatars.com/api/?name=' . ($user->name ?? 'Guest') }}"
                         class="w-24 h-24 rounded-full object-cover border shadow">
 
                     <label class="absolute bottom-0 right-0 bg-[#192853] text-yellow-400 p-1 rounded-full cursor-pointer text-xs">
@@ -104,21 +103,21 @@
                 <div>
                     <label class="text-sm text-gray-600">Nama</label>
                     <input type="text" name="name"
-                        value="{{ $user->name ?? '' }}"
+                        value="{{ $user?->name ?? '' }}"
                         class="w-full border p-2 rounded-lg focus:ring-2 focus:ring-[#192853] outline-none">
                 </div>
 
                 <div>
                     <label class="text-sm text-gray-600">NIM</label>
                     <input type="text" name="nim"
-                        value="{{ $user->nim ?? '' }}"
+                        value="{{ $user?->nim ?? '' }}"
                         class="w-full border p-2 rounded-lg focus:ring-2 focus:ring-[#192853] outline-none">
                 </div>
 
                 <div>
                     <label class="text-sm text-gray-600">Email</label>
                     <input type="email" name="email"
-                        value="{{ $user->email ?? '' }}"
+                        value="{{ $user?->email ?? '' }}"
                         class="w-full border p-2 rounded-lg focus:ring-2 focus:ring-[#192853] outline-none">
                 </div>
 
