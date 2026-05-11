@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="p-4 md:p-6">
-    <h1 class="text-xl font-bold text-[#192853] mb-4 font-[Poppins]">
+    <h1 id="cardTitle" class="text-xl font-bold text-[#192853] mb-4 font-[Poppins]">
         Riwayat
     </h1>
 
@@ -92,6 +92,29 @@
         <!-- TRANSAKSI -->
         <!-- ===================== -->
         <div id="tab-transaksi" class="hidden">
+            
+            <!-- FILTER EVENT -->
+            <div class="flex flex-col md:flex-row md:items-center justify-end gap-3 mb-5">
+                <form action="{{ route('panitia.riwayat') }}" method="GET" class="flex gap-2 w-full md:w-auto">
+                    <select name="event_id" onchange="this.form.submit()" 
+                        class="border rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-[#192853] outline-none bg-white w-full md:w-64">
+                        <option value="">Semua Event</option>
+                        @foreach($events as $ev)
+                            <option value="{{ $ev->id }}" {{ request('event_id') == $ev->id ? 'selected' : '' }}>
+                                {{ $ev->judul }}
+                            </option>
+                        @endforeach
+                    </select>
+                    
+                    @if(request('event_id'))
+                        <a href="{{ route('panitia.riwayat') }}?tab=transaksi" 
+                            class="px-3 py-2 bg-gray-100 text-gray-600 rounded-lg text-sm hover:bg-gray-200 transition flex items-center"
+                            title="Reset Filter">
+                            <i class="bi bi-arrow-counterclockwise"></i>
+                        </a>
+                    @endif
+                </form>
+            </div>
 
             <div class="overflow-x-auto rounded-xl border">
                 <table class="min-w-[800px] w-full text-sm">
@@ -178,6 +201,14 @@ function showTab(tab) {
     document.getElementById('cardTitle').innerText =
         tab === 'event' ? 'Riwayat Event' : 'Riwayat Transaksi';
 }
+
+// Show correct tab on load
+document.addEventListener('DOMContentLoaded', function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has('event_id') || urlParams.get('tab') === 'transaksi') {
+        showTab('transaksi');
+    }
+});
 </script>
 
 @endsection
