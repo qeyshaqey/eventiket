@@ -28,7 +28,7 @@
                 <div>
                     <h3 class="text-base font-semibold text-white mb-3">Pusat Bantuan</h3>
                     <ul class="space-y-2 text-sm text-[#EFF8FF]/80">
-                        <li><i class="fa-solid fa-envelope w-4 text-[#FFE14E]"></i> eventiket@gmail.com</li>
+                        <li><i class="fa-solid fa-envelope w-4 text-[#FFE14E]"></i> eventixx1@gmail.com</li>
                         <li><i class="fa-solid fa-phone w-4 text-[#FFE14E]"></i> +62 21 123 4567</li>
                         <li><i class="fa-solid fa-location-dot w-4 text-[#FFE14E]"></i> Batam Center</li>
                     </ul>

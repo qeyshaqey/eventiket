@@ -201,8 +201,8 @@
                 <div>
                     <h3 class="font-semibold text-[#192853]">Email</h3>
                     <p class="text-sm text-[#475569] mt-1">
-                        <a href="mailto:eventiket@gmail.com" class="underline font-medium">
-                            eventiket@gmail.com
+                        <a href="mailto:eventixx1@gmail.com" class="underline font-medium">
+                            eventixx1@gmail.com
                         </a>
                     </p>
                 </div>
