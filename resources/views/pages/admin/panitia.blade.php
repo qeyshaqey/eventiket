@@ -155,7 +155,7 @@
 
                 <tbody>
                     @foreach($pengajuan as $i => $d)
-                    <tr class="border-b transition">
+                    <tr class="border-b transition hover:bg-gray-50 cursor-pointer" onclick="openDetailModal({{ json_encode($d) }})">
                         <td class="p-3 text-center">{{ $i+1 }}</td>
                         <td class="p-3 font-medium text-gray-700">{{ $d['nama'] }}</td>
                         <td class="p-3 text-gray-500">{{ $d['email'] }}</td>
@@ -164,7 +164,7 @@
                         <td class="p-3">{{ $d['ukm'] }}</td>
 
                         <td class="p-3">
-                            <div class="flex gap-2 justify-center">
+                            <div class="flex gap-2 justify-center" onclick="event.stopPropagation()">
                                 <button class="w-9 h-9 flex items-center justify-center rounded-lg bg-green-100 text-green-600 hover:bg-green-200 transition">
                                     <i class="fa-solid fa-check"></i>
                                 </button>
@@ -205,6 +205,52 @@
                     Kirim
                 </button>
             </div>
+        </div>
+    </div>
+</div>
+
+<!-- ================= MODAL DETAIL EVENT ================= -->
+<div id="modalDetail" tabindex="-1" aria-hidden="true" class="fixed inset-0 bg-black/50 hidden z-50 items-center justify-center overflow-y-auto overflow-x-hidden">
+    <div class="relative p-4 w-full max-w-md h-full md:h-auto flex items-center justify-center">
+        <div class="relative bg-white rounded-2xl w-full shadow-lg overflow-hidden border border-gray-100">
+            
+            <!-- Header -->
+            <div class="bg-[#192853] p-4 flex justify-between items-center">
+                <h3 id="detEvent" class="text-yellow-400 font-bold text-lg"></h3>
+                <button type="button" data-modal-hide="modalDetail" class="text-white hover:text-gray-300 transition text-2xl">&times;</button>
+            </div>
+
+            <!-- Body -->
+            <div class="p-6 text-sm space-y-4 text-gray-700">
+                <div class="grid grid-cols-12 items-start">
+                    <b class="col-span-4 text-gray-900">Pendaftar</b> 
+                    <span id="detNama" class="col-span-8 font-medium text-[#192853]"></span>
+                </div>
+                <div class="grid grid-cols-12 items-start">
+                    <b class="col-span-4 text-gray-900">NIM / Email</b> 
+                    <span id="detIdentitas" class="col-span-8 text-gray-600"></span>
+                </div>
+                <div class="grid grid-cols-12 items-start">
+                    <b class="col-span-4 text-gray-900">Organisasi</b> 
+                    <span id="detUKM" class="col-span-8 text-gray-600"></span>
+                </div>
+                <hr class="border-gray-50">
+                <div class="grid grid-cols-12 items-start">
+                    <b class="col-span-4 text-gray-900">Kategori</b> 
+                    <div class="col-span-8">
+                        <span id="detKategori" class="px-3 py-1 bg-yellow-100 text-yellow-700 rounded-full text-[10px] font-bold uppercase tracking-wider"></span>
+                    </div>
+                </div>
+                <div class="grid grid-cols-12 items-start">
+                    <b class="col-span-4 text-gray-900">Rencana Tgl</b> 
+                    <span id="detTgl" class="col-span-8 text-gray-600"></span>
+                </div>
+                <div class="flex flex-col gap-2 pt-2">
+                    <b class="text-gray-900 font-bold">Deskripsi Singkat</b>
+                    <p id="detDeskripsi" class="bg-slate-50 p-4 rounded-2xl italic leading-relaxed text-gray-600 border border-slate-100 text-[13px]"></p>
+                </div>
+            </div>
+
         </div>
     </div>
 </div>
@@ -255,6 +301,31 @@
         const modal = FlowbiteInstances.getInstance('Modal', 'modalTolak');
         if (modal) modal.hide();
     }
+
+    // MODAL DETAIL
+    function openDetailModal(data) {
+        document.getElementById('detNama').innerText = data.nama;
+        document.getElementById('detIdentitas').innerText = data.nim + " / " + data.email;
+        document.getElementById('detUKM').innerText = data.ukm;
+        document.getElementById('detEvent').innerText = data.event_nama;
+        document.getElementById('detKategori').innerText = data.kategori_event;
+        document.getElementById('detTgl').innerText = data.tgl_event;
+        document.getElementById('detDeskripsi').innerText = data.deskripsi;
+
+        const modalEl = document.getElementById('modalDetail');
+        modalEl.classList.remove('hidden');
+        modalEl.classList.add('flex');
+    }
+
+    // Close logic for all modals with data-modal-hide
+    document.querySelectorAll('[data-modal-hide]').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const modalId = btn.getAttribute('data-modal-hide');
+            const modalEl = document.getElementById(modalId);
+            modalEl.classList.add('hidden');
+            modalEl.classList.remove('flex');
+        });
+    });
 
     // MODAL HAPUS
     let deleteNama = '';
