@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Event;
 use App\Models\Transaksi;
+use App\Models\User;
+use Illuminate\Support\Facades\Storage;
 
 class EventPanitiaController extends Controller
 {
@@ -100,6 +102,27 @@ class EventPanitiaController extends Controller
 
     public function profil()
     {
-        return view('pages.panitia.profil');
+        // Data Mock disimpan di session agar bisa "diupdate" untuk contoh
+        $user = (object)[
+            'name' => session('mock_name', session('user') ?? 'Panitia Event'),
+            'email' => session('mock_email', 'panitia@eventiket.com'),
+            'nim' => session('mock_nim', '2210112345'),
+            'photo' => session('mock_photo', null)
+        ];
+
+        return view('pages.panitia.profil', compact('user'));
+    }
+
+    public function updateProfil(Request $request)
+    {
+        // Simulasi update dengan menyimpan ke session
+        session([
+            'mock_name' => $request->name,
+            'mock_email' => $request->email,
+            'mock_nim' => $request->nim,
+            'user' => $request->name,
+        ]);
+
+        return back()->with('success', 'Profil berhasil diperbarui (Simulasi)');
     }
 }

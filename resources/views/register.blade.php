@@ -156,7 +156,7 @@
 
             {{-- Username --}}
             <div class="form-group">
-                <label for="username">Username</label>
+                <label for="username">Nama Lengkap</label>
                 <div class="input-wrap">
                     <input
                         type="text"
@@ -197,7 +197,7 @@
 
                 {{-- Password --}}
                 <div class="form-group">
-                    <label for="password">Password</label>
+                    <label for="password">Kata Sandi</label>
                     <div class="input-wrap">
                         <input
                             type="password"
@@ -230,7 +230,7 @@
 
                 {{-- Konfirmasi Password --}}
                 <div class="form-group">
-                    <label for="confirm_password">Konfirmasi Password</label>
+                    <label for="confirm_password">Konfirmasi Kata Sandi</label>
                     <div class="input-wrap">
                         <input
                             type="password"

@@ -495,7 +495,7 @@
 
         <!-- RIGHT PANEL -->
         <div class="right">
-            <h1>Login</h1>
+            <h1>Masuk</h1>
             <p class="sub">Selamat datang kembali! Masuk ke akun Anda.</p>
 
             {{-- ALERT LARAVEL --}}
@@ -512,7 +512,7 @@
 
                 <!-- Username -->
                 <div class="field">
-                    <label>Username</label>
+                    <label>Nama Lengkap</label>
                     <div class="inp-wrap">
                         <svg class="ico" viewBox="0 0 24 24">
                             <circle cx="12" cy="8" r="4" />
@@ -528,7 +528,7 @@
                 </div>
 
                 <div class="field">
-                    <label for="password">Password</label>
+                    <label for="password">Kata Sandi</label>
 
                     <div class="inp-wrap">
 
@@ -568,11 +568,11 @@
                 </div>
 
                 <div class="options-row">
-                    <a href="{{ route('password.forgot') }}" class="forgot">Lupa password?</a>
+                    <a href="{{ route('password.forgot') }}" class="forgot">Lupa kata sandi?</a>
                 </div>
 
                 <button class="btn">
-                    Log in <span class="acc">→</span>
+                    Masuk <span class="acc">→</span>
                 </button>
             </form>
 
