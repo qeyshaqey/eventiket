@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 
-// Controller
+// list impor controller yang dipake
 use App\Http\Controllers\BarangController;
 use App\Http\Controllers\Pengunjung\ContactController;
 use App\Http\Controllers\DashboardController;
@@ -17,6 +17,7 @@ use App\Http\Controllers\Pengunjung\HomePageController;
 use App\Http\Controllers\Pengunjung\DashboardPengunjungController;
 use App\Http\Controllers\Pengunjung\TiketController;
 use App\Http\Controllers\Pengunjung\PaymentController;
+use App\Http\Controllers\Pengunjung\ProfilController;
 use App\Http\Controllers\BerandaPanitiaController;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
@@ -51,18 +52,19 @@ Route::prefix('panitia')->name('panitia.')->group(function () {
     Route::get('/transaksi', [TransaksiController::class, 'index'])
         ->name('transaksi');
 
-    // Riwayat
-Route::get('/riwayat', [EventPanitiaController::class, 'riwayat'])
-    ->name('riwayat');
+    // riwayat event panitia
+    Route::get('/riwayat', [EventPanitiaController::class, 'riwayat'])
+        ->name('riwayat');
 
-   // Profil
-Route::get('/profil', [EventPanitiaController::class, 'profil'])->name('profil');
-// PROFIL UPDATE
+    // profil panitia
+    Route::get('/profil', [EventPanitiaController::class, 'profil'])->name('profil');
+    // update profil panitia
     Route::post('/profil/update', [EventPanitiaController::class, 'updateProfil'])
         ->name('profil.update');
 });
 //===============================================================//
-// Halaman awal
+
+// halaman awal, langsung di-redirect ke home page
 Route::get('/', function () {
     return redirect('/home_page');
 });
@@ -106,7 +108,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
 Route::get('/jenistiket', [JenisTiketController::class, 'index']);
 Route::get('/barang', [BarangController::class, 'tampilkan']);
 
-// ── Login ──
+// ── PROSES LOGIN ──
 Route::get('/login', function () {
     return view('login');
 })->name('login');
@@ -116,44 +118,53 @@ Route::post('/login', function (Request $request) {
     $password = $request->password;
 
     if (!$username || !$password) {
-        return back()->with('error', 'Username dan password wajib diisi.');
+        return back()->with('error', 'NIM/Nama Lengkap dan password wajib diisi.');
     }
 
-    if ($username === 'admin' && $password === 'password123') {
-        session(['user' => $username, 'role' => 'admin']);
-        return redirect()->route('admin.dashboard');
-    }
-
-    $user = User::where('name', $username)->first();
-    if (!$user || !Hash::check($password, $user->password)) {
-        return back()->with('error', 'Username atau password salah.');
-    }
-
-    session(['user' => $user->name, 'role' => 'pengunjung', 'user_id' => $user->id]);
+    // cari user di db pake nama atau nim
+    $user = User::where('name', $username)
+                ->orWhere('nim', $username)
+                ->first();
     
-    // Setelah login berhasil, arahkan pengunjung ke dashboard mereka
-    return redirect()->route('pengunjung.dashboard');
+    // mastiin user ketemu dan password-nya bener
+    if (!$user || !Hash::check($password, $user->password)) {
+        return back()->with('error', 'NIM/Nama Lengkap atau password salah.');
+    }
+
+    // simpan data user ke session kustom
+    session([
+        'user' => $user->name, 
+        'role' => $user->role, 
+        'user_id' => $user->id
+    ]);
+    
+    // lempar ke dashboard sesuai role masing-masing
+    if ($user->role === 'admin') {
+        return redirect()->route('admin.dashboard');
+    } else {
+        return redirect()->route('pengunjung.dashboard');
+    }
 });
 
-// ── Register ──
+// ── PROSES DAFTAR ──
 Route::get('/register', [RegisterController::class, 'showForm'])->name('register');
 Route::post('/register', [RegisterController::class, 'store'])->name('register.store');
 
-// ── Lupa Password ──
+// ── LUPA PASSWORD (OTP) ──
 Route::get('/lupa-password', [ForgotPasswordController::class, 'showForm'])
     ->name('password.forgot');
 
 Route::post('/lupa-password', [ForgotPasswordController::class, 'sendOtp'])
     ->name('password.forgot.send');
 
-// ── Verifikasi OTP ──
+// ── VERIFIKASI KODE OTP ──
 Route::get('/verify-otp', [ForgotPasswordController::class, 'showVerifyOtpForm'])
     ->name('password.verify.form');
 
 Route::post('/verify-otp', [ForgotPasswordController::class, 'verifyOtp'])
     ->name('password.verify');
 
-// ── Reset Password ──
+// ── ATUR ULANG PASSWORD BARU ──
 Route::get('/reset-password', [ForgotPasswordController::class, 'showResetForm'])
     ->name('password.reset.form');
 
@@ -167,9 +178,8 @@ Route::prefix('pengunjung')->name('pengunjung.')->group(function () {
     Route::get('/detail_event/{id}', [HomePageController::class, 'showDetail'])->name('detail.event');
     Route::get('/tiket_aktif', [TiketController::class, 'index'])->name('tiket');
     
-    Route::get('/profil_pengunjung', function () {
-        return view('pages.pengunjung.profil_pengunjung');
-    })->name('profil');
+    Route::get('/profil_pengunjung', [ProfilController::class, 'index'])->name('profil');
+    Route::post('/profil_pengunjung/update', [ProfilController::class, 'update'])->name('profil.update');
 
     Route::get('/pembayaran', [PaymentController::class, 'initiatePayment'])->name('pembayaran');
 
@@ -178,19 +188,19 @@ Route::prefix('pengunjung')->name('pengunjung.')->group(function () {
     })->name('daftar_panitia');
 
     Route::post('/daftar_panitia', function (\Illuminate\Http\Request $request) {
-        // Di sini akan ditaruh logika untuk menyimpan ke database nanti.
-        return redirect()->route('pengunjung.profil')->with('success', 'Pengajuan panitia berhasil dikirim!');
+        // nanti simpan pengajuan panitia ke db di sini
+        return redirect()->route('pengunjung.profil')->with('profile_success', 'Pengajuan panitia berhasil dikirim!');
     })->name('daftar_panitia.store');
 });
 
 // ── Beranda Panitia ──
 Route::get('/beranda-panitia', [BerandaPanitiaController::class, 'index'])->name('beranda.panitia');
 
-// ── Logout ──
+// ── PROSES LOGOUT ──
 Route::post('/logout', function () {
     session()->flush();
     return redirect('/login');
 })->name('logout');
 
-// Midtrans Callback
+// callback midtrans buat update status bayar
 Route::post('/payment/callback', [PaymentController::class, 'callback']);

@@ -493,12 +493,12 @@
             </div>
         </div>
 
-        <!-- RIGHT PANEL -->
+        <!-- panel bagian kanan (form login) -->
         <div class="right">
             <h1>Masuk</h1>
             <p class="sub">Selamat datang kembali! Masuk ke akun Anda.</p>
 
-            {{-- ALERT LARAVEL --}}
+            {{-- pesan alert error/sukses dari laravel --}}
             @if(session('error'))
             <div class="alert alert-error">{{ session('error') }}</div>
             @endif
@@ -510,9 +510,9 @@
             <form method="POST" action="/login">
                 @csrf
 
-                <!-- Username -->
+                <!-- input username atau nim -->
                 <div class="field">
-                    <label>Nama Lengkap</label>
+                    <label>NIM atau Nama Lengkap</label>
                     <div class="inp-wrap">
                         <svg class="ico" viewBox="0 0 24 24">
                             <circle cx="12" cy="8" r="4" />
@@ -522,7 +522,7 @@
                             type="text"
                             name="username"
                             value="{{ old('username') }}"
-                            placeholder="Masukkan username Anda"
+                            placeholder="Masukkan NIM atau Nama Lengkap Anda"
                             required>
                     </div>
                 </div>
@@ -532,16 +532,16 @@
 
                     <div class="inp-wrap">
 
-                        <!-- ICON KUNCI -->
+                        <!-- ikon kunci -->
                         <svg class="ico" viewBox="0 0 24 24">
                             <rect x="3" y="11" width="18" height="11" rx="2" />
                             <path d="M7 11V7a5 5 0 0 1 10 0v4" />
                         </svg>
 
-                        <!-- CHECKBOX HIDDEN -->
+                        <!-- checkbox tersembunyi buat toggle view password -->
                         <input type="checkbox" id="togglePass" hidden>
 
-                        <!-- INPUT PASSWORD -->
+                        <!-- input password asli -->
                         <input
                             type="password"
                             id="password"
@@ -549,15 +549,15 @@
                             placeholder="••••••••"
                             required>
 
-                        <!-- ICON MATA -->
+                        <!-- ikon mata buat nampilin/sembunyiin password -->
                         <label for="togglePass" class="eye">
-                            <!-- eye open -->
+                            <!-- gambar mata kebuka -->
                             <svg class="eye-open" viewBox="0 0 24 24">
                                 <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
                                 <circle cx="12" cy="12" r="3" />
                             </svg>
 
-                            <!-- eye close -->
+                            <!-- gambar mata ketutup -->
                             <svg class="eye-close" viewBox="0 0 24 24">
                                 <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8s4-8 11-8a10 10 0 0 1 5.94 2" />
                                 <line x1="1" y1="1" x2="23" y2="23" />
@@ -582,6 +582,7 @@
     </div>
 
     <script>
+        // fungsi buat ngubah tipe input password jadi text (biar keliatan passwordnya)
         document.getElementById('togglePass').addEventListener('change', function() {
             const passwordInput = document.getElementById('password');
             if (this.checked) {

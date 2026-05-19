@@ -14,11 +14,11 @@ class MidtransTestSeeder extends Seeder
     {
         // 1. Buat user dummy buat ngetes login (Pengunjung)
         $user = \App\Models\User::create([
+            'nim'  => '3312401001',
             'name' => 'naya',
             'email' => 'naya@gmail.com',
             'password' => \Illuminate\Support\Facades\Hash::make('password123'),
             'role' => 'pengunjung',
-            'status' => 'verified'
         ]);
 
         // 2. Buat Event Pertama: Festival Musik Mapala

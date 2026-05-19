@@ -10,19 +10,21 @@ use Illuminate\Http\Request;
 
 class RegisterController extends Controller
 {
-    // form registrasi
+    // buat nampilin form pendaftaran akun
     public function showForm()
     {
         return view('register');
     }
 
-    // registrasi
+    // buat ngeproses pendaftaran akun baru
     public function store(RegisterRequest $request)
     {
         User::create([
+            'nim'      => $request->nim,
             'name'     => $request->username,
             'email'    => $request->email,
             'password' => Hash::make($request->password),
+            'role'     => 'pengunjung',
         ]);
 
         return redirect()->route('register')->with('success', true);

@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1.0" />
     <title>Daftar — Tiket &amp; Event</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,700&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
     <style>
         *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
         body{min-height:100vh;display:flex;align-items:center;justify-content:center;background:#EFF8FF;font-family:'DM Sans',sans-serif}
@@ -42,6 +43,8 @@
         .login-link{text-align:center;margin-top:15px;font-size:13px;color:#7a84a0}
         .login-link a{color:#1a2340;font-weight:600;text-decoration:none}
         .login-link a:hover{text-decoration:underline}
+
+
         /* ── Responsive ── */
         @media (max-width: 768px) {
             body { padding: 16px; }
@@ -54,6 +57,8 @@
 </head>
 
 <body>
+
+
 <div class="wrap">
 
     {{-- ═══ Left Panel ═══ --}}
@@ -154,6 +159,25 @@
         <form method="POST" action="{{ route('register.store') }}" novalidate>
             @csrf
 
+            {{-- NIM --}}
+            <div class="form-group">
+                <label for="nim">NIM</label>
+                <div class="input-wrap">
+                    <input
+                        type="text"
+                        id="nim"
+                        name="nim"
+                        placeholder="Masukkan 10 digit NIM"
+                        value="{{ old('nim') }}"
+                        class="{{ $errors->has('nim') ? 'err' : '' }}"
+                        maxlength="10"
+                    />
+                </div>
+                @error('nim')
+                    <span class="field-error">{{ $message }}</span>
+                @enderror
+            </div>
+
             {{-- Username --}}
             <div class="form-group">
                 <label for="username">Nama Lengkap</label>
@@ -162,7 +186,7 @@
                         type="text"
                         id="username"
                         name="username"
-                        placeholder="nama_pengguna"
+                        placeholder="Masukkan nama lengkap Anda"
                         value="{{ old('username') }}"
                         class="{{ $errors->has('username') ? 'err' : '' }}"
                         autocomplete="username"
@@ -181,7 +205,7 @@
                         type="email"
                         id="email"
                         name="email"
-                        placeholder="contoh@email.com"
+                        placeholder="Masukkan email Anda    "
                         value="{{ old('email') }}"
                         class="{{ $errors->has('email') ? 'err' : '' }}"
                         autocomplete="email"
@@ -294,6 +318,8 @@
         lbl.textContent = pw.length ? (lbls[score - 1] ?? lbls[3]) : '';
         lbl.style.color = pw.length ? cols[score - 1] : '#7a84a0';
     }
+
+
 </script>
 </body>
 </html>

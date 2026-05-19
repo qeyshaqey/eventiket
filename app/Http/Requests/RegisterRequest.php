@@ -8,12 +8,13 @@ class RegisterRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        return true; // Izinkan semua user mengakses
+        return true; // semua user boleh ngelakuin request ini
     }
 
     public function rules(): array
     {
         return [
+            'nim'              => ['required', 'numeric', 'digits:10', 'unique:users,nim'],
             'username'         => ['required', 'string', 'min:3', 'max:50', 'unique:users,name'],
             'email'            => ['required', 'email', 'unique:users,email'],
             'password'         => ['required', 'string', 'min:8'],
@@ -24,9 +25,13 @@ class RegisterRequest extends FormRequest
     public function messages(): array
     {
         return [
+            'nim.required'              => 'NIM wajib diisi.',
+            'nim.numeric'               => 'NIM harus berupa angka.',
+            'nim.digits'                => 'NIM harus tepat 10 angka.',
+            'nim.unique'                => 'NIM sudah terdaftar.',
             'username.required'         => 'Username wajib diisi.',
             'username.min'              => 'Username minimal 3 karakter.',
-            'username.unique'           => 'Username sudah digunakan.',
+            'username.unique'           => 'Nama lengkap sudah digunakan.',
             'email.required'            => 'Email wajib diisi.',
             'email.email'               => 'Format email tidak valid.',
             'email.unique'              => 'Email sudah terdaftar.',
@@ -37,12 +42,11 @@ class RegisterRequest extends FormRequest
         ];
     }
 
-    /**
-     * Nama atribut yang ditampilkan di pesan error (opsional).
-     */
+    // ganti nama field/atribut pas nampilin pesan error
     public function attributes(): array
     {
         return [
+            'nim'              => 'NIM',
             'username'         => 'Username',
             'email'            => 'Email',
             'password'         => 'Password',
