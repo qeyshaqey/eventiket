@@ -8,31 +8,31 @@
 
 @php
 $eventDisetujui = [
-    ["nama"=>"Workshop UI/UX","tanggal"=>"12 Apr","panitia"=>"Inessa","kategori"=>"Workshop", "status"=>"Aktif"],
-    ["nama"=>"Seminar Digital Marketing","tanggal"=>"20 Apr","panitia"=>"Andi","kategori"=>"Seminar", "status"=>"Aktif"],
-    ["nama"=>"Talkshow Startup","tanggal"=>"25 Apr","panitia"=>"Fajar","kategori"=>"Talkshow", "status"=>"Non aktif"],
-    ["nama"=>"Music Festival 2024","tanggal"=>"30 Apr","panitia"=>"Budi","kategori"=>"Festival", "status"=>"Aktif"],
-    ["nama"=>"Hackathon Competition","tanggal"=>"05 Mei","panitia"=>"Citra","kategori"=>"Competition", "status"=>"Non aktif"],
-    ["nama"=>"Workshop Web Development","tanggal"=>"10 Mei","panitia"=>"Deni","kategori"=>"Workshop", "status"=>"Aktif"],
-    ["nama"=>"Seminar AI & Machine Learning","tanggal"=>"15 Mei","panitia"=>"Eka","kategori"=>"Seminar", "status"=>"Non aktif"],
-    ["nama"=>"Photography Exhibition","tanggal"=>"18 Mei","panitia"=>"Fira","kategori"=>"Art", "status"=>"Aktif"],
+    ["nama"=>"Workshop UI/UX","tanggal"=>"12 Apr 2024","panitia"=>"Inessa","kategori"=>"Workshop", "status"=>"Aktif"],
+    ["nama"=>"Seminar Digital Marketing","tanggal"=>"20 Apr 2024","panitia"=>"Andi","kategori"=>"Seminar", "status"=>"Aktif"],
+    ["nama"=>"Talkshow Startup","tanggal"=>"25 Apr 2025","panitia"=>"Fajar","kategori"=>"Talkshow", "status"=>"Non aktif"],
+    ["nama"=>"Music Festival 2024","tanggal"=>"30 Apr 2024","panitia"=>"Budi","kategori"=>"Festival", "status"=>"Aktif"],
+    ["nama"=>"Hackathon Competition","tanggal"=>"05 Mei 2025","panitia"=>"Citra","kategori"=>"Competition", "status"=>"Non aktif"],
+    ["nama"=>"Workshop Web Development","tanggal"=>"10 Mei 2026","panitia"=>"Deni","kategori"=>"Workshop", "status"=>"Aktif"],
+    ["nama"=>"Seminar AI & Machine Learning","tanggal"=>"15 Mei 2026","panitia"=>"Eka","kategori"=>"Seminar", "status"=>"Non aktif"],
+    ["nama"=>"Photography Exhibition","tanggal"=>"18 Mei 2026","panitia"=>"Fira","kategori"=>"Art", "status"=>"Aktif"],
 ];
 
 $eventDitolak = [
-    ["nama"=>"Festival Kampus","tanggal"=>"10 Mei","panitia"=>"Puji","kategori"=>"Festival","alasan"=>"Bentrok jadwal"],
-    ["nama"=>"Seminar AI","tanggal"=>"12 Mei","panitia"=>"Raka","kategori"=>"Seminar","alasan"=>"Kuota penuh"],
-    ["nama"=>"Charity Run 2024","tanggal"=>"15 Mei","panitia"=>"Gita","kategori"=>"Olahraga","alasan"=>"Izin tidak lengkap"],
-    ["nama"=>"Tech Conference","tanggal"=>"20 Mei","panitia"=>"Haryo","kategori"=>"Technology","alasan"=>"Dana tidak mencukupi"],
-    ["nama"=>"Art Performance","tanggal"=>"22 Mei","panitia"=>"Indra","kategori"=>"Art","alasan"=>"Lokasi sudah dibooking"],
+    ["nama"=>"Festival Kampus","tanggal"=>"10 Mei 2024","panitia"=>"Puji","kategori"=>"Festival","alasan"=>"Bentrok jadwal"],
+    ["nama"=>"Seminar AI","tanggal"=>"12 Mei 2024","panitia"=>"Raka","kategori"=>"Seminar","alasan"=>"Kuota penuh"],
+    ["nama"=>"Charity Run 2024","tanggal"=>"15 Mei 2024","panitia"=>"Gita","kategori"=>"Olahraga","alasan"=>"Izin tidak lengkap"],
+    ["nama"=>"Tech Conference","tanggal"=>"20 Mei 2025","panitia"=>"Haryo","kategori"=>"Technology","alasan"=>"Dana tidak mencukupi"],
+    ["nama"=>"Art Performance","tanggal"=>"22 Mei 2026","panitia"=>"Indra","kategori"=>"Art","alasan"=>"Lokasi sudah dibooking"],
 ];
 
 $eventPending = [
-    ["nama"=>"Seminar Kewirausahaan","tanggal"=>"18 Mei","panitia"=>"Fariz","kategori"=>"Seminar"],
-    ["nama"=>"Workshop Mobile App","tanggal"=>"20 Mei","panitia"=>"Laras","kategori"=>"Workshop"],
-    ["nama"=>"Webinar Cyber Security","tanggal"=>"22 Mei","panitia"=>"Maya","kategori"=>"Webinar"],
-    ["nama"=>"Photography Workshop","tanggal"=>"25 Mei","panitia"=>"Naufal","kategori"=>"Art"],
-    ["nama"=>"Coding Bootcamp","tanggal"=>"01 Jun","panitia"=>"Olivia","kategori"=>"Education"],
-    ["nama"=>"Business Plan Competition","tanggal"=>"05 Jun","panitia"=>"Putra","kategori"=>"Competition"],
+    ["nama"=>"Seminar Kewirausahaan","tanggal"=>"18 Mei 2024","panitia"=>"Fariz","kategori"=>"Seminar"],
+    ["nama"=>"Workshop Mobile App","tanggal"=>"20 Mei 2024","panitia"=>"Laras","kategori"=>"Workshop"],
+    ["nama"=>"Webinar Cyber Security","tanggal"=>"22 Mei 2025","panitia"=>"Maya","kategori"=>"Webinar"],
+    ["nama"=>"Photography Workshop","tanggal"=>"25 Mei 2025","panitia"=>"Naufal","kategori"=>"Art"],
+    ["nama"=>"Coding Bootcamp","tanggal"=>"01 Jun 2026","panitia"=>"Olivia","kategori"=>"Education"],
+    ["nama"=>"Business Plan Competition","tanggal"=>"05 Jun 2026","panitia"=>"Putra","kategori"=>"Competition"],
 ];
 @endphp
 
@@ -61,16 +61,47 @@ $eventPending = [
 
     <!-- ================= SEMUA EVENT ================= -->
     <div id="k" class="bg-white p-5 rounded-xl shadow border">
-        <div class="mb-3">
-            <div class="relative">
-                <input type="text" id="searchAktif" placeholder="Cari semua event..."
-                    class="w-full pl-10 pr-4 py-2 border rounded-lg text-sm font-bold">
-                <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+        <div class="mb-4">
+            <div class="flex flex-col md:flex-row gap-3">
+                <div class="relative flex-1">
+                    <input type="text" id="searchAktif" placeholder="Cari semua event..."
+                        class="w-full pl-10 pr-4 py-2 border rounded-lg text-sm font-bold focus:outline-none focus:ring-2 focus:ring-[#192853] transition-all">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                </div>
+                <div class="relative w-full md:w-48">
+                    <select id="filterBulanAktif" class="w-full pl-10 pr-8 py-2 border rounded-lg text-sm font-bold appearance-none bg-white focus:outline-none focus:ring-2 focus:ring-[#192853] transition-all cursor-pointer">
+                        <option value="">Semua Bulan</option>
+                        <option value="Jan">Januari</option>
+                        <option value="Feb">Februari</option>
+                        <option value="Mar">Maret</option>
+                        <option value="Apr">April</option>
+                        <option value="Mei">Mei</option>
+                        <option value="Jun">Juni</option>
+                        <option value="Jul">Juli</option>
+                        <option value="Agt">Agustus</option>
+                        <option value="Sep">September</option>
+                        <option value="Okt">Oktober</option>
+                        <option value="Nov">November</option>
+                        <option value="Des">Desember</option>
+                    </select>
+                    <i class="fa-solid fa-calendar-days absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                    <i class="fa-solid fa-chevron-down absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"></i>
+                </div>
+                <div class="relative w-full md:w-40">
+                    <select id="filterTahunAktif" class="w-full pl-10 pr-8 py-2 border rounded-lg text-sm font-bold appearance-none bg-white focus:outline-none focus:ring-2 focus:ring-[#192853] transition-all cursor-pointer">
+                        <option value="">Semua Tahun</option>
+                        <option value="2024">2024</option>
+                        <option value="2025">2025</option>
+                        <option value="2026">2026</option>
+                    </select>
+                    <i class="fa-solid fa-calendar-check absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                    <i class="fa-solid fa-chevron-down absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"></i>
+                </div>
             </div>
         </div>
 
         <div class="max-h-[400px] overflow-y-auto overflow-x-auto">
-            <table class="w-full text-sm border-collapse" id="tableAktif">
+            <table class="w-full text-sm border-separate border-spacing-y-1" id="tableAktif">
                 <thead class="text-gray-500 border-b bg-gray-50 sticky top-0">
                     <tr>
                         <th class="p-3 text-center">No</th>
@@ -83,13 +114,13 @@ $eventPending = [
                 </thead>
                 <tbody>
                     @foreach ($eventDisetujui as $i => $e)
-                    <tr data-modal-target="modal" data-modal-toggle="modal" onclick="showModal('{{ $e['nama'] }}','{{ $e['tanggal'] }}','09:00','Aula','{{ $e['panitia'] }}','Event aktif')" class="border-b hover:bg-blue-50 transition cursor-pointer">
-                        <td class="p-3 text-center">{{ $i+1 }}</td>
-                        <td class="p-3 font-bold text-gray-700">{{ $e['nama'] }}</td>
-                        <td class="p-3 text-gray-500">{{ $e['tanggal'] }}</td>
-                        <td class="p-3 text-gray-600">{{ $e['panitia'] }}</td>
-                        <td class="p-3">{{ $e['kategori'] }}</td>
-                        <td class="p-3">
+                    <tr data-modal-target="modal" data-modal-toggle="modal" onclick="showModal('{{ $e['nama'] }}','{{ $e['tanggal'] }}','09:00','Aula','{{ $e['panitia'] }}','Event aktif')" class="bg-white hover:bg-blue-50 transition cursor-pointer shadow-sm">
+                        <td class="py-4 px-3 text-center first:rounded-l-lg last:rounded-r-lg">{{ $i+1 }}</td>
+                        <td class="py-4 px-3 font-bold text-gray-700">{{ $e['nama'] }}</td>
+                        <td class="py-4 px-3 text-gray-500">{{ $e['tanggal'] }}</td>
+                        <td class="py-4 px-3 text-gray-600">{{ $e['panitia'] }}</td>
+                        <td class="py-4 px-3">{{ $e['kategori'] }}</td>
+                        <td class="py-4 px-3 first:rounded-l-lg last:rounded-r-lg">
                             <span class="px-3 py-1 rounded-full text-xs font-bold 
                                 {{ $e['status'] == 'Aktif' ? 'bg-green-100 text-green-600' : 'bg-gray-100 text-gray-500' }}">
                                 {{ $e['status'] }}
@@ -105,16 +136,47 @@ $eventPending = [
 
     <!-- ================= DITOLAK ================= -->
     <div id="t" class="bg-white p-5 rounded-xl shadow border hidden">
-        <div class="mb-3">
-            <div class="relative">
-                <input type="text" id="searchDitolak" placeholder="Cari event ditolak..."
-                    class="w-full pl-10 pr-4 py-2 border rounded-lg text-sm font-bold">
-                <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+        <div class="mb-4">
+            <div class="flex flex-col md:flex-row gap-3">
+                <div class="relative flex-1">
+                    <input type="text" id="searchDitolak" placeholder="Cari event ditolak..."
+                        class="w-full pl-10 pr-4 py-2 border rounded-lg text-sm font-bold focus:outline-none focus:ring-2 focus:ring-[#192853] transition-all">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                </div>
+                <div class="relative w-full md:w-48">
+                    <select id="filterBulanDitolak" class="w-full pl-10 pr-8 py-2 border rounded-lg text-sm font-bold appearance-none bg-white focus:outline-none focus:ring-2 focus:ring-[#192853] transition-all cursor-pointer">
+                        <option value="">Semua Bulan</option>
+                        <option value="Jan">Januari</option>
+                        <option value="Feb">Februari</option>
+                        <option value="Mar">Maret</option>
+                        <option value="Apr">April</option>
+                        <option value="Mei">Mei</option>
+                        <option value="Jun">Juni</option>
+                        <option value="Jul">Juli</option>
+                        <option value="Agt">Agustus</option>
+                        <option value="Sep">September</option>
+                        <option value="Okt">Oktober</option>
+                        <option value="Nov">November</option>
+                        <option value="Des">Desember</option>
+                    </select>
+                    <i class="fa-solid fa-calendar-days absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                    <i class="fa-solid fa-chevron-down absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"></i>
+                </div>
+                <div class="relative w-full md:w-40">
+                    <select id="filterTahunDitolak" class="w-full pl-10 pr-8 py-2 border rounded-lg text-sm font-bold appearance-none bg-white focus:outline-none focus:ring-2 focus:ring-[#192853] transition-all cursor-pointer">
+                        <option value="">Semua Tahun</option>
+                        <option value="2024">2024</option>
+                        <option value="2025">2025</option>
+                        <option value="2026">2026</option>
+                    </select>
+                    <i class="fa-solid fa-calendar-check absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                    <i class="fa-solid fa-chevron-down absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"></i>
+                </div>
             </div>
         </div>
 
         <div class="max-h-[400px] overflow-y-auto overflow-x-auto">
-            <table class="w-full text-sm border-collapse" id="tableDitolak">
+            <table class="w-full text-sm border-separate border-spacing-y-1" id="tableDitolak">
                 <thead class="text-gray-500 border-b bg-gray-50 sticky top-0">
                     <tr>
                         <th class="p-3 text-center">No</th>
@@ -127,13 +189,13 @@ $eventPending = [
                 </thead>
                 <tbody>
                     @foreach ($eventDitolak as $i => $e)
-                    <tr data-modal-target="modal" data-modal-toggle="modal" onclick="showModal('{{ $e['nama'] }}','{{ $e['tanggal'] }}','09:00','Aula','{{ $e['panitia'] }}','{{ $e['alasan'] }}')" class="border-b hover:bg-red-50 transition cursor-pointer">
-                        <td class="p-3 text-center">{{ $i+1 }}</td>
-                        <td class="p-3 font-bold text-gray-700">{{ $e['nama'] }}</td>
-                        <td class="p-3 text-gray-500">{{ $e['tanggal'] }}</td>
-                        <td class="p-3 text-gray-600">{{ $e['panitia'] }}</td>
-                        <td class="p-3">{{ $e['kategori'] }}</td>
-                        <td class="p-3 text-red-500 text-sm">{{ $e['alasan'] }}</td>
+                    <tr data-modal-target="modal" data-modal-toggle="modal" onclick="showModal('{{ $e['nama'] }}','{{ $e['tanggal'] }}','09:00','Aula','{{ $e['panitia'] }}','{{ $e['alasan'] }}')" class="bg-white hover:bg-red-50 transition cursor-pointer shadow-sm">
+                        <td class="py-4 px-3 text-center first:rounded-l-lg last:rounded-r-lg">{{ $i+1 }}</td>
+                        <td class="py-4 px-3 font-bold text-gray-700">{{ $e['nama'] }}</td>
+                        <td class="py-4 px-3 text-gray-500">{{ $e['tanggal'] }}</td>
+                        <td class="py-4 px-3 text-gray-600">{{ $e['panitia'] }}</td>
+                        <td class="py-4 px-3">{{ $e['kategori'] }}</td>
+                        <td class="py-4 px-3 text-red-500 text-sm first:rounded-l-lg last:rounded-r-lg">{{ $e['alasan'] }}</td>
                     </tr>
                     @endforeach
                 </tbody>
@@ -143,16 +205,47 @@ $eventPending = [
 
     <!-- ================= PENGAJUAN ================= -->
     <div id="p" class="bg-white p-5 rounded-xl shadow border hidden">
-        <div class="mb-3">
-            <div class="relative">
-                <input type="text" id="searchPengajuan" placeholder="Cari pengajuan..."
-                    class="w-full pl-10 pr-4 py-2 border rounded-lg text-sm font-bold">
-                <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+        <div class="mb-4">
+            <div class="flex flex-col md:flex-row gap-3">
+                <div class="relative flex-1">
+                    <input type="text" id="searchPengajuan" placeholder="Cari pengajuan..."
+                        class="w-full pl-10 pr-4 py-2 border rounded-lg text-sm font-bold focus:outline-none focus:ring-2 focus:ring-[#192853] transition-all">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                </div>
+                <div class="relative w-full md:w-48">
+                    <select id="filterBulanPengajuan" class="w-full pl-10 pr-8 py-2 border rounded-lg text-sm font-bold appearance-none bg-white focus:outline-none focus:ring-2 focus:ring-[#192853] transition-all cursor-pointer">
+                        <option value="">Semua Bulan</option>
+                        <option value="Jan">Januari</option>
+                        <option value="Feb">Februari</option>
+                        <option value="Mar">Maret</option>
+                        <option value="Apr">April</option>
+                        <option value="Mei">Mei</option>
+                        <option value="Jun">Juni</option>
+                        <option value="Jul">Juli</option>
+                        <option value="Agt">Agustus</option>
+                        <option value="Sep">September</option>
+                        <option value="Okt">Oktober</option>
+                        <option value="Nov">November</option>
+                        <option value="Des">Desember</option>
+                    </select>
+                    <i class="fa-solid fa-calendar-days absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                    <i class="fa-solid fa-chevron-down absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"></i>
+                </div>
+                <div class="relative w-full md:w-40">
+                    <select id="filterTahunPengajuan" class="w-full pl-10 pr-8 py-2 border rounded-lg text-sm font-bold appearance-none bg-white focus:outline-none focus:ring-2 focus:ring-[#192853] transition-all cursor-pointer">
+                        <option value="">Semua Tahun</option>
+                        <option value="2024">2024</option>
+                        <option value="2025">2025</option>
+                        <option value="2026">2026</option>
+                    </select>
+                    <i class="fa-solid fa-calendar-check absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                    <i class="fa-solid fa-chevron-down absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"></i>
+                </div>
             </div>
         </div>
 
         <div class="max-h-[400px] overflow-y-auto overflow-x-auto">
-            <table class="w-full text-sm border-collapse" id="tablePengajuan">
+            <table class="w-full text-sm border-separate border-spacing-y-1" id="tablePengajuan">
                 <thead class="text-gray-500 border-b bg-gray-50 sticky top-0">
                     <tr>
                         <th class="p-3 text-center">No</th>
@@ -167,21 +260,23 @@ $eventPending = [
 
                 <tbody>
                     @foreach ($eventPending as $i => $e)
-                    <tr data-modal-target="modal" data-modal-toggle="modal" onclick="showModal('{{ $e['nama'] }}','{{ $e['tanggal'] }}','09:00','Aula','{{ $e['panitia'] }}','Menunggu persetujuan')" class="border-b hover:bg-blue-50 transition cursor-pointer">
-                        <td class="p-3 text-center">{{ $i+1 }}</td>
-                        <td class="p-3 font-bold text-gray-700">{{ $e['nama'] }}</td>
-                        <td class="p-3 text-gray-500">{{ $e['tanggal'] }}</td>
-                        <td class="p-3 text-gray-600">{{ $e['panitia'] }}</td>
-                        <td class="p-3">{{ $e['kategori'] }}</td>
-                        <td class="p-3"><span class="text-yellow-600 text-xs font-bold bg-yellow-100 px-3 py-1 rounded-full">Pending</span></td>
+                    <tr data-modal-target="modal" data-modal-toggle="modal" onclick="showModal('{{ $e['nama'] }}','{{ $e['tanggal'] }}','09:00','Aula','{{ $e['panitia'] }}','Menunggu persetujuan')" class="bg-white hover:bg-blue-50 transition cursor-pointer shadow-sm">
+                        <td class="py-4 px-3 text-center first:rounded-l-lg last:rounded-r-lg">{{ $i+1 }}</td>
+                        <td class="py-4 px-3 font-bold text-gray-700">{{ $e['nama'] }}</td>
+                        <td class="py-4 px-3 text-gray-500">{{ $e['tanggal'] }}</td>
+                        <td class="py-4 px-3 text-gray-600">{{ $e['panitia'] }}</td>
+                        <td class="py-4 px-3">{{ $e['kategori'] }}</td>
+                        <td class="py-4 px-3"><span class="text-yellow-600 text-xs font-bold bg-yellow-100 px-3 py-1 rounded-full">Pending</span></td>
 
-                        <td class="p-3 flex gap-2 justify-center">
-                            <button onclick="event.stopPropagation()" class="w-9 h-9 flex items-center justify-center rounded-lg bg-green-100 text-green-600 hover:bg-green-200 transition">
-                                <i class="fa-solid fa-check"></i>
-                            </button>
-                            <button onclick="event.stopPropagation(); openRejectModal()" data-modal-target="rejectModal" data-modal-toggle="rejectModal" class="w-9 h-9 flex items-center justify-center rounded-lg bg-red-100 text-red-500 hover:bg-red-200 transition">
-                                <i class="fa-solid fa-xmark"></i>
-                            </button>
+                        <td class="py-4 px-3 first:rounded-l-lg last:rounded-r-lg">
+                            <div class="flex gap-2 justify-center">
+                                <button onclick="event.stopPropagation()" class="w-9 h-9 flex items-center justify-center rounded-lg bg-green-100 text-green-600 hover:bg-green-200 transition">
+                                    <i class="fa-solid fa-check"></i>
+                                </button>
+                                <button onclick="event.stopPropagation(); openRejectModal()" data-modal-target="rejectModal" data-modal-toggle="rejectModal" class="w-9 h-9 flex items-center justify-center rounded-lg bg-red-100 text-red-500 hover:bg-red-200 transition">
+                                    <i class="fa-solid fa-xmark"></i>
+                                </button>
+                            </div>
                         </td>
                     </tr>
                     @endforeach
@@ -236,9 +331,50 @@ $eventPending = [
 <script>
     <x-admin.tab-search-script />
 
-    setupSearch('searchAktif', 'tableAktif');
-    setupSearch('searchPengajuan', 'tablePengajuan');
-    setupSearch('searchDitolak', 'tableDitolak');
+    function setupAdvancedSearch(inputId, bulanId, tahunId, tableId) {
+        const inputEl = document.getElementById(inputId);
+        const bulanEl = document.getElementById(bulanId);
+        const tahunEl = document.getElementById(tahunId);
+        const tableEl = document.getElementById(tableId);
+
+        if (!tableEl) return;
+
+        function filterTable() {
+            const searchValue = inputEl ? inputEl.value.toLowerCase() : '';
+            const bulanValue = bulanEl ? bulanEl.value.toLowerCase() : '';
+            const tahunValue = tahunEl ? tahunEl.value.toLowerCase() : '';
+
+            const rows = tableEl.querySelectorAll('tbody tr');
+            rows.forEach(row => {
+                const cells = row.getElementsByTagName('td');
+                if (cells.length < 3) return;
+
+                // Text search checks all columns in the row
+                const rowText = row.innerText.toLowerCase();
+                const matchesSearch = rowText.includes(searchValue);
+
+                // Date cell check (Tanggal is column index 2)
+                const dateCellText = cells[2].innerText.toLowerCase();
+                
+                const matchesBulan = bulanValue === '' || dateCellText.includes(bulanValue);
+                const matchesTahun = tahunValue === '' || dateCellText.includes(tahunValue);
+
+                if (matchesSearch && matchesBulan && matchesTahun) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        }
+
+        if (inputEl) inputEl.addEventListener('keyup', filterTable);
+        if (bulanEl) bulanEl.addEventListener('change', filterTable);
+        if (tahunEl) tahunEl.addEventListener('change', filterTable);
+    }
+
+    setupAdvancedSearch('searchAktif', 'filterBulanAktif', 'filterTahunAktif', 'tableAktif');
+    setupAdvancedSearch('searchPengajuan', 'filterBulanPengajuan', 'filterTahunPengajuan', 'tablePengajuan');
+    setupAdvancedSearch('searchDitolak', 'filterBulanDitolak', 'filterTahunDitolak', 'tableDitolak');
 
     // MODAL DETAIL
     function showModal(n, t, w, l, p, d) {

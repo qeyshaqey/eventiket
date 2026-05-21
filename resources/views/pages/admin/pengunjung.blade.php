@@ -38,12 +38,13 @@
     <!-- SCROLL AREA (DITINGGIKAN) -->
     <div class="max-h-[420px] overflow-y-auto overflow-x-auto rounded-xl">
 
-        <table class="w-full text-sm">
+        <table class="w-full text-sm border-separate border-spacing-y-1">
             <thead class="bg-[#f5f9ff] text-gray-500 sticky top-0 z-10">
                 <tr>
                     <th class="p-4 text-left">No</th>
                     <th class="p-4 text-left">Nama</th>
                     <th class="p-4 text-left">Email</th>
+                    <th class="p-4 text-left">NIM</th>
                     <th class="p-4 text-left">Kategori</th>
                     <th class="p-4 text-left">Event</th>
                 </tr>
@@ -51,15 +52,22 @@
 
             <tbody id="tableBody">
                 @foreach($data as $i => $d)
-                <tr class="border-t"
+                <tr class="bg-white hover:bg-gray-50 transition shadow-sm"
                     data-kategori="{{ $d['kategori'] }}"
                     data-event="{{ $d['event'] }}">
 
-                    <td class="p-4">{{ $i+1 }}</td>
-                    <td class="p-4">{{ $d['nama'] }}</td>
-                    <td class="p-4 text-gray-500">{{ $d['email'] }}</td>
-                    <td class="p-4 text-gray-500">{{ $d['kategori'] }}</td>
-                    <td class="p-4">
+                    <td class="py-5 px-4 first:rounded-l-lg last:rounded-r-lg">{{ $i+1 }}</td>
+                    <td class="py-5 px-4">
+                        <div class="flex items-center gap-3">
+                            <img src="{{ $d['foto'] }}" alt="{{ $d['nama'] }}" 
+                                class="w-8 h-8 rounded-full object-cover ring-2 ring-gray-200 shadow-sm flex-shrink-0">
+                            <span>{{ $d['nama'] }}</span>
+                        </div>
+                    </td>
+                    <td class="py-5 px-4 text-gray-500">{{ $d['email'] }}</td>
+                    <td class="py-5 px-4 text-gray-600">{{ $d['nim'] }}</td>
+                    <td class="py-5 px-4 text-gray-500">{{ $d['kategori'] }}</td>
+                    <td class="py-5 px-4 first:rounded-l-lg last:rounded-r-lg">
                         <span class="bg-yellow-200 text-xs px-3 py-1 rounded-full">
                             {{ $d['event'] }}
                         </span>

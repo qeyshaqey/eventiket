@@ -43,7 +43,7 @@
         </div>
 
         <div class="max-h-[400px] overflow-y-auto overflow-x-auto">
-            <table class="w-full text-sm border-collapse" id="tableKelola">
+            <table class="w-full text-sm border-separate border-spacing-y-1" id="tableKelola">
                 <thead class="text-gray-500 border-b bg-gray-50 sticky top-0">
                     <tr>
                         <th class="p-3 text-center">No</th>
@@ -57,19 +57,19 @@
                 </thead>
                 <tbody>
                     @foreach($kelola as $i => $d)
-                    <tr class="border-b transition">
-                        <td class="p-3 text-center">{{ $i+1 }}</td>
-                        <td class="p-3 font-medium text-gray-700">{{ $d['nama'] }}</td>
-                        <td class="p-3 text-gray-500">{{ $d['email'] }}</td>
-                        <td class="p-3 text-gray-600">{{ $d['nim'] }}</td>
-                        <td class="p-3">{{ $d['ukm'] }}</td>
-                        <td class="p-3">
+                    <tr class="bg-white hover:bg-gray-50 transition shadow-sm">
+                        <td class="py-4 px-3 text-center first:rounded-l-lg last:rounded-r-lg">{{ $i+1 }}</td>
+                        <td class="py-4 px-3 font-medium text-gray-700">{{ $d['nama'] }}</td>
+                        <td class="py-4 px-3 text-gray-500">{{ $d['email'] }}</td>
+                        <td class="py-4 px-3 text-gray-600">{{ $d['nim'] }}</td>
+                        <td class="py-4 px-3">{{ $d['ukm'] }}</td>
+                        <td class="py-4 px-3">
                             <span class="px-3 py-1 rounded-full text-xs 
                                 {{ $d['status'] == 'Aktif' ? 'bg-green-100 text-green-600' : 'bg-gray-200 text-gray-600' }}">
                                 {{ $d['status'] }}
                             </span>
                         </td>
-                        <td class="p-3">
+                        <td class="py-4 px-3 first:rounded-l-lg last:rounded-r-lg">
                             <div class="flex justify-center">
                                 <button data-modal-target="modalHapus" data-modal-toggle="modalHapus" onclick="openDeleteModal('{{ $d['nama'] }}')" 
                                     class="w-9 h-9 flex items-center justify-center rounded-lg bg-red-100 text-red-500 hover:bg-red-200 transition">
@@ -97,7 +97,7 @@
         </div>
 
         <div class="max-h-[400px] overflow-y-auto overflow-x-auto">
-            <table class="w-full text-sm border-collapse" id="tableDitolak">
+            <table class="w-full text-sm border-separate border-spacing-y-1" id="tableDitolak">
 
                 <!-- HEADER FIX -->
                 <thead class="text-gray-500 border-b bg-gray-50 sticky top-0">
@@ -114,13 +114,13 @@
                 <!-- BODY FIX -->
                 <tbody id="tbodyDitolak">
                     @foreach($ditolak as $i => $d)
-                    <tr class="border-b transition">
-                        <td class="p-3 text-center">{{ $i+1 }}</td>
-                        <td class="p-3 font-medium text-gray-700">{{ $d['nama'] }}</td>
-                        <td class="p-3 text-gray-500">{{ $d['email'] }}</td>
-                        <td class="p-3 text-gray-600">{{ $d['nim'] }}</td>
-                        <td class="p-3">{{ $d['ukm'] }}</td>
-                        <td class="p-3 text-red-500 font-medium">{{ $d['alasan'] }}</td>
+                    <tr class="bg-white hover:bg-gray-50 transition shadow-sm">
+                        <td class="py-4 px-3 text-center first:rounded-l-lg last:rounded-r-lg">{{ $i+1 }}</td>
+                        <td class="py-4 px-3 font-medium text-gray-700">{{ $d['nama'] }}</td>
+                        <td class="py-4 px-3 text-gray-500">{{ $d['email'] }}</td>
+                        <td class="py-4 px-3 text-gray-600">{{ $d['nim'] }}</td>
+                        <td class="py-4 px-3">{{ $d['ukm'] }}</td>
+                        <td class="py-4 px-3 text-red-500 font-medium first:rounded-l-lg last:rounded-r-lg">{{ $d['alasan'] }}</td>
                     </tr>
                     @endforeach
                 </tbody>
@@ -140,7 +140,7 @@
         </div>
 
         <div class="max-h-[400px] overflow-y-auto overflow-x-auto">
-            <table class="w-full text-sm border-collapse" id="tablePengajuan">
+            <table class="w-full text-sm border-separate border-spacing-y-1" id="tablePengajuan">
                 <thead class="text-gray-500 border-b bg-gray-50 sticky top-0">
                     <tr>
                         <th class="p-3 text-center">No</th>
@@ -155,15 +155,15 @@
 
                 <tbody>
                     @foreach($pengajuan as $i => $d)
-                    <tr class="border-b transition hover:bg-gray-50 cursor-pointer" onclick="openDetailModal({{ json_encode($d) }})">
-                        <td class="p-3 text-center">{{ $i+1 }}</td>
-                        <td class="p-3 font-medium text-gray-700">{{ $d['nama'] }}</td>
-                        <td class="p-3 text-gray-500">{{ $d['email'] }}</td>
-                        <td class="p-3 text-gray-600">{{ $d['nim'] }}</td>
-                        <td class="p-3">{{ $d['tanggal'] }}</td>
-                        <td class="p-3">{{ $d['ukm'] }}</td>
+                    <tr class="bg-white hover:bg-gray-50 transition cursor-pointer shadow-sm" onclick="openDetailModal({{ json_encode($d) }})">
+                        <td class="py-4 px-3 text-center first:rounded-l-lg last:rounded-r-lg">{{ $i+1 }}</td>
+                        <td class="py-4 px-3 font-medium text-gray-700">{{ $d['nama'] }}</td>
+                        <td class="py-4 px-3 text-gray-500">{{ $d['email'] }}</td>
+                        <td class="py-4 px-3 text-gray-600">{{ $d['nim'] }}</td>
+                        <td class="py-4 px-3">{{ $d['tanggal'] }}</td>
+                        <td class="py-4 px-3">{{ $d['ukm'] }}</td>
 
-                        <td class="p-3">
+                        <td class="py-4 px-3 first:rounded-l-lg last:rounded-r-lg">
                             <div class="flex gap-2 justify-center" onclick="event.stopPropagation()">
                                 <button class="w-9 h-9 flex items-center justify-center rounded-lg bg-green-100 text-green-600 hover:bg-green-200 transition">
                                     <i class="fa-solid fa-check"></i>
