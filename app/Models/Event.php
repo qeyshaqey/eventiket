@@ -3,9 +3,11 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Interfaces\ApprovableInterface;
 
-class Event extends Model
+class Event extends Model implements ApprovableInterface
 {
+    // Atribut private
     protected $fillable = [
         'judul',
         'kategori',
@@ -28,4 +30,17 @@ class Event extends Model
 {
     return $this->hasMany(Transaksi::class);
 }
+
+    // ---- Implementasi Interface methods (public) ----
+    public function approve()
+    {
+        $this->status = 'approved';
+        $this->save();
+    }
+
+    public function reject()
+    {
+        $this->status = 'rejected';
+        $this->save();
+    }
 }
