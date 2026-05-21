@@ -344,7 +344,12 @@ $eventPending = [
             const bulanValue = bulanEl ? bulanEl.value.toLowerCase() : '';
             const tahunValue = tahunEl ? tahunEl.value.toLowerCase() : '';
 
-            const rows = tableEl.querySelectorAll('tbody tr');
+            const tbody = tableEl.querySelector('tbody');
+            if (!tbody) return;
+
+            const rows = tbody.querySelectorAll('tr:not(.empty-row)');
+            let visibleCount = 0;
+
             rows.forEach(row => {
                 const cells = row.getElementsByTagName('td');
                 if (cells.length < 3) return;
@@ -361,10 +366,26 @@ $eventPending = [
 
                 if (matchesSearch && matchesBulan && matchesTahun) {
                     row.style.display = '';
+                    visibleCount++;
                 } else {
                     row.style.display = 'none';
                 }
             });
+
+            let emptyRow = tbody.querySelector('.empty-row');
+            if (visibleCount === 0) {
+                if (!emptyRow) {
+                    let thead = tableEl.querySelector('thead tr');
+                    let colCount = thead ? thead.children.length : 10;
+                    emptyRow = document.createElement('tr');
+                    emptyRow.className = 'empty-row bg-white hover:bg-white cursor-default';
+                    emptyRow.innerHTML = `<td colspan="${colCount}" class="py-8 px-4 text-center text-gray-500 font-medium">Data tidak tersedia</td>`;
+                    tbody.appendChild(emptyRow);
+                }
+                emptyRow.style.display = '';
+            } else if (emptyRow) {
+                emptyRow.style.display = 'none';
+            }
         }
 
         if (inputEl) inputEl.addEventListener('keyup', filterTable);

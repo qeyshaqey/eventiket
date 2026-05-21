@@ -73,6 +73,8 @@
 
                 <div id="eventList" class="h-[450px] overflow-y-auto p-3 space-y-2 custom-scrollbar">
 
+                    <div id="emptyEventMessage" class="text-center py-10 text-gray-400 font-medium text-sm {{ count($events) == 0 ? '' : 'hidden' }}">Data tidak tersedia</div>
+
                     @foreach ($events as $event)
                     <div 
                         class="event-card flex items-center gap-3 p-3 rounded-xl hover:bg-blue-50 cursor-pointer border border-gray-100 text-xs transition-all hover:border-blue-200 active:scale-[0.98]"
@@ -314,10 +316,23 @@
     document.getElementById('searchEvent').addEventListener('keyup', function() {
         let value = this.value.toLowerCase();
         let cards = document.querySelectorAll('.event-card');
+        let visibleCount = 0;
+        
         cards.forEach(card => {
             let text = card.innerText.toLowerCase();
-            card.style.display = text.includes(value) ? 'flex' : 'none';
+            let show = text.includes(value);
+            card.style.display = show ? 'flex' : 'none';
+            if (show) visibleCount++;
         });
+
+        let emptyMsg = document.getElementById('emptyEventMessage');
+        if (emptyMsg) {
+            if (visibleCount > 0) {
+                emptyMsg.classList.add('hidden');
+            } else {
+                emptyMsg.classList.remove('hidden');
+            }
+        }
     });
 </script>
 

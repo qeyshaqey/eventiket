@@ -15,6 +15,8 @@
     </div>
 
     <div class="flex flex-col md:flex-row gap-3 w-full md:w-auto">
+        <input id="tanggal_beli" type="date" class="px-3 py-2 border rounded-lg text-sm w-full md:w-auto text-gray-500">
+
         <select id="kategori" class="px-3 py-2 border rounded-lg text-sm w-full md:w-auto">
             <option value="">Kategori</option>
             <option>Seminar</option>
@@ -45,6 +47,7 @@
                     <th class="p-4 text-left">Nama</th>
                     <th class="p-4 text-left">Email</th>
                     <th class="p-4 text-left">NIM</th>
+                    <th class="p-4 text-left">Tanggal Beli</th>
                     <th class="p-4 text-left">Kategori</th>
                     <th class="p-4 text-left">Event</th>
                 </tr>
@@ -54,7 +57,8 @@
                 @foreach($data as $i => $d)
                 <tr class="bg-white hover:bg-gray-50 transition shadow-sm"
                     data-kategori="{{ $d['kategori'] }}"
-                    data-event="{{ $d['event'] }}">
+                    data-event="{{ $d['event'] }}"
+                    data-tanggal="{{ $d['tanggal_beli'] }}">
 
                     <td class="py-5 px-4 first:rounded-l-lg last:rounded-r-lg">{{ $i+1 }}</td>
                     <td class="py-5 px-4">
@@ -66,6 +70,7 @@
                     </td>
                     <td class="py-5 px-4 text-gray-500">{{ $d['email'] }}</td>
                     <td class="py-5 px-4 text-gray-600">{{ $d['nim'] }}</td>
+                    <td class="py-5 px-4 text-gray-500">{{ date('d M Y', strtotime($d['tanggal_beli'])) }}</td>
                     <td class="py-5 px-4 text-gray-500">{{ $d['kategori'] }}</td>
                     <td class="py-5 px-4 first:rounded-l-lg last:rounded-r-lg">
                         <span class="bg-yellow-200 text-xs px-3 py-1 rounded-full">
@@ -86,28 +91,53 @@
 const search = document.getElementById('search');
 const kategori = document.getElementById('kategori');
 const event = document.getElementById('event');
+const tanggal_beli = document.getElementById('tanggal_beli');
 
 search.addEventListener('keyup', filter);
 kategori.addEventListener('change', filter);
 event.addEventListener('change', filter);
+tanggal_beli.addEventListener('change', filter);
 
 function filter(){
     let s = search.value.toLowerCase();
     let k = kategori.value;
     let e = event.value;
+    let t = tanggal_beli.value; // format: YYYY-MM-DD
 
-    document.querySelectorAll('#tableBody tr').forEach(row=>{
+    let tbody = document.getElementById('tableBody');
+    if (!tbody) return;
+
+    let rows = tbody.querySelectorAll('tr:not(.empty-row)');
+    let visibleCount = 0;
+
+    rows.forEach(row=>{
         let nama = row.children[1].innerText.toLowerCase();
         let kategoriRow = row.dataset.kategori;
         let eventRow = row.dataset.event;
+        let tanggalRow = row.dataset.tanggal;
 
         let show =
             (k=="" || k==kategoriRow) &&
             (e=="" || e==eventRow) &&
+            (t=="" || t==tanggalRow) &&
             nama.includes(s);
 
         row.style.display = show ? "" : "none";
+        if (show) visibleCount++;
     });
+
+    let emptyRow = tbody.querySelector('.empty-row');
+    if (visibleCount === 0) {
+        if (!emptyRow) {
+            emptyRow = document.createElement('tr');
+            emptyRow.className = 'empty-row bg-white hover:bg-white cursor-default';
+            emptyRow.innerHTML = `<td colspan="7" class="py-8 px-4 text-center text-gray-500 font-medium">Data tidak tersedia</td>`;
+            tbody.appendChild(emptyRow);
+        }
+        emptyRow.style.display = '';
+    } else if (emptyRow) {
+        emptyRow.style.display = 'none';
+    }
 }
 </script>
 
