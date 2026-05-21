@@ -32,7 +32,10 @@ class DashboardPengunjungController extends Controller
 
         $paginatedEvents = $this->paginateEvents($events, $request);
 
-        return view('pages.pengunjung.dashboard_pengunjung', compact('paginatedEvents', 'search', 'category'));
+        // Fetch categories dynamically from database
+        $categories = \App\Models\Kategori::pluck('nama_kategori')->toArray();
+
+        return view('pages.pengunjung.dashboard_pengunjung', compact('paginatedEvents', 'search', 'category', 'categories'));
     }
 
     public function ajaxSearch(Request $request)

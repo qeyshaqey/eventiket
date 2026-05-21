@@ -62,8 +62,9 @@
         <select id="filterKategori"
             class="border rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-[#192853]">
             <option value="">Semua Kategori</option>
-            <option value="Seminar">Seminar</option>
-            <option value="Workshop">Workshop</option>
+            @foreach($categories as $cat)
+                <option value="{{ $cat->nama_kategori }}">{{ $cat->nama_kategori }}</option>
+            @endforeach
         </select>
 
     </div>
@@ -238,8 +239,9 @@ onclick="{{ $isPublished ? 'openDetailModal(' . $event->id . ')' : '' }}"
                     <select name="kategori"
                         class="w-full mt-1 border rounded-xl p-2.5 text-sm focus:ring-2 focus:ring-[#192853] outline-none">
                         <option value="">Pilih Kategori</option>
-                        <option value="Seminar">Seminar</option>
-                        <option value="Workshop">Workshop</option>
+                        @foreach($categories as $cat)
+                            <option value="{{ $cat->nama_kategori }}">{{ $cat->nama_kategori }}</option>
+                        @endforeach
                     </select>
                 </div>
 
@@ -504,6 +506,38 @@ document.addEventListener('DOMContentLoaded', function () {
         document.body.appendChild(form);
         form.submit();
     }
+
+    // =========================
+    // SEARCH & FILTER TABLE
+    // =========================
+    const searchInput = document.getElementById('searchEvent');
+    const filterSelect = document.getElementById('filterKategori');
+    const tableRows = document.querySelectorAll('tbody tr');
+
+    function filterTable() {
+        const searchText = searchInput ? searchInput.value.toLowerCase() : '';
+        const filterVal = filterSelect ? filterSelect.value : '';
+
+        tableRows.forEach(row => {
+            // Skip "Belum ada event" row
+            if (row.cells.length < 3) return;
+
+            const judul = row.cells[1].textContent.toLowerCase();
+            const kategori = row.cells[2].textContent.trim();
+
+            const matchSearch = judul.includes(searchText);
+            const matchKategori = filterVal === '' || kategori === filterVal;
+
+            if (matchSearch && matchKategori) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        });
+    }
+
+    if (searchInput) searchInput.addEventListener('input', filterTable);
+    if (filterSelect) filterSelect.addEventListener('change', filterTable);
 
     // GLOBAL EXPORT (WAJIB)
     window.openModal = openModal;

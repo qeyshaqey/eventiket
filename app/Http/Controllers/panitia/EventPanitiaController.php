@@ -14,8 +14,9 @@ class EventPanitiaController extends Controller
     public function index()
     {
         $events = Event::with('tikets')->latest()->get();
+        $categories = \App\Models\Kategori::all();
 
-        return view('pages.panitia.event.index', compact('events'));
+        return view('pages.panitia.event.index', compact('events', 'categories'));
     }
 
     public function store(Request $request)

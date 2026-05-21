@@ -50,7 +50,7 @@
 
                     <!-- NAMA -->
                     <td class="py-3 text-center">
-                        {{ $k['nama_kategori'] }}
+                        {{ $k->nama_kategori }}
                     </td>
 
                     <!-- AKSI -->
@@ -60,7 +60,7 @@
                             <!-- EDIT -->
                              <button
                                 data-modal-target="modal" data-modal-toggle="modal"
-                                onclick='editData({{ $k["id"] }}, @json($k["nama_kategori"]))'
+                                onclick='editData({{ $k->id }}, @json($k->nama_kategori))'
                                 class="w-9 h-9 flex items-center justify-center rounded-lg bg-blue-500/10 text-blue-500 hover:bg-blue-100 transition">
                                 <i class="fa-solid fa-pen"></i>
                             </button>
@@ -68,7 +68,7 @@
                             <!-- DELETE -->
                             <button
                                 data-modal-target="modalHapus" data-modal-toggle="modalHapus"
-                                onclick='openDeleteModal({{ $k["id"] }}, @json($k["nama_kategori"]))'
+                                onclick='openDeleteModal({{ $k->id }}, @json($k->nama_kategori))'
                                 class="w-9 h-9 flex items-center justify-center rounded-lg bg-red-500/10 text-red-500 hover:bg-red-100 transition">
                                 <i class="fa-solid fa-trash"></i>
                             </button>
@@ -180,11 +180,8 @@ function openDeleteModal(id, namaVal) {
 
     function confirmDelete() {
         if (deleteId) {
-            console.log("Menghapus kategori dengan ID:", deleteId);
-            // Logika hapus bisa diarahkan ke route delete jika sudah ada
+            window.location.href = `{{ url('admin/kategori/delete') }}/${deleteId}`;
         }
-        const modal = FlowbiteInstances.getInstance('Modal', 'modalHapus');
-        if (modal) modal.hide();
     }
 
     // SEARCH
