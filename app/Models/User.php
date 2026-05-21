@@ -11,6 +11,7 @@ class User extends Authenticatable
     use HasFactory, Notifiable;
 
     // kolom-kolom yang boleh diisi langsung (mass assignment)
+    // Atribut private
     protected $fillable = [
         'name',
         'email',
