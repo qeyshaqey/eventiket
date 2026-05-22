@@ -24,6 +24,7 @@ trait EventDataTrait
                 'description' => $event->deskripsi,
                 'tickets' => $event->tikets->map(function($t) {
                     return [
+                        'id' => $t->id,
                         'type' => $t->nama,
                         'price' => $t->harga,
                         'quota' => $t->kuota

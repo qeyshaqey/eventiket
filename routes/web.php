@@ -177,6 +177,7 @@ Route::prefix('pengunjung')->name('pengunjung.')->group(function () {
     Route::get('/dashboard_pengunjung/ajax', [DashboardPengunjungController::class, 'ajaxSearch'])->name('dashboard.ajax');
     Route::get('/detail_event/{id}', [HomePageController::class, 'showDetail'])->name('detail.event');
     Route::get('/tiket_aktif', [TiketController::class, 'index'])->name('tiket');
+    Route::post('/checkout', [TiketController::class, 'checkout'])->name('checkout');
     Route::post('/tiket/{id}/batal', [TiketController::class, 'batal'])->name('tiket.batal');
     
     Route::get('/profil_pengunjung', [ProfilController::class, 'index'])->name('profil');
