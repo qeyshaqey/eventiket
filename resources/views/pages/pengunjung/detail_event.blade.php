@@ -231,6 +231,7 @@
 let prices = @json(array_column($event['tickets'], 'price'));
 let quotas = @json(array_column($event['tickets'], 'quota'));
 let ticketTypes = @json(array_column($event['tickets'], 'type'));
+let ticketIds = @json(array_column($event['tickets'], 'id'));
 let quantities = new Array(prices.length).fill(0);
 let noticeTimeout = null;
 const toastNotice = document.getElementById('toast-notice');
@@ -365,12 +366,69 @@ function openCheckout() {
 }
 
 function confirmCheckout() {
-    const closeBtn = document.querySelector('[data-modal-hide="checkout-modal"]');
-    if (closeBtn) closeBtn.click();
-    showToast('Pesanan tiket berhasil dibuat.');
-    setTimeout(() => {
-        window.location.href = "{{ route('pengunjung.tiket') }}";
-    }, 200);
+    const totalQty = quantities.reduce((a, b) => a + b, 0);
+    if (totalQty <= 0) {
+        showToast('Pilih minimal 1 tiket terlebih dahulu', 'error');
+        return;
+    }
+
+    // Prepare data
+    const tickets = {};
+    let hasTickets = false;
+    quantities.forEach((qty, i) => {
+        if (qty > 0) {
+            const ticketId = ticketIds[i];
+            tickets[ticketId] = qty;
+            hasTickets = true;
+        }
+    });
+
+    if (!hasTickets) return;
+
+    // Show loading state
+    const submitBtn = document.querySelector('#checkout-form button[type="submit"]') || document.querySelector('[onclick="confirmCheckout()"]');
+    if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.innerText = 'MEMPROSES...';
+    }
+
+    // Send AJAX POST
+    fetch("{{ route('pengunjung.checkout') }}", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRF-TOKEN": "{{ csrf_token() }}"
+        },
+        body: JSON.stringify({
+            event_id: "{{ $event['id'] }}",
+            tickets: tickets
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            const closeBtn = document.querySelector('[data-modal-hide="checkout-modal"]');
+            if (closeBtn) closeBtn.click();
+            showToast('Pesanan tiket berhasil dibuat.');
+            setTimeout(() => {
+                window.location.href = "{{ route('pengunjung.pembayaran') }}?order_id=" + data.order_id;
+            }, 1000);
+        } else {
+            showToast(data.message || 'Gagal memesan tiket', 'error');
+            if (submitBtn) {
+                submitBtn.disabled = false;
+                submitBtn.innerText = 'Konfirmasi & Bayar';
+            }
+        }
+    })
+    .catch(error => {
+        console.error(error);
+        showToast('Terjadi kesalahan koneksi', 'error');
+        if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.innerText = 'Konfirmasi & Bayar';
+        }
+    });
 }
 
 function redirectToLogin() {
