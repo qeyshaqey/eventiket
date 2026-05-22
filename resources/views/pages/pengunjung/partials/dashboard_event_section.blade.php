@@ -21,9 +21,9 @@
                 </a>
                 <div class="space-y-2 sm:space-y-4 p-3 sm:p-6">
                     <!-- Menampilkan dua badge kecil: satu buat Kategori (misal: Seminar) dan satu lagi buat status tiket -->
-                    <div class="flex flex-wrap items-center justify-between gap-2 text-[10px] sm:text-sm font-semibold text-[#475569]">
-                        <span class="inline-flex items-center whitespace-nowrap rounded-full bg-[#EFF8FF] px-2 py-0.5 sm:px-3 sm:py-1 uppercase tracking-wider">{{ $event['category'] }}</span>
-                        <span class="inline-flex items-center whitespace-nowrap rounded-full bg-[#FFE14E] px-2 py-0.5 sm:px-3 sm:py-1 text-[#192853]">{{ $event['status'] }}</span>
+                    <div class="flex items-center justify-between gap-1 sm:gap-2 text-[9px] sm:text-[11px] md:text-sm font-semibold text-[#475569] overflow-hidden">
+                        <span class="inline-block whitespace-nowrap rounded-full bg-[#EFF8FF] px-1.5 py-0.5 sm:px-3 sm:py-1 uppercase">{{ $event['category'] }}</span>
+                        <span class="inline-flex shrink-0 items-center whitespace-nowrap rounded-full bg-[#FFE14E] px-1.5 py-0.5 sm:px-3 sm:py-1 text-[#192853]">{{ $event['status'] }}</span>
                     </div>
                     <h3 class="text-sm sm:text-xl font-bold text-[#192853] line-clamp-2">{{ $event['title'] }}</h3>
                 </div>

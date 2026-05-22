@@ -45,7 +45,7 @@
             </div>
 
             <!-- DESKRIPSI -->
-            <div class="bg-white rounded-2xl p-6 text-[15px] leading-relaxed text-grayCustom shadow-sm">
+            <div class="bg-white rounded-2xl p-6 text-[15px] leading-relaxed text-grayCustom shadow-sm break-words">
                 {{ $event['description'] ?? 'Deskripsi belum tersedia.' }}
             </div>
 

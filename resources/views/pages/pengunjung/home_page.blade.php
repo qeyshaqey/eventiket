@@ -31,9 +31,9 @@
                                 </div>
                             </a>
                             <div class="space-y-4 p-6">
-                                <div class="flex items-center justify-between gap-3 text-sm font-semibold text-[#475569] flex-nowrap">
-                                    <span class="inline-flex items-center whitespace-nowrap rounded-full bg-[#EFF8FF] px-3 py-1 uppercase tracking-[0.12em]">{{ $event['category'] }}</span>
-                                    <span class="inline-flex items-center whitespace-nowrap rounded-full bg-[#FFE14E] px-3 py-1 text-[#192853]">{{ $event['status'] }}</span>
+                                <div class="flex items-center justify-between gap-1 sm:gap-2 text-[9px] sm:text-[11px] md:text-sm font-semibold text-[#475569] overflow-hidden">
+                                    <span class="inline-block whitespace-nowrap rounded-full bg-[#EFF8FF] px-1.5 py-0.5 sm:px-3 sm:py-1 uppercase">{{ $event['category'] }}</span>
+                                    <span class="inline-flex shrink-0 items-center whitespace-nowrap rounded-full bg-[#FFE14E] px-1.5 py-0.5 sm:px-3 sm:py-1 text-[#192853]">{{ $event['status'] }}</span>
                                 </div>
                                 <h3 class="text-xl font-semibold text-[#192853]">{{ $event['title'] }}</h3>
                             </div>
