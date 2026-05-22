@@ -15,9 +15,6 @@ class Pembayaran extends Model
         'jumlah',
         'bukti_pembayaran',
         'status',
-        'order_id',
-        'snap_token',
-        'qty',
     ];
 
     public function user()

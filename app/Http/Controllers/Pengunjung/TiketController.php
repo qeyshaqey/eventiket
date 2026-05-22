@@ -5,6 +5,12 @@ namespace App\Http\Controllers\Pengunjung;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
+use App\Models\Event;
+use App\Models\Tiket;
+use App\Models\Pembayaran;
+use App\Models\panitia\Pembelian;
 
 class TiketController extends Controller
 {
@@ -14,55 +20,42 @@ class TiketController extends Controller
         $today = Carbon::today();
 
         // Ambil data pembayaran asli dari database milik user yang sedang login
-        $pembayarans = \App\Models\Pembayaran::with(['tiket.event'])
+        // Group by order_id to merge multiple tickets in one purchase card
+        $pembayaransRaw = Pembayaran::with(['tiket.event'])
             ->where('user_id', $userId)
             ->get();
-
-        // Group by order_id. If order_id is null, group by id (each is a single card)
-        $grouped = $pembayarans->groupBy(function ($item) {
-            return $item->order_id ?? 'no-order-' . $item->id;
-        });
+            
+        $groupedPembayarans = $pembayaransRaw->groupBy('order_id');
 
         $activeEvents = [];
         $historyEvents = [];
 
-        foreach ($grouped as $orderId => $items) {
-            // Get the first item to extract event info
-            $firstItem = $items->first();
-            $event = $firstItem->tiket->event ?? null;
+        foreach ($groupedPembayarans as $orderId => $pembayarans) {
+            $firstP = $pembayarans->first();
+            $event = $firstP->tiket->event ?? null;
             if (!$event) continue;
 
-            // Gather all tickets in this order/group
-            $tickets = [];
-            foreach ($items as $item) {
-                if ($item->tiket) {
-                    $tickets[] = [
-                        "name" => $item->tiket->nama,
-                        "qty" => $item->qty ?? 1
-                    ];
-                }
+            $ticketsData = [];
+            foreach ($pembayarans as $p) {
+                $ticketsData[] = ["name" => $p->tiket->nama ?? '-', "qty" => $p->qty ?? 1];
             }
 
             $data = [
-                "id" => $firstItem->id,
+                "id" => $firstP->id, 
                 "title" => $event->judul,
                 "category" => $event->kategori,
                 "date" => Carbon::parse($event->tanggal_mulai)->translatedFormat('d M Y'),
                 "date_end" => $event->tanggal_selesai,
-                "time" => substr($event->waktu_mulai, 0, 5) . " - " . substr($event->waktu_selesai, 0, 5) . " WIB",
+                "time" => substr($event->waktu_mulai ?? '', 0, 5) . " - " . substr($event->waktu_selesai ?? '', 0, 5) . " WIB",
                 "location" => $event->lokasi,
-                "tickets" => $tickets,
-                "status" => $firstItem->status == 'pending' ? 'Belum Bayar' : ($firstItem->status == 'success' ? 'Berhasil Diverifikasi' : ($firstItem->status == 'cancel' ? 'Dibatalkan' : 'Gagal')),
-                "kode_order" => str_starts_with($orderId, 'no-order-') ? '-' : $orderId
+                "tickets" => $ticketsData,
+                "status" => $firstP->status == 'pending' ? 'Belum Bayar' : ($firstP->status == 'success' ? 'Berhasil Diverifikasi' : ($firstP->status == 'cancel' ? 'Dibatalkan' : 'Gagal')),
+                "kode_order" => $orderId
             ];
 
-            // Determine if active or history based on event's end date
-            // Fallback to tanggal_mulai if tanggal_selesai is null
-            $endDateStr = $event->tanggal_selesai ?? $event->tanggal_mulai;
-            $endDate = Carbon::parse($endDateStr);
-
-            // Tiket dianggap riwayat jika statusnya batal/gagal, ATAU event-nya sudah lewat
-            if ($firstItem->status === 'cancel' || $firstItem->status === 'expire' || $firstItem->status === 'failed') {
+            $endDate = Carbon::parse($event->tanggal_selesai ?? $event->tanggal_mulai);
+            
+            if ($firstP->status === 'cancel' || $firstP->status === 'failed' || $firstP->status === 'expire') {
                 $historyEvents[] = $data;
             } elseif ($endDate->gte($today)) {
                 $activeEvents[] = $data;
@@ -86,47 +79,64 @@ class TiketController extends Controller
             'tickets' => 'required|array',
         ]);
 
-        $event = \App\Models\Event::findOrFail($validated['event_id']);
+        $event = Event::findOrFail($validated['event_id']);
         
         // Generate a single unique order ID for the entire checkout
-        $orderId = 'TRX-' . \Illuminate\Support\Str::upper(\Illuminate\Support\Str::random(10));
+        $orderId = 'TRX-' . Str::upper(Str::random(10));
 
         // Start transaction or do validation
-        \DB::beginTransaction();
+        DB::beginTransaction();
         try {
             $createdCount = 0;
+            $totalHarga = 0;
+            $jumlahTiket = 0;
+
             foreach ($validated['tickets'] as $ticketId => $qty) {
                 $qty = (int) $qty;
                 if ($qty <= 0) continue;
 
-                $tiket = \App\Models\Tiket::where('id', $ticketId)->where('event_id', $event->id)->first();
+                $tiket = Tiket::where('id', $ticketId)->where('event_id', $event->id)->first();
                 if (!$tiket) {
-                    \DB::rollBack();
+                    DB::rollBack();
                     return response()->json(['success' => false, 'message' => 'Tiket tidak valid.'], 400);
                 }
 
                 if ($tiket->kuota < $qty) {
-                    \DB::rollBack();
+                    DB::rollBack();
                     return response()->json(['success' => false, 'message' => "Kuota tiket '{$tiket->nama}' tidak mencukupi. Tersisa: {$tiket->kuota}"], 400);
                 }
 
-                \App\Models\Pembayaran::create([
+                $subtotal = $tiket->harga * $qty;
+                Pembayaran::create([
                     'user_id' => $userId,
                     'tiket_id' => $tiket->id,
-                    'jumlah' => $tiket->harga * $qty,
+                    'jumlah' => $subtotal,
                     'qty' => $qty,
                     'status' => 'pending',
                     'order_id' => $orderId,
                 ]);
+
+                $totalHarga += $subtotal;
+                $jumlahTiket += $qty;
                 $createdCount++;
             }
 
             if ($createdCount === 0) {
-                \DB::rollBack();
+                DB::rollBack();
                 return response()->json(['success' => false, 'message' => 'Pilih minimal 1 tiket.'], 400);
             }
 
-            \DB::commit();
+            // Create Pembelian record for panitia tracking
+            Pembelian::create([
+                'user_id' => $userId,
+                'event_id' => $event->id,
+                'jumlah_tiket' => $jumlahTiket,
+                'total_harga' => $totalHarga,
+                'status' => 'pending',
+                'order_id' => $orderId,
+            ]);
+
+            DB::commit();
             
             return response()->json([
                 'success' => true,
@@ -134,7 +144,7 @@ class TiketController extends Controller
                 'order_id' => $orderId
             ]);
         } catch (\Exception $e) {
-            \DB::rollBack();
+            DB::rollBack();
             return response()->json(['success' => false, 'message' => 'Terjadi kesalahan: ' . $e->getMessage()], 500);
         }
     }
@@ -142,13 +152,17 @@ class TiketController extends Controller
     public function batal($id)
     {
         $userId = session('user_id');
-        $pembayaran = \App\Models\Pembayaran::where('id', $id)->where('user_id', $userId)->first();
+        $pembayaran = Pembayaran::where('id', $id)->where('user_id', $userId)->first();
         
         if ($pembayaran && $pembayaran->status == 'pending') {
             if ($pembayaran->order_id) {
-                \App\Models\Pembayaran::where('order_id', $pembayaran->order_id)
+                Pembayaran::where('order_id', $pembayaran->order_id)
                     ->where('user_id', $userId)
                     ->update(['status' => 'cancel']);
+
+                Pembelian::where('order_id', $pembayaran->order_id)
+                    ->where('user_id', $userId)
+                    ->update(['status' => 'failed']);
             } else {
                 $pembayaran->status = 'cancel';
                 $pembayaran->save();
