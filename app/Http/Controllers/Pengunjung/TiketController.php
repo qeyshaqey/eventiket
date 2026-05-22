@@ -13,21 +13,34 @@ class TiketController extends Controller
         $userId = session('user_id');
         $today = Carbon::today();
 
-        // CEK: Jika user belum punya tiket sama sekali di database
-        $cekPembayaran = \App\Models\Pembayaran::where('user_id', $userId)->exists();
+        // CEK: Jika user memiliki tiket kurang dari 2, buatkan dummy data agar selalu ada minimal 2
+        $jumlahPembayaran = \App\Models\Pembayaran::where('user_id', $userId)->count();
         
-        if (!$cekPembayaran) {
-            // Kita ambil event pertama dan tiket pertama dari database buat contoh
-            $eventContoh = \App\Models\Event::first();
-            $tiketContoh = \App\Models\Tiket::where('event_id', $eventContoh->id)->first();
+        if ($jumlahPembayaran < 2) {
+            // Kita ambil 2 event secara acak atau 2 event terbaru
+            $eventsContoh = \App\Models\Event::whereDate('tanggal_selesai', '>=', $today)->take(2)->get();
             
-            if ($eventContoh && $tiketContoh) {
-                \App\Models\Pembayaran::create([
-                    'user_id' => $userId,
-                    'tiket_id' => $tiketContoh->id,
-                    'jumlah' => $tiketContoh->harga,
-                    'status' => 'pending'
-                ]);
+            // Jika tidak ada event yang belum selesai, ambil event apa saja
+            if ($eventsContoh->isEmpty()) {
+                $eventsContoh = \App\Models\Event::take(2)->get();
+            }
+
+            foreach ($eventsContoh as $eventContoh) {
+                $tiketContoh = \App\Models\Tiket::where('event_id', $eventContoh->id)->first();
+                
+                // Pastikan belum pernah order event ini di contoh dummy
+                $sudahPesan = \App\Models\Pembayaran::where('user_id', $userId)
+                                ->where('tiket_id', $tiketContoh->id ?? 0)
+                                ->exists();
+
+                if ($tiketContoh && !$sudahPesan) {
+                    \App\Models\Pembayaran::create([
+                        'user_id' => $userId,
+                        'tiket_id' => $tiketContoh->id,
+                        'jumlah' => $tiketContoh->harga,
+                        'status' => 'pending'
+                    ]);
+                }
             }
         }
 
@@ -55,12 +68,15 @@ class TiketController extends Controller
                 "tickets" => [
                     ["name" => $p->tiket->nama, "qty" => 1]
                 ],
-                "status" => $p->status == 'pending' ? 'Belum Bayar' : ($p->status == 'success' ? 'Berhasil Diverifikasi' : 'Gagal'),
+                "status" => $p->status == 'pending' ? 'Belum Bayar' : ($p->status == 'success' ? 'Berhasil Diverifikasi' : ($p->status == 'cancel' ? 'Dibatalkan' : 'Gagal')),
                 "kode_order" => $p->order_id
             ];
 
             $endDate = Carbon::parse($event->tanggal_selesai);
-            if ($endDate->gte($today)) {
+            // Tiket dianggap riwayat jika statusnya batal/gagal, ATAU event-nya sudah lewat
+            if ($p->status === 'cancel' || $p->status === 'expire') {
+                $historyEvents[] = $data;
+            } elseif ($endDate->gte($today)) {
                 $activeEvents[] = $data;
             } else {
                 $historyEvents[] = $data;
@@ -68,5 +84,19 @@ class TiketController extends Controller
         }
 
         return view('pages.pengunjung.tiket', compact('activeEvents', 'historyEvents'));
+    }
+
+    public function batal($id)
+    {
+        $userId = session('user_id');
+        $pembayaran = \App\Models\Pembayaran::where('id', $id)->where('user_id', $userId)->first();
+        
+        if ($pembayaran && $pembayaran->status == 'pending') {
+            $pembayaran->status = 'cancel';
+            $pembayaran->save();
+            return response()->json(['success' => true, 'message' => 'Tiket berhasil dibatalkan.']);
+        }
+        
+        return response()->json(['success' => false, 'message' => 'Gagal membatalkan tiket.'], 400);
     }
 }

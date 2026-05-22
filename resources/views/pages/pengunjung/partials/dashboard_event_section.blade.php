@@ -1,7 +1,16 @@
 <div id="dashboard-result-list">
-    <div class="grid grid-cols-2 gap-3 sm:gap-6 md:grid-cols-2 xl:grid-cols-4">
-        <!-- Looping / nge-print kartu event satu per satu sesuai data array yang dikirim dari Controller -->
-        @foreach ($paginatedEvents as $event)
+    @if ($paginatedEvents->isEmpty())
+        <div class="flex flex-col items-center justify-center py-16 text-center mx-auto w-full">
+            <div class="mb-4 text-[#192853] opacity-30">
+                <i class="fa-solid fa-calendar-xmark text-6xl"></i>
+            </div>
+            <h3 class="text-xl font-semibold text-[#192853]">Oops! Event tidak ditemukan</h3>
+            <p class="mt-2 text-slate-500">Coba gunakan kata kunci yang berbeda atau ubah filter kategori pencarian.</p>
+        </div>
+    @else
+        <div class="grid grid-cols-2 gap-3 sm:gap-6 md:grid-cols-2 xl:grid-cols-4">
+            <!-- Looping / nge-print kartu event satu per satu sesuai data array yang dikirim dari Controller -->
+            @foreach ($paginatedEvents as $event)
             <article class="group overflow-hidden rounded-2xl sm:rounded-[32px] border border-[#cbd5e1] bg-white shadow-md sm:shadow-[0_25px_60px_rgba(25,40,83,0.08)] transition duration-300 hover:-translate-y-1">
                 <!-- Bikin seluruh card bisa di-klik dan mengarah ke route detail.event berdasarkan ID-nya -->
                 <a href="{{ route('pengunjung.detail.event', ['id' => $event['id']]) }}" class="block">
@@ -20,9 +29,8 @@
                 </div>
             </article>
         @endforeach
-    </div>
-
-    </div>
+        </div>
+    @endif
 
     <!-- BAGIAN PAGINATION: Cuma dimunculin kalau total data event butuh lebih dari 1 halaman -->
     @if ($paginatedEvents->lastPage() > 1)
