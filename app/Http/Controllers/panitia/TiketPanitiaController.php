@@ -11,7 +11,7 @@ class TiketPanitiaController extends Controller
 {
     public function index(Request $request)
 {
-    $events = Event::with('tikets')->latest()->get();
+    $events = Event::with(['tikets', 'kategori'])->latest()->get();
 
     $highlightEventId = $request->query('event_id');
 

@@ -112,7 +112,7 @@
 
             <td class="px-4 py-3">
                 <span class="px-2 py-1 rounded-full bg-blue-50 text-blue-600 text-xs">
-                    {{ $event->kategori }}
+                    {{ $event->kategori->nama_kategori ?? '-' }}
                 </span>
             </td>
 
@@ -236,11 +236,11 @@ onclick="{{ $isPublished ? 'openDetailModal(' . $event->id . ')' : '' }}"
 
                 <div>
                     <label class="text-sm font-semibold">Kategori</label>
-                    <select name="kategori"
+                    <select name="kategori_id"
                         class="w-full mt-1 border rounded-xl p-2.5 text-sm focus:ring-2 focus:ring-[#192853] outline-none">
                         <option value="">Pilih Kategori</option>
                         @foreach($categories as $cat)
-                            <option value="{{ $cat->nama_kategori }}">{{ $cat->nama_kategori }}</option>
+                            <option value="{{ $cat->id }}">{{ $cat->nama_kategori }}</option>
                         @endforeach
                     </select>
                 </div>
@@ -410,7 +410,7 @@ document.addEventListener('DOMContentLoaded', function () {
             if (!event) return;
 
             form.judul.value = event.judul ?? '';
-            form.kategori.value = event.kategori ?? '';
+            form.kategori_id.value = event.kategori_id ?? '';
             form.deskripsi.value = event.deskripsi ?? '';
             form.tanggal_mulai.value = event.tanggal_mulai ?? '';
             form.tanggal_selesai.value = event.tanggal_selesai ?? '';
@@ -461,7 +461,7 @@ document.addEventListener('DOMContentLoaded', function () {
             'https://via.placeholder.com/400x200?text=No+Image';
 
         document.getElementById('detailJudul').innerText = event.judul;
-        document.getElementById('detailKategori').innerText = event.kategori;
+        document.getElementById('detailKategori').innerText = event.kategori ? event.kategori.nama_kategori : '-';
         document.getElementById('detailLokasi').innerText = event.lokasi;
 
         document.getElementById('detailTanggal').innerText =

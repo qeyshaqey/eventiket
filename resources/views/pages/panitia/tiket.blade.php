@@ -41,7 +41,7 @@
 
             <div class="flex-1 text-sm space-y-1">
                 <p><b>Judul Event :</b> {{ $event->judul }}</p>
-                <p><b>Kategori :</b> {{ $event->kategori }}</p>
+                <p><b>Kategori :</b> {{ $event->kategori->nama_kategori ?? '-' }}</p>
                 <p><b>Tanggal :</b> {{ $event->tanggal_mulai ?? '-' }}
                     @if($event->tanggal_selesai)
                         - {{ $event->tanggal_selesai }}

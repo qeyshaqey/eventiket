@@ -13,7 +13,7 @@ class EventPanitiaController extends Controller
 {
     public function index()
     {
-        $events = Event::with('tikets')->latest()->get();
+        $events = Event::with(['tikets', 'kategori'])->latest()->get();
         $categories = \App\Models\Kategori::all();
 
         return view('pages.panitia.event.index', compact('events', 'categories'));
@@ -23,7 +23,7 @@ class EventPanitiaController extends Controller
     {
         $validated = $request->validate([
             'judul' => 'required',
-            'kategori' => 'required',
+            'kategori_id' => 'required|exists:kategoris,id',
             'deskripsi' => 'required',
             'tanggal_mulai' => 'required|date',
             'tanggal_selesai' => 'nullable|date',
@@ -49,7 +49,7 @@ class EventPanitiaController extends Controller
     {
         $validated = $request->validate([
             'judul' => 'required',
-            'kategori' => 'required',
+            'kategori_id' => 'required|exists:kategoris,id',
             'deskripsi' => 'required',
             'tanggal_mulai' => 'required|date',
             'tanggal_selesai' => 'nullable|date',
@@ -88,7 +88,7 @@ class EventPanitiaController extends Controller
 
     public function riwayat(Request $request)
     {
-        $events = Event::with('tikets')->latest()->get();
+        $events = Event::with(['tikets', 'kategori'])->latest()->get();
         
         $query = Transaksi::with('event')->latest();
 
