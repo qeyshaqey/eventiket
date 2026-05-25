@@ -9,14 +9,12 @@ class PengajuanPanitia extends Model
     protected $fillable = [
         'user_id',
         'ukm',
-        'alasan',
-        'status',
-        'alasan_penolakan',
-        'organisasi',
         'nama_event',
         'kategori',
-        'tanggal',
-        'deskripsi'
+        'tanggal_event',
+        'deskripsi_event',
+        'status',
+        'alasan_penolakan'
     ];
 
     public function user()

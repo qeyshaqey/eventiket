@@ -35,15 +35,29 @@
             Data Pengunjung
         </a>
 
-        <a href="{{ route('admin.data.panitia') }}" class="flex items-center gap-3 px-5 py-3 {{ active('admin.data.panitia') }}">
+        <!-- Data Panitia -->
+        <button type="button" class="flex items-center w-full gap-3 px-5 py-3 group {{ request()->routeIs('admin.data.panitia') ? 'bg-yellow-400/10 text-yellow-400 border-l-4 border-yellow-400' : 'text-white/60 hover:bg-yellow-400/10 hover:text-white' }}" aria-controls="dropdown-panitia" data-collapse-toggle="dropdown-panitia">
             <i class="fa-solid fa-user-tie"></i>
-            Data Panitia
-        </a>
+            <span class="flex-1 text-left whitespace-nowrap">Data Panitia</span>
+            <i class="fa-solid fa-chevron-down w-3 h-3 text-xs transition-transform"></i>
+        </button>
+        <ul id="dropdown-panitia" class="{{ request()->routeIs('admin.data.panitia') ? '' : 'hidden' }} py-1 bg-[#0f1a3a]/30">
+            <li><a href="{{ route('admin.data.panitia') }}?tab=k" class="flex items-center w-full py-2 pl-11 pr-5 text-sm {{ (request()->routeIs('admin.data.panitia') && (request('tab') == 'k' || request('tab') == null)) ? 'text-yellow-400 font-bold' : 'text-white/60 hover:text-white hover:bg-yellow-400/10' }}">Panitia Aktif</a></li>
+            <li><a href="{{ route('admin.data.panitia') }}?tab=t" class="flex items-center w-full py-2 pl-11 pr-5 text-sm {{ (request()->routeIs('admin.data.panitia') && request('tab') == 't') ? 'text-yellow-400 font-bold' : 'text-white/60 hover:text-white hover:bg-yellow-400/10' }}">Ditolak</a></li>
+            <li><a href="{{ route('admin.data.panitia') }}?tab=p" class="flex items-center w-full py-2 pl-11 pr-5 text-sm {{ (request()->routeIs('admin.data.panitia') && request('tab') == 'p') ? 'text-yellow-400 font-bold' : 'text-white/60 hover:text-white hover:bg-yellow-400/10' }}">Pengajuan Panitia</a></li>
+        </ul>
 
-        <a href="{{ route('admin.kelola.event') }}" class="flex items-center gap-3 px-5 py-3 {{ active('admin.kelola.event') }}">
+        <!-- Kelola Event -->
+        <button type="button" class="flex items-center w-full gap-3 px-5 py-3 group {{ request()->routeIs('admin.kelola.event') ? 'bg-yellow-400/10 text-yellow-400 border-l-4 border-yellow-400' : 'text-white/60 hover:bg-yellow-400/10 hover:text-white' }}" aria-controls="dropdown-event" data-collapse-toggle="dropdown-event">
             <i class="fa-solid fa-calendar-check"></i>
-            Kelola Event
-        </a>
+            <span class="flex-1 text-left whitespace-nowrap">Kelola Event</span>
+            <i class="fa-solid fa-chevron-down w-3 h-3 text-xs transition-transform"></i>
+        </button>
+        <ul id="dropdown-event" class="{{ request()->routeIs('admin.kelola.event') ? '' : 'hidden' }} py-1 bg-[#0f1a3a]/30">
+            <li><a href="{{ route('admin.kelola.event') }}?tab=k" class="flex items-center w-full py-2 pl-11 pr-5 text-sm {{ (request()->routeIs('admin.kelola.event') && (request('tab') == 'k' || request('tab') == null)) ? 'text-yellow-400 font-bold' : 'text-white/60 hover:text-white hover:bg-yellow-400/10' }}">Semua Event</a></li>
+            <li><a href="{{ route('admin.kelola.event') }}?tab=t" class="flex items-center w-full py-2 pl-11 pr-5 text-sm {{ (request()->routeIs('admin.kelola.event') && request('tab') == 't') ? 'text-yellow-400 font-bold' : 'text-white/60 hover:text-white hover:bg-yellow-400/10' }}">Ditolak</a></li>
+            <li><a href="{{ route('admin.kelola.event') }}?tab=p" class="flex items-center w-full py-2 pl-11 pr-5 text-sm {{ (request()->routeIs('admin.kelola.event') && request('tab') == 'p') ? 'text-yellow-400 font-bold' : 'text-white/60 hover:text-white hover:bg-yellow-400/10' }}">Pengajuan Event</a></li>
+        </ul>
 
         <a href="{{ route('admin.kategori') }}" class="flex items-center gap-3 px-5 py-3 {{ active('admin.kategori') }}">
             <i class="fa-solid fa-tags"></i>

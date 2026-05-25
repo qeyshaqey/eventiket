@@ -147,40 +147,24 @@
                 <div class="relative h-[180px] flex items-center justify-center">
                     <canvas id="categoryChart"></canvas>
                     <div class="absolute flex flex-col items-center">
-                        <span class="text-2xl font-black text-[#192853]">98</span>
+                        <span class="text-2xl font-black text-[#192853]">{{ $categories->sum('events_count') }}</span>
                         <span class="text-[8px] text-gray-400 font-bold uppercase tracking-widest">Total</span>
                     </div>
                 </div>
 
                 <div class="mt-5 grid grid-cols-2 gap-x-4 gap-y-2">
+                    @php
+                        $colors = ['#bfdbfe', '#60a5fa', '#3b82f6', '#1d4ed8', '#1e3a8a', '#93c5fd', '#2563eb', '#60a5fa'];
+                    @endphp
+                    @foreach($categories as $index => $cat)
                     <div class="flex items-center justify-between">
                         <div class="flex items-center gap-2">
-                            <div class="w-2 h-2 rounded-full bg-[#bfdbfe]"></div>
-                            <span class="text-[10px] text-gray-500 font-medium">Workshop</span>
+                            <div class="w-2 h-2 rounded-full" style="background-color: {{ $colors[$index % count($colors)] }}"></div>
+                            <span class="text-[10px] text-gray-500 font-medium">{{ $cat->nama_kategori }}</span>
                         </div>
-                        <span class="text-[10px] font-bold text-[#192853]">30</span>
+                        <span class="text-[10px] font-bold text-[#192853]">{{ $cat->events_count }}</span>
                     </div>
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center gap-2">
-                            <div class="w-2 h-2 rounded-full bg-[#60a5fa]"></div>
-                            <span class="text-[10px] text-gray-500 font-medium">Seminar</span>
-                        </div>
-                        <span class="text-[10px] font-bold text-[#192853]">25</span>
-                    </div>
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center gap-2">
-                            <div class="w-2 h-2 rounded-full bg-[#3b82f6]"></div>
-                            <span class="text-[10px] text-gray-500 font-medium">Festival</span>
-                        </div>
-                        <span class="text-[10px] font-bold text-[#192853]">22</span>
-                    </div>
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center gap-2">
-                            <div class="w-2 h-2 rounded-full bg-[#1d4ed8]"></div>
-                            <span class="text-[10px] text-gray-500 font-medium">Konser</span>
-                        </div>
-                        <span class="text-[10px] font-bold text-[#192853]">21</span>
-                    </div>
+                    @endforeach
                 </div>
             </div>
 
@@ -255,18 +239,20 @@
     });
 
     // PIE CHART -> DOUGHNUT
+    @php
+        $colors = ['#bfdbfe', '#60a5fa', '#3b82f6', '#1d4ed8', '#1e3a8a', '#93c5fd', '#2563eb', '#60a5fa'];
+        $chartColors = [];
+        foreach($categories as $index => $cat) {
+            $chartColors[] = $colors[$index % count($colors)];
+        }
+    @endphp
     new Chart(document.getElementById('categoryChart'), {
         type: 'doughnut',
         data: {
-            labels: ['Workshop','Seminar','Festival','Konser'],
+            labels: @json($categories->pluck('nama_kategori')),
             datasets: [{
-                data: [30, 25, 22, 21],
-                backgroundColor: [
-                    '#bfdbfe', // blue-200
-                    '#60a5fa', // blue-400
-                    '#3b82f6', // blue-500
-                    '#1d4ed8'  // blue-700
-                ],
+                data: @json($categories->pluck('events_count')),
+                backgroundColor: @json($chartColors),
                 borderWidth: 0,
                 hoverOffset: 10,
                 borderRadius: 4,

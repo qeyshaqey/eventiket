@@ -12,28 +12,20 @@
         <h1 class="text-xl font-semibold text-[#192853]">Data Panitia</h1>
     </div>
 
-    <!-- TAB -->
-    <div class="flex gap-2 mb-4">
 
-        <button id="b1" onclick="tab('k')"
-            class="px-4 py-2 text-sm rounded-full border bg-[#192853] text-white transition-all">
-            Panitia Aktif
-        </button>
-
-        <button id="b2" onclick="tab('t')"
-            class="px-4 py-2 text-sm rounded-full border bg-white text-yellow-400 transition-all">
-            Ditolak
-        </button>
-
-        <button id="b3" onclick="tab('p')"
-            class="px-4 py-2 text-sm rounded-full border bg-white text-yellow-400 transition-all">
-            Pengajuan Panitia
-        </button>
-
-    </div>
 
     <!-- ================= TERIMA ================= -->
     <div id="k" class="bg-white p-5 rounded-xl shadow border">
+        <!-- Sub Tabs inside Panitia Aktif -->
+        <div class="flex gap-2 mb-4 border-b pb-3">
+            <button id="sub1" onclick="subTab('aktif')" class="px-4 py-2 text-xs rounded-full border bg-[#192853] text-white transition-all font-bold">
+                Semua Panitia
+            </button>
+            <button id="sub2" onclick="subTab('diturunkan')" class="px-4 py-2 text-xs rounded-full border bg-white text-yellow-400 transition-all font-bold">
+                Riwayat Diturunkan
+            </button>
+        </div>
+
         <div class="mb-3">
             <div class="relative">
                 <input type="text" id="searchKelola" placeholder="Cari panitia..."
@@ -42,7 +34,8 @@
             </div>
         </div>
 
-        <div class="max-h-[400px] overflow-y-auto overflow-x-auto">
+        <!-- TABLE 1: Panitia Aktif -->
+        <div id="divAktif" class="max-h-[400px] overflow-y-auto overflow-x-auto">
             <table class="w-full text-sm border-separate border-spacing-y-1" id="tableKelola">
                 <thead class="text-gray-500 border-b bg-gray-50 sticky top-0">
                     <tr>
@@ -56,28 +49,65 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($kelola as $i => $d)
+                    @php $idx1 = 1; @endphp
+                    @foreach($kelola as $d)
+                    @if($d['status'] === 'Aktif')
                     <tr class="bg-white hover:bg-gray-50 transition shadow-sm">
-                        <td class="py-4 px-3 text-center first:rounded-l-lg last:rounded-r-lg">{{ $i+1 }}</td>
+                        <td class="py-4 px-3 text-center first:rounded-l-lg last:rounded-r-lg">{{ $idx1++ }}</td>
                         <td class="py-4 px-3 font-medium text-gray-700">{{ $d['nama'] }}</td>
                         <td class="py-4 px-3 text-gray-500">{{ $d['email'] }}</td>
                         <td class="py-4 px-3 text-gray-600">{{ $d['nim'] }}</td>
                         <td class="py-4 px-3">{{ $d['ukm'] }}</td>
                         <td class="py-4 px-3">
-                            <span class="px-3 py-1 rounded-full text-xs 
-                                {{ $d['status'] == 'Aktif' ? 'bg-green-100 text-green-600' : 'bg-gray-200 text-gray-600' }}">
+                            <span class="px-3 py-1 rounded-full text-xs bg-green-100 text-green-600 font-bold">
                                 {{ $d['status'] }}
                             </span>
                         </td>
                         <td class="py-4 px-3 first:rounded-l-lg last:rounded-r-lg">
                             <div class="flex justify-center">
-                                <button data-modal-target="modalHapus" data-modal-toggle="modalHapus" onclick="openDeleteModal('{{ $d['nama'] }}')" 
-                                    class="w-9 h-9 flex items-center justify-center rounded-lg bg-red-100 text-red-500 hover:bg-red-200 transition">
-                                    <i class="fa-solid fa-trash"></i>
+                                <button data-modal-target="modalTurunkan" data-modal-toggle="modalTurunkan" onclick="openDemoteModal('{{ $d['nama'] }}', '{{ $d['id'] }}')" 
+                                    class="w-9 h-9 flex items-center justify-center rounded-lg bg-orange-100 text-orange-600 hover:bg-orange-200 transition" title="Turunkan Jabatan">
+                                    <i class="fa-solid fa-user-minus"></i>
                                 </button>
                             </div>
                         </td>
                     </tr>
+                    @endif
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+
+        <!-- TABLE 2: Riwayat Diturunkan -->
+        <div id="divDiturunkan" class="max-h-[400px] overflow-y-auto overflow-x-auto hidden">
+            <table class="w-full text-sm border-separate border-spacing-y-1" id="tableDiturunkan">
+                <thead class="text-gray-500 border-b bg-gray-50 sticky top-0">
+                    <tr>
+                        <th class="p-3 text-center">No</th>
+                        <th class="p-3 text-left">Nama</th>
+                        <th class="p-3 text-left">Email</th>
+                        <th class="p-3 text-left">NIM</th>
+                        <th class="p-3 text-left">UKM</th>
+                        <th class="p-3 text-left">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @php $idx2 = 1; @endphp
+                    @foreach($kelola as $d)
+                    @if($d['status'] === 'Nonaktif')
+                    <tr class="bg-white hover:bg-gray-50 transition shadow-sm">
+                        <td class="py-4 px-3 text-center first:rounded-l-lg last:rounded-r-lg">{{ $idx2++ }}</td>
+                        <td class="py-4 px-3 font-medium text-gray-700">{{ $d['nama'] }}</td>
+                        <td class="py-4 px-3 text-gray-500">{{ $d['email'] }}</td>
+                        <td class="py-4 px-3 text-gray-600">{{ $d['nim'] }}</td>
+                        <td class="py-4 px-3">{{ $d['ukm'] }}</td>
+                        <td class="py-4 px-3 first:rounded-l-lg last:rounded-r-lg">
+                            <span class="px-3 py-1 rounded-full text-xs bg-red-100 text-red-600 font-bold">
+                                Diturunkan
+                            </span>
+                        </td>
+                    </tr>
+                    @endif
                     @endforeach
                 </tbody>
             </table>
@@ -165,11 +195,14 @@
 
                         <td class="py-4 px-3 first:rounded-l-lg last:rounded-r-lg">
                             <div class="flex gap-2 justify-center" onclick="event.stopPropagation()">
-                                <button class="w-9 h-9 flex items-center justify-center rounded-lg bg-green-100 text-green-600 hover:bg-green-200 transition">
-                                    <i class="fa-solid fa-check"></i>
-                                </button>
+                                <form action="{{ route('admin.data.panitia.approve', $d['id']) }}" method="POST" class="inline">
+                                    @csrf
+                                    <button type="submit" class="w-9 h-9 flex items-center justify-center rounded-lg bg-green-100 text-green-600 hover:bg-green-200 transition">
+                                        <i class="fa-solid fa-check"></i>
+                                    </button>
+                                </form>
 
-                                <button data-modal-target="modalTolak" data-modal-toggle="modalTolak" onclick="openModal('{{ $d['nama'] }}')"
+                                <button data-modal-target="modalTolak" data-modal-toggle="modalTolak" onclick="openModal('{{ $d['nama'] }}', '{{ $d['id'] }}')"
                                     class="w-9 h-9 flex items-center justify-center rounded-lg bg-red-100 text-red-500 hover:bg-red-200 transition">
                                     <i class="fa-solid fa-xmark"></i>
                                 </button>
@@ -190,22 +223,23 @@
     <div class="relative p-4 w-full max-w-sm h-full md:h-auto flex items-center justify-center">
         <div class="fixed inset-0 bg-black/40" data-modal-hide="modalTolak"></div>
 
-        <div class="relative bg-white rounded-xl shadow-lg w-full p-5 text-left">
+        <form id="formTolak" method="POST" class="relative bg-white rounded-xl shadow-lg w-full p-5 text-left">
+            @csrf
             <h2 class="text-base font-semibold text-gray-700 mb-2">Alasan Penolakan</h2>
             <p id="namaPanitia" class="text-sm text-gray-500 mb-3"></p>
 
-            <textarea id="alasanInput"
+            <textarea id="alasanInput" name="alasan_penolakan" required
                 class="w-full border rounded-lg p-2 text-sm focus:ring-1 focus:ring-red-400"
                 placeholder="Masukkan alasan..."></textarea>
 
             <div class="flex justify-end gap-2 mt-4">
                 <button type="button" data-modal-hide="modalTolak" class="px-3 py-1.5 text-sm rounded-lg bg-gray-200">Batal</button>
-                <button onclick="submitAlasan()" 
+                <button type="submit" 
                     class="px-3 py-1.5 text-sm rounded-lg bg-[#192853] text-yellow-400 hover:bg-[#0f1a3a] transition">
                     Kirim
                 </button>
             </div>
-        </div>
+        </form>
     </div>
 </div>
 
@@ -255,28 +289,29 @@
     </div>
 </div>
 
-<!-- ================= MODAL HAPUS ================= -->
-<div id="modalHapus" tabindex="-1" aria-hidden="true" class="fixed inset-0 hidden z-50 items-center justify-center overflow-y-auto overflow-x-hidden">
+<!-- ================= MODAL TURUNKAN ================= -->
+<div id="modalTurunkan" tabindex="-1" aria-hidden="true" class="fixed inset-0 hidden z-50 items-center justify-center overflow-y-auto overflow-x-hidden">
     <div class="relative p-4 w-full max-w-sm h-full md:h-auto flex items-center justify-center">
-        <div class="fixed inset-0 bg-black/40" data-modal-hide="modalHapus"></div>
+        <div class="fixed inset-0 bg-black/40" data-modal-hide="modalTurunkan"></div>
 
         <div class="relative bg-white rounded-xl shadow-lg w-full p-6 text-center">
-            <div class="w-16 h-16 bg-red-100 text-red-500 rounded-full flex items-center justify-center mx-auto mb-4">
-                <i class="fa-solid fa-trash-can text-2xl"></i>
+            <div class="w-16 h-16 bg-orange-100 text-orange-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                <i class="fa-solid fa-user-minus text-2xl"></i>
             </div>
-            <h2 class="text-lg font-semibold text-gray-700 mb-2">Hapus Panitia?</h2>
-            <p class="text-sm text-gray-500 mb-6">Apakah Anda yakin ingin menghapus <span id="namaPanitiaHapus" class="font-bold text-gray-700"></span> dari daftar panitia aktif?</p>
+            <h2 class="text-lg font-semibold text-gray-700 mb-2">Turunkan Jabatan?</h2>
+            <p class="text-sm text-gray-500 mb-6">Apakah Anda yakin ingin menurunkan jabatan <span id="namaPanitiaTurunkan" class="font-bold text-gray-700"></span> dari daftar panitia aktif?</p>
 
-            <div class="flex justify-center gap-3">
-                <button type="button" data-modal-hide="modalHapus" 
+            <form id="formTurunkan" method="POST" class="flex justify-center gap-3">
+                @csrf
+                <button type="button" data-modal-hide="modalTurunkan" 
                     class="px-6 py-2 text-sm font-medium rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200 transition">
                     Batal
                 </button>
-                <button onclick="confirmDelete()" 
-                    class="px-6 py-2 text-sm font-medium rounded-lg bg-red-500 text-white hover:bg-red-600 transition shadow-md shadow-red-200">
-                    Iya, Hapus
+                <button type="submit" 
+                    class="px-6 py-2 text-sm font-medium rounded-lg bg-orange-500 text-white hover:bg-orange-600 transition shadow-md shadow-orange-200">
+                    Iya, Turunkan
                 </button>
-            </div>
+            </form>
         </div>
     </div>
 </div>
@@ -284,16 +319,23 @@
 <script>
     <x-admin.tab-search-script />
 
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has('tab')) {
+        tab(urlParams.get('tab'));
+    }
+
     setupSearch('searchKelola', 'tableKelola');
+    setupSearch('searchKelola', 'tableDiturunkan');
     setupSearch('searchPengajuan', 'tablePengajuan');
     setupSearch('searchDitolak', 'tableDitolak');
 
     // MODAL
     let selectedNama = '';
 
-    function openModal(nama) {
+    function openModal(nama, id) {
         selectedNama = nama;
         document.getElementById('namaPanitia').innerText = "Nama: " + nama;
+        document.getElementById('formTolak').action = "/admin/data-panitia/reject/" + id;
     }
 
     function closeModal() {
@@ -327,38 +369,46 @@
         });
     });
 
-    // MODAL HAPUS
-    let deleteNama = '';
+    // SUB TAB
+    function subTab(type) {
+        const divAktif = document.getElementById('divAktif');
+        const divDiturunkan = document.getElementById('divDiturunkan');
+        const sub1 = document.getElementById('sub1');
+        const sub2 = document.getElementById('sub2');
 
-    function openDeleteModal(nama) {
-        deleteNama = nama;
-        document.getElementById('namaPanitiaHapus').innerText = nama;
-    }
-
-    function closeDeleteModal() {
-        const modal = FlowbiteInstances.getInstance('Modal', 'modalHapus');
-        if (modal) modal.hide();
-    }
-
-    function confirmDelete() {
-        console.log("Menghapus panitia:", deleteNama);
-        // Tambahkan logika penghapusan di sini
-        closeDeleteModal();
-    }
-
-    function submitAlasan() {
-        let alasan = document.getElementById('alasanInput').value;
-
-        if (alasan.trim() === '') {
-            alert('Alasan wajib diisi!');
-            return;
+        if (type === 'aktif') {
+            divAktif.classList.remove('hidden');
+            divDiturunkan.classList.add('hidden');
+            sub1.classList.remove('bg-white', 'text-yellow-400');
+            sub1.classList.add('bg-[#192853]', 'text-white');
+            sub2.classList.remove('bg-[#192853]', 'text-white');
+            sub2.classList.add('bg-white', 'text-yellow-400');
+        } else {
+            divAktif.classList.add('hidden');
+            divDiturunkan.classList.remove('hidden');
+            sub2.classList.remove('bg-white', 'text-yellow-400');
+            sub2.classList.add('bg-[#192853]', 'text-white');
+            sub1.classList.remove('bg-[#192853]', 'text-white');
+            sub1.classList.add('bg-white', 'text-yellow-400');
         }
-
-        console.log("Nama:", selectedNama);
-        console.log("Alasan:", alasan);
-
-        closeModal();
     }
+
+    // MODAL TURUNKAN
+    let demoteNama = '';
+
+    function openDemoteModal(nama, id) {
+        demoteNama = nama;
+        document.getElementById('namaPanitiaTurunkan').innerText = nama;
+        document.getElementById('formTurunkan').action = "/admin/data-panitia/demote/" + id;
+    }
+
+    function closeDemoteModal() {
+        const modalEl = document.getElementById('modalTurunkan');
+        modalEl.classList.add('hidden');
+        modalEl.classList.remove('flex');
+    }
+
+
 </script>
 
 </div>

@@ -142,15 +142,13 @@ class ProfilController extends Controller
         }
 
         \App\Models\PengajuanPanitia::create([
-            'user_id'    => $userId,
-            'ukm'        => $request->organisasi,
-            'alasan'     => $request->deskripsi,
-            'status'     => 'pending',
-            'organisasi' => $request->organisasi,
-            'nama_event' => $request->nama_event,
-            'kategori'   => $request->kategori,
-            'tanggal'    => $request->tanggal,
-            'deskripsi'  => $request->deskripsi,
+            'user_id'         => $userId,
+            'ukm'             => $request->organisasi,
+            'nama_event'      => $request->nama_event,
+            'kategori'        => $request->kategori,
+            'tanggal_event'   => $request->tanggal,
+            'deskripsi_event' => $request->deskripsi,
+            'status'          => 'pending',
         ]);
 
         return redirect()->route('pengunjung.daftar_panitia')->with('toast_success', 'Pengajuan berhasil dikirim! Silakan tunggu konfirmasi Admin.');

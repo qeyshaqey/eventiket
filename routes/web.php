@@ -91,6 +91,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
     // Data Panitia
     Route::get('/data-panitia', [PanitiaController::class, 'index'])->name('data.panitia');
+    Route::post('/data-panitia/approve/{id}', [PanitiaController::class, 'approve'])->name('data.panitia.approve');
+    Route::post('/data-panitia/reject/{id}', [PanitiaController::class, 'reject'])->name('data.panitia.reject');
+    Route::post('/data-panitia/demote/{id}', [PanitiaController::class, 'demote'])->name('data.panitia.demote');
 
     // Event
     Route::get('/kelola-event', [EventController::class, 'index'])->name('kelola.event');

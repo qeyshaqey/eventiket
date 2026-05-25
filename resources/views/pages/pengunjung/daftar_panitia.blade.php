@@ -59,7 +59,7 @@
                         <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
                             <div class="flex-1">
                                 <p class="font-semibold text-navy text-sm">{{ $item->ukm }}</p>
-                                <p class="text-xs text-grayCustom mt-1 leading-relaxed">{{ $item->alasan }}</p>
+                                <p class="text-xs text-grayCustom mt-1 leading-relaxed">{{ $item->deskripsi_event }}</p>
                                 <p class="text-[10px] text-slate-400 mt-2">Diajukan: {{ \Carbon\Carbon::parse($item->created_at)->translatedFormat('d M Y') }}</p>
                             </div>
                             <div class="shrink-0">

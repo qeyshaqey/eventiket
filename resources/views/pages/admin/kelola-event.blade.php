@@ -43,21 +43,7 @@ $eventPending = [
         <h1 class="text-xl font-bold text-[#192853]">Kelola Event</h1>
     </div>
 
-    <!-- TAB -->
-    <div class="flex gap-2 mb-4">
-        <button id="b1" onclick="tab('k')"
-            class="px-4 py-2 text-sm rounded-full border bg-[#192853] text-white transition-all">
-            Semua Event
-        </button>
-        <button id="b2" onclick="tab('t')"
-            class="px-4 py-2 text-sm rounded-full border bg-white text-yellow-400 transition-all">
-            Ditolak
-        </button>
-        <button id="b3" onclick="tab('p')"
-            class="px-4 py-2 text-sm rounded-full border bg-white text-yellow-400 transition-all">
-            Pengajuan Event
-        </button>
-    </div>
+
 
     <!-- ================= SEMUA EVENT ================= -->
     <div id="k" class="bg-white p-5 rounded-xl shadow border">
@@ -70,6 +56,14 @@ $eventPending = [
                 </div>
                 <div class="relative w-full md:w-auto">
                     <input type="date" id="filterTanggalAktif" class="w-full px-3 py-2 border rounded-lg text-sm text-gray-500 font-bold focus:outline-none focus:ring-2 focus:ring-[#192853] transition-all">
+                </div>
+                <div class="relative w-full md:w-auto">
+                    <select id="filterStatusAktif" class="w-full pl-4 pr-10 py-2 border rounded-lg text-sm text-gray-500 font-bold appearance-none bg-white focus:outline-none focus:ring-2 focus:ring-[#192853] transition-all cursor-pointer">
+                        <option value="">Semua Status</option>
+                        <option value="aktif">Aktif</option>
+                        <option value="non aktif">Non Aktif</option>
+                    </select>
+                    <i class="fa-solid fa-chevron-down absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"></i>
                 </div>
             </div>
         </div>
@@ -253,9 +247,15 @@ $eventPending = [
 <script>
     <x-admin.tab-search-script />
 
-    function setupAdvancedSearch(inputId, tanggalId, tableId) {
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has('tab')) {
+        tab(urlParams.get('tab'));
+    }
+
+    function setupAdvancedSearch(inputId, tanggalId, tableId, statusId = null) {
         const inputEl = document.getElementById(inputId);
         const tanggalEl = document.getElementById(tanggalId);
+        const statusEl = statusId ? document.getElementById(statusId) : null;
         const tableEl = document.getElementById(tableId);
 
         if (!tableEl) return;
@@ -265,6 +265,7 @@ $eventPending = [
         function filterTable() {
             const searchValue = inputEl ? inputEl.value.toLowerCase() : '';
             const tanggalValue = tanggalEl ? tanggalEl.value : '';
+            const statusValue = statusEl ? statusEl.value.toLowerCase() : '';
 
             const tbody = tableEl.querySelector('tbody');
             if (!tbody) return;
@@ -296,7 +297,13 @@ $eventPending = [
                     }
                 }
 
-                if (matchesSearch && matchesTanggal) {
+                let matchesStatus = true;
+                if (statusValue !== '' && cells.length > 5) {
+                    const statusCellText = cells[5].innerText.toLowerCase().trim();
+                    matchesStatus = (statusCellText === statusValue);
+                }
+
+                if (matchesSearch && matchesTanggal && matchesStatus) {
                     row.style.display = '';
                     visibleCount++;
                 } else {
@@ -329,9 +336,10 @@ $eventPending = [
 
         if (inputEl) inputEl.addEventListener('keyup', filterTable);
         if (tanggalEl) tanggalEl.addEventListener('change', filterTable);
+        if (statusEl) statusEl.addEventListener('change', filterTable);
     }
 
-    setupAdvancedSearch('searchAktif', 'filterTanggalAktif', 'tableAktif');
+    setupAdvancedSearch('searchAktif', 'filterTanggalAktif', 'tableAktif', 'filterStatusAktif');
     setupAdvancedSearch('searchPengajuan', 'filterTanggalPengajuan', 'tablePengajuan');
     setupAdvancedSearch('searchDitolak', 'filterTanggalDitolak', 'tableDitolak');
 
