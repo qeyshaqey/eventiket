@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Tiket extends Model
 {
     // Atribut private
-    protected $fillable = ['nama', 'harga', 'kuota', 'event_id'];
+    protected $fillable = ['nama', 'harga', 'kuota', 'tiket_terjual', 'event_id'];
 
     // Method public: Relasi ke event
     public function event()

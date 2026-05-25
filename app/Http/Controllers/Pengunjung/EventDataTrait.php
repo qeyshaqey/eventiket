@@ -66,16 +66,18 @@ trait EventDataTrait
                     : \Carbon\Carbon::parse($event->tanggal_mulai)->translatedFormat('d M Y'),
                 'time' => substr($event->waktu_mulai, 0, 5) . ' - ' . substr($event->waktu_selesai, 0, 5) . ' WIB',
                 'venue' => $event->lokasi,
-                'category' => $event->kategori,
+                'category' => $event->kategori->nama_kategori ?? 'Lainnya',
                 'status' => $statusBadge,
                 'price' => 'Rp ' . number_format($minPrice, 0, ',', '.'),
                 'image' => $event->poster ?? 'gambarevent1.jpg',
                 'description' => $event->deskripsi,
                 'tickets' => $event->tikets->map(function($t) {
                     return [
+                        'id' => $t->id,
                         'type' => $t->nama,
                         'price' => $t->harga,
                         'quota' => $t->kuota,
+                        'sold' => $t->tiket_terjual,
                     ];
                 })->toArray(),
             ];

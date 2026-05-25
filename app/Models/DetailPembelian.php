@@ -5,30 +5,24 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Pembayaran extends Model
+class DetailPembelian extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'user_id',
+        'pembelian_id',
         'tiket_id',
         'jumlah',
-        'bukti_pembayaran',
-        'status',
+        'subtotal'
     ];
 
-    public function user()
+    public function pembelian()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Pembelian::class);
     }
 
     public function tiket()
     {
         return $this->belongsTo(Tiket::class);
-    }
-
-    public function event()
-    {
-        return $this->tiket->event();
     }
 }

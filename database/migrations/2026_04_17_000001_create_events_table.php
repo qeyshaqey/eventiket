@@ -11,7 +11,7 @@ return new class extends Migration
     Schema::create('events', function (Blueprint $table) {
         $table->id();
         $table->string('judul');
-        $table->string('kategori');
+        $table->foreignId('kategori_id')->constrained('kategoris')->onDelete('restrict');
         $table->text('deskripsi')->nullable();
 
         $table->date('tanggal_mulai');

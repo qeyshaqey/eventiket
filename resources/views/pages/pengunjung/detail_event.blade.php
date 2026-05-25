@@ -77,9 +77,20 @@
                     <div class="flex flex-col sm:block">
                         <div class="flex items-center justify-between sm:block mb-1 sm:mb-0">
                             <p class="font-bold sm:font-semibold text-navy text-lg sm:text-[15px]">{{ $ticket['type'] }}</p>
-                            <!-- KUOTA MOBILE -->
-                            <div class="sm:hidden text-[10px] font-bold bg-[#EFF8FF] text-[#192853] px-3 py-1 rounded-lg">
-                                Kuota {{ $ticket['quota'] }}
+                            <!-- KUOTA & TERJUAL MOBILE -->
+                            <div class="sm:hidden flex items-center gap-2 mt-1">
+                                <div class="flex items-center whitespace-nowrap gap-1 text-[10px] font-semibold bg-[#FFF7E0] text-[#192853] px-2 py-0.5 rounded border border-[#FFE14E]">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 text-[#FFE14E]" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                                    </svg>
+                                    Terjual {{ $ticket['sold'] }}
+                                </div>
+                                <div class="flex items-center whitespace-nowrap gap-1 text-[10px] font-semibold bg-[#EFF8FF] text-[#192853] px-2 py-0.5 rounded border border-blue-200">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 text-blue-500" viewBox="0 0 20 20" fill="currentColor">
+                                        <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z" />
+                                    </svg>
+                                    Kuota {{ $ticket['quota'] }}
+                                </div>
                             </div>
                         </div>
                         <p class="text-base sm:text-sm font-semibold sm:font-normal text-[#192853]/70 sm:text-grayCustom">
@@ -90,9 +101,20 @@
                     <!-- ACTION -->
                     <div class="flex items-center justify-between sm:justify-end gap-4">
 
-                        <!-- KUOTA DESKTOP -->
-                        <div class="hidden sm:block text-xs font-medium bg-white px-3 py-1 rounded-full shadow-sm">
-                            Kuota {{ $ticket['quota'] }}
+                        <!-- STATS DESKTOP -->
+                        <div class="hidden sm:flex items-center gap-2">
+                            <div class="flex items-center whitespace-nowrap gap-1 text-[11px] font-semibold bg-[#FFF7E0] text-[#192853] px-2.5 py-1 rounded-md border border-[#FFE14E] shadow-sm">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 text-[#FFE14E]" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                                </svg>
+                                Terjual {{ $ticket['sold'] }}
+                            </div>
+                            <div class="flex items-center whitespace-nowrap gap-1 text-[11px] font-semibold bg-[#EFF8FF] text-[#192853] px-2.5 py-1 rounded-md border border-blue-200 shadow-sm">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 text-blue-500" viewBox="0 0 20 20" fill="currentColor">
+                                    <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z" />
+                                </svg>
+                                Kuota {{ $ticket['quota'] }}
+                            </div>
                         </div>
 
                         <!-- COUNTER -->

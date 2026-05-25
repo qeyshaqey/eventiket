@@ -10,7 +10,7 @@ class Event extends Model implements ApprovableInterface
     // Atribut private
     protected $fillable = [
         'judul',
-        'kategori',
+        'kategori_id',
         'deskripsi',
         'tanggal_mulai',
         'tanggal_selesai',
@@ -20,6 +20,12 @@ class Event extends Model implements ApprovableInterface
         'poster',
         'status'
     ];
+
+    // Relasi ke kategori (Foreign Key)
+    public function kategori()
+    {
+        return $this->belongsTo(Kategori::class);
+    }
 
     // relasi ke tiket
     public function tikets()
