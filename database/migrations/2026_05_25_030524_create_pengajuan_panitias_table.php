@@ -13,6 +13,11 @@ return new class extends Migration
     {
         Schema::create('pengajuan_panitias', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->string('ukm');
+            $table->text('alasan');
+            $table->enum('status', ['pending', 'disetujui', 'ditolak', 'dicabut'])->default('pending');
+            $table->text('alasan_penolakan')->nullable();
             $table->timestamps();
         });
     }

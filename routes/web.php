@@ -185,14 +185,9 @@ Route::prefix('pengunjung')->name('pengunjung.')->group(function () {
 
     Route::get('/pembayaran', [PaymentController::class, 'initiatePayment'])->name('pembayaran');
 
-    Route::get('/daftar_panitia', function () {
-        return view('pages.pengunjung.daftar_panitia');
-    })->name('daftar_panitia');
-
-    Route::post('/daftar_panitia', function (\Illuminate\Http\Request $request) {
-        // nanti simpan pengajuan panitia ke db di sini
-        return redirect()->route('pengunjung.profil')->with('profile_success', 'Pengajuan panitia berhasil dikirim!');
-    })->name('daftar_panitia.store');
+    // Halaman riwayat pengajuan panitia + form ajukan diri
+    Route::get('/daftar_panitia', [ProfilController::class, 'halamanPengajuan'])->name('daftar_panitia');
+    Route::post('/daftar_panitia_post', [ProfilController::class, 'daftarPanitia'])->name('daftar_panitia_post');
 });
 
 // ── Beranda Panitia ──

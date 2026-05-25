@@ -39,11 +39,27 @@
 
             <!-- Tombol aksi edit / logout -->
             <div class="mt-10 flex flex-col sm:flex-row justify-between items-center gap-4">
-                <!-- Tombol kiri (daftar panitia) -->
-                <a href="{{ route('pengunjung.daftar_panitia') }}"
-                    class="w-full sm:w-auto inline-flex justify-center rounded-full bg-navy px-6 py-3 text-sm font-semibold text-white transition hover:bg-yellow hover:text-navy shadow-md">
-                    Daftar Sebagai Panitia
-                </a>
+                <!-- Tombol kiri (daftar panitia) - tampil sesuai status pengajuan -->
+                <div class="w-full sm:w-auto">
+                    @if(!$pengajuan || $pengajuan->status == 'ditolak')
+                        <a href="{{ route('pengunjung.daftar_panitia') }}"
+                            class="w-full sm:w-auto inline-flex justify-center rounded-full bg-navy px-6 py-3 text-sm font-semibold text-white transition hover:bg-yellow hover:text-navy shadow-md">
+                            Daftar Sebagai Panitia
+                        </a>
+
+                    @elseif($pengajuan->status == 'pending')
+                        <div class="rounded-xl bg-[#FFF7E0] p-4 border border-[#FFE14E]">
+                            <p class="font-bold text-navy text-sm"><i class="fa-solid fa-clock mr-1"></i> Pengajuan Sedang Diproses</p>
+                            <p class="text-xs text-[#192853]/70 mt-1">Mohon tunggu, admin sedang meninjau pengajuan Anda.</p>
+                        </div>
+
+                    @elseif($pengajuan->status == 'dicabut')
+                        <div class="rounded-xl bg-red-100 p-4 border border-red-300">
+                            <p class="font-bold text-red-700 text-sm"><i class="fa-solid fa-ban mr-1"></i> Akses Panitia Dicabut</p>
+                            <p class="text-xs text-red-600 mt-1">Hak akses panitia Anda telah diturunkan menjadi pengunjung oleh Admin.</p>
+                        </div>
+                    @endif
+                </div>
 
                 <!-- Tombol kanan (edit & logout) -->
                 <div class="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
@@ -254,6 +270,12 @@
         @if(session('profile_success'))
             window.addEventListener('DOMContentLoaded', (event) => {
                 showToast("{{ session('profile_success') }}");
+            });
+        @endif
+
+        @if(session('error'))
+            window.addEventListener('DOMContentLoaded', (event) => {
+                showToast("{{ session('error') }}", "error");
             });
         @endif
 
