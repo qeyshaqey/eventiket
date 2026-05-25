@@ -7,20 +7,30 @@
 
     <div class="bg-white p-4 rounded-xl shadow hover:scale-[1.02] transition">
         <p class="text-sm text-gray-500">EVENT TERDEKAT</p>
-        <p class="text-lg font-bold mt-1 text-[#192853]">CODING CAMP</p>
-        <p class="text-xs text-gray-400">20 April</p>
+        <p class="text-lg font-bold mt-1 text-[#192853] truncate" title="{{ $nearestEvent ? Str::upper($nearestEvent->judul) : 'TIDAK ADA EVENT' }}">
+            {{ $nearestEvent ? Str::upper($nearestEvent->judul) : 'TIDAK ADA EVENT' }}
+        </p>
+        <p class="text-xs text-gray-400">
+            {{ $nearestEvent ? \Carbon\Carbon::parse($nearestEvent->tanggal_mulai)->translatedFormat('d F Y') : '-' }}
+        </p>
     </div>
 
     <div class="bg-white p-4 rounded-xl shadow hover:scale-[1.02] transition">
         <p class="text-sm text-gray-500">TIKET TERJUAL</p>
-        <p class="text-lg font-bold mt-1 text-[#192853]">40</p>
-        <p class="text-xs text-green-500">+12% dari minggu lalu</p>
+        <p class="text-lg font-bold mt-1 text-[#192853]">
+            {{ $totalTiketTerjual }}
+        </p>
+        <p class="text-xs text-green-500">Total tiket berhasil dibeli</p>
     </div>
 
     <div class="bg-white p-4 rounded-xl shadow hover:scale-[1.02] transition">
         <p class="text-sm text-gray-500">EVENT TERLARIS</p>
-        <p class="text-lg font-bold mt-1 text-[#192853]">Music Festival</p>
-        <p class="text-xs text-gray-400">50 tiket</p>
+        <p class="text-lg font-bold mt-1 text-[#192853] truncate" title="{{ $bestSellingEvent ? Str::upper($bestSellingEvent->judul) : 'BELUM ADA' }}">
+            {{ $bestSellingEvent ? Str::upper($bestSellingEvent->judul) : 'BELUM ADA' }}
+        </p>
+        <p class="text-xs text-gray-400">
+            {{ $bestSellingEvent && isset($bestSellingEvent->tikets_sum_tiket_terjual) && $bestSellingEvent->tikets_sum_tiket_terjual > 0 ? $bestSellingEvent->tikets_sum_tiket_terjual . ' tiket terjual' : '-' }}
+        </p>
     </div>
 
 </div>
@@ -43,9 +53,9 @@
             <select id="kategori"
                 class="px-3 py-2 border rounded-lg text-sm w-full sm:w-auto">
                 <option value="">Semua Kategori</option>
-                <option value="Seminar">Seminar</option>
-                <option value="Workshop">Workshop</option>
-                <option value="Hiburan">Hiburan</option>
+                @foreach($categories as $cat)
+                    <option value="{{ $cat->nama_kategori }}">{{ $cat->nama_kategori }}</option>
+                @endforeach
             </select>
 
             <select id="event"
@@ -110,12 +120,7 @@
 <script>
 document.addEventListener("DOMContentLoaded", function () {
 
-window.dataEvent = [
-    { judul:"Coding Camp", kategori:"Workshop", tanggal:"20-21 April", waktu:"09:00", lokasi:"Polibatam", kuota:"15" },
-    { judul:"Seminar AI", kategori:"Seminar", tanggal:"25 April", waktu:"13:00", lokasi:"Batam Center", kuota:"20" },
-    { judul:"Music Festival", kategori:"Hiburan", tanggal:"30 April", waktu:"19:00", lokasi:"Mega Mall", kuota:"50" },
-    { judul:"Startup Talk", kategori:"Seminar", tanggal:"5 Mei", waktu:"10:00", lokasi:"Nagoya", kuota:"30" }
-];
+window.dataEvent = @json($eventsData);
 
 let filteredData = [...window.dataEvent];
 

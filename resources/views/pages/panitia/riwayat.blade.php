@@ -56,7 +56,7 @@
 
                             <td class="p-3">
                                 <span class="px-3 py-1 text-xs bg-blue-50 text-blue-600 rounded-full">
-                                    {{ $event->kategori }}
+                                    {{ $event->kategori->nama_kategori ?? '-' }}
                                 </span>
                             </td>
 

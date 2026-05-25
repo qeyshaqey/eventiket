@@ -32,10 +32,6 @@ class Event extends Model implements ApprovableInterface
     {
         return $this->hasMany(Tiket::class);
     }
-    public function transaksis()
-{
-    return $this->hasMany(Transaksi::class);
-}
 
     // ---- Implementasi Interface methods (public) ----
     public function approve()

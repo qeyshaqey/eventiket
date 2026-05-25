@@ -33,7 +33,7 @@ use App\Http\Controllers\panitia\TiketPanitiaController;
 use App\Http\Controllers\panitia\TransaksiController;
 Route::prefix('panitia')->name('panitia.')->group(function () {
 
-    Route::view('/beranda', 'pages.panitia.berandapanitia')->name('beranda');
+    Route::get('/beranda', [BerandaPanitiaController::class, 'index'])->name('beranda');
 
     // Event
     Route::get('/event', [EventPanitiaController::class, 'index'])->name('event');

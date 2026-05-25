@@ -5,7 +5,7 @@ namespace App\Http\Controllers\panitia;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Event;
-use App\Models\Transaksi;
+use App\Models\DetailPembelian;
 use App\Models\User;
 use Illuminate\Support\Facades\Storage;
 
@@ -88,15 +88,47 @@ class EventPanitiaController extends Controller
 
     public function riwayat(Request $request)
     {
-        $events = Event::with(['tikets', 'kategori'])->latest()->get();
+        $events = Event::where('status', 'Published')
+            ->where(function ($q) {
+                $q->where('tanggal_selesai', '<', now()->toDateString())
+                  ->orWhere(function ($q2) {
+                      $q2->whereNull('tanggal_selesai')
+                         ->where('tanggal_mulai', '<', now()->toDateString());
+                  });
+            })
+            ->with(['tikets', 'kategori'])
+            ->latest()
+            ->get();
         
-        $query = Transaksi::with('event')->latest();
+        $query = DetailPembelian::with(['pembelian.user', 'tiket.event'])
+            ->whereHas('tiket.event', function ($q) {
+                $q->where('status', 'Published')
+                  ->where(function ($q2) {
+                      $q2->where('tanggal_selesai', '<', now()->toDateString())
+                        ->orWhere(function ($q3) {
+                            $q3->whereNull('tanggal_selesai')
+                               ->where('tanggal_mulai', '<', now()->toDateString());
+                        });
+                  });
+            });
 
         if ($request->has('event_id') && $request->event_id != '') {
-            $query->where('event_id', $request->event_id);
+            $query->whereHas('tiket', function ($q) use ($request) {
+                $q->where('event_id', $request->event_id);
+            });
         }
 
-        $transaksis = $query->get();
+        $details = $query->latest()->get();
+
+        $transaksis = $details->map(function ($detail) {
+            return (object) [
+                'nama' => $detail->pembelian->user->name ?? '-',
+                'event' => $detail->tiket->event ?? null,
+                'tiket' => $detail->tiket ?? null,
+                'created_at' => $detail->created_at,
+                'total' => $detail->subtotal,
+            ];
+        });
 
         return view('pages.panitia.riwayat', compact('events', 'transaksis'));
     }

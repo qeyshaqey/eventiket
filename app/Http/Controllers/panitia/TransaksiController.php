@@ -3,15 +3,38 @@
 namespace App\Http\Controllers\panitia;
 
 use App\Http\Controllers\Controller;
-use App\Models\panitia\Pembelian; // ganti dari Pembayaran
+use App\Models\Pembelian;
 
 class TransaksiController extends Controller
 {
     public function index()
     {
-        $transaksis = Pembelian::with(['user', 'event'])
+        $pembelians = Pembelian::with(['user', 'detail_pembelians.tiket.event'])
             ->latest()
             ->get();
+
+        $transaksis = $pembelians->map(function ($pembelian) {
+            $firstDetail = $pembelian->detail_pembelians->first();
+            $event = $firstDetail->tiket->event ?? null;
+            
+            // Map status_pembayaran ('Pending', 'Sukses', 'Batal') ke yang diharapkan view ('pending', 'paid', 'failed')
+            $status = 'failed';
+            if ($pembelian->status_pembayaran === 'Pending') {
+                $status = 'pending';
+            } elseif ($pembelian->status_pembayaran === 'Sukses') {
+                $status = 'paid';
+            }
+
+            return (object) [
+                'id' => $pembelian->id,
+                'user' => $pembelian->user,
+                'event' => $event,
+                'jumlah_tiket' => $pembelian->detail_pembelians->sum('jumlah'),
+                'total_harga' => $pembelian->total_bayar,
+                'status' => $status,
+                'created_at' => $pembelian->tanggal_beli,
+            ];
+        });
 
         return view('pages.panitia.transaksi.index', compact('transaksis'));
     }
