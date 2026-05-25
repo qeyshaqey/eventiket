@@ -26,11 +26,11 @@ class EventPanitiaController extends Controller
             'kategori_id' => 'required|exists:kategoris,id',
             'deskripsi' => 'required',
             'tanggal_mulai' => 'required|date',
-            'tanggal_selesai' => 'nullable|date',
+            'tanggal_selesai' => 'required|date|after_or_equal:tanggal_mulai',
             'waktu_mulai' => 'required',
-            'waktu_selesai' => 'nullable',
+            'waktu_selesai' => 'required',
             'lokasi' => 'required',
-            'poster' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'poster' => 'required|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
         // upload poster
@@ -52,9 +52,9 @@ class EventPanitiaController extends Controller
             'kategori_id' => 'required|exists:kategoris,id',
             'deskripsi' => 'required',
             'tanggal_mulai' => 'required|date',
-            'tanggal_selesai' => 'nullable|date',
+            'tanggal_selesai' => 'required|date|after_or_equal:tanggal_mulai',
             'waktu_mulai' => 'required',
-            'waktu_selesai' => 'nullable',
+            'waktu_selesai' => 'required',
             'lokasi' => 'required',
             'poster' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);

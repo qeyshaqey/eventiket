@@ -230,13 +230,13 @@ onclick="{{ $isPublished ? 'openDetailModal(' . $event->id . ')' : '' }}"
                 <!-- INPUT STYLE UNIFORM -->
                 <div>
                     <label class="text-sm font-semibold">Judul Event</label>
-                    <input type="text" name="judul"
+                    <input type="text" name="judul" required
                         class="w-full mt-1 border rounded-xl p-2.5 text-sm focus:ring-2 focus:ring-[#192853] outline-none">
                 </div>
 
                 <div>
                     <label class="text-sm font-semibold">Kategori</label>
-                    <select name="kategori_id"
+                    <select name="kategori_id" required
                         class="w-full mt-1 border rounded-xl p-2.5 text-sm focus:ring-2 focus:ring-[#192853] outline-none">
                         <option value="">Pilih Kategori</option>
                         @foreach($categories as $cat)
@@ -247,19 +247,19 @@ onclick="{{ $isPublished ? 'openDetailModal(' . $event->id . ')' : '' }}"
 
                 <div>
                     <label class="text-sm font-semibold">Deskripsi</label>
-                    <textarea name="deskripsi"
+                    <textarea name="deskripsi" required
                         class="w-full mt-1 border rounded-xl p-2.5 text-sm focus:ring-2 focus:ring-[#192853] outline-none"></textarea>
                 </div>
 
                 <div class="grid grid-cols-2 gap-3">
                     <div>
                         <label class="text-sm font-semibold">Tanggal Mulai</label>
-                        <input type="date" name="tanggal_mulai"
+                        <input type="date" name="tanggal_mulai" required
                             class="w-full mt-1 border rounded-xl p-2.5 text-sm">
                     </div>
                     <div>
                         <label class="text-sm font-semibold">Tanggal Selesai</label>
-                        <input type="date" name="tanggal_selesai"
+                        <input type="date" name="tanggal_selesai" required
                             class="w-full mt-1 border rounded-xl p-2.5 text-sm">
                     </div>
                 </div>
@@ -267,25 +267,25 @@ onclick="{{ $isPublished ? 'openDetailModal(' . $event->id . ')' : '' }}"
                 <div class="grid grid-cols-2 gap-3">
                     <div>
                         <label class="text-sm font-semibold">Waktu Mulai</label>
-                        <input type="time" name="waktu_mulai"
+                        <input type="time" name="waktu_mulai" required
                             class="w-full mt-1 border rounded-xl p-2.5 text-sm">
                     </div>
                     <div>
                         <label class="text-sm font-semibold">Waktu Selesai</label>
-                        <input type="time" name="waktu_selesai"
+                        <input type="time" name="waktu_selesai" required
                             class="w-full mt-1 border rounded-xl p-2.5 text-sm">
                     </div>
                 </div>
 
                 <div>
                     <label class="text-sm font-semibold">Lokasi</label>
-                    <input type="text" name="lokasi"
+                    <input type="text" name="lokasi" required
                         class="w-full mt-1 border rounded-xl p-2.5 text-sm">
                 </div>
 
                 <div>
     <label class="text-sm font-semibold">Poster Event</label>
-    <input type="file" name="poster"
+    <input type="file" name="poster" id="posterInput"
         class="w-full mt-1 border rounded-xl p-2.5 text-sm focus:ring-2 focus:ring-[#192853]">
         <p class="text-xs text-gray-400 mt-1">
     Format: JPG/PNG, max 2MB
@@ -399,12 +399,14 @@ document.addEventListener('DOMContentLoaded', function () {
             title.innerText = 'Tambah Event';
             form.action = '{{ route("panitia.event.store") }}';
             methodInput.value = 'POST';
+            document.getElementById('posterInput').required = true;
         }
 
         if (mode === 'edit') {
             title.innerText = 'Edit Event';
             methodInput.value = 'PUT';
             form.action = `/panitia/event/${eventId}`;
+            document.getElementById('posterInput').required = false;
 
             const event = window.events.find(e => e.id == eventId);
             if (!event) return;
