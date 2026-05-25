@@ -73,7 +73,10 @@
 
                 <div id="eventList" class="h-[450px] overflow-y-auto p-3 space-y-2 custom-scrollbar">
 
-                    <div id="emptyEventMessage" class="text-center py-10 text-gray-400 font-medium text-sm {{ count($events) == 0 ? '' : 'hidden' }}">Data tidak tersedia</div>
+                    <div id="emptyEventMessage" class="flex flex-col items-center justify-center py-12 text-gray-300 opacity-70 {{ count($events) == 0 ? '' : 'hidden' }}">
+                        <i class="fa-solid fa-box-open text-6xl mb-4 drop-shadow-sm"></i>
+                        <p class="text-xl font-bold drop-shadow-sm">Data tidak tersedia</p>
+                    </div>
 
                     @foreach ($events as $event)
                     <div 

@@ -68,34 +68,8 @@ $eventPending = [
                         class="w-full pl-10 pr-4 py-2 border rounded-lg text-sm font-bold focus:outline-none focus:ring-2 focus:ring-[#192853] transition-all">
                     <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
                 </div>
-                <div class="relative w-full md:w-48">
-                    <select id="filterBulanAktif" class="w-full pl-10 pr-8 py-2 border rounded-lg text-sm font-bold appearance-none bg-white focus:outline-none focus:ring-2 focus:ring-[#192853] transition-all cursor-pointer">
-                        <option value="">Semua Bulan</option>
-                        <option value="Jan">Januari</option>
-                        <option value="Feb">Februari</option>
-                        <option value="Mar">Maret</option>
-                        <option value="Apr">April</option>
-                        <option value="Mei">Mei</option>
-                        <option value="Jun">Juni</option>
-                        <option value="Jul">Juli</option>
-                        <option value="Agt">Agustus</option>
-                        <option value="Sep">September</option>
-                        <option value="Okt">Oktober</option>
-                        <option value="Nov">November</option>
-                        <option value="Des">Desember</option>
-                    </select>
-                    <i class="fa-solid fa-calendar-days absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
-                    <i class="fa-solid fa-chevron-down absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"></i>
-                </div>
-                <div class="relative w-full md:w-40">
-                    <select id="filterTahunAktif" class="w-full pl-10 pr-8 py-2 border rounded-lg text-sm font-bold appearance-none bg-white focus:outline-none focus:ring-2 focus:ring-[#192853] transition-all cursor-pointer">
-                        <option value="">Semua Tahun</option>
-                        <option value="2024">2024</option>
-                        <option value="2025">2025</option>
-                        <option value="2026">2026</option>
-                    </select>
-                    <i class="fa-solid fa-calendar-check absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
-                    <i class="fa-solid fa-chevron-down absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"></i>
+                <div class="relative w-full md:w-auto">
+                    <input type="date" id="filterTanggalAktif" class="w-full px-3 py-2 border rounded-lg text-sm text-gray-500 font-bold focus:outline-none focus:ring-2 focus:ring-[#192853] transition-all">
                 </div>
             </div>
         </div>
@@ -143,34 +117,8 @@ $eventPending = [
                         class="w-full pl-10 pr-4 py-2 border rounded-lg text-sm font-bold focus:outline-none focus:ring-2 focus:ring-[#192853] transition-all">
                     <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
                 </div>
-                <div class="relative w-full md:w-48">
-                    <select id="filterBulanDitolak" class="w-full pl-10 pr-8 py-2 border rounded-lg text-sm font-bold appearance-none bg-white focus:outline-none focus:ring-2 focus:ring-[#192853] transition-all cursor-pointer">
-                        <option value="">Semua Bulan</option>
-                        <option value="Jan">Januari</option>
-                        <option value="Feb">Februari</option>
-                        <option value="Mar">Maret</option>
-                        <option value="Apr">April</option>
-                        <option value="Mei">Mei</option>
-                        <option value="Jun">Juni</option>
-                        <option value="Jul">Juli</option>
-                        <option value="Agt">Agustus</option>
-                        <option value="Sep">September</option>
-                        <option value="Okt">Oktober</option>
-                        <option value="Nov">November</option>
-                        <option value="Des">Desember</option>
-                    </select>
-                    <i class="fa-solid fa-calendar-days absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
-                    <i class="fa-solid fa-chevron-down absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"></i>
-                </div>
-                <div class="relative w-full md:w-40">
-                    <select id="filterTahunDitolak" class="w-full pl-10 pr-8 py-2 border rounded-lg text-sm font-bold appearance-none bg-white focus:outline-none focus:ring-2 focus:ring-[#192853] transition-all cursor-pointer">
-                        <option value="">Semua Tahun</option>
-                        <option value="2024">2024</option>
-                        <option value="2025">2025</option>
-                        <option value="2026">2026</option>
-                    </select>
-                    <i class="fa-solid fa-calendar-check absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
-                    <i class="fa-solid fa-chevron-down absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"></i>
+                <div class="relative w-full md:w-auto">
+                    <input type="date" id="filterTanggalDitolak" class="w-full px-3 py-2 border rounded-lg text-sm text-gray-500 font-bold focus:outline-none focus:ring-2 focus:ring-[#192853] transition-all">
                 </div>
             </div>
         </div>
@@ -212,34 +160,8 @@ $eventPending = [
                         class="w-full pl-10 pr-4 py-2 border rounded-lg text-sm font-bold focus:outline-none focus:ring-2 focus:ring-[#192853] transition-all">
                     <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
                 </div>
-                <div class="relative w-full md:w-48">
-                    <select id="filterBulanPengajuan" class="w-full pl-10 pr-8 py-2 border rounded-lg text-sm font-bold appearance-none bg-white focus:outline-none focus:ring-2 focus:ring-[#192853] transition-all cursor-pointer">
-                        <option value="">Semua Bulan</option>
-                        <option value="Jan">Januari</option>
-                        <option value="Feb">Februari</option>
-                        <option value="Mar">Maret</option>
-                        <option value="Apr">April</option>
-                        <option value="Mei">Mei</option>
-                        <option value="Jun">Juni</option>
-                        <option value="Jul">Juli</option>
-                        <option value="Agt">Agustus</option>
-                        <option value="Sep">September</option>
-                        <option value="Okt">Oktober</option>
-                        <option value="Nov">November</option>
-                        <option value="Des">Desember</option>
-                    </select>
-                    <i class="fa-solid fa-calendar-days absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
-                    <i class="fa-solid fa-chevron-down absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"></i>
-                </div>
-                <div class="relative w-full md:w-40">
-                    <select id="filterTahunPengajuan" class="w-full pl-10 pr-8 py-2 border rounded-lg text-sm font-bold appearance-none bg-white focus:outline-none focus:ring-2 focus:ring-[#192853] transition-all cursor-pointer">
-                        <option value="">Semua Tahun</option>
-                        <option value="2024">2024</option>
-                        <option value="2025">2025</option>
-                        <option value="2026">2026</option>
-                    </select>
-                    <i class="fa-solid fa-calendar-check absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
-                    <i class="fa-solid fa-chevron-down absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"></i>
+                <div class="relative w-full md:w-auto">
+                    <input type="date" id="filterTanggalPengajuan" class="w-full px-3 py-2 border rounded-lg text-sm text-gray-500 font-bold focus:outline-none focus:ring-2 focus:ring-[#192853] transition-all">
                 </div>
             </div>
         </div>
@@ -331,18 +253,18 @@ $eventPending = [
 <script>
     <x-admin.tab-search-script />
 
-    function setupAdvancedSearch(inputId, bulanId, tahunId, tableId) {
+    function setupAdvancedSearch(inputId, tanggalId, tableId) {
         const inputEl = document.getElementById(inputId);
-        const bulanEl = document.getElementById(bulanId);
-        const tahunEl = document.getElementById(tahunId);
+        const tanggalEl = document.getElementById(tanggalId);
         const tableEl = document.getElementById(tableId);
 
         if (!tableEl) return;
 
+        const months = {"jan":"01","feb":"02","mar":"03","apr":"04","mei":"05","jun":"06","jul":"07","agt":"08","sep":"09","okt":"10","nov":"11","des":"12"};
+
         function filterTable() {
             const searchValue = inputEl ? inputEl.value.toLowerCase() : '';
-            const bulanValue = bulanEl ? bulanEl.value.toLowerCase() : '';
-            const tahunValue = tahunEl ? tahunEl.value.toLowerCase() : '';
+            const tanggalValue = tanggalEl ? tanggalEl.value : '';
 
             const tbody = tableEl.querySelector('tbody');
             if (!tbody) return;
@@ -358,13 +280,23 @@ $eventPending = [
                 const rowText = row.innerText.toLowerCase();
                 const matchesSearch = rowText.includes(searchValue);
 
-                // Date cell check (Tanggal is column index 2)
-                const dateCellText = cells[2].innerText.toLowerCase();
-                
-                const matchesBulan = bulanValue === '' || dateCellText.includes(bulanValue);
-                const matchesTahun = tahunValue === '' || dateCellText.includes(tahunValue);
+                // Date formatting and checking
+                let matchesTanggal = true;
+                if (tanggalValue !== '') {
+                    const dateCellText = cells[2].innerText.toLowerCase().trim(); // e.g. "12 apr 2024"
+                    const parts = dateCellText.split(' ');
+                    if (parts.length === 3) {
+                        const d = parts[0].padStart(2, '0');
+                        const m = months[parts[1]] || '00';
+                        const y = parts[2];
+                        const rowDateStr = `${y}-${m}-${d}`;
+                        matchesTanggal = (tanggalValue === rowDateStr);
+                    } else {
+                        matchesTanggal = false;
+                    }
+                }
 
-                if (matchesSearch && matchesBulan && matchesTahun) {
+                if (matchesSearch && matchesTanggal) {
                     row.style.display = '';
                     visibleCount++;
                 } else {
@@ -379,7 +311,14 @@ $eventPending = [
                     let colCount = thead ? thead.children.length : 10;
                     emptyRow = document.createElement('tr');
                     emptyRow.className = 'empty-row bg-white hover:bg-white cursor-default';
-                    emptyRow.innerHTML = `<td colspan="${colCount}" class="py-8 px-4 text-center text-gray-500 font-medium">Data tidak tersedia</td>`;
+                    emptyRow.innerHTML = `
+                        <td colspan="${colCount}" class="py-12 px-4 text-center">
+                            <div class="flex flex-col items-center justify-center text-gray-300 opacity-70">
+                                <i class="fa-solid fa-box-open text-6xl mb-4 drop-shadow-sm"></i>
+                                <p class="text-2xl font-bold drop-shadow-sm">Data tidak tersedia</p>
+                            </div>
+                        </td>
+                    `;
                     tbody.appendChild(emptyRow);
                 }
                 emptyRow.style.display = '';
@@ -389,13 +328,12 @@ $eventPending = [
         }
 
         if (inputEl) inputEl.addEventListener('keyup', filterTable);
-        if (bulanEl) bulanEl.addEventListener('change', filterTable);
-        if (tahunEl) tahunEl.addEventListener('change', filterTable);
+        if (tanggalEl) tanggalEl.addEventListener('change', filterTable);
     }
 
-    setupAdvancedSearch('searchAktif', 'filterBulanAktif', 'filterTahunAktif', 'tableAktif');
-    setupAdvancedSearch('searchPengajuan', 'filterBulanPengajuan', 'filterTahunPengajuan', 'tablePengajuan');
-    setupAdvancedSearch('searchDitolak', 'filterBulanDitolak', 'filterTahunDitolak', 'tableDitolak');
+    setupAdvancedSearch('searchAktif', 'filterTanggalAktif', 'tableAktif');
+    setupAdvancedSearch('searchPengajuan', 'filterTanggalPengajuan', 'tablePengajuan');
+    setupAdvancedSearch('searchDitolak', 'filterTanggalDitolak', 'tableDitolak');
 
     // MODAL DETAIL
     function showModal(n, t, w, l, p, d) {

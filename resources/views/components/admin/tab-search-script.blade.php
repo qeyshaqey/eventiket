@@ -56,7 +56,14 @@
                         let colCount = thead ? thead.children.length : 10;
                         emptyRow = document.createElement('tr');
                         emptyRow.className = 'empty-row bg-white';
-                        emptyRow.innerHTML = `<td colspan="${colCount}" class="py-8 px-4 text-center text-gray-500 font-medium">Data tidak tersedia</td>`;
+                        emptyRow.innerHTML = `
+                            <td colspan="${colCount}" class="py-12 px-4 text-center">
+                                <div class="flex flex-col items-center justify-center text-gray-300 opacity-70">
+                                    <i class="fa-solid fa-box-open text-6xl mb-4 drop-shadow-sm"></i>
+                                    <p class="text-2xl font-bold drop-shadow-sm">Data tidak tersedia</p>
+                                </div>
+                            </td>
+                        `;
                         tbody.appendChild(emptyRow);
                     }
                     emptyRow.style.display = '';
