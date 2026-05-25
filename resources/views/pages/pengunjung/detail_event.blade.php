@@ -433,7 +433,7 @@ function confirmCheckout() {
             if (closeBtn) closeBtn.click();
             showToast('Pesanan tiket berhasil dibuat.');
             setTimeout(() => {
-                window.location.href = "{{ route('pengunjung.pembayaran') }}?order_id=" + data.order_id;
+                window.location.href = "{{ route('pengunjung.tiket') }}";
             }, 1000);
         } else {
             showToast(data.message || 'Gagal memesan tiket', 'error');

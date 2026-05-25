@@ -3,7 +3,8 @@
 namespace App\Http\Controllers\Pengunjung;
 
 use App\Http\Controllers\Controller;
-use App\Models\Pembayaran;
+use App\Models\Pembelian;
+use App\Models\Etiket;
 use Illuminate\Http\Request;
 use Midtrans\Config;
 use Midtrans\Snap;
@@ -23,55 +24,39 @@ class PaymentController extends Controller
 
     public function initiatePayment(Request $request)
     {
-        // Cari tau siapa yang lagi login pakai session user_id
         $userId = session('user_id');
         $user = \App\Models\User::find($userId);
 
-        // Kalau nggak ada yang login, balikkan ke halaman login
         if (!$user) {
             return redirect()->route('login')->with('error', 'Silakan login terlebih dahulu.');
         }
         
-        // Ambil data pembayaran terakhir yang statusnya masih 'pending'
-        $pembayaran = Pembayaran::where('user_id', $user->id)
-                                ->where('status', 'pending')
+        $orderIdRequest = $request->query('order_id');
+        
+        if ($orderIdRequest) {
+            $pembelian = Pembelian::where('user_id', $user->id)
+                                ->where('order_id', $orderIdRequest)
+                                ->first();
+        } else {
+            // Ambil data pembelian terakhir yang statusnya masih 'pending'
+            $pembelian = Pembelian::where('user_id', $user->id)
+                                ->where('status_pembayaran', 'Pending')
                                 ->latest()
                                 ->first();
-
-        // JIKA TIDAK ADA TRANSAKSI, KITA BUATKAN OTOMATIS (Sama seperti di TiketController)
-        if (!$pembayaran) {
-            $eventContoh = \App\Models\Event::first();
-            $tiketContoh = \App\Models\Tiket::where('event_id', $eventContoh?->id)->first();
-            
-            if ($eventContoh && $tiketContoh) {
-                $pembayaran = Pembayaran::create([
-                    'user_id' => $user->id,
-                    'tiket_id' => $tiketContoh->id,
-                    'jumlah' => $tiketContoh->harga,
-                    'status' => 'pending',
-                    'order_id' => 'TRX-' . \Illuminate\Support\Str::upper(\Illuminate\Support\Str::random(10))
-                ]);
-            } else {
-                return redirect()->back()->with('error', 'Data event/tiket tidak ditemukan. Silakan jalankan seeder.');
-            }
         }
 
-        // Selalu buat Order ID baru buat ngetes ganti-ganti metode pembayaran di Midtrans
-        if ($pembayaran->status == 'pending') {
-            $pembayaran->order_id = 'TRX-' . Str::upper(Str::random(10));
-            $pembayaran->snap_token = null; // Reset token supaya dapet yang baru
-            $pembayaran->save();
+        if (!$pembelian) {
+            return redirect()->route('pengunjung.tiket')->with('error', 'Data tagihan tidak ditemukan atau sudah dibayar.');
         }
 
         // Kalau snap_token sudah ada, pakai yang itu. Kalau belum, kita minta ke Midtrans
-        if ($pembayaran->snap_token) {
-            $snapToken = $pembayaran->snap_token;
-        } else {
-            // Setting detail transaksi buat dikirim ke Midtrans
+        if ($pembelian->snap_token && $pembelian->status_pembayaran == 'Pending') {
+            $snapToken = $pembelian->snap_token;
+        } else if ($pembelian->status_pembayaran == 'Pending') {
             $params = [
                 'transaction_details' => [
-                    'order_id' => $pembayaran->order_id,
-                    'gross_amount' => $pembayaran->jumlah,
+                    'order_id' => $pembelian->order_id,
+                    'gross_amount' => $pembelian->total_bayar,
                 ],
                 'customer_details' => [
                     'first_name' => $user->name,
@@ -80,41 +65,59 @@ class PaymentController extends Controller
             ];
 
             try {
-                // Minta Snap Token dari Midtrans
                 $snapToken = Snap::getSnapToken($params);
-                $pembayaran->snap_token = $snapToken;
-                $pembayaran->save();
+                $pembelian->snap_token = $snapToken;
+                $pembelian->save();
             } catch (\Exception $e) {
                 return redirect()->back()->with('error', 'Gagal hubung ke Midtrans: ' . $e->getMessage());
             }
+        } else {
+            return redirect()->route('pengunjung.tiket')->with('error', 'Pembayaran ini sudah diproses.');
         }
+
+        // Pass 'pembayaran' to view as the view might still use $pembayaran variable
+        $pembayaran = $pembelian; 
 
         return view('pages.pengunjung.pembayaran', compact('pembayaran', 'snapToken'));
     }
 
     public function callback(Request $request)
     {
-        // Fungsi ini buat nerima laporan otomatis dari Midtrans (Notification)
         $serverKey = config('midtrans.server_key');
         $hashed = hash("sha512", $request->order_id . $request->status_code . $request->gross_amount . $serverKey);
 
-        // Cek dulu apakah laporannya beneran dari Midtrans atau bukan (keamanan)
         if ($hashed == $request->signature_key) {
-            // Kalau statusnya lunas atau berhasil diproses
             if ($request->transaction_status == 'capture' || $request->transaction_status == 'settlement') {
-                $pembayaran = Pembayaran::where('order_id', $request->order_id)->first();
-                if ($pembayaran) {
-                    $pembayaran->status = 'success';
-                    $pembayaran->save();
+                $pembelian = Pembelian::where('order_id', $request->order_id)->first();
+                if ($pembelian && $pembelian->status_pembayaran !== 'Sukses') {
+                    $pembelian->status_pembayaran = 'Sukses';
+                    $pembelian->save();
+                    
+                    // Generate barcode for each ticket bought
+                    $details = $pembelian->detail_pembelians;
+                    foreach ($details as $detail) {
+                        for ($i = 0; $i < $detail->jumlah; $i++) {
+                            Etiket::create([
+                                'pembelian_id' => $pembelian->id,
+                                'kode_unik' => 'TKT-' . Str::upper(Str::random(12))
+                            ]);
+                        }
+                        
+                        // Increment tiket_terjual
+                        $tiket = $detail->tiket;
+                        if ($tiket) {
+                            $tiket->tiket_terjual += $detail->jumlah;
+                            $tiket->save();
+                        }
+                    }
                 }
             } elseif ($request->transaction_status == 'pending') {
                 // Biarkan status tetap pending
             } else {
-                // Kalau gagal, ganti status jadi failed
-                $pembayaran = Pembayaran::where('order_id', $request->order_id)->first();
-                if ($pembayaran) {
-                    $pembayaran->status = 'failed';
-                    $pembayaran->save();
+                $pembelian = Pembelian::where('order_id', $request->order_id)->first();
+                if ($pembelian) {
+                    $pembelian->status_pembayaran = 'Gagal';
+                    $pembelian->save();
                 }
             }
         }
