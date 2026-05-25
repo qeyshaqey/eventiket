@@ -21,7 +21,10 @@ class ProfilController extends Controller
             return redirect()->route('login')->with('error', 'Silakan masuk terlebih dahulu.');
         }
 
-        return view('pages.pengunjung.profil_pengunjung', compact('user'));
+        // cari pengajuan panitia terakhir milik user ini
+        $pengajuan = \App\Models\PengajuanPanitia::where('user_id', $user->id)->latest()->first();
+
+        return view('pages.pengunjung.profil_pengunjung', compact('user', 'pengajuan'));
     }
 
     // buat nge-update data profil (nama, foto, password)
@@ -90,5 +93,66 @@ class ProfilController extends Controller
         // kalau klik simpan tapi gak ada yang diubah, langsung balik aja
         return redirect()->route('pengunjung.profil')
             ->with('profile_success', 'Tidak ada perubahan data.');
+    }
+
+    public function halamanPengajuan()
+    {
+        $userId = session('user_id');
+        $user = \App\Models\User::find($userId);
+
+        if (!$user) {
+            return redirect()->route('login')->with('error', 'Silakan masuk terlebih dahulu.');
+        }
+
+        // Ambil SEMUA riwayat pengajuan user ini (untuk ditampilkan)
+        $riwayatPengajuan = \App\Models\PengajuanPanitia::where('user_id', $userId)->latest()->get();
+
+        // Cek apakah masih boleh mengajukan lagi
+        $bolehAjukan = !$riwayatPengajuan->whereIn('status', ['pending', 'dicabut'])->count();
+
+        return view('pages.pengunjung.daftar_panitia', compact('user', 'riwayatPengajuan', 'bolehAjukan'));
+    }
+
+    public function daftarPanitia(Request $request)
+    {
+        $userId = session('user_id');
+
+        $request->validate([
+            'organisasi'  => 'required|string|max:255',
+            'nama_event'  => 'required|string|max:255',
+            'kategori'    => 'required|string|max:255',
+            'tanggal'     => 'required|date',
+            'deskripsi'   => 'required|string',
+        ]);
+
+        $cekBlacklist = \App\Models\PengajuanPanitia::where('user_id', $userId)
+                                        ->where('status', 'dicabut')
+                                        ->exists();
+                                        
+        if ($cekBlacklist) {
+            return redirect()->back()->with('toast_error', 'Anda telah dicabut dari keanggotaan panitia karena melanggar aturan dan tidak dapat mendaftar kembali.');
+        }
+
+        $cekPending = \App\Models\PengajuanPanitia::where('user_id', $userId)
+                                      ->where('status', 'pending')
+                                      ->exists();
+                                      
+        if ($cekPending) {
+            return redirect()->back()->with('toast_error', 'Anda masih memiliki pengajuan yang sedang diproses oleh Admin.');
+        }
+
+        \App\Models\PengajuanPanitia::create([
+            'user_id'    => $userId,
+            'ukm'        => $request->organisasi,
+            'alasan'     => $request->deskripsi,
+            'status'     => 'pending',
+            'organisasi' => $request->organisasi,
+            'nama_event' => $request->nama_event,
+            'kategori'   => $request->kategori,
+            'tanggal'    => $request->tanggal,
+            'deskripsi'  => $request->deskripsi,
+        ]);
+
+        return redirect()->route('pengunjung.daftar_panitia')->with('toast_success', 'Pengajuan berhasil dikirim! Silakan tunggu konfirmasi Admin.');
     }
 }
