@@ -14,6 +14,9 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->validateCsrfTokens(except: [
             '/payment/callback',
         ]);
+        $middleware->alias([
+            'role' => \App\Http\Middleware\RoleCheck::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

@@ -37,7 +37,7 @@
     <div class="md:hidden bg-white border-b px-4 py-3 flex items-center justify-between shadow-sm sticky top-0 z-30">
         <h1 class="font-bold text-[#192853]">Menu</h1>
 
-        <!-- ✅ FLOWBITE DRAWER -->
+        <!-- FLOWBITE DRAWER -->
         <button data-drawer-target="sidebar" data-drawer-toggle="sidebar" class="text-2xl text-[#192853]">
             <i class="bi bi-list"></i>
         </button>

@@ -69,6 +69,12 @@ class PanitiaController extends Controller
         $pengajuan->status = 'disetujui';
         $pengajuan->save();
 
+        $user = $pengajuan->user;
+        if ($user) {
+            $user->role = 'panitia';
+            $user->save();
+        }
+ 
         return redirect()->back()->with('success', 'Pengajuan panitia berhasil disetujui.');
     }
 
@@ -92,6 +98,12 @@ class PanitiaController extends Controller
         $pengajuan->status = 'dicabut';
         $pengajuan->save();
 
+        $user = $pengajuan->user;
+        if ($user) {
+            $user->role = 'pengunjung';
+            $user->save();
+        }
+ 
         return redirect()->back()->with('success', 'Jabatan panitia berhasil diturunkan.');
     }
 }

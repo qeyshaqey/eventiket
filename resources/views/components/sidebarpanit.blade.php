@@ -59,6 +59,14 @@
                 <i class="bi bi-clock-history"></i> Riwayat
             </a>
 
+            <a href="{{ route('pengunjung.dashboard') }}"
+               class="flex items-center gap-3 px-4 py-3 rounded-r-lg
+               {{ request()->routeIs('pengunjung.dashboard') 
+                    ? 'bg-yellow-400/10 text-yellow-400 border-l-4 border-yellow-400' 
+                    : 'text-white/60 hover:bg-yellow-400/10 hover:text-white transition' }}">
+                <i class="bi bi-person-badge"></i> Mode Pengunjung
+            </a>
+
         </nav>
 
     </div>

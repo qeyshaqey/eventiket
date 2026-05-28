@@ -25,6 +25,10 @@ class TransaksiController extends Controller
                 $status = 'paid';
             }
 
+            $jenisTiket = $pembelian->detail_pembelians->map(function ($detail) {
+                return ($detail->tiket->nama ?? '-') . ' (' . $detail->jumlah . 'x)';
+            })->implode(', ');
+
             return (object) [
                 'id' => $pembelian->id,
                 'user' => $pembelian->user,
@@ -33,6 +37,7 @@ class TransaksiController extends Controller
                 'total_harga' => $pembelian->total_bayar,
                 'status' => $status,
                 'created_at' => $pembelian->tanggal_beli,
+                'jenis_tiket' => $jenisTiket,
             ];
         });
 

@@ -12,7 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('pengajuan_panitias', function (Blueprint $table) {
-            //
+            $table->string('nama_event')->nullable();
+            $table->string('kategori')->nullable();
+            $table->date('tanggal_event')->nullable();
+            $table->text('deskripsi_event')->nullable();
+            $table->text('alasan')->nullable()->change();
         });
     }
 
@@ -22,7 +26,8 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('pengajuan_panitias', function (Blueprint $table) {
-            //
+            $table->dropColumn(['nama_event', 'kategori', 'tanggal_event', 'deskripsi_event']);
+            $table->text('alasan')->nullable(false)->change();
         });
     }
 };

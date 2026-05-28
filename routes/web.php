@@ -31,7 +31,7 @@ use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\panitia\EventPanitiaController;
 use App\Http\Controllers\panitia\TiketPanitiaController;
 use App\Http\Controllers\panitia\TransaksiController;
-Route::prefix('panitia')->name('panitia.')->group(function () {
+Route::prefix('panitia')->name('panitia.')->middleware('role:panitia')->group(function () {
 
     Route::get('/beranda', [BerandaPanitiaController::class, 'index'])->name('beranda');
 
@@ -82,7 +82,7 @@ Route::get('/etalase_event', [EtalaseEventController::class, 'index'])->name('et
 Route::get('/dashboard', [DashboardController::class, 'index']);
 
 // ============ ADMIN SIDE =========================//
-Route::prefix('admin')->name('admin.')->group(function () {
+Route::prefix('admin')->name('admin.')->middleware('role:admin')->group(function () {
     // Dashboard Admin 
     Route::get('/dashboard', [DashboardAdminController::class, 'index'])->name('dashboard');
 
@@ -175,7 +175,7 @@ Route::post('/reset-password', [ForgotPasswordController::class, 'resetPassword'
     ->name('password.reset');
 
 // ── PENGUNJUNG SIDE ──
-Route::prefix('pengunjung')->name('pengunjung.')->group(function () {
+Route::prefix('pengunjung')->name('pengunjung.')->middleware('role:pengunjung')->group(function () {
     Route::get('/dashboard_pengunjung', [DashboardPengunjungController::class, 'index'])->name('dashboard');
     Route::get('/dashboard_pengunjung/ajax', [DashboardPengunjungController::class, 'ajaxSearch'])->name('dashboard.ajax');
     Route::get('/detail_event/{id}', [HomePageController::class, 'showDetail'])->name('detail.event');
@@ -194,7 +194,9 @@ Route::prefix('pengunjung')->name('pengunjung.')->group(function () {
 });
 
 // ── Beranda Panitia ──
-Route::get('/beranda-panitia', [BerandaPanitiaController::class, 'index'])->name('beranda.panitia');
+Route::get('/beranda-panitia', [BerandaPanitiaController::class, 'index'])
+    ->name('beranda.panitia')
+    ->middleware('role:panitia');
 
 // ── PROSES LOGOUT ──
 Route::post('/logout', function () {

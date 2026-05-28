@@ -88,7 +88,8 @@ class EventPanitiaController extends Controller
 
     public function riwayat(Request $request)
     {
-        $events = Event::where('status', 'Published')
+        // Get all base events that are finished/past for dropdown list
+        $allEvents = Event::where('status', 'Published')
             ->where(function ($q) {
                 $q->where('tanggal_selesai', '<', now()->toDateString())
                   ->orWhere(function ($q2) {
@@ -96,10 +97,37 @@ class EventPanitiaController extends Controller
                          ->where('tanggal_mulai', '<', now()->toDateString());
                   });
             })
-            ->with(['tikets', 'kategori'])
+            ->latest()
+            ->get();
+
+        // Get all categories for filter dropdown
+        $categories = \App\Models\Kategori::all();
+
+        // Query filtered events for the Event Tab
+        $eventQuery = Event::where('status', 'Published')
+            ->where(function ($q) {
+                $q->where('tanggal_selesai', '<', now()->toDateString())
+                  ->orWhere(function ($q2) {
+                      $q2->whereNull('tanggal_selesai')
+                         ->where('tanggal_mulai', '<', now()->toDateString());
+                  });
+            });
+
+        // Apply filter by category
+        if ($request->has('kategori_id') && $request->kategori_id != '') {
+            $eventQuery->where('kategori_id', $request->kategori_id);
+        }
+
+        // Apply filter by specific event
+        if ($request->has('event_filter_id') && $request->event_filter_id != '') {
+            $eventQuery->where('id', $request->event_filter_id);
+        }
+
+        $events = $eventQuery->with(['tikets', 'kategori'])
             ->latest()
             ->get();
         
+        // Query details for the Transaksi Tab
         $query = DetailPembelian::with(['pembelian.user', 'tiket.event'])
             ->whereHas('tiket.event', function ($q) {
                 $q->where('status', 'Published')
@@ -112,6 +140,13 @@ class EventPanitiaController extends Controller
                   });
             });
 
+        // Apply category filter for transactions
+        if ($request->has('trx_kategori_id') && $request->trx_kategori_id != '') {
+            $query->whereHas('tiket.event', function ($q) use ($request) {
+                $q->where('kategori_id', $request->trx_kategori_id);
+            });
+        }
+
         if ($request->has('event_id') && $request->event_id != '') {
             $query->whereHas('tiket', function ($q) use ($request) {
                 $q->where('event_id', $request->event_id);
@@ -121,16 +156,29 @@ class EventPanitiaController extends Controller
         $details = $query->latest()->get();
 
         $transaksis = $details->map(function ($detail) {
+            $rawStatus = $detail->pembelian->status_pembayaran ?? 'Batal';
+            $status = 'failed';
+            if ($rawStatus === 'Pending') {
+                $status = 'pending';
+            } elseif ($rawStatus === 'Sukses') {
+                $status = 'paid';
+            }
+
+            $jenisTiket = ($detail->tiket->nama ?? '-') . ' (' . $detail->jumlah . 'x)';
+
             return (object) [
                 'nama' => $detail->pembelian->user->name ?? '-',
+                'email' => $detail->pembelian->user->email ?? '-',
                 'event' => $detail->tiket->event ?? null,
                 'tiket' => $detail->tiket ?? null,
                 'created_at' => $detail->created_at,
                 'total' => $detail->subtotal,
+                'status' => $status,
+                'jenis_tiket' => $jenisTiket,
             ];
         });
 
-        return view('pages.panitia.riwayat', compact('events', 'transaksis'));
+        return view('pages.panitia.riwayat', compact('events', 'transaksis', 'allEvents', 'categories'));
     }
 
     public function profil()

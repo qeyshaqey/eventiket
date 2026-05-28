@@ -32,13 +32,49 @@
         <!-- EVENT -->
         <!-- ===================== -->
         <div id="tab-event">
+            
+            <!-- FILTER EVENT & KATEGORI -->
+            <div class="flex flex-col md:flex-row md:items-center justify-end gap-3 mb-5">
+                <form action="{{ route('panitia.riwayat') }}" method="GET" class="flex gap-2 w-full md:w-auto">
+                    <input type="hidden" name="tab" value="event">
+                    
+                    <select name="kategori_id" onchange="this.form.submit()" 
+                        class="border rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-[#192853] outline-none bg-white w-full md:w-48">
+                        <option value="">Semua Kategori</option>
+                        @foreach($categories as $cat)
+                            <option value="{{ $cat->id }}" {{ request('kategori_id') == $cat->id ? 'selected' : '' }}>
+                                {{ $cat->nama_kategori }}
+                            </option>
+                        @endforeach
+                    </select>
+
+                    <select name="event_filter_id" onchange="this.form.submit()" 
+                        class="border rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-[#192853] outline-none bg-white w-full md:w-64">
+                        <option value="">Semua Event</option>
+                        @foreach($allEvents as $ev)
+                            <option value="{{ $ev->id }}" {{ request('event_filter_id') == $ev->id ? 'selected' : '' }}>
+                                {{ $ev->judul }}
+                            </option>
+                        @endforeach
+                    </select>
+                    
+                    @if(request('kategori_id') || request('event_filter_id'))
+                        <a href="{{ route('panitia.riwayat') }}?tab=event" 
+                            class="px-3 py-2 bg-gray-100 text-gray-600 rounded-lg text-sm hover:bg-gray-200 transition flex items-center"
+                            title="Reset Filter">
+                            <i class="bi bi-arrow-counterclockwise"></i>
+                        </a>
+                    @endif
+                </form>
+            </div>
 
             <div class="overflow-x-auto rounded-xl border">
                 <table class="min-w-[600px] w-full text-sm">
 
-                    <thead class="bg-[#192853] text-white text-xs uppercase">
+                    <thead class="bg-[#192853] text-white text-xs uppercase font-semibold">
                         <tr>
-                            <th class="p-3 text-left">Judul</th>
+                            <th class="p-3 text-left w-16">No</th>
+                            <th class="p-3 text-left">Judul Event</th>
                             <th class="p-3 text-left">Kategori</th>
                             <th class="p-3 text-left">Tanggal</th>
                             <th class="p-3 text-left">Status</th>
@@ -47,10 +83,14 @@
 
                     <tbody class="divide-y">
 
-                        @forelse($events as $event)
-                        <tr class="hover:bg-gray-50 transition">
+                        @forelse($events as $index => $event)
+                        <tr class="hover:bg-gray-50 transition text-sm">
 
-                            <td class="p-3 font-medium text-gray-800">
+                            <td class="p-3 text-gray-600">
+                                {{ $index + 1 }}
+                            </td>
+
+                            <td class="p-3 font-semibold text-gray-800">
                                 {{ $event->judul }}
                             </td>
 
@@ -61,7 +101,7 @@
                             </td>
 
                             <td class="p-3 text-gray-600 text-sm">
-                                {{ $event->tanggal_mulai }}
+                                {{ \Carbon\Carbon::parse($event->tanggal_mulai)->format('d M Y') }}
                             </td>
 
                             <td class="p-3">
@@ -76,7 +116,7 @@
                         </tr>
                         @empty
                         <tr>
-                            <td colspan="4" class="p-6 text-center text-gray-400">
+                            <td colspan="5" class="p-6 text-center text-gray-400">
                                 Belum ada event
                             </td>
                         </tr>
@@ -93,20 +133,32 @@
         <!-- ===================== -->
         <div id="tab-transaksi" class="hidden">
             
-            <!-- FILTER EVENT -->
+            <!-- FILTER EVENT & KATEGORI -->
             <div class="flex flex-col md:flex-row md:items-center justify-end gap-3 mb-5">
                 <form action="{{ route('panitia.riwayat') }}" method="GET" class="flex gap-2 w-full md:w-auto">
+                    <input type="hidden" name="tab" value="transaksi">
+
+                    <select name="trx_kategori_id" onchange="this.form.submit()" 
+                        class="border rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-[#192853] outline-none bg-white w-full md:w-48">
+                        <option value="">Semua Kategori</option>
+                        @foreach($categories as $cat)
+                            <option value="{{ $cat->id }}" {{ request('trx_kategori_id') == $cat->id ? 'selected' : '' }}>
+                                {{ $cat->nama_kategori }}
+                            </option>
+                        @endforeach
+                    </select>
+
                     <select name="event_id" onchange="this.form.submit()" 
                         class="border rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-[#192853] outline-none bg-white w-full md:w-64">
                         <option value="">Semua Event</option>
-                        @foreach($events as $ev)
+                        @foreach($allEvents as $ev)
                             <option value="{{ $ev->id }}" {{ request('event_id') == $ev->id ? 'selected' : '' }}>
                                 {{ $ev->judul }}
                             </option>
                         @endforeach
                     </select>
                     
-                    @if(request('event_id'))
+                    @if(request('trx_kategori_id') || request('event_id'))
                         <a href="{{ route('panitia.riwayat') }}?tab=transaksi" 
                             class="px-3 py-2 bg-gray-100 text-gray-600 rounded-lg text-sm hover:bg-gray-200 transition flex items-center"
                             title="Reset Filter">
@@ -124,9 +176,9 @@
                             <th class="p-3 text-left">No</th>
                             <th class="p-3 text-left">Nama</th>
                             <th class="p-3 text-left">Event</th>
-                            <th class="p-3 text-left">Tiket</th>
                             <th class="p-3 text-left">Tanggal</th>
                             <th class="p-3 text-left">Total</th>
+                            <th class="p-3 text-center">Aksi</th>
                         </tr>
                     </thead>
 
@@ -147,16 +199,20 @@
                                 {{ $trx->event->judul ?? '-' }}
                             </td>
 
-                            <td class="p-3 text-gray-700">
-                                {{ $trx->tiket->nama ?? '-' }}
-                            </td>
-
                             <td class="p-3 text-gray-600 text-sm">
                                 {{ $trx->created_at->format('d M Y') }}
                             </td>
 
                             <td class="p-3 font-semibold text-gray-800">
                                 Rp {{ number_format($trx->total) }}
+                            </td>
+
+                            <td class="p-3 text-center">
+                                <button type="button" 
+                                    onclick="openTrxModal('{{ $trx->nama }}', '{{ $trx->email }}', '{{ $trx->event->judul ?? '-' }}', '{{ $trx->jenis_tiket }}', '{{ $trx->created_at->format('d M Y') }}', 'Rp {{ number_format($trx->total) }}', '{{ $trx->status }}')"
+                                    class="bg-[#192853] text-white px-3 py-1 rounded-full text-xs font-semibold hover:bg-blue-800 transition">
+                                    Detail
+                                </button>
                             </td>
 
                         </tr>
@@ -209,6 +265,95 @@ document.addEventListener('DOMContentLoaded', function() {
         showTab('transaksi');
     }
 });
+
+function openTrxModal(name, email, eventTitle, ticketType, purchaseDate, totalPrice, status) {
+    document.getElementById('m_buyer_name').innerText = name;
+    document.getElementById('m_buyer_email').innerText = email;
+    document.getElementById('m_event_title').innerText = eventTitle;
+    document.getElementById('m_event_title').title = eventTitle;
+    document.getElementById('m_ticket_type').innerText = ticketType;
+    document.getElementById('m_purchase_date').innerText = purchaseDate;
+    document.getElementById('m_total_price').innerText = totalPrice;
+    
+    const statusEl = document.getElementById('m_status');
+    statusEl.innerText = status.toUpperCase();
+    
+    statusEl.className = 'px-3 py-1 text-xs rounded-full font-semibold';
+    
+    if (status === 'pending') {
+        statusEl.classList.add('bg-yellow-100', 'text-yellow-700');
+    } else if (status === 'paid') {
+        statusEl.classList.add('bg-green-100', 'text-green-700');
+    } else {
+        statusEl.classList.add('bg-red-100', 'text-red-700');
+    }
+    
+    const modal = document.getElementById('detailModal');
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+}
+
+function closeTrxModal() {
+    const modal = document.getElementById('detailModal');
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
+}
+
+window.addEventListener('click', function(event) {
+    const modal = document.getElementById('detailModal');
+    if (event.target === modal) {
+        closeTrxModal();
+    }
+});
 </script>
+
+<!-- MODAL DETAIL TRANSAKSI -->
+<div id="detailModal"
+    class="fixed inset-0 bg-black/40 hidden items-center justify-center z-50 px-4">
+
+    <div class="bg-white w-full max-w-sm rounded-xl shadow-xl overflow-hidden">
+
+        <div class="bg-[#192853] p-4 flex justify-between items-start">
+
+            <div>
+                <h3 id="m_buyer_name" class="text-yellow-400 font-semibold text-sm"></h3>
+                <p id="m_buyer_email" class="text-white/60 text-xs"></p>
+            </div>
+
+            <button onclick="closeTrxModal()" class="text-white text-lg leading-none">&times;</button>
+
+        </div>
+
+        <div class="p-4 space-y-3 text-sm">
+
+            <div class="flex justify-between">
+                <span class="text-gray-500">Event</span>
+                <span id="m_event_title" class="font-semibold text-gray-800 text-right max-w-[200px] truncate"></span>
+            </div>
+
+            <div class="flex justify-between">
+                <span class="text-gray-500">Jenis Tiket</span>
+                <span id="m_ticket_type" class="font-semibold text-gray-800 text-right"></span>
+            </div>
+
+            <div class="flex justify-between">
+                <span class="text-gray-500">Tanggal Beli</span>
+                <span id="m_purchase_date" class="text-gray-800"></span>
+            </div>
+
+            <div class="flex justify-between">
+                <span class="text-gray-500">Total</span>
+                <span id="m_total_price" class="font-semibold text-gray-800"></span>
+            </div>
+
+            <div class="flex justify-between items-center">
+                <span class="text-gray-500">Status</span>
+                <span id="m_status" class="px-3 py-1 text-xs rounded-full font-semibold"></span>
+            </div>
+
+        </div>
+
+    </div>
+</div>
 
 @endsection
