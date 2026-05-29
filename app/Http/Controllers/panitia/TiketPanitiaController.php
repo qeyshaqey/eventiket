@@ -9,15 +9,19 @@ use Illuminate\Http\Request;
 
 class TiketPanitiaController extends Controller
 {
+    //MENAMPILKAN HALAMAN PENGELOLAAN TIKET
     public function index(Request $request)
 {
+    //MENGAMBIL SELURUH EVENT UNTUK DITAMPILKAN DI HALAMAN PENGELOLAAN TIKET
     $events = Event::with(['tikets', 'kategori'])->latest()->get();
 
+    //MENGAMBIL EVENT YANG DIPILIH (UNTUK MENYOROTNYA DI VIEW)
     $highlightEventId = $request->query('event_id');
 
     return view('pages.panitia.tiket', compact('events', 'highlightEventId'));
 }
 
+    //MENAMBAH JENIS TIKET BARU
     public function store(Request $request)
 {
     $validated = $request->validate([
@@ -38,6 +42,7 @@ class TiketPanitiaController extends Controller
     ])->with('success', 'Jenis tiket berhasil ditambahkan');
 }
 
+    //MENEGEDIT JENIS TIKET
     public function update(Request $request, Tiket $tiket)
     {
         $validated = $request->validate([
@@ -51,6 +56,7 @@ class TiketPanitiaController extends Controller
         return back()->with('success', 'Tiket diupdate');
     }
 
+    //MENGHAPUS JENIS TIKET
     public function destroy(Tiket $tiket)
     {
         $eventId = $tiket->event_id;
