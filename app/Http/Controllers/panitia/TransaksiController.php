@@ -7,6 +7,8 @@ use App\Models\Pembelian;
 
 class TransaksiController extends Controller
 {
+
+    //MENGAMBIL DATA PEMBELIAN
     public function index()
     {
         $pembelians = Pembelian::with(['user', 'detail_pembelians.tiket.event'])

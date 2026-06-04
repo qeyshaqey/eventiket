@@ -89,7 +89,7 @@ class EventPanitiaController extends Controller
 
     public function riwayat(Request $request)
     {
-        // Get all base events that are finished/past for dropdown list
+        //MENAMPILKAN SEMUA EVENT YANG SUDAH SELESAI UNTUK DITAMPILKAN DI FILTER DAN DI TABS EVENT
         $allEvents = Event::where('status', 'Published')
             ->where(function ($q) {
                 $q->where('tanggal_selesai', '<', now()->toDateString())
@@ -101,10 +101,10 @@ class EventPanitiaController extends Controller
             ->latest()
             ->get();
 
-        // Get all categories for filter dropdown
+        // MENAMPILKAN SEMUA KATEGORI UNTUK FILTER
         $categories = \App\Models\Kategori::all();
 
-        // Query filtered events for the Event Tab
+        // Filter events yang sudah selesai untuk ditampilkan di tab Event
         $eventQuery = Event::where('status', 'Published')
             ->where(function ($q) {
                 $q->where('tanggal_selesai', '<', now()->toDateString())
@@ -114,12 +114,12 @@ class EventPanitiaController extends Controller
                   });
             });
 
-        // Apply filter by category
+        // FILTER BERDASARKAN KATEGORI
         if ($request->has('kategori_id') && $request->kategori_id != '') {
             $eventQuery->where('kategori_id', $request->kategori_id);
         }
 
-        // Apply filter by specific event
+        // FILTER BERDASARKAN EVENT
         if ($request->has('event_filter_id') && $request->event_filter_id != '') {
             $eventQuery->where('id', $request->event_filter_id);
         }
@@ -128,7 +128,7 @@ class EventPanitiaController extends Controller
             ->latest()
             ->get();
         
-        // Query details for the Transaksi Tab
+        // MENGAMBIL DATA DETAIL PEMBELIAN YANG TERKAIT DENGAN EVENT YANG SUDAH SELESAI
         $query = DetailPembelian::with(['pembelian.user', 'tiket.event'])
             ->whereHas('tiket.event', function ($q) {
                 $q->where('status', 'Published')
@@ -141,13 +141,14 @@ class EventPanitiaController extends Controller
                   });
             });
 
-        // Apply category filter for transactions
+        // FILTER DETAIL PEMBELIAN BERDASARKAN KATEGORI
         if ($request->has('trx_kategori_id') && $request->trx_kategori_id != '') {
             $query->whereHas('tiket.event', function ($q) use ($request) {
                 $q->where('kategori_id', $request->trx_kategori_id);
             });
         }
 
+        // FILTER DETAIL PEMBELIAN BERDASARKAN EVENT
         if ($request->has('event_id') && $request->event_id != '') {
             $query->whereHas('tiket', function ($q) use ($request) {
                 $q->where('event_id', $request->event_id);
@@ -156,6 +157,7 @@ class EventPanitiaController extends Controller
 
         $details = $query->latest()->get();
 
+        // KONVERSI STATUS PEMBAYARAN YANG DIKIRIM KE VIEW
         $transaksis = $details->map(function ($detail) {
             $rawStatus = $detail->pembelian->status_pembayaran ?? 'Batal';
             $status = 'failed';
@@ -167,6 +169,7 @@ class EventPanitiaController extends Controller
 
             $jenisTiket = ($detail->tiket->nama ?? '-') . ' (' . $detail->jumlah . 'x)';
 
+            //OBJEK TRANSAKSI YANG DIKIRIM KE VIEW
             return (object) [
                 'nama' => $detail->pembelian->user->name ?? '-',
                 'email' => $detail->pembelian->user->email ?? '-',
@@ -184,7 +187,7 @@ class EventPanitiaController extends Controller
 
     public function profil()
     {
-        // Data Mock disimpan di session agar bisa "diupdate" untuk contoh
+        // Disimpan di session agar bisa "diupdate" untuk contoh saja, karena tidak ada tabel user yang sebenarnya untuk panitia
         $user = (object)[
             'name' => session('mock_name', session('user') ?? 'Panitia Event'),
             'email' => session('mock_email', 'panitia@eventiket.com'),
