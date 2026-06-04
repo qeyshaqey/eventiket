@@ -10,34 +10,34 @@ use Illuminate\Support\Facades\Storage;
 
 class ProfilController extends Controller
 {
-    // buat nampilin halaman profil pengunjung
+    // Menampilkan halaman profil pengunjung
     public function index()
     {
-        // cari data user berdasarkan session id login kustom kita
+        // Mengambil data pengguna berdasarkan ID sesi login
         $user = \App\Models\User::find(session('user_id'));
 
-        // kalo belum login atau session habis, lempar ke login
+        // Mengarahkan ke halaman login jika sesi telah berakhir atau belum masuk
         if (!$user) {
             return redirect()->route('login')->with('error', 'Silakan masuk terlebih dahulu.');
         }
 
-        // cari pengajuan panitia terakhir milik user ini
+        // Memeriksa riwayat pengajuan panitia terakhir milik pengguna
         $pengajuan = \App\Models\PengajuanPanitia::where('user_id', $user->id)->latest()->first();
 
         return view('pages.pengunjung.profil_pengunjung', compact('user', 'pengajuan'));
     }
 
-    // buat nge-update data profil (nama, foto, password)
+    // Memperbarui data profil pengguna (nama, foto, dan kata sandi)
     public function update(Request $request)
     {
         $user = \App\Models\User::find(session('user_id'));
 
-        // pastiin user udah login
+        // Memastikan pengguna telah masuk sebelum melakukan pembaruan
         if (!$user) {
             return redirect()->route('login')->with('error', 'Silakan masuk terlebih dahulu.');
         }
 
-        // validasi dulu biar inputannya bener dan aman
+        // Memvalidasi input dari pengguna
         $request->validate([
             'name' => 'required|string|max:255',
             'photo' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
@@ -53,44 +53,44 @@ class ProfilController extends Controller
             'password.confirmed' => 'Konfirmasi kata sandi tidak cocok.',
         ]);
 
-        // flag/penanda apakah ada data yang beneran berubah
+        // Penanda untuk mengetahui apakah terdapat perubahan data
         $isChanged = false;
 
-        // cek kalau namanya beda sama yang lama
+        // Memperbarui nama pengguna jika terdapat perubahan
         if ($user->name !== $request->name) {
             $user->name = $request->name;
-            // session nama di-update juga biar di navbar langsung berubah
+            // Memperbarui sesi nama agar tampilan navbar langsung menyesuaikan
             session(['user' => $user->name]);
             $isChanged = true;
         }
 
-        // cek kalau user upload foto baru
+        // Memeriksa apakah pengguna mengunggah foto profil baru
         if ($request->hasFile('photo')) {
-            // hapus foto lama dari storage biar gak menuh-menuhin
+            // Menghapus foto profil lama dari penyimpanan
             if ($user->photo) {
                 Storage::disk('public')->delete($user->photo);
             }
 
-            // simpan foto baru ke folder photos di public storage
+            // Menyimpan foto profil baru ke penyimpanan
             $path = $request->file('photo')->store('photos', 'public');
             $user->photo = $path;
             $isChanged = true;
         }
 
-        // cek kalau user ngisi password baru
+        // Memeriksa apakah pengguna memasukkan kata sandi baru
         if ($request->filled('password')) {
             $user->password = Hash::make($request->password);
             $isChanged = true;
         }
 
-        // kalau ada yang berubah baru kita save ke database
+        // Menyimpan perubahan ke basis data jika ada data yang diubah
         if ($isChanged) {
             $user->save();
             return redirect()->route('pengunjung.profil')
                 ->with('profile_success', 'Profil berhasil diperbarui!');
         }
 
-        // kalau klik simpan tapi gak ada yang diubah, langsung balik aja
+        // Mengembalikan ke halaman profil jika tidak ada perubahan
         return redirect()->route('pengunjung.profil')
             ->with('profile_success', 'Tidak ada perubahan data.');
     }
@@ -104,10 +104,10 @@ class ProfilController extends Controller
             return redirect()->route('login')->with('error', 'Silakan masuk terlebih dahulu.');
         }
 
-        // Ambil SEMUA riwayat pengajuan user ini (untuk ditampilkan)
+        // Mengambil seluruh riwayat pengajuan panitia pengguna untuk ditampilkan
         $riwayatPengajuan = \App\Models\PengajuanPanitia::where('user_id', $userId)->latest()->get();
 
-        // Cek apakah masih boleh mengajukan lagi
+        // Memeriksa kelayakan pengguna untuk mengajukan form baru
         $bolehAjukan = !$riwayatPengajuan->whereIn('status', ['pending', 'dicabut'])->count();
 
         return view('pages.pengunjung.daftar_panitia', compact('user', 'riwayatPengajuan', 'bolehAjukan'));
@@ -143,11 +143,11 @@ class ProfilController extends Controller
 
         \App\Models\PengajuanPanitia::create([
             'user_id'         => $userId,
-            'ukm'             => $request->organisasi,
+            'nama_organisasi' => $request->organisasi,
             'nama_event'      => $request->nama_event,
             'kategori'        => $request->kategori,
             'tanggal_event'   => $request->tanggal,
-            'deskripsi_event' => $request->deskripsi,
+            'deskripsi'       => $request->deskripsi,
             'status'          => 'pending',
         ]);
 

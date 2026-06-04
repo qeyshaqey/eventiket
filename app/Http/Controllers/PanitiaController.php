@@ -19,7 +19,7 @@ class PanitiaController extends Controller
                     "nama" => $item->user->name ?? '',
                     "email" => $item->user->email ?? '',
                     "nim" => $item->user->nim ?? '',
-                    "ukm" => $item->ukm,
+                    "nama_organisasi" => $item->nama_organisasi,
                     "status" => $item->status == 'disetujui' ? 'Aktif' : 'Nonaktif'
                 ];
             })
@@ -36,11 +36,11 @@ class PanitiaController extends Controller
                     "email" => $item->user->email ?? '',
                     "nim" => $item->user->nim ?? '',
                     "tanggal" => $item->created_at ? $item->created_at->format('d M Y') : '',
-                    "ukm" => $item->ukm,
+                    "nama_organisasi" => $item->nama_organisasi,
                     "event_nama" => $item->nama_event ?? '',
                     "kategori_event" => $item->kategori ?? '',
                     "tgl_event" => $item->tanggal_event ? \Carbon\Carbon::parse($item->tanggal_event)->format('d M Y') : '',
-                    "deskripsi" => $item->deskripsi_event ?? ''
+                    "deskripsi" => $item->deskripsi ?? ''
                 ];
             })
             ->toArray();
@@ -54,7 +54,7 @@ class PanitiaController extends Controller
                     "nama" => $item->user->name ?? '',
                     "email" => $item->user->email ?? '',
                     "nim" => $item->user->nim ?? '',
-                    "ukm" => $item->ukm,
+                    "nama_organisasi" => $item->nama_organisasi,
                     "alasan" => $item->alasan_penolakan ?? 'Tidak ada alasan'
                 ];
             })

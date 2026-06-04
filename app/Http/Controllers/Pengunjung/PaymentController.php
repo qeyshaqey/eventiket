@@ -15,7 +15,7 @@ class PaymentController extends Controller
 {
     public function __construct()
     {
-        // Set konfigurasi API Key Midtrans dari file .env
+        // Mengatur konfigurasi API Key Midtrans dari file .env
         Config::$serverKey = config('midtrans.server_key');
         Config::$isProduction = config('midtrans.is_production');
         Config::$isSanitized = config('midtrans.is_sanitized');
@@ -38,9 +38,9 @@ class PaymentController extends Controller
                                 ->where('order_id', $orderIdRequest)
                                 ->first();
         } else {
-            // Ambil data pembelian terakhir yang statusnya masih 'pending'
+            // Mengambil data transaksi terakhir pengguna yang berstatus 'Belum Bayar'
             $pembelian = Pembelian::where('user_id', $user->id)
-                                ->where('status_pembayaran', 'Pending')
+                                ->where('status_pembayaran', 'Belum Bayar')
                                 ->latest()
                                 ->first();
         }
@@ -49,10 +49,10 @@ class PaymentController extends Controller
             return redirect()->route('pengunjung.tiket')->with('error', 'Data tagihan tidak ditemukan atau sudah dibayar.');
         }
 
-        // Kalau snap_token sudah ada, pakai yang itu. Kalau belum, kita minta ke Midtrans
-        if ($pembelian->snap_token && $pembelian->status_pembayaran == 'Pending') {
+        // Menggunakan snap_token yang sudah ada, atau meminta token baru ke Midtrans jika belum tersedia
+        if ($pembelian->snap_token && $pembelian->status_pembayaran == 'Belum Bayar') {
             $snapToken = $pembelian->snap_token;
-        } else if ($pembelian->status_pembayaran == 'Pending') {
+        } else if ($pembelian->status_pembayaran == 'Belum Bayar') {
             $params = [
                 'transaction_details' => [
                     'order_id' => $pembelian->order_id,
@@ -89,11 +89,11 @@ class PaymentController extends Controller
         if ($hashed == $request->signature_key) {
             if ($request->transaction_status == 'capture' || $request->transaction_status == 'settlement') {
                 $pembelian = Pembelian::where('order_id', $request->order_id)->first();
-                if ($pembelian && $pembelian->status_pembayaran !== 'Sukses') {
-                    $pembelian->status_pembayaran = 'Sukses';
+                if ($pembelian && $pembelian->status_pembayaran !== 'Lunas') {
+                    $pembelian->status_pembayaran = 'Lunas';
                     $pembelian->save();
                     
-                    // Generate barcode for each ticket bought
+                    // Menghasilkan kode barcode unik untuk setiap tiket yang dibeli
                     $details = $pembelian->detail_pembelians;
                     foreach ($details as $detail) {
                         for ($i = 0; $i < $detail->jumlah; $i++) {
@@ -103,7 +103,7 @@ class PaymentController extends Controller
                             ]);
                         }
                         
-                        // Increment tiket_terjual
+                        // Menambahkan jumlah tiket terjual untuk memperbarui sisa kuota
                         $tiket = $detail->tiket;
                         if ($tiket) {
                             $tiket->tiket_terjual += $detail->jumlah;
@@ -112,11 +112,11 @@ class PaymentController extends Controller
                     }
                 }
             } elseif ($request->transaction_status == 'pending') {
-                // Biarkan status tetap pending
+                // Membiarkan status transaksi tetap pending jika belum diselesaikan
             } else {
                 $pembelian = Pembelian::where('order_id', $request->order_id)->first();
                 if ($pembelian) {
-                    $pembelian->status_pembayaran = 'Gagal';
+                    $pembelian->status_pembayaran = 'Kedaluwarsa';
                     $pembelian->save();
                 }
             }

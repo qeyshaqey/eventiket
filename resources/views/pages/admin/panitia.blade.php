@@ -43,7 +43,7 @@
                         <th class="p-3 text-left">Nama</th>
                         <th class="p-3 text-left">Email</th>
                         <th class="p-3 text-left">NIM</th>
-                        <th class="p-3 text-left">UKM</th>
+                        <th class="p-3 text-left">Organisasi</th>
                         <th class="p-3 text-left">Status</th>
                         <th class="p-3 text-center">Aksi</th>
                     </tr>
@@ -77,7 +77,7 @@
                         <td class="py-4 px-3 font-medium text-gray-700">{{ $d['nama'] }}</td>
                         <td class="py-4 px-3 text-gray-500">{{ $d['email'] }}</td>
                         <td class="py-4 px-3 text-gray-600">{{ $d['nim'] }}</td>
-                        <td class="py-4 px-3">{{ $d['ukm'] }}</td>
+                        <td class="py-4 px-3">{{ $d['nama_organisasi'] }}</td>
                         <td class="py-4 px-3">
                             <span class="px-3 py-1 rounded-full text-xs bg-green-100 text-green-600 font-bold">
                                 {{ $d['status'] }}
@@ -108,7 +108,7 @@
                         <th class="p-3 text-left">Nama</th>
                         <th class="p-3 text-left">Email</th>
                         <th class="p-3 text-left">NIM</th>
-                        <th class="p-3 text-left">UKM</th>
+                        <th class="p-3 text-left">Organisasi</th>
                         <th class="p-3 text-left">Status</th>
                     </tr>
                 </thead>
@@ -141,7 +141,7 @@
                         <td class="py-4 px-3 font-medium text-gray-700">{{ $d['nama'] }}</td>
                         <td class="py-4 px-3 text-gray-500">{{ $d['email'] }}</td>
                         <td class="py-4 px-3 text-gray-600">{{ $d['nim'] }}</td>
-                        <td class="py-4 px-3">{{ $d['ukm'] }}</td>
+                        <td class="py-4 px-3">{{ $d['nama_organisasi'] }}</td>
                         <td class="py-4 px-3 first:rounded-l-lg last:rounded-r-lg">
                             <span class="px-3 py-1 rounded-full text-xs bg-red-100 text-red-600 font-bold">
                                 Diturunkan
@@ -178,7 +178,7 @@
                         <th class="p-3 text-left">Nama</th>
                         <th class="p-3 text-left">Email</th>
                         <th class="p-3 text-left">NIM</th>
-                        <th class="p-3 text-left">UKM</th>
+                        <th class="p-3 text-left">Organisasi</th>
                         <th class="p-3 text-left">Alasan</th>
                     </tr>
                 </thead>
@@ -201,7 +201,7 @@
                         <td class="py-4 px-3 font-medium text-gray-700">{{ $d['nama'] }}</td>
                         <td class="py-4 px-3 text-gray-500">{{ $d['email'] }}</td>
                         <td class="py-4 px-3 text-gray-600">{{ $d['nim'] }}</td>
-                        <td class="py-4 px-3">{{ $d['ukm'] }}</td>
+                        <td class="py-4 px-3">{{ $d['nama_organisasi'] }}</td>
                         <td class="py-4 px-3 text-red-500 font-medium first:rounded-l-lg last:rounded-r-lg">{{ $d['alasan'] }}</td>
                     </tr>
                     @endforeach
@@ -231,7 +231,7 @@
                         <th class="p-3 text-left">Email</th>
                         <th class="p-3 text-left">NIM</th>
                         <th class="p-3 text-left">Tanggal</th>
-                        <th class="p-3 text-left">UKM</th>
+                        <th class="p-3 text-left">Organisasi</th>
                         <th class="p-3 text-center">Aksi</th>
                     </tr>
                 </thead>
@@ -254,7 +254,7 @@
                         <td class="py-4 px-3 text-gray-500">{{ $d['email'] }}</td>
                         <td class="py-4 px-3 text-gray-600">{{ $d['nim'] }}</td>
                         <td class="py-4 px-3">{{ $d['tanggal'] }}</td>
-                        <td class="py-4 px-3">{{ $d['ukm'] }}</td>
+                        <td class="py-4 px-3">{{ $d['nama_organisasi'] }}</td>
 
                         <td class="py-4 px-3 first:rounded-l-lg last:rounded-r-lg">
                             <div class="flex gap-2 justify-center" onclick="event.stopPropagation()">
@@ -349,7 +349,7 @@
                 </div>
                 <div class="grid grid-cols-12 items-start">
                     <b class="col-span-4 text-gray-900">Organisasi</b> 
-                    <span id="detUKM" class="col-span-8 text-gray-600"></span>
+                    <span id="detOrganisasi" class="col-span-8 text-gray-600"></span>
                 </div>
                 <hr class="border-gray-50">
                 <div class="grid grid-cols-12 items-start">
@@ -448,7 +448,7 @@
     function openDetailModal(data) {
         document.getElementById('detNama').innerText = data.nama;
         document.getElementById('detIdentitas').innerText = data.nim + " / " + data.email;
-        document.getElementById('detUKM').innerText = data.ukm;
+        document.getElementById('detOrganisasi').innerText = data.nama_organisasi;
         document.getElementById('detEvent').innerText = data.event_nama;
         document.getElementById('detKategori').innerText = data.kategori_event;
         document.getElementById('detTgl').innerText = data.tgl_event;

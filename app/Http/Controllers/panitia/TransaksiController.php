@@ -19,14 +19,6 @@ class TransaksiController extends Controller
             $firstDetail = $pembelian->detail_pembelians->first();
             $event = $firstDetail->tiket->event ?? null;
             
-            // Map status_pembayaran ('Pending', 'Sukses', 'Batal') ke yang diharapkan view ('pending', 'paid', 'failed')
-            $status = 'failed';
-            if ($pembelian->status_pembayaran === 'Pending') {
-                $status = 'pending';
-            } elseif ($pembelian->status_pembayaran === 'Sukses') {
-                $status = 'paid';
-            }
-
             $jenisTiket = $pembelian->detail_pembelians->map(function ($detail) {
                 return ($detail->tiket->nama ?? '-') . ' (' . $detail->jumlah . 'x)';
             })->implode(', ');
@@ -37,7 +29,7 @@ class TransaksiController extends Controller
                 'event' => $event,
                 'jumlah_tiket' => $pembelian->detail_pembelians->sum('jumlah'),
                 'total_harga' => $pembelian->total_bayar,
-                'status' => $status,
+                'status' => $pembelian->status_pembayaran,
                 'created_at' => $pembelian->tanggal_beli,
                 'jenis_tiket' => $jenisTiket,
             ];
