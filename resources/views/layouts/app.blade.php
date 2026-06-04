@@ -44,6 +44,34 @@
 
         <!-- CONTENT -->
         <div class="p-4 md:p-8 flex-1 w-full overflow-x-hidden">
+            @if(session('success'))
+                <div id="alert-success" class="flex items-center p-4 mb-4 text-green-800 rounded-lg bg-green-50" role="alert">
+                    <i class="fa-solid fa-circle-check text-lg mr-2"></i>
+                    <span class="sr-only">Success</span>
+                    <div class="text-sm font-bold">
+                        {{ session('success') }}
+                    </div>
+                    <button type="button" class="ms-auto -mx-1.5 -my-1.5 bg-green-50 text-green-500 rounded-lg focus:ring-2 focus:ring-green-400 p-1.5 hover:bg-green-200 inline-flex items-center justify-center h-8 w-8" data-dismiss-target="#alert-success" aria-label="Close">
+                        <span class="sr-only">Close</span>
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+            @endif
+
+            @if(session('error'))
+                <div id="alert-error" class="flex items-center p-4 mb-4 text-red-800 rounded-lg bg-red-50" role="alert">
+                    <i class="fa-solid fa-circle-exclamation text-lg mr-2"></i>
+                    <span class="sr-only">Error</span>
+                    <div class="text-sm font-bold">
+                        {{ session('error') }}
+                    </div>
+                    <button type="button" class="ms-auto -mx-1.5 -my-1.5 bg-red-50 text-red-500 rounded-lg focus:ring-2 focus:ring-red-400 p-1.5 hover:bg-red-200 inline-flex items-center justify-center h-8 w-8" data-dismiss-target="#alert-error" aria-label="Close">
+                        <span class="sr-only">Close</span>
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+            @endif
+
             @yield('content')
         </div>
 

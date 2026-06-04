@@ -38,7 +38,7 @@
 <div class="bg-white rounded-xl border shadow">
 
     <!-- SCROLL AREA (DITINGGIKAN) -->
-    <div class="max-h-[420px] overflow-y-auto overflow-x-auto rounded-xl">
+    <div class="max-h-[65vh] overflow-y-auto overflow-x-auto rounded-xl">
 
         <table class="w-full text-sm border-separate border-spacing-y-1">
             <thead class="bg-[#f5f9ff] text-gray-500 sticky top-0 z-10">
@@ -54,6 +54,16 @@
             </thead>
 
             <tbody id="tableBody">
+                @if(count($data) == 0)
+                <tr class="empty-row bg-white cursor-default">
+                    <td colspan="7" class="py-12 px-4 text-center">
+                        <div class="flex flex-col items-center justify-center text-gray-300 opacity-70">
+                            <i class="fa-solid fa-box-open text-[150px] mb-4 drop-shadow-2xl"></i>
+                            <p class="text-2xl font-bold drop-shadow-sm">Data tidak tersedia</p>
+                        </div>
+                    </td>
+                </tr>
+                @else
                 @foreach($data as $i => $d)
                 <tr class="bg-white hover:bg-gray-50 transition shadow-sm"
                     data-kategori="{{ $d['kategori'] }}"
@@ -80,6 +90,7 @@
 
                 </tr>
                 @endforeach
+                @endif
             </tbody>
         </table>
 
@@ -134,7 +145,7 @@ function filter(){
             emptyRow.innerHTML = `
                 <td colspan="7" class="py-12 px-4 text-center">
                     <div class="flex flex-col items-center justify-center text-gray-300 opacity-70">
-                        <i class="fa-solid fa-box-open text-6xl mb-4 drop-shadow-sm"></i>
+                        <i class="fa-solid fa-box-open text-[150px] mb-4 drop-shadow-2xl"></i>
                         <p class="text-2xl font-bold drop-shadow-sm">Data tidak tersedia</p>
                     </div>
                 </td>

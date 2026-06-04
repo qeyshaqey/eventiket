@@ -8,21 +8,37 @@ class EventController extends Controller
 {
     public function index()
     {
-        $events = [
-            ["tanggal"=>"30 Mei","nama"=>"Seminar Forte"],
-            ["tanggal"=>"15 Nov","nama"=>"Seminar Meraih Mimpi"],
-        ];
+        $eventDisetujui = \App\Models\Event::with(['panitia', 'kategori'])->where('status', 'Published')->get();
+        $eventDitolak = \App\Models\Event::with(['panitia', 'kategori'])->where('status', 'Rejected')->get();
+        $eventPending = \App\Models\Event::with(['panitia', 'kategori'])->where('status', 'Draft')->get();
 
-        return view('pages.admin.kelola-event', compact('events'));
+        return view('pages.admin.kelola-event', compact('eventDisetujui', 'eventDitolak', 'eventPending'));
     }
 
     public function approve($id)
     {
-        return redirect()->back();
+        $event = \App\Models\Event::findOrFail($id);
+        $event->status = 'Published';
+        $event->save();
+
+        return redirect()->back()->with('success', 'Event berhasil disetujui');
+    }
+
+    public function reject(Request $request, $id)
+    {
+        $event = \App\Models\Event::findOrFail($id);
+        $event->status = 'Rejected';
+        $event->alasan_penolakan = $request->input('alasan', 'Tidak memenuhi syarat');
+        $event->save();
+
+        return redirect()->back()->with('success', 'Event berhasil ditolak');
     }
 
     public function delete($id)
     {
-        return redirect()->back();
+        $event = \App\Models\Event::findOrFail($id);
+        $event->delete();
+        
+        return redirect()->back()->with('success', 'Event berhasil dihapus');
     }
 }

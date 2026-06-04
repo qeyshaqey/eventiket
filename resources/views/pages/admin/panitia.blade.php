@@ -35,7 +35,7 @@
         </div>
 
         <!-- TABLE 1: Panitia Aktif -->
-        <div id="divAktif" class="max-h-[400px] overflow-y-auto overflow-x-auto">
+        <div id="divAktif" class="max-h-[65vh] overflow-y-auto overflow-x-auto">
             <table class="w-full text-sm border-separate border-spacing-y-1" id="tableKelola">
                 <thead class="text-gray-500 border-b bg-gray-50 sticky top-0">
                     <tr>
@@ -49,6 +49,26 @@
                     </tr>
                 </thead>
                 <tbody>
+                    @php
+                        $hasAktif = false;
+                        foreach($kelola as $d) {
+                            if($d['status'] === 'Aktif') {
+                                $hasAktif = true;
+                                break;
+                            }
+                        }
+                    @endphp
+
+                    @if(!$hasAktif)
+                    <tr class="empty-row bg-white cursor-default">
+                        <td colspan="7" class="py-12 px-4 text-center">
+                            <div class="flex flex-col items-center justify-center text-gray-300 opacity-70">
+                                <i class="fa-solid fa-box-open text-[150px] mb-4 drop-shadow-2xl"></i>
+                                <p class="text-2xl font-bold drop-shadow-sm">Data tidak tersedia</p>
+                            </div>
+                        </td>
+                    </tr>
+                    @else
                     @php $idx1 = 1; @endphp
                     @foreach($kelola as $d)
                     @if($d['status'] === 'Aktif')
@@ -74,12 +94,13 @@
                     </tr>
                     @endif
                     @endforeach
+                    @endif
                 </tbody>
             </table>
         </div>
 
         <!-- TABLE 2: Riwayat Diturunkan -->
-        <div id="divDiturunkan" class="max-h-[400px] overflow-y-auto overflow-x-auto hidden">
+        <div id="divDiturunkan" class="max-h-[65vh] overflow-y-auto overflow-x-auto hidden">
             <table class="w-full text-sm border-separate border-spacing-y-1" id="tableDiturunkan">
                 <thead class="text-gray-500 border-b bg-gray-50 sticky top-0">
                     <tr>
@@ -92,6 +113,26 @@
                     </tr>
                 </thead>
                 <tbody>
+                    @php
+                        $hasNonaktif = false;
+                        foreach($kelola as $d) {
+                            if($d['status'] === 'Nonaktif') {
+                                $hasNonaktif = true;
+                                break;
+                            }
+                        }
+                    @endphp
+
+                    @if(!$hasNonaktif)
+                    <tr class="empty-row bg-white cursor-default">
+                        <td colspan="6" class="py-12 px-4 text-center">
+                            <div class="flex flex-col items-center justify-center text-gray-300 opacity-70">
+                                <i class="fa-solid fa-box-open text-[150px] mb-4 drop-shadow-2xl"></i>
+                                <p class="text-2xl font-bold drop-shadow-sm">Data tidak tersedia</p>
+                            </div>
+                        </td>
+                    </tr>
+                    @else
                     @php $idx2 = 1; @endphp
                     @foreach($kelola as $d)
                     @if($d['status'] === 'Nonaktif')
@@ -109,6 +150,7 @@
                     </tr>
                     @endif
                     @endforeach
+                    @endif
                 </tbody>
             </table>
         </div>
@@ -126,7 +168,7 @@
             </div>
         </div>
 
-        <div class="max-h-[400px] overflow-y-auto overflow-x-auto">
+        <div class="max-h-[65vh] overflow-y-auto overflow-x-auto">
             <table class="w-full text-sm border-separate border-spacing-y-1" id="tableDitolak">
 
                 <!-- HEADER FIX -->
@@ -143,6 +185,16 @@
 
                 <!-- BODY FIX -->
                 <tbody id="tbodyDitolak">
+                    @if(count($ditolak) == 0)
+                    <tr class="empty-row bg-white cursor-default">
+                        <td colspan="6" class="py-12 px-4 text-center">
+                            <div class="flex flex-col items-center justify-center text-gray-300 opacity-70">
+                                <i class="fa-solid fa-box-open text-[150px] mb-4 drop-shadow-2xl"></i>
+                                <p class="text-2xl font-bold drop-shadow-sm">Data tidak tersedia</p>
+                            </div>
+                        </td>
+                    </tr>
+                    @else
                     @foreach($ditolak as $i => $d)
                     <tr class="bg-white hover:bg-gray-50 transition shadow-sm">
                         <td class="py-4 px-3 text-center first:rounded-l-lg last:rounded-r-lg">{{ $i+1 }}</td>
@@ -153,6 +205,7 @@
                         <td class="py-4 px-3 text-red-500 font-medium first:rounded-l-lg last:rounded-r-lg">{{ $d['alasan'] }}</td>
                     </tr>
                     @endforeach
+                    @endif
                 </tbody>
 
             </table>
@@ -169,7 +222,7 @@
             </div>
         </div>
 
-        <div class="max-h-[400px] overflow-y-auto overflow-x-auto">
+        <div class="max-h-[65vh] overflow-y-auto overflow-x-auto">
             <table class="w-full text-sm border-separate border-spacing-y-1" id="tablePengajuan">
                 <thead class="text-gray-500 border-b bg-gray-50 sticky top-0">
                     <tr>
@@ -184,6 +237,16 @@
                 </thead>
 
                 <tbody>
+                    @if(count($pengajuan) == 0)
+                    <tr class="empty-row bg-white cursor-default">
+                        <td colspan="7" class="py-12 px-4 text-center">
+                            <div class="flex flex-col items-center justify-center text-gray-300 opacity-70">
+                                <i class="fa-solid fa-box-open text-[150px] mb-4 drop-shadow-2xl"></i>
+                                <p class="text-2xl font-bold drop-shadow-sm">Data tidak tersedia</p>
+                            </div>
+                        </td>
+                    </tr>
+                    @else
                     @foreach($pengajuan as $i => $d)
                     <tr class="bg-white hover:bg-gray-50 transition cursor-pointer shadow-sm" onclick="openDetailModal({{ json_encode($d) }})">
                         <td class="py-4 px-3 text-center first:rounded-l-lg last:rounded-r-lg">{{ $i+1 }}</td>
@@ -210,6 +273,7 @@
                         </td>
                     </tr>
                     @endforeach
+                    @endif
                 </tbody>
 
             </table>
@@ -228,9 +292,28 @@
             <h2 class="text-base font-semibold text-gray-700 mb-2">Alasan Penolakan</h2>
             <p id="namaPanitia" class="text-sm text-gray-500 mb-3"></p>
 
+            <div class="space-y-2 mb-3">
+                <label class="flex items-start gap-2 cursor-pointer">
+                    <input type="radio" name="alasan_opsi" value="Data identitas (NIM/Email) tidak valid atau tidak terdaftar." onchange="setAlasanPanitia(this.value)" class="mt-1" required>
+                    <span class="text-sm text-gray-600 leading-tight">Data identitas (NIM/Email) tidak valid atau tidak terdaftar.</span>
+                </label>
+                <label class="flex items-start gap-2 cursor-pointer">
+                    <input type="radio" name="alasan_opsi" value="Terdapat kesalahan atau ketidaksesuaian pada pengisian asal UKM/Organisasi." onchange="setAlasanPanitia(this.value)" class="mt-1">
+                    <span class="text-sm text-gray-600 leading-tight">Kesalahan/ketidaksesuaian pada asal UKM/Organisasi.</span>
+                </label>
+                <label class="flex items-start gap-2 cursor-pointer">
+                    <input type="radio" name="alasan_opsi" value="Kuota panitia untuk posisi/event ini sudah penuh." onchange="setAlasanPanitia(this.value)" class="mt-1">
+                    <span class="text-sm text-gray-600 leading-tight">Kuota panitia untuk posisi/event ini sudah penuh.</span>
+                </label>
+                <label class="flex items-start gap-2 cursor-pointer">
+                    <input type="radio" name="alasan_opsi" value="lainnya" onchange="setAlasanPanitia('lainnya')" class="mt-1">
+                    <span class="text-sm text-gray-600 leading-tight">Alasan Lainnya:</span>
+                </label>
+            </div>
+
             <textarea id="alasanInput" name="alasan_penolakan" required
-                class="w-full border rounded-lg p-2 text-sm focus:ring-1 focus:ring-red-400"
-                placeholder="Masukkan alasan..."></textarea>
+                class="w-full border rounded-lg p-2 text-sm focus:ring-1 focus:ring-red-400 hidden"
+                placeholder="Ketik alasan lainnya di sini..."></textarea>
 
             <div class="flex justify-end gap-2 mt-4">
                 <button type="button" data-modal-hide="modalTolak" class="px-3 py-1.5 text-sm rounded-lg bg-gray-200">Batal</button>
@@ -332,10 +415,27 @@
     // MODAL
     let selectedNama = '';
 
+    function setAlasanPanitia(val) {
+        let textarea = document.getElementById('alasanInput');
+        if(val === 'lainnya') {
+            textarea.classList.remove('hidden');
+            textarea.value = '';
+            textarea.focus();
+        } else {
+            textarea.classList.add('hidden');
+            textarea.value = val;
+        }
+    }
+
     function openModal(nama, id) {
         selectedNama = nama;
         document.getElementById('namaPanitia').innerText = "Nama: " + nama;
-        document.getElementById('formTolak').action = "/admin/data-panitia/reject/" + id;
+        let form = document.getElementById('formTolak');
+        form.action = "/admin/data-panitia/reject/" + id;
+        
+        // Reset form
+        form.reset();
+        document.getElementById('alasanInput').classList.add('hidden');
     }
 
     function closeModal() {

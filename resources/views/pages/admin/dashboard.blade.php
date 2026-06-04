@@ -31,7 +31,7 @@
                 <i class="fa-solid fa-users"></i>
             </div>
             <div class="text-[10px] text-gray-500 uppercase tracking-wider mb-1">Total Pengunjung</div>
-            <div class="text-2xl font-bold">1,248</div>
+            <div class="text-2xl font-bold">{{ number_format($total_pengunjung) }}</div>
         </div>
 
         <div class="bg-white p-5 rounded-xl shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md cursor-pointer flex flex-col items-center text-center">
@@ -39,7 +39,7 @@
                 <i class="fa-solid fa-user-tie"></i>
             </div>
             <div class="text-[10px] text-gray-500 uppercase tracking-wider mb-1">Total Panitia</div>
-            <div class="text-2xl font-bold">20</div>
+            <div class="text-2xl font-bold">{{ number_format($total_panitia) }}</div>
         </div>
 
         <div class="bg-white p-5 rounded-xl shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md cursor-pointer flex flex-col items-center text-center">
@@ -47,7 +47,7 @@
                 <i class="fa-solid fa-calendar-check"></i>
             </div>
             <div class="text-[10px] text-gray-500 uppercase tracking-wider mb-1">Total Event</div>
-            <div class="text-2xl font-bold">98</div>
+            <div class="text-2xl font-bold">{{ number_format($total_event) }}</div>
         </div>
 
     </div>
@@ -62,7 +62,7 @@
                 <!-- HEADER & SEARCH -->
                 <div class="p-4 border-b border-gray-50 bg-gray-50/30">
                     <div class="flex items-center justify-between mb-3">
-                        <h2 class="text-xs font-bold text-[#192853] uppercase tracking-wider">Event Disetujui</h2>
+                        <h2 class="text-xs font-bold text-[#192853] uppercase tracking-wider">Event Aktif Bulan Ini — {{ \Carbon\Carbon::now()->translatedFormat('F Y') }}</h2>
                     </div>
                     <div class="relative">
                         <input type="text" id="searchEvent" placeholder="Cari event..." 
@@ -71,14 +71,14 @@
                     </div>
                 </div>
 
-                <div id="eventList" class="h-[450px] overflow-y-auto p-3 space-y-2 custom-scrollbar">
+                <div id="eventList" class="max-h-[65vh] overflow-y-auto p-3 space-y-2 custom-scrollbar">
 
-                    <div id="emptyEventMessage" class="flex flex-col items-center justify-center py-12 text-gray-300 opacity-70 {{ count($events) == 0 ? '' : 'hidden' }}">
-                        <i class="fa-solid fa-box-open text-6xl mb-4 drop-shadow-sm"></i>
-                        <p class="text-xl font-bold drop-shadow-sm">Data tidak tersedia</p>
+                    <div id="emptyEventMessage" class="flex flex-col items-center justify-center py-12 text-gray-300 opacity-70 {{ count($eventsBulanIni) == 0 ? '' : 'hidden' }}">
+                        <i class="fa-solid fa-box-open text-[150px] mb-4 drop-shadow-2xl"></i>
+                        <p class="text-xl font-bold drop-shadow-sm">Tidak ada event aktif bulan ini</p>
                     </div>
 
-                    @foreach ($events as $event)
+                    @foreach ($eventsBulanIni as $event)
                     <div 
                         class="event-card flex items-center gap-3 p-3 rounded-xl hover:bg-blue-50 cursor-pointer border border-gray-100 text-xs transition-all hover:border-blue-200 active:scale-[0.98]"
                         data-modal-target="modal" data-modal-toggle="modal"
@@ -218,23 +218,32 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
-    // LINE CHART
+    // LINE CHART (data dari database)
     new Chart(document.getElementById('visitorChart'), {
         type: 'line',
         data: {
-            labels: ['17 Apr','18 Apr','19 Apr','20 Apr','21 Apr','22 Apr','23 Apr'],
+            labels: @json($chartLabels),
             datasets: [{
-                data: [140,130,145,160,190,195,250],
+                data: @json($chartData),
                 borderColor: '#3b82f6',
                 backgroundColor: 'rgba(59,130,246,0.1)',
                 fill: true,
-                tension: 0.4
+                tension: 0.4,
+                pointBackgroundColor: '#3b82f6',
+                pointRadius: 4,
+                pointHoverRadius: 6
             }]
         },
         options: {
             responsive: true,
             maintainAspectRatio: false,
-            plugins: { legend: { display: false } }
+            plugins: { legend: { display: false } },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: { stepSize: 1 }
+                }
+            }
         }
     });
 

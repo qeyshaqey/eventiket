@@ -59,7 +59,7 @@
                         emptyRow.innerHTML = `
                             <td colspan="${colCount}" class="py-12 px-4 text-center">
                                 <div class="flex flex-col items-center justify-center text-gray-300 opacity-70">
-                                    <i class="fa-solid fa-box-open text-6xl mb-4 drop-shadow-sm"></i>
+                                    <i class="fa-solid fa-box-open text-[150px] mb-4 drop-shadow-2xl"></i>
                                     <p class="text-2xl font-bold drop-shadow-sm">Data tidak tersedia</p>
                                 </div>
                             </td>

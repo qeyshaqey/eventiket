@@ -40,6 +40,16 @@
 
             <!-- BODY -->
             <tbody>
+                @if(count($kategori) == 0)
+                <tr class="empty-row bg-white cursor-default">
+                    <td colspan="3" class="py-12 px-4 text-center">
+                        <div class="flex flex-col items-center justify-center text-gray-300 opacity-70">
+                            <i class="fa-solid fa-box-open text-[150px] mb-4 drop-shadow-2xl"></i>
+                            <p class="text-2xl font-bold drop-shadow-sm">Data tidak tersedia</p>
+                        </div>
+                    </td>
+                </tr>
+                @else
                 @foreach ($kategori as $k)
                 <tr class="border-b transition">
 
@@ -78,6 +88,7 @@
 
                 </tr>
                 @endforeach
+                @endif
             </tbody>
 
         </table>

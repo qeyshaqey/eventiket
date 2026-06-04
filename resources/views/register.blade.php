@@ -199,18 +199,21 @@
 
             {{-- Email --}}
             <div class="form-group">
-                <label for="email">Email</label>
+                <label for="email_prefix">Email</label>
                 <div class="input-wrap">
                     <input
-                        type="email"
-                        id="email"
-                        name="email"
-                        placeholder="Masukkan email Anda    "
-                        value="{{ old('email') }}"
+                        type="text"
+                        id="email_prefix"
+                        placeholder="nama.email"
+                        value="{{ old('email') ? str_replace('@gmail.com', '', old('email')) : '' }}"
                         class="{{ $errors->has('email') ? 'err' : '' }}"
-                        autocomplete="email"
+                        style="padding-right: 95px;"
+                        oninput="document.getElementById('email').value = this.value ? this.value + '@gmail.com' : ''"
+                        autocomplete="off"
                     />
+                    <span style="position: absolute; right: 13px; top: 50%; transform: translateY(-50%); color: #7a84a0; font-size: 13.5px; pointer-events: none; font-weight: 600;">@gmail.com</span>
                 </div>
+                <input type="hidden" name="email" id="email" value="{{ old('email') }}">
                 @error('email')
                     <span class="field-error">{{ $message }}</span>
                 @enderror

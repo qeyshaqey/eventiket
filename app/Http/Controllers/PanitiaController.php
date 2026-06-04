@@ -95,14 +95,24 @@ class PanitiaController extends Controller
     public function demote($id)
     {
         $pengajuan = PengajuanPanitia::findOrFail($id);
-        $pengajuan->status = 'dicabut';
-        $pengajuan->save();
-
+        
         $user = $pengajuan->user;
         if ($user) {
+            // Cek apakah panitia ini memiliki event aktif (status = 'Published')
+            $hasActiveEvents = \App\Models\Event::where('user_id', $user->id)
+                ->where('status', 'Published')
+                ->exists();
+
+            if ($hasActiveEvents) {
+                return redirect()->back()->with('error', 'Tidak dapat menurunkan jabatan panitia ini karena masih memiliki event aktif.');
+            }
+
             $user->role = 'pengunjung';
             $user->save();
         }
+
+        $pengajuan->status = 'dicabut';
+        $pengajuan->save();
  
         return redirect()->back()->with('success', 'Jabatan panitia berhasil diturunkan.');
     }

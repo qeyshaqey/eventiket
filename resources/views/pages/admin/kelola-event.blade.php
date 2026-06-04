@@ -7,33 +7,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
 @php
-$eventDisetujui = [
-    ["nama"=>"Workshop UI/UX","tanggal"=>"12 Apr 2024","panitia"=>"Inessa","kategori"=>"Workshop", "status"=>"Aktif"],
-    ["nama"=>"Seminar Digital Marketing","tanggal"=>"20 Apr 2024","panitia"=>"Andi","kategori"=>"Seminar", "status"=>"Aktif"],
-    ["nama"=>"Talkshow Startup","tanggal"=>"25 Apr 2025","panitia"=>"Fajar","kategori"=>"Talkshow", "status"=>"Non aktif"],
-    ["nama"=>"Music Festival 2024","tanggal"=>"30 Apr 2024","panitia"=>"Budi","kategori"=>"Festival", "status"=>"Aktif"],
-    ["nama"=>"Hackathon Competition","tanggal"=>"05 Mei 2025","panitia"=>"Citra","kategori"=>"Competition", "status"=>"Non aktif"],
-    ["nama"=>"Workshop Web Development","tanggal"=>"10 Mei 2026","panitia"=>"Deni","kategori"=>"Workshop", "status"=>"Aktif"],
-    ["nama"=>"Seminar AI & Machine Learning","tanggal"=>"15 Mei 2026","panitia"=>"Eka","kategori"=>"Seminar", "status"=>"Non aktif"],
-    ["nama"=>"Photography Exhibition","tanggal"=>"18 Mei 2026","panitia"=>"Fira","kategori"=>"Art", "status"=>"Aktif"],
-];
-
-$eventDitolak = [
-    ["nama"=>"Festival Kampus","tanggal"=>"10 Mei 2024","panitia"=>"Puji","kategori"=>"Festival","alasan"=>"Bentrok jadwal"],
-    ["nama"=>"Seminar AI","tanggal"=>"12 Mei 2024","panitia"=>"Raka","kategori"=>"Seminar","alasan"=>"Kuota penuh"],
-    ["nama"=>"Charity Run 2024","tanggal"=>"15 Mei 2024","panitia"=>"Gita","kategori"=>"Olahraga","alasan"=>"Izin tidak lengkap"],
-    ["nama"=>"Tech Conference","tanggal"=>"20 Mei 2025","panitia"=>"Haryo","kategori"=>"Technology","alasan"=>"Dana tidak mencukupi"],
-    ["nama"=>"Art Performance","tanggal"=>"22 Mei 2026","panitia"=>"Indra","kategori"=>"Art","alasan"=>"Lokasi sudah dibooking"],
-];
-
-$eventPending = [
-    ["nama"=>"Seminar Kewirausahaan","tanggal"=>"18 Mei 2024","panitia"=>"Fariz","kategori"=>"Seminar"],
-    ["nama"=>"Workshop Mobile App","tanggal"=>"20 Mei 2024","panitia"=>"Laras","kategori"=>"Workshop"],
-    ["nama"=>"Webinar Cyber Security","tanggal"=>"22 Mei 2025","panitia"=>"Maya","kategori"=>"Webinar"],
-    ["nama"=>"Photography Workshop","tanggal"=>"25 Mei 2025","panitia"=>"Naufal","kategori"=>"Art"],
-    ["nama"=>"Coding Bootcamp","tanggal"=>"01 Jun 2026","panitia"=>"Olivia","kategori"=>"Education"],
-    ["nama"=>"Business Plan Competition","tanggal"=>"05 Jun 2026","panitia"=>"Putra","kategori"=>"Competition"],
-];
+// Arrays are now populated from the database via EventController
 @endphp
 
 <div class="p-0">
@@ -68,7 +42,7 @@ $eventPending = [
             </div>
         </div>
 
-        <div class="max-h-[400px] overflow-y-auto overflow-x-auto">
+        <div class="max-h-[65vh] overflow-y-auto overflow-x-auto">
             <table class="w-full text-sm border-separate border-spacing-y-1" id="tableAktif">
                 <thead class="text-gray-500 border-b bg-gray-50 sticky top-0">
                     <tr>
@@ -81,21 +55,31 @@ $eventPending = [
                     </tr>
                 </thead>
                 <tbody>
+                    @if(count($eventDisetujui) == 0)
+                    <tr class="empty-row bg-white cursor-default">
+                        <td colspan="6" class="py-12 px-4 text-center">
+                            <div class="flex flex-col items-center justify-center text-gray-300 opacity-70">
+                                <i class="fa-solid fa-box-open text-[150px] mb-4 drop-shadow-2xl"></i>
+                                <p class="text-2xl font-bold drop-shadow-sm">Data tidak tersedia</p>
+                            </div>
+                        </td>
+                    </tr>
+                    @else
                     @foreach ($eventDisetujui as $i => $e)
-                    <tr data-modal-target="modal" data-modal-toggle="modal" onclick="showModal('{{ $e['nama'] }}','{{ $e['tanggal'] }}','09:00','Aula','{{ $e['panitia'] }}','Event aktif')" class="bg-white hover:bg-blue-50 transition cursor-pointer shadow-sm">
+                    <tr data-modal-target="modal" data-modal-toggle="modal" onclick="showModal('{{ $e->judul }}','{{ \Carbon\Carbon::parse($e->tanggal_mulai)->format('d M Y') }}','{{ \Carbon\Carbon::parse($e->waktu_mulai)->format('H:i') }}','{{ $e->lokasi }}','{{ $e->panitia->name ?? '-' }}','{{ $e->deskripsi }}')" class="bg-white hover:bg-blue-50 transition cursor-pointer shadow-sm">
                         <td class="py-4 px-3 text-center first:rounded-l-lg last:rounded-r-lg">{{ $i+1 }}</td>
-                        <td class="py-4 px-3 font-bold text-gray-700">{{ $e['nama'] }}</td>
-                        <td class="py-4 px-3 text-gray-500">{{ $e['tanggal'] }}</td>
-                        <td class="py-4 px-3 text-gray-600">{{ $e['panitia'] }}</td>
-                        <td class="py-4 px-3">{{ $e['kategori'] }}</td>
+                        <td class="py-4 px-3 font-bold text-gray-700">{{ $e->judul }}</td>
+                        <td class="py-4 px-3 text-gray-500">{{ \Carbon\Carbon::parse($e->tanggal_mulai)->format('d M Y') }}</td>
+                        <td class="py-4 px-3 text-gray-600">{{ $e->panitia->name ?? '-' }}</td>
+                        <td class="py-4 px-3">{{ $e->kategori->nama_kategori ?? '-' }}</td>
                         <td class="py-4 px-3 first:rounded-l-lg last:rounded-r-lg">
-                            <span class="px-3 py-1 rounded-full text-xs font-bold 
-                                {{ $e['status'] == 'Aktif' ? 'bg-green-100 text-green-600' : 'bg-gray-100 text-gray-500' }}">
-                                {{ $e['status'] }}
+                            <span class="px-3 py-1 rounded-full text-xs font-bold bg-green-100 text-green-600">
+                                Disetujui
                             </span>
                         </td>
                     </tr>
                     @endforeach
+                    @endif
                 </tbody>
             </table>
         </div>
@@ -117,7 +101,7 @@ $eventPending = [
             </div>
         </div>
 
-        <div class="max-h-[400px] overflow-y-auto overflow-x-auto">
+        <div class="max-h-[65vh] overflow-y-auto overflow-x-auto">
             <table class="w-full text-sm border-separate border-spacing-y-1" id="tableDitolak">
                 <thead class="text-gray-500 border-b bg-gray-50 sticky top-0">
                     <tr>
@@ -130,16 +114,27 @@ $eventPending = [
                     </tr>
                 </thead>
                 <tbody>
+                    @if(count($eventDitolak) == 0)
+                    <tr class="empty-row bg-white cursor-default">
+                        <td colspan="6" class="py-12 px-4 text-center">
+                            <div class="flex flex-col items-center justify-center text-gray-300 opacity-70">
+                                <i class="fa-solid fa-box-open text-[150px] mb-4 drop-shadow-2xl"></i>
+                                <p class="text-2xl font-bold drop-shadow-sm">Data tidak tersedia</p>
+                            </div>
+                        </td>
+                    </tr>
+                    @else
                     @foreach ($eventDitolak as $i => $e)
-                    <tr data-modal-target="modal" data-modal-toggle="modal" onclick="showModal('{{ $e['nama'] }}','{{ $e['tanggal'] }}','09:00','Aula','{{ $e['panitia'] }}','{{ $e['alasan'] }}')" class="bg-white hover:bg-red-50 transition cursor-pointer shadow-sm">
+                    <tr data-modal-target="modal" data-modal-toggle="modal" onclick="showModal('{{ $e->judul }}','{{ \Carbon\Carbon::parse($e->tanggal_mulai)->format('d M Y') }}','{{ \Carbon\Carbon::parse($e->waktu_mulai)->format('H:i') }}','{{ $e->lokasi }}','{{ $e->panitia->name ?? '-' }}','{{ $e->alasan_penolakan }}')" class="bg-white hover:bg-red-50 transition cursor-pointer shadow-sm">
                         <td class="py-4 px-3 text-center first:rounded-l-lg last:rounded-r-lg">{{ $i+1 }}</td>
-                        <td class="py-4 px-3 font-bold text-gray-700">{{ $e['nama'] }}</td>
-                        <td class="py-4 px-3 text-gray-500">{{ $e['tanggal'] }}</td>
-                        <td class="py-4 px-3 text-gray-600">{{ $e['panitia'] }}</td>
-                        <td class="py-4 px-3">{{ $e['kategori'] }}</td>
-                        <td class="py-4 px-3 text-red-500 text-sm first:rounded-l-lg last:rounded-r-lg">{{ $e['alasan'] }}</td>
+                        <td class="py-4 px-3 font-bold text-gray-700">{{ $e->judul }}</td>
+                        <td class="py-4 px-3 text-gray-500">{{ \Carbon\Carbon::parse($e->tanggal_mulai)->format('d M Y') }}</td>
+                        <td class="py-4 px-3 text-gray-600">{{ $e->panitia->name ?? '-' }}</td>
+                        <td class="py-4 px-3">{{ $e->kategori->nama_kategori ?? '-' }}</td>
+                        <td class="py-4 px-3 text-red-500 text-sm first:rounded-l-lg last:rounded-r-lg">{{ $e->alasan_penolakan }}</td>
                     </tr>
                     @endforeach
+                    @endif
                 </tbody>
             </table>
         </div>
@@ -160,7 +155,7 @@ $eventPending = [
             </div>
         </div>
 
-        <div class="max-h-[400px] overflow-y-auto overflow-x-auto">
+        <div class="max-h-[65vh] overflow-y-auto overflow-x-auto">
             <table class="w-full text-sm border-separate border-spacing-y-1" id="tablePengajuan">
                 <thead class="text-gray-500 border-b bg-gray-50 sticky top-0">
                     <tr>
@@ -175,27 +170,38 @@ $eventPending = [
                 </thead>
 
                 <tbody>
+                    @if(count($eventPending) == 0)
+                    <tr class="empty-row bg-white cursor-default">
+                        <td colspan="7" class="py-12 px-4 text-center">
+                            <div class="flex flex-col items-center justify-center text-gray-300 opacity-70">
+                                <i class="fa-solid fa-box-open text-[150px] mb-4 drop-shadow-2xl"></i>
+                                <p class="text-2xl font-bold drop-shadow-sm">Data tidak tersedia</p>
+                            </div>
+                        </td>
+                    </tr>
+                    @else
                     @foreach ($eventPending as $i => $e)
-                    <tr data-modal-target="modal" data-modal-toggle="modal" onclick="showModal('{{ $e['nama'] }}','{{ $e['tanggal'] }}','09:00','Aula','{{ $e['panitia'] }}','Menunggu persetujuan')" class="bg-white hover:bg-blue-50 transition cursor-pointer shadow-sm">
+                    <tr data-modal-target="modal" data-modal-toggle="modal" onclick="showModal('{{ $e->judul }}','{{ \Carbon\Carbon::parse($e->tanggal_mulai)->format('d M Y') }}','{{ \Carbon\Carbon::parse($e->waktu_mulai)->format('H:i') }}','{{ $e->lokasi }}','{{ $e->panitia->name ?? '-' }}','{{ $e->deskripsi }}')" class="bg-white hover:bg-blue-50 transition cursor-pointer shadow-sm">
                         <td class="py-4 px-3 text-center first:rounded-l-lg last:rounded-r-lg">{{ $i+1 }}</td>
-                        <td class="py-4 px-3 font-bold text-gray-700">{{ $e['nama'] }}</td>
-                        <td class="py-4 px-3 text-gray-500">{{ $e['tanggal'] }}</td>
-                        <td class="py-4 px-3 text-gray-600">{{ $e['panitia'] }}</td>
-                        <td class="py-4 px-3">{{ $e['kategori'] }}</td>
+                        <td class="py-4 px-3 font-bold text-gray-700">{{ $e->judul }}</td>
+                        <td class="py-4 px-3 text-gray-500">{{ \Carbon\Carbon::parse($e->tanggal_mulai)->format('d M Y') }}</td>
+                        <td class="py-4 px-3 text-gray-600">{{ $e->panitia->name ?? '-' }}</td>
+                        <td class="py-4 px-3">{{ $e->kategori->nama_kategori ?? '-' }}</td>
                         <td class="py-4 px-3"><span class="text-yellow-600 text-xs font-bold bg-yellow-100 px-3 py-1 rounded-full">Pending</span></td>
 
                         <td class="py-4 px-3 first:rounded-l-lg last:rounded-r-lg">
                             <div class="flex gap-2 justify-center">
-                                <button onclick="event.stopPropagation()" class="w-9 h-9 flex items-center justify-center rounded-lg bg-green-100 text-green-600 hover:bg-green-200 transition">
+                                <button type="button" onclick="event.stopPropagation(); openApproveModal({{ $e->id }}, '{{ addslashes($e->judul) }}')" class="w-9 h-9 flex items-center justify-center rounded-lg bg-green-100 text-green-600 hover:bg-green-200 transition">
                                     <i class="fa-solid fa-check"></i>
                                 </button>
-                                <button onclick="event.stopPropagation(); openRejectModal()" data-modal-target="rejectModal" data-modal-toggle="rejectModal" class="w-9 h-9 flex items-center justify-center rounded-lg bg-red-100 text-red-500 hover:bg-red-200 transition">
+                                <button onclick="event.stopPropagation(); openRejectModal({{ $e->id }})" class="w-9 h-9 flex items-center justify-center rounded-lg bg-red-100 text-red-500 hover:bg-red-200 transition">
                                     <i class="fa-solid fa-xmark"></i>
                                 </button>
                             </div>
                         </td>
                     </tr>
                     @endforeach
+                    @endif
                 </tbody>
             </table>
         </div>
@@ -228,17 +234,66 @@ $eventPending = [
 <!-- ================= MODAL REJECT ================= -->
 <div id="rejectModal" tabindex="-1" aria-hidden="true" class="fixed inset-0 hidden z-50 items-center justify-center overflow-y-auto overflow-x-hidden">
     <div class="relative p-4 w-full max-w-sm h-full md:h-auto flex items-center justify-center">
-        <div class="fixed inset-0 bg-black/40" data-modal-hide="rejectModal"></div>
+        <div class="fixed inset-0 bg-black/40" data-modal-hide="rejectModal" onclick="closeRejectModal()"></div>
 
         <div class="relative bg-white rounded-xl shadow-lg w-full p-5 text-left">
             <h2 class="text-base font-bold text-gray-700 mb-3">Alasan Penolakan</h2>
 
-            <textarea id="rejectInput" class="w-full border rounded-lg p-2 text-sm focus:ring-1 focus:ring-red-400" placeholder="Masukkan alasan penolakan..."></textarea>
+            <form id="rejectForm" method="POST" action="">
+                @csrf
+                <div class="space-y-2 mb-3">
+                    <label class="flex items-start gap-2 cursor-pointer">
+                        <input type="radio" name="alasan_opsi" value="Deskripsi event tidak jelas atau kurang lengkap." onchange="setAlasanEvent(this.value)" class="mt-1" required>
+                        <span class="text-sm text-gray-600 leading-tight">Deskripsi event tidak jelas atau kurang lengkap.</span>
+                    </label>
+                    <label class="flex items-start gap-2 cursor-pointer">
+                        <input type="radio" name="alasan_opsi" value="Poster event melanggar ketentuan atau tidak pantas." onchange="setAlasanEvent(this.value)" class="mt-1">
+                        <span class="text-sm text-gray-600 leading-tight">Poster event melanggar ketentuan atau tidak pantas.</span>
+                    </label>
+                    <label class="flex items-start gap-2 cursor-pointer">
+                        <input type="radio" name="alasan_opsi" value="Jadwal event bentrok dengan acara utama kampus/fakultas." onchange="setAlasanEvent(this.value)" class="mt-1">
+                        <span class="text-sm text-gray-600 leading-tight">Jadwal event bentrok dengan acara utama kampus.</span>
+                    </label>
+                    <label class="flex items-start gap-2 cursor-pointer">
+                        <input type="radio" name="alasan_opsi" value="lainnya" onchange="setAlasanEvent('lainnya')" class="mt-1">
+                        <span class="text-sm text-gray-600 leading-tight">Alasan Lainnya:</span>
+                    </label>
+                </div>
 
-            <div class="flex justify-end gap-2 mt-4">
-                <button type="button" data-modal-hide="rejectModal" class="px-3 py-1.5 text-sm rounded-lg bg-gray-200 hover:bg-gray-300 transition">Batal</button>
-                <button onclick="submitReject()" class="px-3 py-1.5 text-sm rounded-lg bg-[#192853] text-yellow-400 hover:bg-[#0f1a3a] transition">Kirim</button>
+                <textarea name="alasan" id="rejectInput" class="w-full border rounded-lg p-2 text-sm focus:ring-1 focus:ring-red-400 hidden" placeholder="Ketik alasan lainnya di sini..." required></textarea>
+
+                <div class="flex justify-end gap-2 mt-4">
+                    <button type="button" onclick="closeRejectModal()" class="px-3 py-1.5 text-sm rounded-lg bg-gray-200 hover:bg-gray-300 transition">Batal</button>
+                    <button type="submit" class="px-3 py-1.5 text-sm rounded-lg bg-[#192853] text-yellow-400 hover:bg-[#0f1a3a] transition">Kirim</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- ================= MODAL APPROVE ================= -->
+<div id="approveModal" tabindex="-1" aria-hidden="true" class="fixed inset-0 hidden z-50 items-center justify-center overflow-y-auto overflow-x-hidden">
+    <div class="relative p-4 w-full max-w-sm h-full md:h-auto flex items-center justify-center">
+        <div class="fixed inset-0 bg-black/40" data-modal-hide="approveModal" onclick="closeApproveModal()"></div>
+
+        <div class="relative bg-white rounded-xl shadow-lg w-full p-6 text-center">
+            <div class="w-16 h-16 bg-green-100 text-green-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                <i class="fa-solid fa-check text-3xl"></i>
             </div>
+            <h2 class="text-lg font-semibold text-gray-700 mb-2">Setujui Event?</h2>
+            <p class="text-sm text-gray-500 mb-6">Apakah Anda yakin ingin menyetujui event <span id="namaEventApprove" class="font-bold text-gray-700"></span>?</p>
+
+            <form id="approveForm" method="POST" class="flex justify-center gap-3">
+                @csrf
+                <button type="button" onclick="closeApproveModal()" 
+                    class="px-6 py-2 text-sm font-medium rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200 transition">
+                    Batal
+                </button>
+                <button type="submit" 
+                    class="px-6 py-2 text-sm font-medium rounded-lg bg-green-500 text-white hover:bg-green-600 transition shadow-md shadow-green-200">
+                    Iya, Setujui
+                </button>
+            </form>
         </div>
     </div>
 </div>
@@ -321,7 +376,7 @@ $eventPending = [
                     emptyRow.innerHTML = `
                         <td colspan="${colCount}" class="py-12 px-4 text-center">
                             <div class="flex flex-col items-center justify-center text-gray-300 opacity-70">
-                                <i class="fa-solid fa-box-open text-6xl mb-4 drop-shadow-sm"></i>
+                                <i class="fa-solid fa-box-open text-[150px] mb-4 drop-shadow-2xl"></i>
                                 <p class="text-2xl font-bold drop-shadow-sm">Data tidak tersedia</p>
                             </div>
                         </td>
@@ -354,24 +409,48 @@ $eventPending = [
     }
 
     // MODAL REJECT
-    function openRejectModal() {
-        // Just for data prep if needed, Flowbite handles showing
+    function setAlasanEvent(val) {
+        let textarea = document.getElementById('rejectInput');
+        if(val === 'lainnya') {
+            textarea.classList.remove('hidden');
+            textarea.value = '';
+            textarea.focus();
+        } else {
+            textarea.classList.add('hidden');
+            textarea.value = val;
+        }
+    }
+
+    function openRejectModal(id) {
+        let form = document.getElementById('rejectForm');
+        form.action = `/admin/event-reject/${id}`;
+        
+        // Reset form
+        form.reset();
+        document.getElementById('rejectInput').classList.add('hidden');
+        
+        document.getElementById('rejectModal').classList.remove('hidden');
+        document.getElementById('rejectModal').classList.add('flex');
     }
 
     function closeRejectModal() {
         document.getElementById('rejectInput').value = '';
-        const modal = FlowbiteInstances.getInstance('Modal', 'rejectModal');
-        if (modal) modal.hide();
+        document.getElementById('rejectModal').classList.add('hidden');
+        document.getElementById('rejectModal').classList.remove('flex');
     }
 
-    function submitReject() {
-        let alasan = document.getElementById('rejectInput').value;
-        if (alasan.trim() === '') {
-            alert('Alasan wajib diisi!');
-            return;
-        }
-        console.log("Alasan:", alasan);
-        closeRejectModal();
+    // MODAL APPROVE
+    function openApproveModal(id, judul) {
+        let form = document.getElementById('approveForm');
+        form.action = `/admin/event-approve/${id}`;
+        document.getElementById('namaEventApprove').innerText = judul;
+        document.getElementById('approveModal').classList.remove('hidden');
+        document.getElementById('approveModal').classList.add('flex');
+    }
+
+    function closeApproveModal() {
+        document.getElementById('approveModal').classList.add('hidden');
+        document.getElementById('approveModal').classList.remove('flex');
     }
 </script>
 

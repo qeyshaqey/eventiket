@@ -39,6 +39,7 @@ class EventPanitiaController extends Controller
         }
 
         $validated['status'] = 'Draft';
+        $validated['user_id'] = session('user_id');
 
         Event::create($validated);
 

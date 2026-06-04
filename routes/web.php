@@ -97,8 +97,9 @@ Route::prefix('admin')->name('admin.')->middleware('role:admin')->group(function
 
     // Event
     Route::get('/kelola-event', [EventController::class, 'index'])->name('kelola.event');
-    Route::get('/event-approve/{id}', [EventController::class, 'approve'])->name('event.approve');
-    Route::get('/event-delete/{id}', [EventController::class, 'delete'])->name('event.delete');
+    Route::post('/event-approve/{id}', [EventController::class, 'approve'])->name('event.approve');
+    Route::post('/event-reject/{id}', [EventController::class, 'reject'])->name('event.reject');
+    Route::post('/event-delete/{id}', [EventController::class, 'delete'])->name('event.delete');
 
     // Kategori
     Route::get('/kategori', [KategoriController::class, 'index'])->name('kategori');
