@@ -4,19 +4,19 @@
 
 <div class="bg-[#EFF8FF] min-h-screen p-4 md:p-6">
 
-    <!-- HEADER -->
+    <!-- HEADER DATA TRANSAKSI -->
     <div class="mb-6">
         <h1 class="text-xl font-bold text-[#192853]">
             DATA TRANSAKSI
         </h1>
     </div>
 
-    <!-- TABLE WRAPPER -->
+    <!-- BOX WADAH TABEL TRANSAKSI -->
     <div class="bg-white rounded-2xl shadow-md border border-gray-100 p-4 md:p-6">
         <div class="overflow-x-auto rounded-xl border border-gray-200">
             <table class="min-w-[900px] w-full text-sm">
                 
-                <!-- TABLE HEADER -->
+                <!-- HEADER TABEL -->
                 <thead class="bg-[#192853] text-white text-xs uppercase font-semibold">
                     <tr>
                         <th class="p-3 text-left w-16">No</th>
@@ -29,16 +29,18 @@
                     </tr>
                 </thead>
 
-                <!-- TABLE BODY -->
+                <!-- BODY TABEL -->
                 <tbody class="divide-y">
 
                     @forelse($transaksis as $index => $trx)
                     <tr class="hover:bg-gray-50 transition text-sm">
 
+                        <!-- Nomor Urut -->
                         <td class="p-3 text-gray-600 font-medium whitespace-nowrap">
                             {{ $index + 1 }}
                         </td>
 
+                        <!-- Informasi User Pembeli -->
                         <td class="p-3 whitespace-nowrap">
                             <p class="font-semibold text-gray-800">
                                 {{ $trx->user->name }}
@@ -48,18 +50,22 @@
                             </p>
                         </td>
 
+                        <!-- Judul Event -->
                         <td class="p-3 text-gray-700 whitespace-nowrap">
                             {{ $trx->event->judul ?? '-' }}
                         </td>
 
+                        <!-- Tanggal Transaksi -->
                         <td class="p-3 text-gray-600 text-xs whitespace-nowrap">
                             {{ \Carbon\Carbon::parse($trx->created_at)->format('d M Y') }}
                         </td>
 
+                        <!-- Total Bayar -->
                         <td class="p-3 font-semibold text-gray-800 whitespace-nowrap">
                             Rp {{ number_format($trx->total_harga, 0, ',', '.') }}
                         </td>
 
+                        <!-- Status Transaksi (Pending, Paid, Failed) -->
                         <td class="p-3 whitespace-nowrap">
                             @if($trx->status == 'pending')
                                 <span class="px-3 py-1 text-xs rounded-full bg-yellow-100 text-yellow-700 font-semibold">
@@ -76,9 +82,10 @@
                             @endif
                         </td>
 
+                        <!-- Tombol Detail Transaksi -->
                         <td class="p-3 whitespace-nowrap text-center">
                             <button type="button" 
-                                onclick="openTrxModal('{{ $trx->user->name }}', '{{ $trx->user->email }}', '{{ $trx->event->judul ?? '-' }}', '{{ $trx->jenis_tiket }}', '{{ \Carbon\Carbon::parse($trx->created_at)->format('d M Y') }}', 'Rp {{ number_format($trx->total_harga, 0, ',', '.') }}', '{{ $trx->status }}')"
+                                onclick="openTrxModal('{{ $trx->user->name }}', '{{ $trx->user->email }}', '{{ $trx->event->judul ?? \'-\' }}', '{{ $trx->jenis_tiket }}', '{{ \Carbon\Carbon::parse($trx->created_at)->format(\'d M Y\') }}', 'Rp {{ number_format($trx->total_harga, 0, \',\', \'.\') }}', '{{ $trx->status }}')"
                                 class="bg-[#192853] text-white px-4 py-1.5 rounded-full text-xs font-semibold hover:bg-blue-800 transition shadow">
                                 Detail
                             </button>
@@ -99,27 +106,25 @@
     </div>
 
 </div>
-</div>
 
+<!-- ========================================== -->
 <!-- MODAL DETAIL TRANSAKSI -->
+<!-- ========================================== -->
 <div id="detailModal"
     class="fixed inset-0 bg-black/40 hidden items-center justify-center z-50 px-4">
 
     <div class="bg-white w-full max-w-sm rounded-xl shadow-xl overflow-hidden">
-
+        <!-- Header Modal -->
         <div class="bg-[#192853] p-4 flex justify-between items-start">
-
             <div>
                 <h3 id="m_buyer_name" class="text-yellow-400 font-semibold text-sm"></h3>
                 <p id="m_buyer_email" class="text-white/60 text-xs"></p>
             </div>
-
             <button onclick="closeTrxModal()" class="text-white text-lg leading-none">&times;</button>
-
         </div>
 
+        <!-- Body Detail Transaksi -->
         <div class="p-4 space-y-3 text-sm">
-
             <div class="flex justify-between">
                 <span class="text-gray-500">Event</span>
                 <span id="m_event_title" class="font-semibold text-gray-800 text-right max-w-[200px] truncate"></span>
@@ -144,13 +149,13 @@
                 <span class="text-gray-500">Status</span>
                 <span id="m_status" class="px-3 py-1 text-xs rounded-full font-semibold"></span>
             </div>
-
         </div>
-
     </div>
 </div>
 
+<!-- JAVASCRIPT LOGIC -->
 <script>
+// Fungsi membuka modal detail transaksi dan mempopulasikan datanya secara dinamis
 function openTrxModal(name, email, eventTitle, ticketType, purchaseDate, totalPrice, status) {
     document.getElementById('m_buyer_name').innerText = name;
     document.getElementById('m_buyer_email').innerText = email;
@@ -163,8 +168,10 @@ function openTrxModal(name, email, eventTitle, ticketType, purchaseDate, totalPr
     const statusEl = document.getElementById('m_status');
     statusEl.innerText = status.toUpperCase();
     
+    // Reset kelas warna status
     statusEl.className = 'px-3 py-1 text-xs rounded-full font-semibold';
     
+    // Set warna status berdasarkan status transaksi
     if (status === 'pending') {
         statusEl.classList.add('bg-yellow-100', 'text-yellow-700');
     } else if (status === 'paid') {
@@ -173,17 +180,20 @@ function openTrxModal(name, email, eventTitle, ticketType, purchaseDate, totalPr
         statusEl.classList.add('bg-red-100', 'text-red-700');
     }
     
+    // Tampilkan modal
     const modal = document.getElementById('detailModal');
     modal.classList.remove('hidden');
     modal.classList.add('flex');
 }
 
+// Fungsi menutup modal detail transaksi
 function closeTrxModal() {
     const modal = document.getElementById('detailModal');
     modal.classList.add('hidden');
     modal.classList.remove('flex');
 }
 
+// Menutup modal ketika mengklik area luar modal (overlay background)
 window.addEventListener('click', function(event) {
     const modal = document.getElementById('detailModal');
     if (event.target === modal) {

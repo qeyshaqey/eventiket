@@ -9,64 +9,86 @@ use Illuminate\Http\Request;
 
 class TiketPanitiaController extends Controller
 {
-    //MENAMPILKAN HALAMAN PENGELOLAAN TIKET
+    /**
+     * Menampilkan halaman pengelolaan tiket.
+     * Mengambil seluruh data event beserta tiketnya dan kategori untuk ditampilkan di view,
+     * serta menangkap event_id dari query parameter untuk fokus/menyorot event tertentu.
+     */
     public function index(Request $request)
-{
-    //MENGAMBIL SELURUH EVENT UNTUK DITAMPILKAN DI HALAMAN PENGELOLAAN TIKET
-    $events = Event::with(['tikets', 'kategori'])->latest()->get();
+    {
+        // Mengambil semua event berurut dari yang terbaru beserta relasi tiket dan kategorinya
+        $events = Event::with(['tikets', 'kategori'])->latest()->get();
 
-    //MENGAMBIL EVENT YANG DIPILIH (UNTUK MENYOROTNYA DI VIEW)
-    $highlightEventId = $request->query('event_id');
+        // Mengambil ID event dari query parameter url (?event_id=x) untuk disorot di tampilan
+        $highlightEventId = $request->query('event_id');
 
-    return view('pages.panitia.tiket', compact('events', 'highlightEventId'));
-}
+        // Mengembalikan halaman view pengelolaan tiket
+        return view('pages.panitia.tiket', compact('events', $highlightEventId ? 'highlightEventId' : 'events'));
+    }
 
-    //MENAMBAH JENIS TIKET BARU
+    /**
+     * Menambah jenis tiket baru untuk event tertentu.
+     * Secara otomatis mengubah status event tersebut menjadi 'Published' ketika tiket pertama kali ditambahkan.
+     */
     public function store(Request $request)
-{
-    $validated = $request->validate([
-        'nama' => 'required',
-        'harga' => 'required|integer',
-        'kuota' => 'required|integer',
-        'event_id' => 'required|exists:events,id',
-    ]);
+    {
+        // Validasi input form penambahan tiket
+        $validated = $request->validate([
+            'nama' => 'required',
+            'harga' => 'required|integer',
+            'kuota' => 'required|integer',
+            'event_id' => 'required|exists:events,id',
+        ]);
 
-    Tiket::create($validated);
+        // Menyimpan data tiket baru ke database
+        Tiket::create($validated);
 
-    // update status event jadi Published
-    Event::find($validated['event_id'])
-        ->update(['status' => 'Published']);
+        // Secara otomatis mengubah status event terkait menjadi 'Published' karena sudah memiliki tiket
+        Event::find($validated['event_id'])
+            ->update(['status' => 'Published']);
 
-    return redirect()->route('panitia.tiket', [
-        'event_id' => $validated['event_id']
-    ])->with('success', 'Jenis tiket berhasil ditambahkan');
-}
+        // Mengalihkan kembali ke halaman pengelolaan tiket dengan highlight event terkait dan pesan sukses
+        return redirect()->route('panitia.tiket', [
+            'event_id' => $validated['event_id']
+        ])->with('success', 'Jenis tiket berhasil ditambahkan');
+    }
 
-    //MENEGEDIT JENIS TIKET
+    /**
+     * Mengedit jenis tiket yang sudah ada.
+     */
     public function update(Request $request, Tiket $tiket)
     {
+        // Validasi input form perubahan tiket
         $validated = $request->validate([
             'nama' => 'required',
             'harga' => 'required|integer',
             'kuota' => 'required|integer',
         ]);
 
+        // Melakukan update data tiket di database
         $tiket->update($validated);
 
-        return back()->with('success', 'Tiket diupdate');
+        // Kembali ke halaman sebelumnya dengan pesan sukses
+        return back()->with('success', 'Tiket berhasil diupdate');
     }
 
-    //MENGHAPUS JENIS TIKET
+    /**
+     * Menghapus jenis tiket dari database.
+     * Jika setelah dihapus event tidak memiliki tiket sama sekali, status event akan diturunkan kembali ke 'Draft'.
+     */
     public function destroy(Tiket $tiket)
     {
+        // Menyimpan ID event terkait sebelum menghapus tiket
         $eventId = $tiket->event_id;
+        // Menghapus tiket dari database
         $tiket->delete();
 
-        // kalau tiket habis, balik ke Draft
+        // Jika event tersebut sudah tidak memiliki tiket sama sekali, statusnya diturunkan menjadi 'Draft'
         if (Tiket::where('event_id', $eventId)->count() === 0) {
             Event::where('id', $eventId)->update(['status' => 'Draft']);
         }
 
-        return back()->with('success', 'Tiket dihapus');
+        // Kembali dengan pesan sukses
+        return back()->with('success', 'Tiket berhasil dihapus');
     }
 }

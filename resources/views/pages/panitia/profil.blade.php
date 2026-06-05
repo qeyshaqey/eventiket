@@ -3,73 +3,71 @@
 @section('content')
 <div class="p-6 bg-[#EFF8FF] min-h-screen">
 
-
-    <!-- HEADER -->
+    <!-- HEADER HALAMAN PROFIL -->
     <div class="mb-6">
         <h1 class="text-xl font-bold text-[#192853]">Profil Panitia</h1>
     </div>
 
+    <!-- NOTIFIKASI SUKSES UPDATE PROFIL -->
     @if(session('success'))
     <div class="mb-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded-lg">
         {{ session('success') }}
     </div>
     @endif
 
-    <!-- CARD -->
+    <!-- KARTU UTAMA PROFIL -->
     <div class="bg-white rounded-2xl shadow-lg p-6 flex flex-col md:flex-row gap-8">
 
-        <!-- AVATAR -->
+        <!-- FOTO PROFIL (AVATAR) -->
         <div class="flex flex-col items-center md:w-1/4">
-
+            <!-- Jika user memilik foto tampilkan foto user, jika tidak gunakan ui-avatars default -->
             <img src="{{ ($user->photo ?? null) ? asset('storage/' . $user->photo) : 'https://ui-avatars.com/api/?name=' . ($user->name ?? 'Guest') }}" class="w-28 h-28 rounded-full object-cover shadow-md border">
 
-            <!-- BUTTON EDIT PROFIL -->
+            <!-- Tombol untuk memicu pembukaan modal edit profil -->
             <button onclick="openModal()"
                 class="mt-4 bg-[#192853] text-yellow-400 px-4 py-2 rounded-lg text-sm hover:opacity-90 transition">
                 Edit Profil
             </button>
-
         </div>
 
-        <!-- INFO -->
+        <!-- BLOK INFORMASI DATA DIRI -->
         <div class="md:w-3/4">
-
             <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-
+                <!-- Tampilan Nama -->
                 <div class="p-4 bg-[#F8FAFF] rounded-xl border">
                     <p class="text-xs text-gray-500">Nama</p>
                     <p class="font-semibold text-[#192853]">{{ $user?->name ?? '-' }}</p>
                 </div>
 
+                <!-- Tampilan NIM -->
                 <div class="p-4 bg-[#F8FAFF] rounded-xl border">
                     <p class="text-xs text-gray-500">NIM</p>
                     <p class="font-semibold text-[#192853]">{{ $user?->nim ?? '-' }}</p>
                 </div>
 
+                <!-- Tampilan Email -->
                 <div class="p-4 bg-[#F8FAFF] rounded-xl border">
                     <p class="text-xs text-gray-500">Email</p>
                     <p class="font-semibold text-[#192853]">{{ $user?->email ?? '-' }}</p>
                 </div>
 
+                <!-- Tampilan Role -->
                 <div class="p-4 bg-[#F8FAFF] rounded-xl border">
                     <p class="text-xs text-gray-500">Role</p>
                     <p class="font-semibold text-yellow-600">Panitia</p>
                 </div>
-
             </div>
-
         </div>
 
     </div>
 
 </div>
 
-<!-- ================= MODAL EDIT ================= -->
-<div id="modal" class="fixed inset-0 bg-black/50 hidden flex items-center justify-center z-50 transition">
-
+<!-- ================= MODAL EDIT PROFIL ================= -->
+<div id="modal" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50 transition">
     <div class="bg-white w-[420px] p-6 rounded-2xl shadow-2xl relative animate-fadeIn">
 
-        <!-- CLOSE BUTTON -->
+        <!-- Tombol Tutup Modal -->
         <button onclick="closeModal()" 
             class="absolute top-3 right-3 text-gray-400 hover:text-black text-xl">
             &times;
@@ -77,83 +75,81 @@
 
         <h2 class="text-xl font-bold text-[#192853] mb-4">Edit Profil</h2>
 
+        <!-- Form Edit Data Diri & Foto -->
         <form action="{{ route('panitia.profil.update') }}" method="POST" enctype="multipart/form-data">
             @csrf
 
-            <!-- FOTO PROFIL -->
+            <!-- Upload Foto Profil dengan Preview -->
             <div class="flex flex-col items-center mb-5">
-
                 <div class="relative">
+                    <!-- Preview Foto -->
                     <img id="previewImage"
                         src="{{ ($user->photo ?? null) ? asset('storage/' . $user->photo) : 'https://ui-avatars.com/api/?name=' . ($user->name ?? 'Guest') }}"
                         class="w-24 h-24 rounded-full object-cover border shadow">
 
+                    <!-- Label Input File Bergaya Edit -->
                     <label class="absolute bottom-0 right-0 bg-[#192853] text-yellow-400 p-1 rounded-full cursor-pointer text-xs">
                         ✎
                         <input type="file" name="photo" class="hidden" onchange="previewFoto(event)">
                     </label>
                 </div>
-
                 <p class="text-xs text-gray-500 mt-2">Klik ikon untuk ganti foto</p>
             </div>
 
-            <!-- INPUT -->
+            <!-- Form Input Profil -->
             <div class="space-y-4">
-
                 <div>
                     <label class="text-sm text-gray-600">Nama</label>
-                    <input type="text" name="name"
+                    <input type="text" name="name" required
                         value="{{ $user?->name ?? '' }}"
                         class="w-full border p-2 rounded-lg focus:ring-2 focus:ring-[#192853] outline-none">
                 </div>
 
                 <div>
                     <label class="text-sm text-gray-600">NIM</label>
-                    <input type="text" name="nim"
+                    <input type="text" name="nim" required
                         value="{{ $user?->nim ?? '' }}"
                         class="w-full border p-2 rounded-lg focus:ring-2 focus:ring-[#192853] outline-none">
                 </div>
 
                 <div>
                     <label class="text-sm text-gray-600">Email</label>
-                    <input type="email" name="email"
+                    <input type="email" name="email" required
                         value="{{ $user?->email ?? '' }}"
                         class="w-full border p-2 rounded-lg focus:ring-2 focus:ring-[#192853] outline-none">
                 </div>
-
             </div>
 
-            <!-- BUTTON -->
+            <!-- Tombol Batal & Simpan -->
             <div class="flex justify-end gap-3 mt-6">
-
                 <button type="button" onclick="closeModal()"
                     class="px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300 transition">
                     Batal
                 </button>
-
                 <button type="submit"
                     class="px-4 py-2 bg-[#192853] text-yellow-400 rounded-lg hover:opacity-90 transition">
                     Simpan
                 </button>
-
             </div>
 
         </form>
 
     </div>
-
 </div>
 
-<!-- SCRIPT -->
+<!-- JAVASCRIPT LOGIC -->
 <script>
+// Membuka modal edit profil
 function openModal(){
     document.getElementById('modal').classList.remove('hidden');
 }
 
+// Menutup modal edit profil
 function closeModal(){
     document.getElementById('modal').classList.add('hidden');
 }
 
+// Membuat preview foto secara instan setelah file dipilih
 function previewFoto(event){
     const reader = new FileReader();
     reader.onload = function(){
@@ -163,7 +159,7 @@ function previewFoto(event){
 }
 </script>
 
-<!-- ANIMASI -->
+<!-- STYLE ANIMASI POP-UP -->
 <style>
 @keyframes fadeIn {
     from { opacity: 0; transform: scale(0.95); }

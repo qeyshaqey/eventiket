@@ -2,129 +2,135 @@
 
 @section('content')
 <div class="p-4 md:p-6 space-y-6">
-<!-- CARDS -->
-<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
 
-    <div class="bg-white p-4 rounded-xl shadow hover:scale-[1.02] transition">
-        <p class="text-sm text-gray-500">EVENT TERDEKAT</p>
-        <p class="text-lg font-bold mt-1 text-[#192853] truncate" title="{{ $nearestEvent ? Str::upper($nearestEvent->judul) : 'TIDAK ADA EVENT' }}">
-            {{ $nearestEvent ? Str::upper($nearestEvent->judul) : 'TIDAK ADA EVENT' }}
-        </p>
-        <p class="text-xs text-gray-400">
-            {{ $nearestEvent ? \Carbon\Carbon::parse($nearestEvent->tanggal_mulai)->translatedFormat('d F Y') : '-' }}
-        </p>
+    <!-- BARIS KARTU STATUS (STATS CARDS) -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+
+        <!-- Kartu 1: Event Terdekat -->
+        <div class="bg-white p-4 rounded-xl shadow hover:scale-[1.02] transition">
+            <p class="text-sm text-gray-500">EVENT TERDEKAT</p>
+            <p class="text-lg font-bold mt-1 text-[#192853] truncate" title="{{ $nearestEvent ? Str::upper($nearestEvent->judul) : 'TIDAK ADA EVENT' }}">
+                {{ $nearestEvent ? Str::upper($nearestEvent->judul) : 'TIDAK ADA EVENT' }}
+            </p>
+            <p class="text-xs text-gray-400">
+                {{ $nearestEvent ? \Carbon\Carbon::parse($nearestEvent->tanggal_mulai)->translatedFormat('d F Y') : '-' }}
+            </p>
+        </div>
+
+        <!-- Kartu 2: Total Tiket Terjual -->
+        <div class="bg-white p-4 rounded-xl shadow hover:scale-[1.02] transition">
+            <p class="text-sm text-gray-500">TIKET TERJUAL</p>
+            <p class="text-lg font-bold mt-1 text-[#192853]">
+                {{ $totalTiketTerjual }}
+            </p>
+            <p class="text-xs text-green-500">Total tiket berhasil dibeli</p>
+        </div>
+
+        <!-- Kartu 3: Event Terlaris -->
+        <div class="bg-white p-4 rounded-xl shadow hover:scale-[1.02] transition">
+            <p class="text-sm text-gray-500">EVENT TERLARIS</p>
+            <p class="text-lg font-bold mt-1 text-[#192853] truncate" title="{{ $bestSellingEvent ? Str::upper($bestSellingEvent->judul) : 'BELUM ADA' }}">
+                {{ $bestSellingEvent ? Str::upper($bestSellingEvent->judul) : 'BELUM ADA' }}
+            </p>
+            <p class="text-xs text-gray-400">
+                {{ $bestSellingEvent && isset($bestSellingEvent->tikets_sum_tiket_terjual) && $bestSellingEvent->tikets_sum_tiket_terjual > 0 ? $bestSellingEvent->tikets_sum_tiket_terjual . ' tiket terjual' : '-' }}
+            </p>
+        </div>
+
     </div>
 
-    <div class="bg-white p-4 rounded-xl shadow hover:scale-[1.02] transition">
-        <p class="text-sm text-gray-500">TIKET TERJUAL</p>
-        <p class="text-lg font-bold mt-1 text-[#192853]">
-            {{ $totalTiketTerjual }}
-        </p>
-        <p class="text-xs text-green-500">Total tiket berhasil dibeli</p>
+    <!-- BOX DAFTAR EVENT AKTIF -->
+    <div class="bg-white rounded-2xl shadow border border-gray-100 p-4 md:p-5">
+
+        <!-- HEADER DAFTAR & AREA FILTER -->
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3 mb-4">
+            <h2 class="font-bold text-lg text-[#192853]">
+                Daftar Event Aktif
+            </h2>
+
+            <!-- Input Pencarian & Dropdown Filter -->
+            <div class="flex flex-col sm:flex-row gap-2 w-full md:w-auto">
+                <input id="search" type="text" placeholder="Cari..."
+                    class="px-3 py-2 border rounded-lg text-sm w-full sm:w-auto">
+
+                <!-- Filter Kategori -->
+                <select id="kategori"
+                    class="px-3 py-2 border rounded-lg text-sm w-full sm:w-auto">
+                    <option value="">Semua Kategori</option>
+                    @foreach($categories as $cat)
+                        <option value="{{ $cat->nama_kategori }}">{{ $cat->nama_kategori }}</option>
+                    @endforeach
+                </select>
+
+                <!-- Filter Judul Event -->
+                <select id="event"
+                    class="px-3 py-2 border rounded-lg text-sm w-full sm:w-auto">
+                    <option value="">Semua Event</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- AREA RENDER DATA CARD EVENT -->
+        <div id="eventTable"
+            class="space-y-2 max-h-[420px] overflow-y-auto pr-1">
+        </div>
+
     </div>
 
-    <div class="bg-white p-4 rounded-xl shadow hover:scale-[1.02] transition">
-        <p class="text-sm text-gray-500">EVENT TERLARIS</p>
-        <p class="text-lg font-bold mt-1 text-[#192853] truncate" title="{{ $bestSellingEvent ? Str::upper($bestSellingEvent->judul) : 'BELUM ADA' }}">
-            {{ $bestSellingEvent ? Str::upper($bestSellingEvent->judul) : 'BELUM ADA' }}
-        </p>
-        <p class="text-xs text-gray-400">
-            {{ $bestSellingEvent && isset($bestSellingEvent->tikets_sum_tiket_terjual) && $bestSellingEvent->tikets_sum_tiket_terjual > 0 ? $bestSellingEvent->tikets_sum_tiket_terjual . ' tiket terjual' : '-' }}
-        </p>
+    <!-- ========================================== -->
+    <!-- MODAL DETAIL EVENT AKTIF -->
+    <!-- ========================================== -->
+    <div id="modal"
+        class="fixed inset-0 bg-black/40 hidden items-center justify-center z-50 px-4">
+
+        <div class="bg-white w-full max-w-sm rounded-xl shadow-xl overflow-hidden">
+            <!-- Header Modal -->
+            <div class="bg-[#192853] p-4 flex justify-between items-start">
+                <div>
+                    <h3 id="m_nama" class="text-yellow-400 font-semibold text-sm"></h3>
+                    <p id="m_kategori" class="text-white/60 text-xs"></p>
+                </div>
+                <button onclick="closeModal()" class="text-white text-lg">&times;</button>
+            </div>
+
+            <!-- Detail Informasi Event -->
+            <div class="p-4 space-y-3 text-sm">
+                <div class="flex justify-between">
+                    <span class="text-gray-500">Tanggal</span>
+                    <span id="m_tanggal"></span>
+                </div>
+
+                <div class="flex justify-between">
+                    <span class="text-gray-500">Waktu</span>
+                    <span id="m_waktu"></span>
+                </div>
+
+                <div class="flex justify-between">
+                    <span class="text-gray-500">Lokasi</span>
+                    <span id="m_lokasi"></span>
+                </div>
+
+                <div>
+                    <span class="text-gray-500">Kuota</span>
+                    <p id="m_kuota" class="font-semibold"></p>
+                </div>
+            </div>
+        </div>
     </div>
 
 </div>
 
-<!-- LIST -->
-<div class="bg-white rounded-2xl shadow border border-gray-100 p-4 md:p-5">
-
-    <!-- HEADER -->
-    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3 mb-4">
-
-        <h2 class="font-bold text-lg text-[#192853]">
-            Daftar Event Aktif
-        </h2>
-
-        <div class="flex flex-col sm:flex-row gap-2 w-full md:w-auto">
-
-            <input id="search" type="text" placeholder="Cari..."
-                class="px-3 py-2 border rounded-lg text-sm w-full sm:w-auto">
-
-            <select id="kategori"
-                class="px-3 py-2 border rounded-lg text-sm w-full sm:w-auto">
-                <option value="">Semua Kategori</option>
-                @foreach($categories as $cat)
-                    <option value="{{ $cat->nama_kategori }}">{{ $cat->nama_kategori }}</option>
-                @endforeach
-            </select>
-
-            <select id="event"
-                class="px-3 py-2 border rounded-lg text-sm w-full sm:w-auto">
-                <option value="">Semua Event</option>
-            </select>
-
-        </div>
-    </div>
-
-    <!-- CARD LIST -->
-    <div id="eventTable"
-        class="space-y-2 max-h-[420px] overflow-y-auto pr-1">
-    </div>
-
-</div>
-
-<!-- MODAL -->
-<div id="modal"
-    class="fixed inset-0 bg-black/40 hidden items-center justify-center z-50 px-4">
-
-    <div class="bg-white w-full max-w-sm rounded-xl shadow-xl overflow-hidden">
-
-        <div class="bg-[#192853] p-4 flex justify-between items-start">
-
-            <div>
-                <h3 id="m_nama" class="text-yellow-400 font-semibold text-sm"></h3>
-                <p id="m_kategori" class="text-white/60 text-xs"></p>
-            </div>
-
-            <button onclick="closeModal()" class="text-white text-lg">&times;</button>
-
-        </div>
-
-        <div class="p-4 space-y-3 text-sm">
-
-            <div class="flex justify-between">
-                <span class="text-gray-500">Tanggal</span>
-                <span id="m_tanggal"></span>
-            </div>
-
-            <div class="flex justify-between">
-                <span class="text-gray-500">Waktu</span>
-                <span id="m_waktu"></span>
-            </div>
-
-            <div class="flex justify-between">
-                <span class="text-gray-500">Lokasi</span>
-                <span id="m_lokasi"></span>
-            </div>
-
-            <div>
-                <span class="text-gray-500">Kuota</span>
-                <p id="m_kuota" class="font-semibold"></p>
-            </div>
-
-        </div>
-
-    </div>
-</div>
-
+<!-- JAVASCRIPT LOGIC -->
 <script>
 document.addEventListener("DOMContentLoaded", function () {
 
+// Membaca json data event dari controller
 window.dataEvent = @json($eventsData);
 
+// Kloning data untuk filter
 let filteredData = [...window.dataEvent];
 
-// RENDER
+// Fungsi merender list event aktif ke container HTML
 function tampilkanData(data){
     const container = document.getElementById("eventTable");
     container.innerHTML = "";
@@ -151,7 +157,7 @@ function tampilkanData(data){
     });
 }
 
-// FILTER
+// Fungsi filter data berdasarkan input pencarian dan dropdown kategori/event
 function filterData(){
     const search = document.getElementById("search").value.toLowerCase();
     const kategori = document.getElementById("kategori").value;
@@ -166,7 +172,7 @@ function filterData(){
     tampilkanData(filteredData);
 }
 
-// DROPDOWN
+// Mempopulasi opsi pilihan dropdown nama event secara unik
 const eventSelect = document.getElementById("event");
 [...new Set(window.dataEvent.map(e => e.judul))].forEach(j=>{
     let opt = document.createElement("option");
@@ -175,7 +181,7 @@ const eventSelect = document.getElementById("event");
     eventSelect.appendChild(opt);
 });
 
-// MODAL
+// Fungsi membuka modal detail event
 window.openDetail = function(index){
     const data = filteredData[index];
     if(!data) return;
@@ -191,17 +197,18 @@ window.openDetail = function(index){
     document.getElementById("modal").classList.add("flex");
 }
 
+// Fungsi menutup modal detail event
 window.closeModal = function(){
     document.getElementById("modal").classList.add("hidden");
     document.getElementById("modal").classList.remove("flex");
 }
 
-// EVENTS
+// Menghubungkan input filter ke event listeners
 document.getElementById("search").addEventListener("input", filterData);
 document.getElementById("kategori").addEventListener("change", filterData);
 document.getElementById("event").addEventListener("change", filterData);
 
-// INIT
+// Jalankan penampilan data awal
 tampilkanData(window.dataEvent);
 
 });

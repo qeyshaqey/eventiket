@@ -254,26 +254,38 @@ onclick="{{ $isPublished ? 'openDetailModal(' . $event->id . ')' : '' }}"
                 <div class="grid grid-cols-2 gap-3">
                     <div>
                         <label class="text-sm font-semibold">Tanggal Mulai</label>
-                        <input type="date" name="tanggal_mulai" required
-                            class="w-full mt-1 border rounded-xl p-2.5 text-sm">
+                        <input type="date" id="tanggal_mulai" name="tanggal_mulai" required
+                            class="w-full mt-1 border @error('tanggal_mulai') border-red-500 @else border-gray-200 @enderror rounded-xl p-2.5 text-sm focus:ring-2 focus:ring-[#192853] outline-none">
+                        @error('tanggal_mulai')
+                            <p class="text-xs text-red-500 mt-1 font-medium">{{ $message }}</p>
+                        @enderror
                     </div>
                     <div>
                         <label class="text-sm font-semibold">Tanggal Selesai</label>
-                        <input type="date" name="tanggal_selesai" required
-                            class="w-full mt-1 border rounded-xl p-2.5 text-sm">
+                        <input type="date" id="tanggal_selesai" name="tanggal_selesai" required
+                            class="w-full mt-1 border @error('tanggal_selesai') border-red-500 @else border-gray-200 @enderror rounded-xl p-2.5 text-sm focus:ring-2 focus:ring-[#192853] outline-none">
+                        @error('tanggal_selesai')
+                            <p class="text-xs text-red-500 mt-1 font-medium">{{ $message }}</p>
+                        @enderror
                     </div>
                 </div>
 
                 <div class="grid grid-cols-2 gap-3">
                     <div>
                         <label class="text-sm font-semibold">Waktu Mulai</label>
-                        <input type="time" name="waktu_mulai" required
-                            class="w-full mt-1 border rounded-xl p-2.5 text-sm">
+                        <input type="time" id="waktu_mulai" name="waktu_mulai" required
+                            class="w-full mt-1 border @error('waktu_mulai') border-red-500 @else border-gray-200 @enderror rounded-xl p-2.5 text-sm focus:ring-2 focus:ring-[#192853] outline-none">
+                        @error('waktu_mulai')
+                            <p class="text-xs text-red-500 mt-1 font-medium">{{ $message }}</p>
+                        @enderror
                     </div>
                     <div>
                         <label class="text-sm font-semibold">Waktu Selesai</label>
-                        <input type="time" name="waktu_selesai" required
-                            class="w-full mt-1 border rounded-xl p-2.5 text-sm">
+                        <input type="time" id="waktu_selesai" name="waktu_selesai" required
+                            class="w-full mt-1 border @error('waktu_selesai') border-red-500 @else border-gray-200 @enderror rounded-xl p-2.5 text-sm focus:ring-2 focus:ring-[#192853] outline-none">
+                        @error('waktu_selesai')
+                            <p class="text-xs text-red-500 mt-1 font-medium">{{ $message }}</p>
+                        @enderror
                     </div>
                 </div>
 
@@ -382,35 +394,116 @@ document.addEventListener('DOMContentLoaded', function () {
 
     window.events = @json($events ?? []);
 
-    // =========================
-    // MODAL TAMBAH / EDIT
-    // =========================
-    function openModal(mode, eventId = null) {
+    // ==========================================
+    // DEKLARASI ELEMEN & LISTENERS VALIDASI FORM
+    // ==========================================
+    const tglMulaiInput = document.getElementById('tanggal_mulai');
+    const tglSelesaiInput = document.getElementById('tanggal_selesai');
+    const waktuMulaiInput = document.getElementById('waktu_mulai');
+    const waktuSelesaiInput = document.getElementById('waktu_selesai');
 
+    // Fungsi untuk memperbarui batas waktu minimum (Waktu Mulai & Waktu Selesai) secara dinamis
+    function updateTimeLimits() {
+        const todayStr = new Date().toISOString().split('T')[0];
+        
+        // Dapatkan waktu saat ini dalam format HH:MM
+        const now = new Date();
+        const hrs = String(now.getHours()).padStart(2, '0');
+        const mins = String(now.getMinutes()).padStart(2, '0');
+        const currentTimeStr = `${hrs}:${mins}`;
+
+        // VALIDASI 1: Jika tanggal mulai adalah HARI INI, waktu mulai tidak boleh di masa lalu
+        if (tglMulaiInput && tglMulaiInput.value === todayStr) {
+            if (waktuMulaiInput) {
+                waktuMulaiInput.min = currentTimeStr;
+                // Jika waktu yang dipilih sebelumnya lebih kecil dari waktu sekarang, reset ke waktu sekarang
+                if (waktuMulaiInput.value && waktuMulaiInput.value < currentTimeStr) {
+                    waktuMulaiInput.value = currentTimeStr;
+                }
+            }
+        } else if (waktuMulaiInput) {
+            // Hapus batas minimum jika tanggal mulai bukan hari ini
+            waktuMulaiInput.removeAttribute('min');
+        }
+
+        // VALIDASI 2: Jika tanggal mulai dan tanggal selesai sama, waktu selesai harus setelah waktu mulai
+        if (tglMulaiInput && tglSelesaiInput && waktuMulaiInput && waktuSelesaiInput) {
+            if (tglMulaiInput.value === tglSelesaiInput.value) {
+                waktuSelesaiInput.min = waktuMulaiInput.value;
+                // Jika waktu selesai yang dipilih mendahului waktu mulai, sesuaikan otomatis
+                if (waktuSelesaiInput.value && waktuSelesaiInput.value < waktuMulaiInput.value) {
+                    waktuSelesaiInput.value = waktuMulaiInput.value;
+                }
+            } else {
+                // Hapus batas minimum waktu selesai jika tanggalnya berbeda
+                waktuSelesaiInput.removeAttribute('min');
+            }
+        }
+    }
+
+    // Pasang Event Listeners untuk mendeteksi perubahan tanggal dan waktu
+    if (tglMulaiInput && tglSelesaiInput) {
+        // Ketika tanggal mulai diubah
+        tglMulaiInput.addEventListener('change', function () {
+            // Tanggal selesai minimal harus sama dengan tanggal mulai
+            tglSelesaiInput.min = this.value;
+            if (tglSelesaiInput.value && tglSelesaiInput.value < this.value) {
+                tglSelesaiInput.value = this.value;
+            }
+            updateTimeLimits();
+        });
+
+        // Ketika tanggal selesai diubah
+        tglSelesaiInput.addEventListener('change', updateTimeLimits);
+    }
+
+    // Ketika waktu mulai diubah
+    if (waktuMulaiInput) {
+        waktuMulaiInput.addEventListener('change', updateTimeLimits);
+    }
+
+    // ==========================================
+    // FUNGSI MEMBUKA MODAL (TAMBAH / EDIT EVENT)
+    // ==========================================
+    function openModal(mode, eventId = null) {
         const form = document.getElementById('eventForm');
         const title = document.getElementById('modalTitle');
         const methodInput = document.getElementById('methodOverride');
 
         if (!form) return;
 
+        // Reset semua field form ke kosong
         form.reset();
 
+        const todayStr = new Date().toISOString().split('T')[0];
+
+        // MODE TAMBAH
         if (mode === 'tambah') {
             title.innerText = 'Tambah Event';
             form.action = '{{ route("panitia.event.store") }}';
             methodInput.value = 'POST';
             document.getElementById('posterInput').required = true;
+
+            // Batasi tanggal mulai dan selesai minimal hari ini
+            if (tglMulaiInput) tglMulaiInput.min = todayStr;
+            if (tglSelesaiInput) tglSelesaiInput.min = todayStr;
+            
+            // Perbarui batas waktu input
+            updateTimeLimits();
         }
 
+        // MODE EDIT
         if (mode === 'edit') {
             title.innerText = 'Edit Event';
             methodInput.value = 'PUT';
             form.action = `/panitia/event/${eventId}`;
             document.getElementById('posterInput').required = false;
 
+            // Cari event berdasarkan ID dari array data events yang dikirim controller
             const event = window.events.find(e => e.id == eventId);
             if (!event) return;
 
+            // Isi nilai form dengan data event yang dipilih
             form.judul.value = event.judul ?? '';
             form.kategori_id.value = event.kategori_id ?? '';
             form.deskripsi.value = event.deskripsi ?? '';
@@ -419,6 +512,16 @@ document.addEventListener('DOMContentLoaded', function () {
             form.waktu_mulai.value = event.waktu_mulai ?? '';
             form.waktu_selesai.value = event.waktu_selesai ?? '';
             form.lokasi.value = event.lokasi ?? '';
+
+            // Agar tidak error ketika mengedit event lama di masa lalu,
+            // set min date ke tanggal event tersebut (mana yang lebih lama)
+            const eventDate = event.tanggal_mulai ?? todayStr;
+            const minDate = eventDate < todayStr ? eventDate : todayStr;
+            if (tglMulaiInput) tglMulaiInput.min = minDate;
+            if (tglSelesaiInput) tglSelesaiInput.min = minDate;
+
+            // Perbarui batas waktu input
+            updateTimeLimits();
         }
     }
 
@@ -552,10 +655,16 @@ document.addEventListener('DOMContentLoaded', function () {
 @if ($errors->any())
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-        const modal = document.getElementById('eventModal');
-        if (modal) {
-            const modal = new Modal(document.getElementById('eventModal'));
-modal.show();
+        if (typeof showToast === 'function') {
+            showToast("{{ $errors->first() }}", "error");
+        }
+        const modalEl = document.getElementById('eventModal');
+        if (modalEl) {
+            modalEl.classList.remove('hidden');
+            if (typeof Modal !== 'undefined') {
+                const flowbiteModal = new Modal(modalEl);
+                flowbiteModal.show();
+            }
         }
     });
 </script>

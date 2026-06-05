@@ -2,42 +2,46 @@
 
 @section('content')
 <div class="p-4 md:p-6">
+    <!-- JUDUL RIWAYAT -->
     <h1 id="cardTitle" class="text-xl font-bold text-[#192853] mb-4 font-[Poppins]">
         Riwayat
     </h1>
 
+    <!-- SISTEM TAB (EVENT / TRANSAKSI) -->
     <div data-tabs-toggle="#tab-content">
-    <!-- TABS -->
-    <div class="flex flex-wrap gap-3 mb-5">
-        <button onclick="showTab('event')"
-    data-tabs-target="#tab-event"
-    id="tabBtn-event"
-    class="px-5 py-2 rounded-full text-sm font-semibold transition bg-[#192853] text-yellow-400 shadow">
-    Event
-        </button>
+        <div class="flex flex-wrap gap-3 mb-5">
+            <!-- Tab Event Selesai -->
+            <button onclick="showTab('event')"
+                data-tabs-target="#tab-event"
+                id="tabBtn-event"
+                class="px-5 py-2 rounded-full text-sm font-semibold transition bg-[#192853] text-yellow-400 shadow">
+                Event
+            </button>
 
-        <button onclick="showTab('transaksi')"
-    data-tabs-target="#tab-transaksi"
-    id="tabBtn-transaksi"
-    class="px-5 py-2 rounded-full text-sm font-semibold transition bg-white text-gray-600 shadow">
-    Transaksi
-        </button>
-    </div>
+            <!-- Tab Transaksi Selesai -->
+            <button onclick="showTab('transaksi')"
+                data-tabs-target="#tab-transaksi"
+                id="tabBtn-transaksi"
+                class="px-5 py-2 rounded-full text-sm font-semibold transition bg-white text-gray-600 shadow">
+                Transaksi
+            </button>
+        </div>
     </div>
 
-    <!-- CARD -->
+    <!-- BOX WADAH KONTEN UTAMA -->
     <div class="bg-white rounded-2xl shadow-md border border-gray-100 p-4 md:p-6">
 
-        <!-- ===================== -->
-        <!-- EVENT -->
-        <!-- ===================== -->
+        <!-- ========================================== -->
+        <!-- TAB KONTEN: RIWAYAT EVENT -->
+        <!-- ========================================== -->
         <div id="tab-event">
             
-            <!-- FILTER EVENT & KATEGORI -->
+            <!-- FILTER RIWAYAT EVENT -->
             <div class="flex flex-col md:flex-row md:items-center justify-end gap-3 mb-5">
                 <form action="{{ route('panitia.riwayat') }}" method="GET" class="flex gap-2 w-full md:w-auto">
                     <input type="hidden" name="tab" value="event">
                     
+                    <!-- Filter Kategori -->
                     <select name="kategori_id" onchange="this.form.submit()" 
                         class="border rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-[#192853] outline-none bg-white w-full md:w-48">
                         <option value="">Semua Kategori</option>
@@ -48,6 +52,7 @@
                         @endforeach
                     </select>
 
+                    <!-- Filter Judul Event -->
                     <select name="event_filter_id" onchange="this.form.submit()" 
                         class="border rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-[#192853] outline-none bg-white w-full md:w-64">
                         <option value="">Semua Event</option>
@@ -58,6 +63,7 @@
                         @endforeach
                     </select>
                     
+                    <!-- Tombol Reset Filter -->
                     @if(request('kategori_id') || request('event_filter_id'))
                         <a href="{{ route('panitia.riwayat') }}?tab=event" 
                             class="px-3 py-2 bg-gray-100 text-gray-600 rounded-lg text-sm hover:bg-gray-200 transition flex items-center"
@@ -68,6 +74,7 @@
                 </form>
             </div>
 
+            <!-- Tabel Data Event Selesai -->
             <div class="overflow-x-auto rounded-xl border">
                 <table class="min-w-[600px] w-full text-sm">
 
@@ -82,28 +89,22 @@
                     </thead>
 
                     <tbody class="divide-y">
-
                         @forelse($events as $index => $event)
                         <tr class="hover:bg-gray-50 transition text-sm">
-
                             <td class="p-3 text-gray-600">
                                 {{ $index + 1 }}
                             </td>
-
                             <td class="p-3 font-semibold text-gray-800">
                                 {{ $event->judul }}
                             </td>
-
                             <td class="p-3">
                                 <span class="px-3 py-1 text-xs bg-blue-50 text-blue-600 rounded-full">
                                     {{ $event->kategori->nama_kategori ?? '-' }}
                                 </span>
                             </td>
-
                             <td class="p-3 text-gray-600 text-sm">
                                 {{ \Carbon\Carbon::parse($event->tanggal_mulai)->format('d M Y') }}
                             </td>
-
                             <td class="p-3">
                                 <span class="px-3 py-1 text-xs rounded-full
                                     {{ $event->status == 'published'
@@ -112,32 +113,31 @@
                                     {{ $event->status }}
                                 </span>
                             </td>
-
                         </tr>
                         @empty
                         <tr>
                             <td colspan="5" class="p-6 text-center text-gray-400">
-                                Belum ada event
+                                Belum ada event selesai
                             </td>
                         </tr>
                         @endforelse
-
                     </tbody>
                 </table>
             </div>
 
         </div>
 
-        <!-- ===================== -->
-        <!-- TRANSAKSI -->
-        <!-- ===================== -->
+        <!-- ========================================== -->
+        <!-- TAB KONTEN: RIWAYAT TRANSAKSI -->
+        <!-- ========================================== -->
         <div id="tab-transaksi" class="hidden">
             
-            <!-- FILTER EVENT & KATEGORI -->
+            <!-- FILTER RIWAYAT TRANSAKSI -->
             <div class="flex flex-col md:flex-row md:items-center justify-end gap-3 mb-5">
                 <form action="{{ route('panitia.riwayat') }}" method="GET" class="flex gap-2 w-full md:w-auto">
                     <input type="hidden" name="tab" value="transaksi">
 
+                    <!-- Filter Kategori Transaksi -->
                     <select name="trx_kategori_id" onchange="this.form.submit()" 
                         class="border rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-[#192853] outline-none bg-white w-full md:w-48">
                         <option value="">Semua Kategori</option>
@@ -148,6 +148,7 @@
                         @endforeach
                     </select>
 
+                    <!-- Filter Event Transaksi -->
                     <select name="event_id" onchange="this.form.submit()" 
                         class="border rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-[#192853] outline-none bg-white w-full md:w-64">
                         <option value="">Semua Event</option>
@@ -158,6 +159,7 @@
                         @endforeach
                     </select>
                     
+                    <!-- Tombol Reset Filter Transaksi -->
                     @if(request('trx_kategori_id') || request('event_id'))
                         <a href="{{ route('panitia.riwayat') }}?tab=transaksi" 
                             class="px-3 py-2 bg-gray-100 text-gray-600 rounded-lg text-sm hover:bg-gray-200 transition flex items-center"
@@ -168,6 +170,7 @@
                 </form>
             </div>
 
+            <!-- Tabel Data Transaksi Event Selesai -->
             <div class="overflow-x-auto rounded-xl border">
                 <table class="min-w-[800px] w-full text-sm">
 
@@ -183,38 +186,30 @@
                     </thead>
 
                     <tbody class="divide-y">
-
                         @forelse($transaksis as $index => $trx)
                         <tr class="hover:bg-gray-50 transition">
-
                             <td class="p-3 text-gray-600">
                                 {{ $index + 1 }}
                             </td>
-
                             <td class="p-3 font-semibold text-gray-800">
                                 {{ $trx->nama }}
                             </td>
-
                             <td class="p-3 text-gray-700">
                                 {{ $trx->event->judul ?? '-' }}
                             </td>
-
                             <td class="p-3 text-gray-600 text-sm">
                                 {{ $trx->created_at->format('d M Y') }}
                             </td>
-
                             <td class="p-3 font-semibold text-gray-800">
                                 Rp {{ number_format($trx->total) }}
                             </td>
-
                             <td class="p-3 text-center">
                                 <button type="button" 
-                                    onclick="openTrxModal('{{ $trx->nama }}', '{{ $trx->email }}', '{{ $trx->event->judul ?? '-' }}', '{{ $trx->jenis_tiket }}', '{{ $trx->created_at->format('d M Y') }}', 'Rp {{ number_format($trx->total) }}', '{{ $trx->status }}')"
+                                    onclick="openTrxModal('{{ $trx->nama }}', '{{ $trx->email }}', '{{ $trx->event->judul ?? \'-\' }}', '{{ $trx->jenis_tiket }}', '{{ $trx->created_at->format(\'d M Y\') }}', 'Rp {{ number_format($trx->total) }}', '{{ $trx->status }}')"
                                     class="bg-[#192853] text-white px-3 py-1 rounded-full text-xs font-semibold hover:bg-blue-800 transition">
                                     Detail
                                 </button>
                             </td>
-
                         </tr>
                         @empty
                         <tr>
@@ -223,7 +218,6 @@
                             </td>
                         </tr>
                         @endforelse
-
                     </tbody>
 
                 </table>
@@ -234,98 +228,24 @@
     </div>
 </div>
 
-<!-- SCRIPT -->
-<script>
-function showTab(tab) {
-
-    const tabs = ['event', 'transaksi'];
-
-    tabs.forEach(t => {
-        document.getElementById('tab-' + t).classList.add('hidden');
-
-        const btn = document.getElementById('tabBtn-' + t);
-        btn.classList.remove('bg-[#192853]', 'text-yellow-400');
-        btn.classList.add('bg-white', 'text-gray-600');
-    });
-
-    document.getElementById('tab-' + tab).classList.remove('hidden');
-
-    const activeBtn = document.getElementById('tabBtn-' + tab);
-    activeBtn.classList.add('bg-[#192853]', 'text-yellow-400');
-    activeBtn.classList.remove('bg-white', 'text-gray-600');
-
-    document.getElementById('cardTitle').innerText =
-        tab === 'event' ? 'Riwayat Event' : 'Riwayat Transaksi';
-}
-
-// Show correct tab on load
-document.addEventListener('DOMContentLoaded', function() {
-    const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.has('event_id') || urlParams.get('tab') === 'transaksi') {
-        showTab('transaksi');
-    }
-});
-
-function openTrxModal(name, email, eventTitle, ticketType, purchaseDate, totalPrice, status) {
-    document.getElementById('m_buyer_name').innerText = name;
-    document.getElementById('m_buyer_email').innerText = email;
-    document.getElementById('m_event_title').innerText = eventTitle;
-    document.getElementById('m_event_title').title = eventTitle;
-    document.getElementById('m_ticket_type').innerText = ticketType;
-    document.getElementById('m_purchase_date').innerText = purchaseDate;
-    document.getElementById('m_total_price').innerText = totalPrice;
-    
-    const statusEl = document.getElementById('m_status');
-    statusEl.innerText = status.toUpperCase();
-    
-    statusEl.className = 'px-3 py-1 text-xs rounded-full font-semibold';
-    
-    if (status === 'pending') {
-        statusEl.classList.add('bg-yellow-100', 'text-yellow-700');
-    } else if (status === 'paid') {
-        statusEl.classList.add('bg-green-100', 'text-green-700');
-    } else {
-        statusEl.classList.add('bg-red-100', 'text-red-700');
-    }
-    
-    const modal = document.getElementById('detailModal');
-    modal.classList.remove('hidden');
-    modal.classList.add('flex');
-}
-
-function closeTrxModal() {
-    const modal = document.getElementById('detailModal');
-    modal.classList.add('hidden');
-    modal.classList.remove('flex');
-}
-
-window.addEventListener('click', function(event) {
-    const modal = document.getElementById('detailModal');
-    if (event.target === modal) {
-        closeTrxModal();
-    }
-});
-</script>
-
+<!-- ========================================== -->
 <!-- MODAL DETAIL TRANSAKSI -->
+<!-- ========================================== -->
 <div id="detailModal"
     class="fixed inset-0 bg-black/40 hidden items-center justify-center z-50 px-4">
 
     <div class="bg-white w-full max-w-sm rounded-xl shadow-xl overflow-hidden">
-
+        <!-- Header Modal -->
         <div class="bg-[#192853] p-4 flex justify-between items-start">
-
             <div>
                 <h3 id="m_buyer_name" class="text-yellow-400 font-semibold text-sm"></h3>
                 <p id="m_buyer_email" class="text-white/60 text-xs"></p>
             </div>
-
             <button onclick="closeTrxModal()" class="text-white text-lg leading-none">&times;</button>
-
         </div>
 
+        <!-- Body Detail Transaksi -->
         <div class="p-4 space-y-3 text-sm">
-
             <div class="flex justify-between">
                 <span class="text-gray-500">Event</span>
                 <span id="m_event_title" class="font-semibold text-gray-800 text-right max-w-[200px] truncate"></span>
@@ -350,10 +270,90 @@ window.addEventListener('click', function(event) {
                 <span class="text-gray-500">Status</span>
                 <span id="m_status" class="px-3 py-1 text-xs rounded-full font-semibold"></span>
             </div>
-
         </div>
-
     </div>
 </div>
+
+<!-- JAVASCRIPT LOGIC -->
+<script>
+// Fungsi untuk mengganti tampilan tab aktif (Event / Transaksi)
+function showTab(tab) {
+    const tabs = ['event', 'transaksi'];
+
+    // Sembunyikan semua tab & ubah status tombol ke inaktif
+    tabs.forEach(t => {
+        document.getElementById('tab-' + t).classList.add('hidden');
+
+        const btn = document.getElementById('tabBtn-' + t);
+        btn.classList.remove('bg-[#192853]', 'text-yellow-400');
+        btn.classList.add('bg-white', 'text-gray-600');
+    });
+
+    // Tampilkan tab yang dipilih & ubah status tombol menjadi aktif
+    document.getElementById('tab-' + tab).classList.remove('hidden');
+
+    const activeBtn = document.getElementById('tabBtn-' + tab);
+    activeBtn.classList.add('bg-[#192853]', 'text-yellow-400');
+    activeBtn.classList.remove('bg-white', 'text-gray-600');
+
+    // Ubah teks judul halaman secara dinamis
+    document.getElementById('cardTitle').innerText =
+        tab === 'event' ? 'Riwayat Event' : 'Riwayat Transaksi';
+}
+
+// Menampilkan tab yang sesuai ketika pertama kali halaman dimuat berdasarkan parameter URL
+document.addEventListener('DOMContentLoaded', function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has('event_id') || urlParams.get('tab') === 'transaksi') {
+        showTab('transaksi');
+    }
+});
+
+// Fungsi membuka modal detail transaksi dan mempopulasikan datanya secara dinamis
+function openTrxModal(name, email, eventTitle, ticketType, purchaseDate, totalPrice, status) {
+    document.getElementById('m_buyer_name').innerText = name;
+    document.getElementById('m_buyer_email').innerText = email;
+    document.getElementById('m_event_title').innerText = eventTitle;
+    document.getElementById('m_event_title').title = eventTitle;
+    document.getElementById('m_ticket_type').innerText = ticketType;
+    document.getElementById('m_purchase_date').innerText = purchaseDate;
+    document.getElementById('m_total_price').innerText = totalPrice;
+    
+    const statusEl = document.getElementById('m_status');
+    statusEl.innerText = status.toUpperCase();
+    
+    // Reset kelas warna status
+    statusEl.className = 'px-3 py-1 text-xs rounded-full font-semibold';
+    
+    // Set warna status berdasarkan status transaksi
+    if (status === 'pending') {
+        statusEl.classList.add('bg-yellow-100', 'text-yellow-700');
+    } else if (status === 'paid') {
+        statusEl.classList.add('bg-green-100', 'text-green-700');
+    } else {
+        statusEl.classList.add('bg-red-100', 'text-red-700');
+    }
+    
+    // Tampilkan modal
+    const modal = document.getElementById('detailModal');
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+}
+
+// Fungsi menutup modal detail transaksi
+function closeTrxModal() {
+    const modal = document.getElementById('detailModal');
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
+}
+
+// Menutup modal secara otomatis ketika pengguna mengklik area luar modal (overlay background)
+window.addEventListener('click', function(event) {
+    const modal = document.getElementById('detailModal');
+    if (event.target === modal) {
+        closeTrxModal();
+    }
+});
+</script>
 
 @endsection
