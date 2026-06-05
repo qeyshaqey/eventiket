@@ -43,7 +43,7 @@
                         <th class="p-3 text-left">Nama</th>
                         <th class="p-3 text-left">Email</th>
                         <th class="p-3 text-left">NIM</th>
-                        <th class="p-3 text-left">UKM</th>
+                        <th class="p-3 text-left">Organisasi</th>
                         <th class="p-3 text-left">Status</th>
                         <th class="p-3 text-center">Aksi</th>
                     </tr>
@@ -77,7 +77,7 @@
                         <td class="py-4 px-3 font-medium text-gray-700">{{ $d['nama'] }}</td>
                         <td class="py-4 px-3 text-gray-500">{{ $d['email'] }}</td>
                         <td class="py-4 px-3 text-gray-600">{{ $d['nim'] }}</td>
-                        <td class="py-4 px-3">{{ $d['ukm'] }}</td>
+                        <td class="py-4 px-3">{{ $d['nama_organisasi'] }}</td>
                         <td class="py-4 px-3">
                             <span class="px-3 py-1 rounded-full text-xs bg-green-100 text-green-600 font-bold">
                                 {{ $d['status'] }}
@@ -86,7 +86,7 @@
                         <td class="py-4 px-3 first:rounded-l-lg last:rounded-r-lg">
                             <div class="flex justify-center">
                                 <button data-modal-target="modalTurunkan" data-modal-toggle="modalTurunkan" onclick="openDemoteModal('{{ $d['nama'] }}', '{{ $d['id'] }}')" 
-                                    class="w-9 h-9 flex items-center justify-center rounded-lg bg-orange-100 text-orange-600 hover:bg-orange-200 transition" title="Turunkan Jabatan">
+                                    class="w-9 h-9 flex items-center justify-center rounded-lg bg-red-100 text-red-600 hover:bg-red-200 transition" title="Turunkan Jabatan">
                                     <i class="fa-solid fa-user-minus"></i>
                                 </button>
                             </div>
@@ -108,7 +108,7 @@
                         <th class="p-3 text-left">Nama</th>
                         <th class="p-3 text-left">Email</th>
                         <th class="p-3 text-left">NIM</th>
-                        <th class="p-3 text-left">UKM</th>
+                        <th class="p-3 text-left">Organisasi</th>
                         <th class="p-3 text-left">Status</th>
                     </tr>
                 </thead>
@@ -141,7 +141,7 @@
                         <td class="py-4 px-3 font-medium text-gray-700">{{ $d['nama'] }}</td>
                         <td class="py-4 px-3 text-gray-500">{{ $d['email'] }}</td>
                         <td class="py-4 px-3 text-gray-600">{{ $d['nim'] }}</td>
-                        <td class="py-4 px-3">{{ $d['ukm'] }}</td>
+                        <td class="py-4 px-3">{{ $d['nama_organisasi'] }}</td>
                         <td class="py-4 px-3 first:rounded-l-lg last:rounded-r-lg">
                             <span class="px-3 py-1 rounded-full text-xs bg-red-100 text-red-600 font-bold">
                                 Diturunkan
@@ -178,7 +178,7 @@
                         <th class="p-3 text-left">Nama</th>
                         <th class="p-3 text-left">Email</th>
                         <th class="p-3 text-left">NIM</th>
-                        <th class="p-3 text-left">UKM</th>
+                        <th class="p-3 text-left">Organisasi</th>
                         <th class="p-3 text-left">Alasan</th>
                     </tr>
                 </thead>
@@ -201,7 +201,7 @@
                         <td class="py-4 px-3 font-medium text-gray-700">{{ $d['nama'] }}</td>
                         <td class="py-4 px-3 text-gray-500">{{ $d['email'] }}</td>
                         <td class="py-4 px-3 text-gray-600">{{ $d['nim'] }}</td>
-                        <td class="py-4 px-3">{{ $d['ukm'] }}</td>
+                        <td class="py-4 px-3">{{ $d['nama_organisasi'] }}</td>
                         <td class="py-4 px-3 text-red-500 font-medium first:rounded-l-lg last:rounded-r-lg">{{ $d['alasan'] }}</td>
                     </tr>
                     @endforeach
@@ -231,7 +231,7 @@
                         <th class="p-3 text-left">Email</th>
                         <th class="p-3 text-left">NIM</th>
                         <th class="p-3 text-left">Tanggal</th>
-                        <th class="p-3 text-left">UKM</th>
+                        <th class="p-3 text-left">Organisasi</th>
                         <th class="p-3 text-center">Aksi</th>
                     </tr>
                 </thead>
@@ -254,19 +254,17 @@
                         <td class="py-4 px-3 text-gray-500">{{ $d['email'] }}</td>
                         <td class="py-4 px-3 text-gray-600">{{ $d['nim'] }}</td>
                         <td class="py-4 px-3">{{ $d['tanggal'] }}</td>
-                        <td class="py-4 px-3">{{ $d['ukm'] }}</td>
+                        <td class="py-4 px-3">{{ $d['nama_organisasi'] }}</td>
 
                         <td class="py-4 px-3 first:rounded-l-lg last:rounded-r-lg">
                             <div class="flex gap-2 justify-center" onclick="event.stopPropagation()">
-                                <form action="{{ route('admin.data.panitia.approve', $d['id']) }}" method="POST" class="inline">
-                                    @csrf
-                                    <button type="submit" class="w-9 h-9 flex items-center justify-center rounded-lg bg-green-100 text-green-600 hover:bg-green-200 transition">
-                                        <i class="fa-solid fa-check"></i>
-                                    </button>
-                                </form>
+                                <button data-modal-target="modalSetuju" data-modal-toggle="modalSetuju" onclick="openApproveModal('{{ $d['nama'] }}', '{{ $d['id'] }}')"
+                                    class="w-9 h-9 flex items-center justify-center rounded-lg bg-green-100 text-green-600 hover:bg-green-200 transition" title="Setujui Panitia">
+                                    <i class="fa-solid fa-check"></i>
+                                </button>
 
                                 <button data-modal-target="modalTolak" data-modal-toggle="modalTolak" onclick="openModal('{{ $d['nama'] }}', '{{ $d['id'] }}')"
-                                    class="w-9 h-9 flex items-center justify-center rounded-lg bg-red-100 text-red-500 hover:bg-red-200 transition">
+                                    class="w-9 h-9 flex items-center justify-center rounded-lg bg-red-100 text-red-500 hover:bg-red-200 transition" title="Tolak Pengajuan">
                                     <i class="fa-solid fa-xmark"></i>
                                 </button>
                             </div>
@@ -280,6 +278,33 @@
         </div>
     </div>
 
+</div>
+
+<!-- ================= MODAL SETUJU ================= -->
+<div id="modalSetuju" tabindex="-1" aria-hidden="true" class="fixed inset-0 hidden z-50 items-center justify-center overflow-y-auto overflow-x-hidden">
+    <div class="relative p-4 w-full max-w-sm h-full md:h-auto flex items-center justify-center">
+        <div class="fixed inset-0 bg-black/40" data-modal-hide="modalSetuju"></div>
+
+        <div class="relative bg-white rounded-xl shadow-lg w-full p-6 text-center">
+            <div class="w-16 h-16 bg-green-100 text-green-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                <i class="fa-solid fa-user-check text-2xl"></i>
+            </div>
+            <h2 class="text-lg font-semibold text-gray-700 mb-2">Setujui Panitia?</h2>
+            <p class="text-sm text-gray-500 mb-6">Apakah Anda yakin ingin menyetujui <span id="namaPanitiaSetuju" class="font-bold text-gray-700"></span> sebagai panitia?</p>
+
+            <form id="formSetuju" method="POST" class="flex justify-center gap-3">
+                @csrf
+                <button type="button" data-modal-hide="modalSetuju" 
+                    class="px-6 py-2 text-sm font-medium rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200 transition">
+                    Batal
+                </button>
+                <button type="submit" 
+                    class="px-6 py-2 text-sm font-medium rounded-lg bg-green-500 text-white hover:bg-green-600 transition shadow-md shadow-green-200">
+                    Iya, Setujui
+                </button>
+            </form>
+        </div>
+    </div>
 </div>
 
 <!-- ================= MODAL ================= -->
@@ -349,7 +374,7 @@
                 </div>
                 <div class="grid grid-cols-12 items-start">
                     <b class="col-span-4 text-gray-900">Organisasi</b> 
-                    <span id="detUKM" class="col-span-8 text-gray-600"></span>
+                    <span id="detOrganisasi" class="col-span-8 text-gray-600"></span>
                 </div>
                 <hr class="border-gray-50">
                 <div class="grid grid-cols-12 items-start">
@@ -378,7 +403,7 @@
         <div class="fixed inset-0 bg-black/40" data-modal-hide="modalTurunkan"></div>
 
         <div class="relative bg-white rounded-xl shadow-lg w-full p-6 text-center">
-            <div class="w-16 h-16 bg-orange-100 text-orange-500 rounded-full flex items-center justify-center mx-auto mb-4">
+            <div class="w-16 h-16 bg-red-100 text-red-500 rounded-full flex items-center justify-center mx-auto mb-4">
                 <i class="fa-solid fa-user-minus text-2xl"></i>
             </div>
             <h2 class="text-lg font-semibold text-gray-700 mb-2">Turunkan Jabatan?</h2>
@@ -391,7 +416,7 @@
                     Batal
                 </button>
                 <button type="submit" 
-                    class="px-6 py-2 text-sm font-medium rounded-lg bg-orange-500 text-white hover:bg-orange-600 transition shadow-md shadow-orange-200">
+                    class="px-6 py-2 text-sm font-medium rounded-lg bg-red-500 text-white hover:bg-red-600 transition shadow-md shadow-red-200">
                     Iya, Turunkan
                 </button>
             </form>
@@ -448,7 +473,7 @@
     function openDetailModal(data) {
         document.getElementById('detNama').innerText = data.nama;
         document.getElementById('detIdentitas').innerText = data.nim + " / " + data.email;
-        document.getElementById('detUKM').innerText = data.ukm;
+        document.getElementById('detOrganisasi').innerText = data.nama_organisasi;
         document.getElementById('detEvent').innerText = data.event_nama;
         document.getElementById('detKategori').innerText = data.kategori_event;
         document.getElementById('detTgl').innerText = data.tgl_event;
@@ -491,6 +516,15 @@
             sub1.classList.remove('bg-[#192853]', 'text-white');
             sub1.classList.add('bg-white', 'text-yellow-400');
         }
+    }
+
+    // MODAL SETUJU
+    let approveNama = '';
+
+    function openApproveModal(nama, id) {
+        approveNama = nama;
+        document.getElementById('namaPanitiaSetuju').innerText = nama;
+        document.getElementById('formSetuju').action = "/admin/data-panitia/approve/" + id;
     }
 
     // MODAL TURUNKAN

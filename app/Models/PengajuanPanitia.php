@@ -8,11 +8,11 @@ class PengajuanPanitia extends Model
 {
     protected $fillable = [
         'user_id',
-        'ukm',
+        'nama_organisasi',
         'nama_event',
         'kategori',
         'tanggal_event',
-        'deskripsi_event',
+        'deskripsi',
         'status',
         'alasan_penolakan'
     ];

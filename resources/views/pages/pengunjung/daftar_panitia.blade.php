@@ -58,8 +58,8 @@
                     <div class="rounded-2xl border border-slate-100 bg-[#F8FAFC] p-5 shadow-sm">
                         <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
                             <div class="flex-1">
-                                <p class="font-semibold text-navy text-sm">{{ $item->ukm }}</p>
-                                <p class="text-xs text-grayCustom mt-1 leading-relaxed">{{ $item->deskripsi_event }}</p>
+                                <p class="font-semibold text-navy text-sm">{{ $item->nama_organisasi }}</p>
+                                <p class="text-xs text-grayCustom mt-1 leading-relaxed">{{ $item->deskripsi }}</p>
                                 <p class="text-[10px] text-slate-400 mt-2">Diajukan: {{ \Carbon\Carbon::parse($item->created_at)->translatedFormat('d M Y') }}</p>
                             </div>
                             <div class="shrink-0">
@@ -185,12 +185,9 @@
                                 </div>
                                 <div class="dd-list">
                                     <div class="dd-item placeholder-opt">Pilih kategori</div>
-                                    <div class="dd-item" data-v="Seminar">Seminar</div>
-                                    <div class="dd-item" data-v="Olahraga">Olahraga</div>
-                                    <div class="dd-item" data-v="Keagamaan">Keagamaan</div>
-                                    <div class="dd-item" data-v="Hiburan">Hiburan</div>
-                                    <div class="dd-item" data-v="Workshop">Workshop</div>
-                                    <div class="dd-item" data-v="Kompetisi">Kompetisi</div>
+                                    @foreach($kategoris as $cat)
+                                        <div class="dd-item" data-v="{{ $cat }}">{{ $cat }}</div>
+                                    @endforeach
                                 </div>
                             </div>
                         </div>

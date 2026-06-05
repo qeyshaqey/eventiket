@@ -326,12 +326,14 @@ function openTrxModal(name, email, eventTitle, ticketType, purchaseDate, totalPr
     statusEl.className = 'px-3 py-1 text-xs rounded-full font-semibold';
     
     // Set warna status berdasarkan status transaksi
-    if (status === 'pending') {
+    if (status === 'Belum Bayar') {
         statusEl.classList.add('bg-yellow-100', 'text-yellow-700');
-    } else if (status === 'paid') {
+    } else if (status === 'Lunas') {
         statusEl.classList.add('bg-green-100', 'text-green-700');
-    } else {
+    } else if (status === 'Dibatalkan') {
         statusEl.classList.add('bg-red-100', 'text-red-700');
+    } else if (status === 'Kedaluwarsa') {
+        statusEl.classList.add('bg-gray-100', 'text-gray-500');
     }
     
     // Tampilkan modal

@@ -71,6 +71,9 @@ Route::get('/', function () {
 
 Route::get('/home_page', [HomePageController::class, 'index'])->name('home');
 
+// Detail event (Public)
+Route::get('/detail_event/{id}', [HomePageController::class, 'showDetail'])->name('pengunjung.detail.event');
+
 // Contact
 Route::get('/contact', [ContactController::class, 'index'])->name('contact.index');
 Route::post('/contact/send', [ContactController::class, 'send'])->name('contact.send');

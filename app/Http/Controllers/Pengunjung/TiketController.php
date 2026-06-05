@@ -19,7 +19,7 @@ class TiketController extends Controller
         $userId = session('user_id');
         $today = Carbon::today();
 
-        // Ambil data pembelian asli dari database milik user yang sedang login
+        // Mengambil data riwayat pembelian dari database berdasarkan ID pengguna
         $pembelians = Pembelian::with(['detail_pembelians.tiket.event.kategori'])
             ->where('user_id', $userId)
             ->get();
@@ -39,6 +39,22 @@ class TiketController extends Controller
                 $ticketsData[] = ["name" => $detail->tiket->nama ?? '-', "qty" => $detail->jumlah ?? 1];
             }
 
+            $endDate = Carbon::parse($event->tanggal_selesai ?? $event->tanggal_mulai);
+            $isHistory = false;
+            
+            if ($pembelian->status_pembayaran === 'Dibatalkan' || $pembelian->status_pembayaran === 'Kedaluwarsa') {
+                $isHistory = true;
+            } elseif (!$endDate->gte($today)) {
+                $isHistory = true;
+            }
+
+            $statusStr = $pembelian->status_pembayaran;
+            // Mengubah status pembayaran menjadi Kedaluwarsa secara otomatis jika event telah berlalu namun tagihan belum dibayar
+            if ($isHistory && $statusStr === 'Belum Bayar') {
+                $statusStr = 'Kedaluwarsa';
+                $pembelian->update(['status_pembayaran' => 'Kedaluwarsa']);
+            }
+
             $data = [
                 "id" => $pembelian->id, 
                 "title" => $event->judul,
@@ -48,18 +64,14 @@ class TiketController extends Controller
                 "time" => substr($event->waktu_mulai ?? '', 0, 5) . " - " . substr($event->waktu_selesai ?? '', 0, 5) . " WIB",
                 "location" => $event->lokasi,
                 "tickets" => $ticketsData,
-                "status" => $pembelian->status_pembayaran == 'Pending' ? 'Belum Bayar' : ($pembelian->status_pembayaran == 'Sukses' ? 'Berhasil Diverifikasi' : 'Dibatalkan'),
+                "status" => $statusStr,
                 "kode_order" => $pembelian->order_id ?? '-'
             ];
-
-            $endDate = Carbon::parse($event->tanggal_selesai ?? $event->tanggal_mulai);
             
-            if ($pembelian->status_pembayaran === 'Batal' || $pembelian->status_pembayaran === 'Gagal') {
+            if ($isHistory) {
                 $historyEvents[] = $data;
-            } elseif ($endDate->gte($today)) {
-                $activeEvents[] = $data;
             } else {
-                $historyEvents[] = $data;
+                $activeEvents[] = $data;
             }
         }
 
@@ -92,7 +104,7 @@ class TiketController extends Controller
                 'user_id' => $userId,
                 'tanggal_beli' => now(),
                 'total_bayar' => 0, 
-                'status_pembayaran' => 'Pending',
+                'status_pembayaran' => 'Belum Bayar',
                 'order_id' => $orderId,
             ]);
 
@@ -150,8 +162,8 @@ class TiketController extends Controller
         $userId = session('user_id');
         $pembelian = Pembelian::where('id', $id)->where('user_id', $userId)->first();
         
-        if ($pembelian && $pembelian->status_pembayaran == 'Pending') {
-            $pembelian->update(['status_pembayaran' => 'Batal']);
+        if ($pembelian && $pembelian->status_pembayaran == 'Belum Bayar') {
+            $pembelian->update(['status_pembayaran' => 'Dibatalkan']);
             return response()->json(['success' => true, 'message' => 'Tiket berhasil dibatalkan.']);
         }
         

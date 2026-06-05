@@ -13,7 +13,7 @@
         $eventsToShow = $activeTab === 'riwayat' ? $historyEvents : $activeEvents;
     @endphp
 
-    <!-- TAB PILIHAN -->
+    <!-- Navigasi Tab untuk memilih antara Tiket Aktif atau Riwayat Transaksi -->
     <div class="px-6 mt-6">
         <div class="mx-auto flex w-full max-w-xl items-center justify-between pb-3">
             <a href="{{ route('pengunjung.tiket') }}?tab=aktif{{ $currentCategory ? '&category='.$currentCategory : '' }}"
@@ -46,7 +46,9 @@
             <div class="relative w-full md:w-auto px-2 py-1 md:py-0 group">
                 <select id="filter-status" class="w-full md:w-44 bg-transparent border-transparent focus:border-transparent focus:ring-0 py-2 pl-4 pr-8 text-sm font-semibold text-navy cursor-pointer appearance-none truncate outline-none">
                     <option value="semua" {{ request('status') == 'semua' ? 'selected' : '' }}>Semua Status</option>
-                    <option value="belum bayar" {{ request('status') == 'Belum Bayar' ? 'selected' : '' }}>Belum Bayar</option>
+                    @if($activeTab === 'aktif')
+                        <option value="belum bayar" {{ request('status') == 'Belum Bayar' ? 'selected' : '' }}>Belum Bayar</option>
+                    @endif
                     <option value="lunas" {{ request('status') == 'Lunas' ? 'selected' : '' }}>Lunas</option>
                     @if($activeTab === 'riwayat')
                         <option value="dibatalkan" {{ request('status') == 'Dibatalkan' ? 'selected' : '' }}>Dibatalkan</option>
@@ -81,7 +83,7 @@
                 $filteredEvents = $eventsToShow;
             @endphp
 
-            {{-- Empty state: data memang kosong (belum punya tiket) --}}
+            {{-- Tampilan State Kosong ketika tidak ada data tiket sama sekali --}}
             @if(collect($filteredEvents)->isEmpty())
                 <div class="flex flex-col items-center justify-center py-16 text-center" id="empty-state-server">
                     <div class="mb-4 text-navy opacity-25">
@@ -96,7 +98,7 @@
                 </div>
             @endif
 
-            {{-- Empty state: hasil filter/search kosong (ditampilkan oleh JS) --}}
+            {{-- Tampilan State Kosong ketika hasil pencarian atau filter tidak ditemukan (ditangani via JavaScript) --}}
             <div id="empty-state" class="flex flex-col items-center justify-center py-16 text-center" style="display: none;">
                 <div class="mb-4 text-navy opacity-25">
                     <i class="fa-solid fa-magnifying-glass text-6xl"></i>
@@ -109,7 +111,7 @@
 
                 <div class="ticket-card bg-white rounded-2xl shadow-sm relative hover:shadow-md transition overflow-hidden"
                      data-title="{{ strtolower($event['title'] ?? '') }}"
-                     data-status="{{ strtolower($event['status'] == 'Berhasil Diverifikasi' ? 'lunas' : $event['status']) }}"
+                     data-status="{{ strtolower($event['status']) }}"
                      data-category="{{ strtolower($event['category'] ?? 'umum') }}">
 
                     <!-- LEFT ACCENT BORDER -->
@@ -126,7 +128,7 @@
                             </div>
 
                             <!-- KODE ORDER -->
-                            @if($event['status'] == 'Berhasil Diverifikasi')
+                            @if($event['status'] == 'Lunas')
                                 <div class="grid grid-cols-[140px_10px_1fr] text-sm mb-2">
                                     <span class="font-semibold">KODE ORDER</span>
                                     <span>:</span>
@@ -162,13 +164,13 @@
                                 <span class="font-semibold
                                     @if($event['status'] == 'Belum Bayar') text-red-500
                                     @elseif($event['status'] == 'Menunggu Verifikasi') text-yellow-500
-                                    @elseif($event['status'] == 'Ditolak') text-gray-400
-                                    @elseif($event['status'] == 'Berhasil Diverifikasi' || $event['status'] == 'Lunas') text-emerald-500
+                                    @elseif($event['status'] == 'Dibatalkan' || $event['status'] == 'Ditolak' || $event['status'] == 'Kedaluwarsa') text-gray-400
+                                    @elseif($event['status'] == 'Lunas') text-emerald-500
                                     @endif
                                 ">
-                                    {{ $event['status'] == 'Berhasil Diverifikasi' ? 'Lunas' : $event['status'] }}
+                                    {{ $event['status'] }}
                                     {{-- Badge AKTIF/SELESAI: hanya muncul di mobile, inline --}}
-                                    @if($event['status'] == 'Berhasil Diverifikasi' || $event['status'] == 'Lunas')
+                                    @if($event['status'] == 'Lunas')
                                         <span class="sm:hidden inline-flex items-center ml-1 bg-gray-200 text-navy text-[10px] px-3 py-0.5 rounded-full font-bold tracking-wide align-middle">
                                             {{ $activeTab === 'riwayat' ? 'SELESAI' : 'AKTIF' }}
                                         </span>
@@ -183,14 +185,14 @@
                             <button type="button" onclick="confirmCancel('{{ $event['id'] ?? '' }}')" class="w-1/3 inline-flex items-center justify-center rounded-full border border-slate-300 bg-white py-2 text-sm font-semibold text-grayCustom transition hover:border-yellow hover:bg-yellow/10 shadow-sm">
                                 Batal
                             </button>
-                            <a href="{{ route('pengunjung.pembayaran') }}" class="w-2/3 inline-flex items-center justify-center bg-navy text-white py-2 rounded-full text-sm font-semibold hover:bg-yellow hover:text-navy transition shadow-sm">
+                            <a href="{{ route('pengunjung.pembayaran') }}?order_id={{ $event['kode_order'] }}" class="w-2/3 inline-flex items-center justify-center bg-navy text-white py-2 rounded-full text-sm font-semibold hover:bg-yellow hover:text-navy transition shadow-sm">
                                 Lakukan Pembayaran
                             </a>
                         </div>
                     @endif
 
                     {{-- Badge AKTIF/SELESAI: hanya muncul di desktop, absolute --}}
-                    @if($event['status'] == 'Berhasil Diverifikasi' || $event['status'] == 'Lunas')
+                    @if($event['status'] == 'Lunas')
                         <div class="hidden sm:block absolute bottom-4 right-4 bg-gray-200 text-xs px-4 py-1 rounded-full font-medium">
                             {{ $activeTab === 'riwayat' ? 'SELESAI' : 'AKTIF' }}
                         </div>

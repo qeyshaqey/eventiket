@@ -61,20 +61,27 @@
                     </div>
                 </div>
                 
-                <div class="space-y-4">
+                    @php
+                        $firstDetail = $pembayaran->detail_pembelians->first();
+                        $eventJudul = $firstDetail->tiket->event->judul;
+                        
+                        // Menggabungkan semua tiket dan jumlahnya
+                        $tiketNama = $pembayaran->detail_pembelians->map(function ($detail) {
+                            return $detail->tiket->nama . ' (' . $detail->jumlah . 'x)';
+                        })->implode(', ');
+                    @endphp
                     <div class="flex justify-between items-center pb-3 border-b border-gray-100">
                         <span class="text-gray-500 font-medium text-sm">Event</span>
-                        <span class="text-navy font-semibold text-right text-sm">{{ $pembayaran->tiket->event->judul ?? 'Festival Musik' }}</span>
+                        <span class="text-navy font-semibold text-right text-sm">{{ $eventJudul }}</span>
                     </div>
                     <div class="flex justify-between items-center pb-3 border-b border-gray-100">
                         <span class="text-gray-500 font-medium text-sm">Jenis Tiket</span>
-                        <span class="text-navy font-semibold text-right text-sm">{{ $pembayaran->tiket->nama ?? 'Reguler' }}</span>
+                        <span class="text-navy font-semibold text-right text-sm">{{ $tiketNama }}</span>
                     </div>
                     <div class="flex justify-between items-center pt-2">
                         <span class="text-gray-600 font-bold text-base">Total Pembayaran</span>
-                        <span class="font-extrabold text-navy text-2xl drop-shadow-sm">Rp {{ number_format($pembayaran->jumlah, 0, ',', '.') }}</span>
+                        <span class="font-extrabold text-navy text-2xl drop-shadow-sm">Rp {{ number_format($pembayaran->total_bayar, 0, ',', '.') }}</span>
                     </div>
-                </div>
 
                 <div class="mt-8 pt-6 border-t border-dashed border-gray-200">
                     <div class="bg-blue-50 border border-blue-100 rounded-xl p-4 mb-6">
@@ -115,10 +122,10 @@
 <script>
     const payButton = document.getElementById('pay-button');
     payButton.addEventListener('click', function () {
-        // Panggil popup Midtrans Snap
+        // Memanggil tampilan antarmuka pembayaran Midtrans Snap
         window.snap.pay('{{ $snapToken }}', {
             onSuccess: function(result){
-                // Kalau pembayaran berhasil
+                // Penanganan ketika proses pembayaran berhasil
                 showToast('Pembayaran Berhasil!', 'success');
                 console.log(result);
                 setTimeout(() => {
@@ -126,7 +133,7 @@
                 }, 2000);
             },
             onPending: function(result){
-                // Kalau user belum bayar (masih nunggu)
+                // Penanganan ketika proses pembayaran berstatus tertunda (pending)
                 showToast('Menunggu Pembayaran...', 'warning');
                 console.log(result);
                 setTimeout(() => {
@@ -134,12 +141,12 @@
                 }, 2000);
             },
             onError: function(result){
-                // Kalau ada error atau pembayaran gagal
+                // Penanganan ketika terjadi kesalahan pada proses pembayaran
                 showToast('Pembayaran Gagal!', 'error');
                 console.log(result);
             },
             onClose: function(){
-                // Kalau user nutup popup secara sengaja
+                // Penanganan ketika pengguna menutup jendela pembayaran secara manual
                 showToast('Anda menutup jendela pembayaran sebelum selesai.', 'error');
             }
         });

@@ -249,13 +249,7 @@ class EventPanitiaController extends Controller
 
         // Memetakan status pembayaran dari DB ke status yang dimengerti oleh view
         $transaksis = $details->map(function ($detail) {
-            $rawStatus = $detail->pembelian->status_pembayaran ?? 'Batal';
-            $status = 'failed';
-            if ($rawStatus === 'Pending') {
-                $status = 'pending';
-            } elseif ($rawStatus === 'Sukses') {
-                $status = 'paid';
-            }
+            $status = $detail->pembelian->status_pembayaran ?? 'Dibatalkan';
 
             $jenisTiket = ($detail->tiket->nama ?? '-') . ' (' . $detail->jumlah . 'x)';
 
