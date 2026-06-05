@@ -24,7 +24,7 @@ class TiketPanitiaController extends Controller
 
         // Mengembalikan halaman view pengelolaan tiket
         return view('pages.panitia.tiket', compact('events', $highlightEventId ? 'highlightEventId' : 'events'));
-    }
+    } 
 
     /**
      * Menambah jenis tiket baru untuk event tertentu.

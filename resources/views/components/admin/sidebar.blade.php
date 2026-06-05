@@ -61,7 +61,7 @@
 
         <a href="{{ route('admin.kategori') }}" class="flex items-center gap-3 px-5 py-3 {{ active('admin.kategori') }}">
             <i class="fa-solid fa-tags"></i>
-            KelolaKategori
+            Kelola Kategori
         </a>
 
     </nav>

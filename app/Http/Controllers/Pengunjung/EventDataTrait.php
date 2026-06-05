@@ -26,7 +26,8 @@ trait EventDataTrait
                 $endDateTime = \Carbon\Carbon::parse($endDate . ' ' . $endTime, 'Asia/Jakarta');
                 
                 // Hanya tampilkan event jika batas akhir (Hari & Jam) belum terlewat
-                return $now->lessThanOrEqualTo($endDateTime);
+                // Kurang dari atau sama dengan
+                return $now->lessThanOrEqualTo($endDateTime); 
             })
             // Map: susun kembali data yang dibutuhkan view
             ->map(function($event) use ($now) {
@@ -40,7 +41,7 @@ trait EventDataTrait
             // Logika Status Dinamis (Disiplin Waktu)
             $isOngoing = false;
             
-            // Tentukan waktu mulai
+            // Tentukan waktu mulai (gabungkan tanggal dan jam mulai acara menjadi $startDateTime)
             $startTime = !empty($event->waktu_mulai) ? $event->waktu_mulai : '00:00:00';
             $startDateTime = \Carbon\Carbon::parse($event->tanggal_mulai . ' ' . $startTime, 'Asia/Jakarta');
 

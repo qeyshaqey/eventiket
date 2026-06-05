@@ -100,6 +100,7 @@ class TiketController extends Controller
             $totalHarga = 0;
             $jumlahTiket = 0;
 
+            // status belum bayar
             $pembelian = Pembelian::create([
                 'user_id' => $userId,
                 'tanggal_beli' => now(),
@@ -156,7 +157,7 @@ class TiketController extends Controller
             return response()->json(['success' => false, 'message' => 'Terjadi kesalahan: ' . $e->getMessage()], 500);
         }
     }
-
+    // Status dibatalkan
     public function batal($id)
     {
         $userId = session('user_id');

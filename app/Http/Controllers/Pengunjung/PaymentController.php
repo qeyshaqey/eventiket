@@ -86,9 +86,15 @@ class PaymentController extends Controller
         $serverKey = config('midtrans.server_key');
         $hashed = hash("sha512", $request->order_id . $request->status_code . $request->gross_amount . $serverKey);
 
+      
         if ($hashed == $request->signature_key) {
+              // Status lunas
+              // capture = sukses untuk kartu kredit
+              // settlement = sukses untuk metode pembayaran lain (tf bank / e-wallet)
             if ($request->transaction_status == 'capture' || $request->transaction_status == 'settlement') {
+                // Sistem mencari bon tagihan di database kita yang nomor ordernya sama dengan yang dilaporkan Midtrans.
                 $pembelian = Pembelian::where('order_id', $request->order_id)->first();
+                // Ubah kolom status menjadi lunas
                 if ($pembelian && $pembelian->status_pembayaran !== 'Lunas') {
                     $pembelian->status_pembayaran = 'Lunas';
                     $pembelian->save();
@@ -113,6 +119,8 @@ class PaymentController extends Controller
                 }
             } elseif ($request->transaction_status == 'pending') {
                 // Membiarkan status transaksi tetap pending jika belum diselesaikan
+                
+            // status kedaluwarsa
             } else {
                 $pembelian = Pembelian::where('order_id', $request->order_id)->first();
                 if ($pembelian) {
