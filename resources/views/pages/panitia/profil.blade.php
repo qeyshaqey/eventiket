@@ -20,7 +20,6 @@
 
         <!-- FOTO PROFIL (AVATAR) -->
         <div class="flex flex-col items-center md:w-1/4">
-            <!-- Jika user memilik foto tampilkan foto user, jika tidak gunakan ui-avatars default -->
             <img src="{{ ($user->photo ?? null) ? asset('storage/' . $user->photo) : 'https://ui-avatars.com/api/?name=' . ($user->name ?? 'Guest') }}" class="w-28 h-28 rounded-full object-cover shadow-md border">
 
             <!-- Tombol untuk memicu pembukaan modal edit profil -->
@@ -38,20 +37,14 @@
                     <p class="text-xs text-gray-500">Nama</p>
                     <p class="font-semibold text-[#192853]">{{ $user?->name ?? '-' }}</p>
                 </div>
-
-                <!-- Tampilan NIM -->
                 <div class="p-4 bg-[#F8FAFF] rounded-xl border">
                     <p class="text-xs text-gray-500">NIM</p>
                     <p class="font-semibold text-[#192853]">{{ $user?->nim ?? '-' }}</p>
                 </div>
-
-                <!-- Tampilan Email -->
                 <div class="p-4 bg-[#F8FAFF] rounded-xl border">
                     <p class="text-xs text-gray-500">Email</p>
                     <p class="font-semibold text-[#192853]">{{ $user?->email ?? '-' }}</p>
                 </div>
-
-                <!-- Tampilan Role -->
                 <div class="p-4 bg-[#F8FAFF] rounded-xl border">
                     <p class="text-xs text-gray-500">Role</p>
                     <p class="font-semibold text-yellow-600">Panitia</p>
@@ -86,8 +79,6 @@
                     <img id="previewImage"
                         src="{{ ($user->photo ?? null) ? asset('storage/' . $user->photo) : 'https://ui-avatars.com/api/?name=' . ($user->name ?? 'Guest') }}"
                         class="w-24 h-24 rounded-full object-cover border shadow">
-
-                    <!-- Label Input File Bergaya Edit -->
                     <label class="absolute bottom-0 right-0 bg-[#192853] text-yellow-400 p-1 rounded-full cursor-pointer text-xs">
                         ✎
                         <input type="file" name="photo" class="hidden" onchange="previewFoto(event)">

@@ -10,23 +10,21 @@ class TransaksiController extends Controller
     /**
      * Menampilkan riwayat transaksi pembelian tiket oleh pengunjung.
      * Mengambil data pembelian beserta relasi detail pembelian, tiket, event, dan user.
-     * Memetakan status pembayaran dan merangkum jenis tiket serta total harga untuk ditampilkan ke view.
      */
     public function index()
     {
-        // Mengambil semua data pembelian tiket terurut dari yang terbaru beserta relasi-relasinya
+        // Mengambil semua data pembelian tiket 
         $pembelians = Pembelian::with(['user', 'detail_pembelians.tiket.event'])
             ->latest()
             ->get();
 
-        // Memetakan data pembelian ke dalam struktur objek transaksi yang diharapkan oleh view
+        // Memetakan data pembelian ke dalam struktur objek 
         $transaksis = $pembelians->map(function ($pembelian) {
             // Mengambil detail pembelian pertama untuk mendapatkan data event terkait
             $firstDetail = $pembelian->detail_pembelians->first();
             $event = $firstDetail->tiket->event ?? null;
             
-            // Mengonversi status pembayaran dari DB ('Pending', 'Sukses', 'Batal') 
-            // ke status kelas CSS/teks yang diharapkan oleh view ('pending', 'paid', 'failed')
+            // Mengonversi status pembayaran dari DB ('Pending', 'Sukses', 'Batal')
             $status = 'failed';
             if ($pembelian->status_pembayaran === 'Pending') {
                 $status = 'pending';
@@ -34,7 +32,7 @@ class TransaksiController extends Controller
                 $status = 'paid';
             }
 
-            // Merangkum seluruh jenis tiket yang dibeli dalam satu transaksi (misal: Reguler (2x), VIP (1x))
+            // Merangkum seluruh jenis tiket yang dibeli dalam satu transaksi 
             $jenisTiket = $pembelian->detail_pembelians->map(function ($detail) {
                 return ($detail->tiket->nama ?? '-') . ' (' . $detail->jumlah . 'x)';
             })->implode(', ');
