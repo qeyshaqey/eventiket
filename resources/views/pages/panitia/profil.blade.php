@@ -101,22 +101,46 @@
                 <div>
                     <label class="text-sm text-gray-600">Nama</label>
                     <input type="text" name="name" required
-                        value="{{ $user?->name ?? '' }}"
-                        class="w-full border p-2 rounded-lg focus:ring-2 focus:ring-[#192853] outline-none">
+                        value="{{ old('name', $user?->name) }}"
+                        class="w-full border @error('name') border-red-500 @else border-gray-200 @enderror p-2 rounded-lg focus:ring-2 focus:ring-[#192853] outline-none">
+                    @error('name')
+                        <p class="text-xs text-red-500 mt-1 font-medium">{{ $message }}</p>
+                    @enderror
                 </div>
 
                 <div>
                     <label class="text-sm text-gray-600">NIM</label>
                     <input type="text" name="nim" required
-                        value="{{ $user?->nim ?? '' }}"
-                        class="w-full border p-2 rounded-lg focus:ring-2 focus:ring-[#192853] outline-none">
+                        value="{{ old('nim', $user?->nim) }}"
+                        class="w-full border @error('nim') border-red-500 @else border-gray-200 @enderror p-2 rounded-lg focus:ring-2 focus:ring-[#192853] outline-none">
+                    @error('nim')
+                        <p class="text-xs text-red-500 mt-1 font-medium">{{ $message }}</p>
+                    @enderror
                 </div>
 
                 <div>
                     <label class="text-sm text-gray-600">Email</label>
                     <input type="email" name="email" required
-                        value="{{ $user?->email ?? '' }}"
-                        class="w-full border p-2 rounded-lg focus:ring-2 focus:ring-[#192853] outline-none">
+                        value="{{ old('email', $user?->email) }}"
+                        class="w-full border @error('email') border-red-500 @else border-gray-200 @enderror p-2 rounded-lg focus:ring-2 focus:ring-[#192853] outline-none">
+                    @error('email')
+                        <p class="text-xs text-red-500 mt-1 font-medium">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <div>
+                    <label class="text-sm text-gray-600">Kata Sandi Baru (Opsional)</label>
+                    <input type="password" name="password" placeholder="Masukkan kata sandi baru"
+                        class="w-full border @error('password') border-red-500 @else border-gray-200 @enderror p-2 rounded-lg focus:ring-2 focus:ring-[#192853] outline-none">
+                    @error('password')
+                        <p class="text-xs text-red-500 mt-1 font-medium">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <div>
+                    <label class="text-sm text-gray-600">Konfirmasi Kata Sandi Baru</label>
+                    <input type="password" name="password_confirmation" placeholder="Konfirmasi kata sandi baru"
+                        class="w-full border border-gray-200 p-2 rounded-lg focus:ring-2 focus:ring-[#192853] outline-none">
                 </div>
             </div>
 
@@ -138,6 +162,17 @@
 </div>
 
 <!-- JAVASCRIPT LOGIC -->
+@if ($errors->any())
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        openModal();
+        if (typeof showToast === 'function') {
+            showToast("{{ $errors->first() }}", "error");
+        }
+    });
+</script>
+@endif
+
 <script>
 // Membuka modal edit profil
 function openModal(){

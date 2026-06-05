@@ -271,35 +271,102 @@ class EventPanitiaController extends Controller
     }
 
     /**
-     * Menampilkan profil simulasi panitia.
+     * Menampilkan profil panitia dari database.
      */
     public function profil()
     {
-        // Menggunakan data mock yang disimpan di session untuk keperluan simulasi profil
-        $user = (object)[
-            'name' => session('mock_name', session('user') ?? 'Panitia Event'),
-            'email' => session('mock_email', 'panitia@eventiket.com'),
-            'nim' => session('mock_nim', '2210112345'),
-            'photo' => session('mock_photo', null)
-        ];
+        // Mengambil data pengguna berdasarkan ID sesi login
+        $user = \App\Models\User::find(session('user_id'));
+
+        // Mengarahkan ke halaman login jika sesi telah berakhir atau belum masuk
+        if (!$user) {
+            return redirect()->route('login')->with('error', 'Silakan masuk terlebih dahulu.');
+        }
 
         return view('pages.panitia.profil', compact('user'));
     }
 
     /**
-     * Memperbarui profil simulasi panitia di dalam session.
+     * Memperbarui profil panitia di database (nama, email, nim, foto, dan kata sandi).
      */
     public function updateProfil(Request $request)
     {
-        // Menyimpan data simulasi profil baru ke dalam session
-        session([
-            'mock_name' => $request->name,
-            'mock_email' => $request->email,
-            'mock_nim' => $request->nim,
-            'user' => $request->name,
+        $user = \App\Models\User::find(session('user_id'));
+
+        // Memastikan pengguna telah masuk sebelum melakukan pembaruan
+        if (!$user) {
+            return redirect()->route('login')->with('error', 'Silakan masuk terlebih dahulu.');
+        }
+
+        // Memvalidasi input dari pengguna
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'nim' => 'required|string|max:50',
+            'email' => 'required|email|max:255|unique:users,email,' . $user->id,
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'password' => 'nullable|string|min:8|confirmed',
+        ], [
+            'name.required' => 'Nama lengkap wajib diisi.',
+            'name.string' => 'Nama lengkap harus berupa teks.',
+            'name.max' => 'Nama lengkap maksimal 255 karakter.',
+            'nim.required' => 'NIM wajib diisi.',
+            'nim.string' => 'NIM harus berupa teks.',
+            'nim.max' => 'NIM maksimal 50 karakter.',
+            'email.required' => 'Email wajib diisi.',
+            'email.email' => 'Format email tidak valid.',
+            'email.unique' => 'Email sudah digunakan oleh akun lain.',
+            'photo.image' => 'File harus berupa gambar.',
+            'photo.mimes' => 'Format gambar harus jpeg, png, atau jpg.',
+            'photo.max' => 'Ukuran gambar maksimal 2MB.',
+            'password.min' => 'Kata sandi baru minimal 8 karakter.',
+            'password.confirmed' => 'Konfirmasi kata sandi tidak cocok.',
         ]);
 
-        // Kembali ke halaman sebelumnya dengan pesan sukses
-        return back()->with('success', 'Profil berhasil diperbarui (Simulasi)');
+        $isChanged = false;
+
+        // Memperbarui nama
+        if ($user->name !== $request->name) {
+            $user->name = $request->name;
+            session(['user' => $user->name]);
+            $isChanged = true;
+        }
+
+        // Memperbarui NIM
+        if ($user->nim !== $request->nim) {
+            $user->nim = $request->nim;
+            $isChanged = true;
+        }
+
+        // Memperbarui Email
+        if ($user->email !== $request->email) {
+            $user->email = $request->email;
+            $isChanged = true;
+        }
+
+        // Memeriksa unggahan foto profil baru
+        if ($request->hasFile('photo')) {
+            // Menghapus foto lama jika ada
+            if ($user->photo) {
+                Storage::disk('public')->delete($user->photo);
+            }
+            // Menyimpan foto baru
+            $path = $request->file('photo')->store('photos', 'public');
+            $user->photo = $path;
+            $isChanged = true;
+        }
+
+        // Memeriksa pengisian kata sandi baru
+        if ($request->filled('password')) {
+            $user->password = \Illuminate\Support\Facades\Hash::make($request->password);
+            $isChanged = true;
+        }
+
+        // Menyimpan perubahan jika ada data yang diubah
+        if ($isChanged) {
+            $user->save();
+            return back()->with('success', 'Profil berhasil diperbarui!');
+        }
+
+        return back()->with('success', 'Tidak ada perubahan data.');
     }
 }
