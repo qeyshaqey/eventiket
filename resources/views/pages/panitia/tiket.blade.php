@@ -138,10 +138,10 @@
                 <input name="nama" type="text" placeholder="Nama Tiket" required
                     class="w-full border rounded-lg p-2 text-sm focus:ring-2 focus:ring-[#192853] outline-none">
 
-                <input name="harga" type="text" placeholder="Harga" required
+                <input name="harga" type="text" placeholder="Harga (misal: 10.000)" required
                     class="w-full border rounded-lg p-2 text-sm focus:ring-2 focus:ring-[#192853] outline-none">
 
-                <input name="kuota" type="number" placeholder="Kuota" required
+                <input name="kuota" type="number" placeholder="Kuota" min="1" required
                     class="w-full border rounded-lg p-2 text-sm focus:ring-2 focus:ring-[#192853] outline-none">
             </div>
 
@@ -169,8 +169,8 @@
 
             <div class="space-y-3">
                 <input id="editNama" name="nama" type="text" required class="w-full border p-2 rounded-lg focus:ring-2 focus:ring-[#192853] outline-none">
-                <input id="editHarga" name="harga" type="text" required class="w-full border p-2 rounded-lg focus:ring-2 focus:ring-[#192853] outline-none">
-                <input id="editKuota" name="kuota" type="number" required class="w-full border p-2 rounded-lg focus:ring-2 focus:ring-[#192853] outline-none">
+                <input id="editHarga" name="harga" type="text" placeholder="Harga (misal: 10.000)" required class="w-full border p-2 rounded-lg focus:ring-2 focus:ring-[#192853] outline-none">
+                <input id="editKuota" name="kuota" type="number" min="1" required class="w-full border p-2 rounded-lg focus:ring-2 focus:ring-[#192853] outline-none">
             </div>
 
             <div class="flex justify-end gap-3 mt-5">
@@ -256,5 +256,13 @@ function submitDelete(){
     form.action = '/panitia/tiket/' + deleteId;
     form.submit();
 }
+
+@if ($errors->any())
+document.addEventListener("DOMContentLoaded", function () {
+    if (typeof showToast === 'function') {
+        showToast("{{ $errors->first() }}", "error");
+    }
+});
+@endif
 </script>
 @endsection

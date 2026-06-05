@@ -32,12 +32,29 @@ class TiketPanitiaController extends Controller
      */
     public function store(Request $request)
     {
+        // Bersihkan format harga (hilangkan titik/karakter non-angka) sebelum divalidasi
+        if ($request->has('harga')) {
+            $request->merge([
+                'harga' => preg_replace('/[^0-9]/', '', $request->harga)
+            ]);
+        }
+
         // Validasi input form penambahan tiket
         $validated = $request->validate([
             'nama' => 'required',
-            'harga' => 'required|integer',
-            'kuota' => 'required|integer',
+            'harga' => 'required|integer|min:1',
+            'kuota' => 'required|integer|min:1',
             'event_id' => 'required|exists:events,id',
+        ], [
+            'nama.required' => 'Nama tiket wajib diisi.',
+            'harga.required' => 'Harga tiket wajib diisi.',
+            'harga.integer' => 'Harga tiket harus berupa angka/bilangan bulat.',
+            'harga.min' => 'Harga tiket tidak boleh kurang dari 1.',
+            'kuota.required' => 'Kuota tiket wajib diisi.',
+            'kuota.integer' => 'Kuota tiket harus berupa angka/bilangan bulat.',
+            'kuota.min' => 'Kuota tiket minimal 1.',
+            'event_id.required' => 'Event ID wajib diisi.',
+            'event_id.exists' => 'Event tidak valid.',
         ]);
 
         // Menyimpan data tiket baru ke database
@@ -58,11 +75,26 @@ class TiketPanitiaController extends Controller
      */
     public function update(Request $request, Tiket $tiket)
     {
+        // Bersihkan format harga (hilangkan titik/karakter non-angka) sebelum divalidasi
+        if ($request->has('harga')) {
+            $request->merge([
+                'harga' => preg_replace('/[^0-9]/', '', $request->harga)
+            ]);
+        }
+
         // Validasi input form perubahan tiket
         $validated = $request->validate([
             'nama' => 'required',
-            'harga' => 'required|integer',
-            'kuota' => 'required|integer',
+            'harga' => 'required|integer|min:1',
+            'kuota' => 'required|integer|min:1',
+        ], [
+            'nama.required' => 'Nama tiket wajib diisi.',
+            'harga.required' => 'Harga tiket wajib diisi.',
+            'harga.integer' => 'Harga tiket harus berupa angka/bilangan bulat.',
+            'harga.min' => 'Harga tiket tidak boleh kurang dari 1.',
+            'kuota.required' => 'Kuota tiket wajib diisi.',
+            'kuota.integer' => 'Kuota tiket harus berupa angka/bilangan bulat.',
+            'kuota.min' => 'Kuota tiket minimal 1.',
         ]);
 
         // Melakukan update data tiket di database
