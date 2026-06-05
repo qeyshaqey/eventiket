@@ -110,7 +110,10 @@ class ProfilController extends Controller
         // Memeriksa kelayakan pengguna untuk mengajukan form baru
         $bolehAjukan = !$riwayatPengajuan->whereIn('status', ['pending', 'dicabut'])->count();
 
-        return view('pages.pengunjung.daftar_panitia', compact('user', 'riwayatPengajuan', 'bolehAjukan'));
+        // Mengambil daftar kategori dari database untuk dropdown form pengajuan
+        $kategoris = \App\Models\Kategori::pluck('nama_kategori');
+
+        return view('pages.pengunjung.daftar_panitia', compact('user', 'riwayatPengajuan', 'bolehAjukan', 'kategoris'));
     }
 
     public function daftarPanitia(Request $request)

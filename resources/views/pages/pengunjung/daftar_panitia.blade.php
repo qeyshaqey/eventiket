@@ -185,12 +185,9 @@
                                 </div>
                                 <div class="dd-list">
                                     <div class="dd-item placeholder-opt">Pilih kategori</div>
-                                    <div class="dd-item" data-v="Seminar">Seminar</div>
-                                    <div class="dd-item" data-v="Olahraga">Olahraga</div>
-                                    <div class="dd-item" data-v="Keagamaan">Keagamaan</div>
-                                    <div class="dd-item" data-v="Hiburan">Hiburan</div>
-                                    <div class="dd-item" data-v="Workshop">Workshop</div>
-                                    <div class="dd-item" data-v="Kompetisi">Kompetisi</div>
+                                    @foreach($kategoris as $cat)
+                                        <div class="dd-item" data-v="{{ $cat }}">{{ $cat }}</div>
+                                    @endforeach
                                 </div>
                             </div>
                         </div>

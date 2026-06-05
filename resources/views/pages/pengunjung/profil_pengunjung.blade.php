@@ -64,7 +64,7 @@
                 <!-- Tombol kanan (edit & logout) -->
                 <div class="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
                     <button type="button" data-modal-target="edit-profil-modal" data-modal-toggle="edit-profil-modal"
-                        class="w-full sm:w-auto inline-flex justify-center rounded-full bg-navy px-6 py-3 text-sm font-semibold text-white transition hover:bg-yellow hover:text-navy shadow-md">
+                        class="w-full sm:w-auto inline-flex justify-center whitespace-nowrap rounded-full bg-navy px-6 py-3 text-sm font-semibold text-white transition hover:bg-yellow hover:text-navy shadow-md">
                         Edit Profil
                     </button>
                     <form action="{{ route('logout') }}" method="POST" class="w-full sm:w-auto" id="logout-form">
