@@ -4,6 +4,9 @@ namespace App\Http\Controllers\panitia;
 
 use App\Http\Controllers\Controller;
 use App\Models\Pembelian;
+use App\Models\Kategori;
+use App\Models\Event;
+use Illuminate\Http\Request;
 
 class TransaksiController extends Controller
 {
@@ -11,26 +14,51 @@ class TransaksiController extends Controller
      * Menampilkan riwayat transaksi pembelian tiket oleh pengunjung.
      * Mengambil data pembelian beserta relasi detail pembelian, tiket, event, dan user.
      */
-    public function index()
+    public function index(Request $request)
     {
-        // Mengambil semua data pembelian tiket 
-        $pembelians = Pembelian::with(['user', 'detail_pembelians.tiket.event'])
-            ->latest()
-            ->get();
+        $panitiaId = session('user_id');
+
+        // Mengambil data pembelian tiket yang hanya dimiliki oleh event panitia yang sedang login
+        $query = Pembelian::with(['user', 'detail_pembelians.tiket.event'])
+            ->whereHas('detail_pembelians.tiket.event', function ($q) use ($panitiaId) {
+                $q->where('user_id', $panitiaId);
+            });
+
+        // Filter berdasarkan kategori event
+        if ($request->has('kategori_id') && $request->kategori_id !== '') {
+            $query->whereHas('detail_pembelians.tiket.event', function ($q) use ($request) {
+                $q->where('kategori_id', $request->kategori_id);
+            });
+        }
+
+        // Filter berdasarkan event tertentu
+        if ($request->has('event_id') && $request->event_id !== '') {
+            $query->whereHas('detail_pembelians.tiket', function ($q) use ($request) {
+                $q->where('event_id', $request->event_id);
+            });
+        }
+
+        // Pencarian berdasarkan nama pembeli atau judul event
+        if ($request->filled('search')) {
+            $searchTerm = $request->search;
+            $query->where(function ($q) use ($searchTerm) {
+                $q->whereHas('user', function ($sub) use ($searchTerm) {
+                    $sub->where('name', 'like', '%' . $searchTerm . '%');
+                })->orWhereHas('detail_pembelians.tiket.event', function ($sub) use ($searchTerm) {
+                    $sub->where('judul', 'like', '%' . $searchTerm . '%');
+                });
+            });
+        }
+
+        $pembelians = $query->latest()->get();
 
         // Memetakan data pembelian ke dalam struktur objek 
         $transaksis = $pembelians->map(function ($pembelian) {
-            // Mengambil detail pembelian pertama untuk mendapatkan data event terkait
             $firstDetail = $pembelian->detail_pembelians->first();
             $event = $firstDetail->tiket->event ?? null;
             
-            // Mengonversi status pembayaran dari DB ('Pending', 'Sukses', 'Batal')
-            $status = 'failed';
-            if ($pembelian->status_pembayaran === 'Pending') {
-                $status = 'pending';
-            } elseif ($pembelian->status_pembayaran === 'Sukses') {
-                $status = 'paid';
-            }
+            // Meneruskan status langsung dari DB (Belum Bayar, Lunas, Dibatalkan)
+            $status = $pembelian->status_pembayaran;
 
             // Merangkum seluruh jenis tiket yang dibeli dalam satu transaksi 
             $jenisTiket = $pembelian->detail_pembelians->map(function ($detail) {
@@ -50,7 +78,12 @@ class TransaksiController extends Controller
             ];
         });
 
+        // Mengambil data untuk filter dropdown
+        $panitiaId = session('user_id');
+        $categories = Kategori::all();
+        $events = Event::where('user_id', $panitiaId)->orderBy('judul')->get();
+
         // Mengirim data hasil pemetaan ke halaman view transaksi panitia
-        return view('pages.panitia.transaksi.index', compact('transaksis'));
+        return view('pages.panitia.transaksi.index', compact('transaksis', 'categories', 'events'));
     }
 }

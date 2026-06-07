@@ -176,9 +176,13 @@ class EventPanitiaController extends Controller
      */
     public function riwayat(Request $request)
     {
-        // MENGAMBIL SEMUA EVENT YANG SUDAH SELESAI
+        // ID panitia yang sedang login
+        $panitiaId = session('user_id');
+
+        // MENGAMBIL SEMUA EVENT MILIK PANITIA YANG SUDAH SELESAI
         // Berstatus 'Published' dan tanggal selesai kurang dari hari ini
         $allEvents = Event::where('status', 'Published')
+            ->where('user_id', $panitiaId)
             ->where(function ($q) {
                 $q->where('tanggal_selesai', '<', now()->toDateString())
                   ->orWhere(function ($q2) {
@@ -192,8 +196,9 @@ class EventPanitiaController extends Controller
         // Mengambil semua kategori untuk filter
         $categories = \App\Models\Kategori::all();
 
-        // Menyiapkan query event selesai untuk tab Event
+        // Menyiapkan query event selesai milik panitia untuk tab Event
         $eventQuery = Event::where('status', 'Published')
+            ->where('user_id', $panitiaId)
             ->where(function ($q) {
                 $q->where('tanggal_selesai', '<', now()->toDateString())
                   ->orWhere(function ($q2) {
@@ -217,10 +222,11 @@ class EventPanitiaController extends Controller
             ->latest()
             ->get();
         
-        // Menyiapkan query transaksi (detail pembelian) untuk event yang sudah selesai
+        // Menyiapkan query transaksi untuk event milik panitia yang sudah selesai
         $query = DetailPembelian::with(['pembelian.user', 'tiket.event'])
-            ->whereHas('tiket.event', function ($q) {
+            ->whereHas('tiket.event', function ($q) use ($panitiaId) {
                 $q->where('status', 'Published')
+                  ->where('user_id', $panitiaId)
                   ->where(function ($q2) {
                       $q2->where('tanggal_selesai', '<', now()->toDateString())
                          ->orWhere(function ($q3) {
@@ -249,20 +255,21 @@ class EventPanitiaController extends Controller
 
         // Memetakan status pembayaran dari DB ke status yang dimengerti oleh view
         $transaksis = $details->map(function ($detail) {
+            // Meneruskan status langsung dari DB (Belum Bayar, Lunas, Dibatalkan)
             $status = $detail->pembelian->status_pembayaran ?? 'Dibatalkan';
 
             $jenisTiket = ($detail->tiket->nama ?? '-') . ' (' . $detail->jumlah . 'x)';
 
             // Membuat objek transaksi standar untuk dikirim ke view
             return (object) [
-                'nama' => $detail->pembelian->user->name ?? '-',
-                'email' => $detail->pembelian->user->email ?? '-',
-                'event' => $detail->tiket->event ?? null,
-                'tiket' => $detail->tiket ?? null,
-                'created_at' => $detail->created_at,
-                'total' => $detail->subtotal,
-                'status' => $status,
-                'jenis_tiket' => $jenisTiket,
+                'nama'       => $detail->pembelian->user->name ?? '-',
+                'email'      => $detail->pembelian->user->email ?? '-',
+                'event'      => $detail->tiket->event ?? null,
+                'tiket'      => $detail->tiket ?? null,
+                'created_at' => \Carbon\Carbon::parse($detail->created_at),
+                'total'      => $detail->subtotal,
+                'status'     => $status,
+                'jenis_tiket'=> $jenisTiket,
             ];
         });
 
