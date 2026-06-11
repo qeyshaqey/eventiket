@@ -57,7 +57,7 @@
 </div>
 
 <!-- ================= MODAL EDIT PROFIL ================= -->
-<div id="modal" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50 transition">
+<div id="modal" class="fixed inset-0 bg-black/50 hidden flex items-center justify-center z-50 transition">
     <div class="bg-white w-[420px] p-6 rounded-2xl shadow-2xl relative animate-fadeIn">
 
         <!-- Tombol Tutup Modal -->

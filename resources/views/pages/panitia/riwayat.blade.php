@@ -38,12 +38,21 @@
             
             <!-- FILTER RIWAYAT EVENT -->
             <div class="flex flex-col md:flex-row md:items-center justify-end gap-3 mb-5">
-                <form action="{{ route('panitia.riwayat') }}" method="GET" class="flex gap-2 w-full md:w-auto">
+                <form action="{{ route('panitia.riwayat') }}" method="GET" class="flex flex-wrap gap-2 w-full">
                     <input type="hidden" name="tab" value="event">
-                    
+
+                    <!-- Search Box -->
+                    <div class="relative flex-1 min-w-[180px]">
+                        <i class="bi bi-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
+                        <input type="text" name="search_event" value="{{ request('search_event') }}"
+                            placeholder="Cari judul event..."
+                            onchange="this.form.submit()"
+                            class="w-full pl-9 pr-4 py-2 border rounded-lg text-sm focus:ring-2 focus:ring-[#192853] outline-none">
+                    </div>
+
                     <!-- Filter Kategori -->
                     <select name="kategori_id" onchange="this.form.submit()" 
-                        class="border rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-[#192853] outline-none bg-white w-full md:w-48">
+                        class="border rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-[#192853] outline-none bg-white w-full md:w-44">
                         <option value="">Semua Kategori</option>
                         @foreach($categories as $cat)
                             <option value="{{ $cat->id }}" {{ request('kategori_id') == $cat->id ? 'selected' : '' }}>
@@ -54,7 +63,7 @@
 
                     <!-- Filter Judul Event -->
                     <select name="event_filter_id" onchange="this.form.submit()" 
-                        class="border rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-[#192853] outline-none bg-white w-full md:w-64">
+                        class="border rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-[#192853] outline-none bg-white w-full md:w-52">
                         <option value="">Semua Event</option>
                         @foreach($allEvents as $ev)
                             <option value="{{ $ev->id }}" {{ request('event_filter_id') == $ev->id ? 'selected' : '' }}>
@@ -64,11 +73,11 @@
                     </select>
                     
                     <!-- Tombol Reset Filter -->
-                    @if(request('kategori_id') || request('event_filter_id'))
+                    @if(request('search_event') || request('kategori_id') || request('event_filter_id'))
                         <a href="{{ route('panitia.riwayat') }}?tab=event" 
-                            class="px-3 py-2 bg-gray-100 text-gray-600 rounded-lg text-sm hover:bg-gray-200 transition flex items-center"
+                            class="px-3 py-2 bg-gray-100 text-gray-600 rounded-lg text-sm hover:bg-gray-200 transition flex items-center gap-1 whitespace-nowrap"
                             title="Reset Filter">
-                            <i class="bi bi-arrow-counterclockwise"></i>
+                            <i class="bi bi-arrow-counterclockwise"></i> Reset
                         </a>
                     @endif
                 </form>
@@ -134,12 +143,21 @@
             
             <!-- FILTER RIWAYAT TRANSAKSI -->
             <div class="flex flex-col md:flex-row md:items-center justify-end gap-3 mb-5">
-                <form action="{{ route('panitia.riwayat') }}" method="GET" class="flex gap-2 w-full md:w-auto">
+                <form action="{{ route('panitia.riwayat') }}" method="GET" class="flex flex-wrap gap-2 w-full">
                     <input type="hidden" name="tab" value="transaksi">
+
+                    <!-- Search Box -->
+                    <div class="relative flex-1 min-w-[180px]">
+                        <i class="bi bi-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
+                        <input type="text" name="search_trx" value="{{ request('search_trx') }}"
+                            placeholder="Cari nama pembeli..."
+                            onchange="this.form.submit()"
+                            class="w-full pl-9 pr-4 py-2 border rounded-lg text-sm focus:ring-2 focus:ring-[#192853] outline-none">
+                    </div>
 
                     <!-- Filter Kategori Transaksi -->
                     <select name="trx_kategori_id" onchange="this.form.submit()" 
-                        class="border rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-[#192853] outline-none bg-white w-full md:w-48">
+                        class="border rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-[#192853] outline-none bg-white w-full md:w-44">
                         <option value="">Semua Kategori</option>
                         @foreach($categories as $cat)
                             <option value="{{ $cat->id }}" {{ request('trx_kategori_id') == $cat->id ? 'selected' : '' }}>
@@ -150,7 +168,7 @@
 
                     <!-- Filter Event Transaksi -->
                     <select name="event_id" onchange="this.form.submit()" 
-                        class="border rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-[#192853] outline-none bg-white w-full md:w-64">
+                        class="border rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-[#192853] outline-none bg-white w-full md:w-52">
                         <option value="">Semua Event</option>
                         @foreach($allEvents as $ev)
                             <option value="{{ $ev->id }}" {{ request('event_id') == $ev->id ? 'selected' : '' }}>
@@ -160,11 +178,11 @@
                     </select>
                     
                     <!-- Tombol Reset Filter Transaksi -->
-                    @if(request('trx_kategori_id') || request('event_id'))
+                    @if(request('search_trx') || request('trx_kategori_id') || request('event_id'))
                         <a href="{{ route('panitia.riwayat') }}?tab=transaksi" 
-                            class="px-3 py-2 bg-gray-100 text-gray-600 rounded-lg text-sm hover:bg-gray-200 transition flex items-center"
+                            class="px-3 py-2 bg-gray-100 text-gray-600 rounded-lg text-sm hover:bg-gray-200 transition flex items-center gap-1 whitespace-nowrap"
                             title="Reset Filter">
-                            <i class="bi bi-arrow-counterclockwise"></i>
+                            <i class="bi bi-arrow-counterclockwise"></i> Reset
                         </a>
                     @endif
                 </form>
@@ -172,7 +190,7 @@
 
             <!-- Tabel Data Transaksi Event Selesai -->
             <div class="overflow-x-auto rounded-xl border">
-                <table class="min-w-[800px] w-full text-sm">
+                <table class="min-w-[700px] w-full text-sm">
 
                     <thead class="bg-[#192853] text-white text-xs uppercase">
                         <tr>
@@ -181,6 +199,7 @@
                             <th class="p-3 text-left">Event</th>
                             <th class="p-3 text-left">Tanggal</th>
                             <th class="p-3 text-left">Total</th>
+                            <th class="p-3 text-left">Status</th>
                             <th class="p-3 text-center">Aksi</th>
                         </tr>
                     </thead>
@@ -191,21 +210,33 @@
                             <td class="p-3 text-gray-600">
                                 {{ $index + 1 }}
                             </td>
-                            <td class="p-3 font-semibold text-gray-800">
-                                {{ $trx->nama }}
+                            <td class="p-3 whitespace-nowrap">
+                                <p class="font-semibold text-gray-800">{{ $trx->nama }}</p>
+                                <p class="text-xs text-gray-400">{{ $trx->email }}</p>
                             </td>
                             <td class="p-3 text-gray-700">
                                 {{ $trx->event->judul ?? '-' }}
                             </td>
-                            <td class="p-3 text-gray-600 text-sm">
+                            <td class="p-3 text-gray-600 text-sm whitespace-nowrap">
                                 {{ $trx->created_at->format('d M Y') }}
                             </td>
-                            <td class="p-3 font-semibold text-gray-800">
+                            <td class="p-3 font-semibold text-gray-800 whitespace-nowrap">
                                 Rp {{ number_format($trx->total) }}
+                            </td>
+                            <td class="p-3 whitespace-nowrap">
+                                @if($trx->status === 'Belum Bayar')
+                                    <span class="px-2.5 py-1 text-xs rounded-full bg-yellow-100 text-yellow-700 font-semibold">Belum Bayar</span>
+                                @elseif($trx->status === 'Lunas')
+                                    <span class="px-2.5 py-1 text-xs rounded-full bg-green-100 text-green-700 font-semibold">Lunas</span>
+                                @elseif($trx->status === 'Dibatalkan')
+                                    <span class="px-2.5 py-1 text-xs rounded-full bg-red-100 text-red-700 font-semibold">Dibatalkan</span>
+                                @else
+                                    <span class="px-2.5 py-1 text-xs rounded-full bg-gray-100 text-gray-500 font-semibold">{{ $trx->status }}</span>
+                                @endif
                             </td>
                             <td class="p-3 text-center">
                                 <button type="button" 
-                                    onclick="openTrxModal('{{ $trx->nama }}', '{{ $trx->email }}', '{{ $trx->event->judul ?? \'-\' }}', '{{ $trx->jenis_tiket }}', '{{ $trx->created_at->format(\'d M Y\') }}', 'Rp {{ number_format($trx->total) }}', '{{ $trx->status }}')"
+                                    onclick="openTrxModal('{{ addslashes($trx->nama) }}', '{{ addslashes($trx->email) }}', '{{ addslashes($trx->event->judul ?? '-') }}', '{{ addslashes($trx->jenis_tiket) }}', '{{ $trx->created_at->format('d M Y') }}', 'Rp {{ number_format($trx->total) }}', '{{ $trx->status }}')"
                                     class="bg-[#192853] text-white px-3 py-1 rounded-full text-xs font-semibold hover:bg-blue-800 transition">
                                     Detail
                                 </button>
@@ -213,8 +244,11 @@
                         </tr>
                         @empty
                         <tr>
-                            <td colspan="6" class="p-6 text-center text-gray-400">
-                                Belum ada transaksi
+                            <td colspan="7" class="p-8 text-center">
+                                <div class="flex flex-col items-center gap-2 text-gray-400">
+                                    <i class="bi bi-receipt text-4xl"></i>
+                                    <p class="font-medium">Belum ada transaksi</p>
+                                </div>
                             </td>
                         </tr>
                         @endforelse
@@ -320,21 +354,19 @@ function openTrxModal(name, email, eventTitle, ticketType, purchaseDate, totalPr
     document.getElementById('m_total_price').innerText = totalPrice;
     
     const statusEl = document.getElementById('m_status');
-    statusEl.innerText = status.toUpperCase();
+    statusEl.innerText = status;
     
     // Reset kelas warna status
     statusEl.className = 'px-3 py-1 text-xs rounded-full font-semibold';
     
-    // Set warna status berdasarkan status transaksi
-    if (status === 'Belum Bayar') {
-        statusEl.classList.add('bg-yellow-100', 'text-yellow-700');
-    } else if (status === 'Lunas') {
-        statusEl.classList.add('bg-green-100', 'text-green-700');
-    } else if (status === 'Dibatalkan') {
-        statusEl.classList.add('bg-red-100', 'text-red-700');
-    } else if (status === 'Kedaluwarsa') {
-        statusEl.classList.add('bg-gray-100', 'text-gray-500');
-    }
+    // Set warna status berdasarkan nilai DB (Belum Bayar, Lunas, Dibatalkan)
+    const statusColors = {
+        'Belum Bayar': ['bg-yellow-100', 'text-yellow-700'],
+        'Lunas':       ['bg-green-100',  'text-green-700'],
+        'Dibatalkan':  ['bg-red-100',    'text-red-700'],
+    };
+    const colors = statusColors[status] || ['bg-gray-100', 'text-gray-500'];
+    statusEl.classList.add(...colors);
     
     // Tampilkan modal
     const modal = document.getElementById('detailModal');
