@@ -1,23 +1,25 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\admin;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Event;
 
 class EventController extends Controller
 {
     public function index()
     {
-        $eventDisetujui = \App\Models\Event::with(['panitia', 'kategori'])->where('status', 'Published')->get();
-        $eventDitolak = \App\Models\Event::with(['panitia', 'kategori'])->where('status', 'Rejected')->get();
-        $eventPending = \App\Models\Event::with(['panitia', 'kategori'])->where('status', 'Draft')->get();
+        $eventDisetujui = Event::with(['panitia', 'kategori'])->where('status', 'Published')->get();
+        $eventDitolak = Event::with(['panitia', 'kategori'])->where('status', 'Rejected')->get();
+        $eventPending = Event::with(['panitia', 'kategori'])->where('status', 'Draft')->get();
 
         return view('pages.admin.kelola-event', compact('eventDisetujui', 'eventDitolak', 'eventPending'));
     }
 
     public function approve($id)
     {
-        $event = \App\Models\Event::findOrFail($id);
+        $event = Event::findOrFail($id);
         $event->status = 'Published';
         $event->save();
 
@@ -26,7 +28,7 @@ class EventController extends Controller
 
     public function reject(Request $request, $id)
     {
-        $event = \App\Models\Event::findOrFail($id);
+        $event = Event::findOrFail($id);
         $event->status = 'Rejected';
         $event->alasan_penolakan = $request->input('alasan', 'Tidak memenuhi syarat');
         $event->save();
@@ -36,7 +38,7 @@ class EventController extends Controller
 
     public function delete($id)
     {
-        $event = \App\Models\Event::findOrFail($id);
+        $event = Event::findOrFail($id);
         $event->delete();
         
         return redirect()->back()->with('success', 'Event berhasil dihapus');

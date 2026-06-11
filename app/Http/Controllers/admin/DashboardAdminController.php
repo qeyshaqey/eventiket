@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\admin;
 
+use App\Http\Controllers\Controller;
 use App\Models\Kategori;
 use App\Models\Event;
 use App\Models\User;
@@ -43,25 +44,12 @@ class DashboardAdminController extends Controller
             })
             ->toArray();
 
-        // ========== LINE CHART: Statistik Pengunjung 7 hari terakhir ==========
-        $chartLabels = [];
-        $chartData = [];
-        for ($i = 6; $i >= 0; $i--) {
-            $date = Carbon::now()->subDays($i);
-            $chartLabels[] = $date->format('d M');
-            $chartData[] = User::where('role', 'pengunjung')
-                ->whereDate('created_at', $date->toDateString())
-                ->count();
-        }
-
         return view('pages.admin.dashboard', compact(
             'total_pengunjung',
             'total_panitia',
             'total_event',
             'eventsBulanIni',
-            'categories',
-            'chartLabels',
-            'chartData'
+            'categories'
         ));
     }
 }

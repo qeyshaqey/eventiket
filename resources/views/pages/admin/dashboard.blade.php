@@ -53,12 +53,12 @@
     </div>
 
     <!-- MAIN GRID -->
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-3">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-3 items-stretch">
 
         <!-- LEFT -->
-        <div class="lg:col-span-2 flex flex-col">
+        <div class="lg:col-span-2 flex flex-col h-full">
 
-            <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden flex-1 flex flex-col transition-all duration-300 hover:shadow-md">
+            <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden flex-1 flex flex-col transition-all duration-300 hover:shadow-md h-full">
                 <!-- HEADER & SEARCH -->
                 <div class="p-4 border-b border-gray-50 bg-gray-50/30">
                     <div class="flex items-center justify-between mb-3">
@@ -71,7 +71,7 @@
                     </div>
                 </div>
 
-                <div id="eventList" class="max-h-[65vh] overflow-y-auto p-3 space-y-2 custom-scrollbar">
+                <div id="eventList" class="h-[370px] overflow-y-auto p-3 space-y-2 custom-scrollbar">
 
                     <div id="emptyEventMessage" class="flex flex-col items-center justify-center py-12 text-gray-300 opacity-70 {{ count($eventsBulanIni) == 0 ? '' : 'hidden' }}">
                         <i class="fa-solid fa-box-open text-[150px] mb-4 drop-shadow-2xl"></i>
@@ -119,24 +119,10 @@
         </div>
 
         <!-- RIGHT -->
-        <div class="space-y-3">
-
-            <!-- LINE CHART -->
-            <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 transition-all duration-300 hover:shadow-md">
-                <div class="flex items-center justify-between mb-4">
-                    <h3 class="text-xs font-bold text-[#192853] uppercase tracking-wider">Statistik Pengunjung</h3>
-                    <div class="bg-yellow-50 text-yellow-600 p-1.5 rounded-lg text-xs">
-                        <i class="fa-solid fa-chart-line"></i>
-                    </div>
-                </div>
-
-                <div class="h-[150px]">
-                    <canvas id="visitorChart"></canvas>
-                </div>
-            </div>
+        <div class="h-full">
 
             <!-- PIE CHART -->
-            <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 transition-all duration-300 hover:shadow-md">
+            <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 transition-all duration-300 hover:shadow-md h-full flex flex-col justify-between">
                 <div class="flex items-center justify-between mb-4">
                     <h3 class="text-xs font-bold text-[#192853] uppercase tracking-wider">Event Berdasarkan Kategori</h3>
                     <div class="bg-yellow-50 text-yellow-600 p-1.5 rounded-lg text-xs">
@@ -144,7 +130,7 @@
                     </div>
                 </div>
 
-                <div class="relative h-[180px] flex items-center justify-center">
+                <div class="relative h-[260px] flex items-center justify-center">
                     <canvas id="categoryChart"></canvas>
                     <div class="absolute flex flex-col items-center">
                         <span class="text-2xl font-black text-[#192853]">{{ $categories->sum('events_count') }}</span>
@@ -218,34 +204,7 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
-    // LINE CHART (data dari database)
-    new Chart(document.getElementById('visitorChart'), {
-        type: 'line',
-        data: {
-            labels: @json($chartLabels),
-            datasets: [{
-                data: @json($chartData),
-                borderColor: '#3b82f6',
-                backgroundColor: 'rgba(59,130,246,0.1)',
-                fill: true,
-                tension: 0.4,
-                pointBackgroundColor: '#3b82f6',
-                pointRadius: 4,
-                pointHoverRadius: 6
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: { legend: { display: false } },
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    ticks: { stepSize: 1 }
-                }
-            }
-        }
-    });
+
 
     // PIE CHART -> DOUGHNUT
     @php

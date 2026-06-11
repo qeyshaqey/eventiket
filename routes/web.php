@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\BarangController;
 use App\Http\Controllers\Pengunjung\ContactController;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\DashboardAdminController;
+use App\Http\Controllers\admin\DashboardAdminController;
 use App\Http\Controllers\EtalaseEventController;
 use App\Http\Controllers\JenisTiketController;
 use App\Http\Controllers\ListEventController;
@@ -22,10 +22,10 @@ use App\Http\Controllers\BerandaPanitiaController;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 
-use App\Http\Controllers\PengunjungController;
-use App\Http\Controllers\PanitiaController;
-use App\Http\Controllers\EventController;
-use App\Http\Controllers\KategoriController;
+use App\Http\Controllers\admin\PengunjungController;
+use App\Http\Controllers\admin\PanitiaController;
+use App\Http\Controllers\admin\EventController;
+use App\Http\Controllers\admin\KategoriController;
 
 //============PANITIA SIDE=========================//
 use App\Http\Controllers\panitia\EventPanitiaController;
