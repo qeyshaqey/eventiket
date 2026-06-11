@@ -11,25 +11,18 @@ use Illuminate\Support\Facades\Storage;
 
 class EventPanitiaController extends Controller
 {
-    /**
-     * Menampilkan daftar semua event yang dikelola oleh panitia.
-     * Mengambil data event beserta tiket dan kategorinya, serta semua kategori untuk modal tambah/edit.
-     */
+    //Menampilkan daftar semua event yang dikelola oleh panitia.
+     
     public function index()
     {
-        // Mengambil semua data event diurutkan dari yang terbaru beserta relasinya
         $events = Event::with(['tikets', 'kategori'])->latest()->get();
-        // Mengambil semua kategori untuk opsi pilihan dropdown pada form
         $categories = \App\Models\Kategori::all();
 
         // Mengirimkan data event dan kategori ke halaman view
         return view('pages.panitia.event.index', compact('events', 'categories'));
     }
 
-    /**
-     * Menyimpan data event baru ke dalam database.
-     * Dilengkapi validasi ketat untuk mendeteksi tanggal dan waktu yang sudah lewat di masa lalu.
-     */
+    //Menyimpan data event baru ke dalam database.Dilengkapi validasi ketat untuk mendeteksi tanggal dan waktu yang sudah lewat di masa lalu.
     public function store(Request $request)
     {
         // Mendapatkan tanggal hari ini dalam format Y-m-d dan waktu sekarang H:i
@@ -180,7 +173,6 @@ class EventPanitiaController extends Controller
         $panitiaId = session('user_id');
 
         // MENGAMBIL SEMUA EVENT MILIK PANITIA YANG SUDAH SELESAI
-        // Berstatus 'Published' dan tanggal selesai kurang dari hari ini
         $allEvents = Event::where('status', 'Published')
             ->where('user_id', $panitiaId)
             ->where(function ($q) {
