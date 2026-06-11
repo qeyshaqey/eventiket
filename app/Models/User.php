@@ -21,7 +21,6 @@ class User extends Authenticatable
         'role',
     ];
 
-    // kolom yang disembunyiin biar gak tampil pas data diconvert jadi array/json (keamanan)
     protected $hidden = [
         'password',
         'remember_token',

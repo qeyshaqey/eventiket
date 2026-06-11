@@ -149,7 +149,7 @@
                     <tr>
                         <td colspan="7" class="py-12 text-center">
                             <div class="flex flex-col items-center gap-2 text-gray-400">
-                                <p class="font-medium">Belum ada transaksi</p>
+                                <p class="font-semibold">Belum ada transaksi</p>
                             </div>
                         </td>
                     </tr>

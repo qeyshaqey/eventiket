@@ -1,22 +1,25 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\panitia;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Event;
 use App\Models\Tiket;
 use App\Models\Kategori;
+use Carbon\Carbon;
 
 class BerandaPanitiaController extends Controller
 {
     public function index()
     {
-        // 1. Total Tiket Terjual
+        //Total Tiket Terjual
         $totalTiketTerjual = Tiket::sum('tiket_terjual');
 
-        // 2. Event Terdekat (Published, tanggal_mulai >= hari ini, terdekat)
+        //Event Terdekat (Published, tanggal_mulai >= hari ini, terdekat)
+        $today = Carbon::today()->toDateString();
         $nearestEvent = Event::where('status', 'Published')
-            ->where('tanggal_mulai', '>=', now()->toDateString())
+            ->whereDate('tanggal_mulai', '>=', $today)
             ->orderBy('tanggal_mulai', 'asc')
             ->first();
 
@@ -27,7 +30,7 @@ class BerandaPanitiaController extends Controller
                 ->first();
         }
 
-        // 3. Event Terlaris (Published, berdasarkan jumlah tiket_terjual terbanyak)
+        // Event Terlaris (Published, berdasarkan jumlah tiket_terjual terbanyak)
         $bestSellingEvent = Event::where('status', 'Published')
             ->withSum('tikets', 'tiket_terjual')
             ->orderByDesc('tikets_sum_tiket_terjual')
@@ -37,25 +40,24 @@ class BerandaPanitiaController extends Controller
             $bestSellingEvent = null;
         }
 
-        // 4. Daftar Event Aktif (Published dan belum berakhir/akan datang)
+        // Daftar Event Aktif (Published dan belum berakhir/akan datang)
         $activeEvents = Event::where('status', 'Published')
-            ->where(function ($q) {
-                $q->where('tanggal_selesai', '>=', now()->toDateString())
-                  ->orWhere(function ($q2) {
+            ->where(function ($q) use ($today) {
+                $q->whereDate('tanggal_selesai', '>=', $today)
+                  ->orWhere(function ($q2) use ($today) {
                       $q2->whereNull('tanggal_selesai')
-                         ->where('tanggal_mulai', '>=', now()->toDateString());
+                         ->whereDate('tanggal_mulai', '>=', $today);
                   });
             })
             ->with(['kategori', 'tikets'])
-            ->latest()
+            ->orderBy('tanggal_mulai', 'asc')
             ->get();
 
         $totalActiveEvents = $activeEvents->count();
 
-        // 5. Seluruh Kategori untuk filter dropdown
+        // Seluruh Kategori untuk filter dropdown
         $categories = Kategori::all();
 
-        // Map data event untuk dikonsumsi oleh JavaScript interaktif di halaman
         $eventsData = $activeEvents->map(function ($event) {
             // Format tanggal mulai & selesai
             $start = \Carbon\Carbon::parse($event->tanggal_mulai);
