@@ -10,15 +10,13 @@ use Illuminate\Http\Request;
 
 class TransaksiController extends Controller
 {
-    /**
-     * Menampilkan riwayat transaksi pembelian tiket oleh pengunjung.
-     * Mengambil data pembelian beserta relasi detail pembelian, tiket, event, dan user.
-     */
+     // Menampilkan riwayat transaksi pembelian tiket oleh pengunjung
     public function index(Request $request)
     {
+        // Mengambil data pembelian tiket yang hanya dimiliki oleh event panitia yang sedang login
         $panitiaId = session('user_id');
 
-        // Mengambil data pembelian tiket yang hanya dimiliki oleh event panitia yang sedang login
+        // Mengambil data pembelian beserta relasi detail pembelian, tiket, event, dan user.
         $query = Pembelian::with(['user', 'detail_pembelians.tiket.event'])
             ->whereHas('detail_pembelians.tiket.event', function ($q) use ($panitiaId) {
                 $q->where('user_id', $panitiaId);

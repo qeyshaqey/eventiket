@@ -246,8 +246,7 @@
                         <tr>
                             <td colspan="7" class="p-8 text-center">
                                 <div class="flex flex-col items-center gap-2 text-gray-400">
-                                    <i class="bi bi-receipt text-4xl"></i>
-                                    <p class="font-medium">Belum ada transaksi</p>
+                                    <p class="font-semibold">Belum ada transaksi</p>
                                 </div>
                             </td>
                         </tr>

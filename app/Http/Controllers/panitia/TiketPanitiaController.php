@@ -70,9 +70,7 @@ class TiketPanitiaController extends Controller
         ])->with('success', 'Jenis tiket berhasil ditambahkan');
     }
 
-    /**
-     * Mengedit jenis tiket yang sudah ada.
-     */
+    //Mengedit jenis tiket yang sudah ada.
     public function update(Request $request, Tiket $tiket)
     {
         // Bersihkan format harga (hilangkan titik/karakter non-angka) sebelum divalidasi
@@ -104,10 +102,7 @@ class TiketPanitiaController extends Controller
         return back()->with('success', 'Tiket berhasil diupdate');
     }
 
-    /**
-     * Menghapus jenis tiket dari database.
-     * Jika setelah dihapus event tidak memiliki tiket sama sekali, status event akan diturunkan kembali ke 'Draft'.
-     */
+    //Menghapus jenis tiket dari database. Jika setelah dihapus event tidak memiliki tiket sama sekali, status event akan diturunkan kembali ke 'Draft'.
     public function destroy(Tiket $tiket)
     {
         // Menyimpan ID event terkait sebelum menghapus tiket

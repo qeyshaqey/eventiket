@@ -18,7 +18,7 @@ use App\Http\Controllers\Pengunjung\DashboardPengunjungController;
 use App\Http\Controllers\Pengunjung\TiketController;
 use App\Http\Controllers\Pengunjung\PaymentController;
 use App\Http\Controllers\Pengunjung\ProfilController;
-use App\Http\Controllers\BerandaPanitiaController;
+use App\Http\Controllers\panitia\BerandaPanitiaController;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 
@@ -31,6 +31,9 @@ use App\Http\Controllers\admin\KategoriController;
 use App\Http\Controllers\panitia\EventPanitiaController;
 use App\Http\Controllers\panitia\TiketPanitiaController;
 use App\Http\Controllers\panitia\TransaksiController;
+use App\Http\Controllers\panitia\RiwayatPanitiaController;
+use App\Http\Controllers\panitia\ProfilPanitiaController;
+
 Route::prefix('panitia')->name('panitia.')->middleware('role:panitia')->group(function () {
 
     Route::get('/beranda', [BerandaPanitiaController::class, 'index'])->name('beranda');
@@ -53,13 +56,13 @@ Route::prefix('panitia')->name('panitia.')->middleware('role:panitia')->group(fu
         ->name('transaksi');
 
     // riwayat event panitia
-    Route::get('/riwayat', [EventPanitiaController::class, 'riwayat'])
+    Route::get('/riwayat', [RiwayatPanitiaController::class, 'index'])
         ->name('riwayat');
 
     // profil panitia
-    Route::get('/profil', [EventPanitiaController::class, 'profil'])->name('profil');
+    Route::get('/profil', [ProfilPanitiaController::class, 'profil'])->name('profil');
     // update profil panitia
-    Route::post('/profil/update', [EventPanitiaController::class, 'updateProfil'])
+    Route::post('/profil/update', [ProfilPanitiaController::class, 'updateProfil'])
         ->name('profil.update');
 });
 //===============================================================//
