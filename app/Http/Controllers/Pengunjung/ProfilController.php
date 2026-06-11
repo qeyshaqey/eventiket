@@ -10,26 +10,36 @@ use Illuminate\Support\Facades\Storage;
 
 class ProfilController extends Controller
 {
-    // Menampilkan halaman profil pengunjung
+    
+    //  Method ini menangani tampilan halaman Profil Pengunjung.
+    //  Mengambil data diri user serta status terakhir pengajuan panitia (jika ada).
+  
     public function index()
     {
-        // Mengambil data pengguna berdasarkan ID sesi login
+        // Mengambil data pengguna secara spesifik dari tabel 'users' berdasarkan ID yang ada di session
         $user = \App\Models\User::find(session('user_id'));
 
-        // Mengarahkan ke halaman login jika sesi telah berakhir atau belum masuk
+        // Jika ID tidak ditemukan (mungkin session kedaluwarsa atau belum login), 
+        // tendang/redirect user kembali ke halaman login.
         if (!$user) {
             return redirect()->route('login')->with('error', 'Silakan masuk terlebih dahulu.');
         }
 
-        // Memeriksa riwayat pengajuan panitia terakhir milik pengguna
+        // Mengambil riwayat pengajuan panitia terakhir milik pengguna ini.
+        // Fungsi latest()->first() memastikan kita hanya mengambil SATU data pengajuan yang paling baru dibuat.
         $pengajuan = \App\Models\PengajuanPanitia::where('user_id', $user->id)->latest()->first();
 
+        // Buka halaman (view) profil dan bawa serta variabel $user dan $pengajuan agar bisa dicetak di HTML
         return view('pages.pengunjung.profil_pengunjung', compact('user', 'pengajuan'));
     }
 
-    // Memperbarui data profil pengguna (nama, foto, dan kata sandi)
+    /**
+     * Method ini menangani proses saat pengguna mengklik tombol "Simpan Perubahan" di profil.
+     * Mengubah nama, mengunggah foto profil, atau mengganti password.
+     */
     public function update(Request $request)
     {
+        // Ambil data user saat ini
         $user = \App\Models\User::find(session('user_id'));
 
         // Memastikan pengguna telah masuk sebelum melakukan pembaruan
@@ -37,12 +47,13 @@ class ProfilController extends Controller
             return redirect()->route('login')->with('error', 'Silakan masuk terlebih dahulu.');
         }
 
-        // Memvalidasi input dari pengguna
+        // Memvalidasi input dari formulir web (keamanan)
         $request->validate([
-            'name' => 'required|string|max:255',
-            'photo' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-            'password' => 'nullable|string|min:8|confirmed',
+            'name' => 'required|string|max:255', // Nama tidak boleh kosong
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg|max:2048', // Foto boleh kosong, wajib gambar, maks 2MB
+            'password' => 'nullable|string|min:8|confirmed', // Password boleh kosong, min 8 huruf, wajib cocok dengan kolom konfirmasi
         ], [
+            // Pesan error kustom agar lebih mudah dipahami orang Indonesia
             'name.required' => 'Nama lengkap wajib diisi.',
             'name.string' => 'Nama lengkap harus berupa teks.',
             'name.max' => 'Nama lengkap maksimal 255 karakter.',
@@ -53,48 +64,54 @@ class ProfilController extends Controller
             'password.confirmed' => 'Konfirmasi kata sandi tidak cocok.',
         ]);
 
-        // Penanda untuk mengetahui apakah terdapat perubahan data
+        // Siapkan variabel penanda untuk melacak apakah benar-benar ada data yang diganti oleh user
         $isChanged = false;
 
-        // Memperbarui nama pengguna jika terdapat perubahan
+        // Periksa apakah user mengganti namanya
         if ($user->name !== $request->name) {
-            $user->name = $request->name;
-            // Memperbarui sesi nama agar tampilan navbar langsung menyesuaikan
+            $user->name = $request->name; // Update nama di object user
+            // Wajib memperbarui 'session' nama juga, agar tulisan nama di pojok kanan atas Navbar langsung berubah!
             session(['user' => $user->name]);
-            $isChanged = true;
+            $isChanged = true; // Tandai bahwa ada perubahan
         }
 
-        // Memeriksa apakah pengguna mengunggah foto profil baru
+        // Periksa apakah pengguna mengunggah foto profil baru
         if ($request->hasFile('photo')) {
-            // Menghapus foto profil lama dari penyimpanan
+            // Cek apakah sebelumnya user sudah pernah punya foto? 
             if ($user->photo) {
+                // Jika ya, HAPUS foto fisik yang lama dari folder server agar penyimpanan (disk) tidak penuh
                 Storage::disk('public')->delete($user->photo);
             }
 
-            // Menyimpan foto profil baru ke penyimpanan
+            // Simpan foto fisik yang baru ke dalam folder 'storage/app/public/photos'
             $path = $request->file('photo')->store('photos', 'public');
-            $user->photo = $path;
-            $isChanged = true;
+            $user->photo = $path; // Catat path/lokasi fotonya ke database
+            $isChanged = true; // Tandai bahwa ada perubahan
         }
 
-        // Memeriksa apakah pengguna memasukkan kata sandi baru
+        // Periksa apakah pengguna mengisi kolom kata sandi baru (tidak dibiarkan kosong)
         if ($request->filled('password')) {
+            // Enkripsi (Hash) kata sandi tersebut demi keamanan sebelum disimpan ke DB
             $user->password = Hash::make($request->password);
-            $isChanged = true;
+            $isChanged = true; // Tandai bahwa ada perubahan
         }
 
-        // Menyimpan perubahan ke basis data jika ada data yang diubah
+        // Menyimpan perubahan ke database
+        // Jika ada salah satu data di atas yang berubah, baru jalankan perintah save()
         if ($isChanged) {
             $user->save();
             return redirect()->route('pengunjung.profil')
                 ->with('profile_success', 'Profil berhasil diperbarui!');
         }
 
-        // Mengembalikan ke halaman profil jika tidak ada perubahan
+        // Jika user cuma pencet "Simpan" tapi tidak mengganti ketikan apa-apa
         return redirect()->route('pengunjung.profil')
             ->with('profile_success', 'Tidak ada perubahan data.');
     }
 
+    
+    // Method ini bertugas merender halaman form untuk pendaftaran Panitia 
+     
     public function halamanPengajuan()
     {
         $userId = session('user_id');
@@ -104,46 +121,56 @@ class ProfilController extends Controller
             return redirect()->route('login')->with('error', 'Silakan masuk terlebih dahulu.');
         }
 
-        // Mengambil seluruh riwayat pengajuan panitia pengguna untuk ditampilkan
+        // Mengambil SELURUH riwayat pengajuan milik user ini dari yang paling baru ke paling lama
         $riwayatPengajuan = \App\Models\PengajuanPanitia::where('user_id', $userId)->latest()->get();
 
-        // Memeriksa kelayakan pengguna untuk mengajukan form baru
+        // Pengguna HANYA BOLEH MENGAJUKAN formulir baru JIKA:
+        // Tidak ada pengajuan yang statusnya masih pending (menunggu) 
+        // ATAU tidak ada pengajuan yang 'dicabut' 
         $bolehAjukan = !$riwayatPengajuan->whereIn('status', ['pending', 'dicabut'])->count();
 
-        // Mengambil daftar kategori dari database untuk dropdown form pengajuan
+        // Mengambil kumpulan tulisan daftar kategori event dari database untuk dijadikan pilihan di Dropdown
         $kategoris = \App\Models\Kategori::pluck('nama_kategori');
 
+        // Buka halamannya dan lempar datanya
         return view('pages.pengunjung.daftar_panitia', compact('user', 'riwayatPengajuan', 'bolehAjukan', 'kategoris'));
     }
 
+    
+    // Method ini menangani proses saat user mengklik "Kirim Pengajuan" di halaman pendaftaran panitia.
     public function daftarPanitia(Request $request)
     {
         $userId = session('user_id');
 
+        // Validasi formulir pengajuan, pastikan tidak ada data penting yang terlewat
         $request->validate([
-            'organisasi'  => 'required|string|max:255',
-            'nama_event'  => 'required|string|max:255',
-            'kategori'    => 'required|string|max:255',
-            'tanggal'     => 'required|date',
-            'deskripsi'   => 'required|string',
+            'organisasi'  => 'required|string|max:255', // Nama UKM / Organisasi
+            'nama_event'  => 'required|string|max:255', // Rencana acara
+            'kategori'    => 'required|string|max:255', // Pilihan Dropdown
+            'tanggal'     => 'required|date',           // Tanggal rencana pelaksanaan
+            'deskripsi'   => 'required|string',         // Paragraf deskripsi konsep acara
         ]);
 
+        // Cek kembali ke database, apakah user ini berstatus 'dicabut' (di-banned admin)?
         $cekBlacklist = \App\Models\PengajuanPanitia::where('user_id', $userId)
                                         ->where('status', 'dicabut')
                                         ->exists();
                                         
         if ($cekBlacklist) {
+            // Tolak mentah-mentah jika statusnya dicabut
             return redirect()->back()->with('toast_error', 'Anda telah dicabut dari keanggotaan panitia karena melanggar aturan dan tidak dapat mendaftar kembali.');
         }
 
+        // Cek apakah user mencoba mengirim ulang padahal status pengajuan sebelumnya masih diproses admin?
         $cekPending = \App\Models\PengajuanPanitia::where('user_id', $userId)
                                       ->where('status', 'pending')
                                       ->exists();
                                       
         if ($cekPending) {
+            // Tolak karena masih menunggu hasil admin
             return redirect()->back()->with('toast_error', 'Anda masih memiliki pengajuan yang sedang diproses oleh Admin.');
         }
-
+        // Jika aman, masukkan semua isian formulir tadi ke dalam tabel 'pengajuan_panitias'
         \App\Models\PengajuanPanitia::create([
             'user_id'         => $userId,
             'nama_organisasi' => $request->organisasi,
@@ -151,9 +178,11 @@ class ProfilController extends Controller
             'kategori'        => $request->kategori,
             'tanggal_event'   => $request->tanggal,
             'deskripsi'       => $request->deskripsi,
-            'status'          => 'pending',
+            'status'          => 'pending', // Otomatis diset menjadi 'pending'
         ]);
 
+        // Berhasil, kembalikan user dengan notifikasi sukses Toast
         return redirect()->route('pengunjung.daftar_panitia')->with('toast_success', 'Pengajuan berhasil dikirim! Silakan tunggu konfirmasi Admin.');
     }
 }
+

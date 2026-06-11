@@ -160,7 +160,7 @@
     <!-- BUTTON -->
     <div class="mt-12">
         @php
-            $isLoggedIn = session()->has('user') && session('role') === 'pengunjung';
+            $isLoggedIn = session()->has('user') && in_array(session('role'), ['pengunjung', 'panitia']);
         @endphp
 
         @if($isLoggedIn)
