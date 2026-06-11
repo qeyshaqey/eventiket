@@ -19,16 +19,16 @@
 
         <select id="kategori" class="px-3 py-2 border rounded-lg text-sm w-full md:w-auto">
             <option value="">Kategori</option>
-            <option>Seminar</option>
-            <option>Workshop</option>
-            <option>Pameran</option>
+            @foreach($kategoris as $k)
+                <option>{{ $k }}</option>
+            @endforeach
         </select>
 
         <select id="event" class="px-3 py-2 border rounded-lg text-sm w-full md:w-auto">
             <option value="">Event</option>
-            <option>Seminar Kewirausahaan</option>
-            <option>Workshop UI/UX Design</option>
-            <option>Pameran Teknologi</option>
+            @foreach($events as $e)
+                <option>{{ $e }}</option>
+            @endforeach
         </select>
     </div>
 
@@ -72,11 +72,7 @@
 
                     <td class="py-5 px-4 first:rounded-l-lg last:rounded-r-lg">{{ $i+1 }}</td>
                     <td class="py-5 px-4">
-                        <div class="flex items-center gap-3">
-                            <img src="{{ $d['foto'] }}" alt="{{ $d['nama'] }}" 
-                                class="w-8 h-8 rounded-full object-cover ring-2 ring-gray-200 shadow-sm flex-shrink-0">
-                            <span>{{ $d['nama'] }}</span>
-                        </div>
+                        <span>{{ $d['nama'] }}</span>
                     </td>
                     <td class="py-5 px-4 text-gray-500">{{ $d['email'] }}</td>
                     <td class="py-5 px-4 text-gray-600">{{ $d['nim'] }}</td>
