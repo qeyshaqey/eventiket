@@ -6,7 +6,7 @@
 
     <!-- HEADER DATA TRANSAKSI -->
     <div class="mb-6">
-        <h1 class="text-xl font-bold text-[#192853]">Data Transaksi</h1>
+        <h1 class="text-xl font-bold mb-6">DATA TRANSAKSI</h1>
     </div>
 
     <!-- BOX WADAH TABEL TRANSAKSI -->

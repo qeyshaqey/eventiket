@@ -18,13 +18,6 @@ class RiwayatPanitiaController extends Controller
 
         $allEvents = Event::where('status', 'Published')
             ->where('user_id', $panitiaId)
-            ->where(function ($q) {
-                $q->where('tanggal_selesai', '<', now()->toDateString())
-                  ->orWhere(function ($q2) {
-                      $q2->whereNull('tanggal_selesai')
-                         ->where('tanggal_mulai', '<', now()->toDateString());
-                  });
-            })
             ->latest()
             ->get();
 
@@ -53,6 +46,9 @@ class RiwayatPanitiaController extends Controller
             ->get();
 
         $query = DetailPembelian::with(['pembelian.user', 'tiket.event'])
+            ->whereHas('pembelian', function ($q) {
+                $q->where('status_pembayaran', 'Lunas');
+            })
             ->whereHas('tiket.event', function ($q) use ($panitiaId) {
                 $q->where('status', 'Published')
                   ->where('user_id', $panitiaId)

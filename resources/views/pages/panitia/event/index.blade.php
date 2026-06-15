@@ -30,7 +30,7 @@
 
     <!-- BARIS ATAS -->
     <div class="flex justify-between items-center mb-3">
-        <h1 class="text-xl font-bold">Event Yang Dikelola</h1>
+        <h1 class="text-xl font-bold mb-6">EVENT YANG DIKELOLA</h1>
     </div>
 
     <!-- BARIS BAWAH -->
@@ -87,7 +87,7 @@
             <th class="px-4 py-3">WAKTU</th>
             <th class="px-4 py-3">LOKASI</th>
             <th class="px-4 py-3">STATUS</th>
-            <th class="px-4 py-3 text-center">AKSI</th>
+            <th class="px-4 py-3">AKSI</th>
         </tr>
     </thead>
 

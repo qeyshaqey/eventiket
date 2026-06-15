@@ -13,9 +13,12 @@ trait EventDataTrait
         // carbon library php digunakan untuk memanipulasi tanggal dan waktu
         $now = \Carbon\Carbon::now('Asia/Jakarta');
 
-        // Ambil semua event yang berstatus 'Published'
+        // Ambil semua event yang berstatus 'Published' tetapi bukan event yang dibuat oleh user saat ini
         $dbEvents = \App\Models\Event::where('status', 'Published')
             // get digunakan untuk mengeksekusi query
+            ->when(session('user_id'), function ($query, $userId) {
+                return $query->where('user_id', '!=', $userId);
+            })
             ->get()
 
             // Filter: hanya event yang belum melewati batas akhir (tanggal & jam)
