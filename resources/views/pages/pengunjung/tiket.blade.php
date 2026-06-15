@@ -151,11 +151,23 @@
                                 <span class="flex items-center gap-2"><i class="fa-solid fa-location-dot text-navy/40 text-xs w-4 text-center"></i> Lokasi</span>
                                 <span>:</span><span>{{ $event['location'] }}</span>
 
-                                <span class="flex items-center gap-2"><i class="fa-solid fa-ticket text-navy/40 text-xs w-4 text-center"></i> Tiket</span>
+                                <span class="flex items-start gap-2"><i class="fa-solid fa-ticket text-navy/40 text-xs w-4 text-center mt-1"></i> Tiket</span>
                                 <span>:</span>
-                                <div class="space-y-1">
+                                <div class="space-y-3 mt-0.5">
                                     @foreach($event['tickets'] as $t)
-                                        <p>{{ $t['name'] }} ({{ $t['qty'] }})</p>
+                                        <div>
+                                            <p class="font-medium text-navy">{{ $t['name'] }} ({{ $t['qty'] }} Tiket)</p>
+                                            @if($event['status'] == 'Lunas' && !empty($t['codes']))
+                                                <div class="space-y-2 mt-1.5 pl-3 border-l-2 border-yellow/60">
+                                                    @foreach($t['codes'] as $kode)
+                                                        <div class="bg-gray-100/80 px-2.5 py-1 rounded-md inline-flex items-center gap-2 border border-gray-200 shadow-sm">
+                                                            <i class="fa-solid fa-qrcode text-navy/50 text-[10px]"></i>
+                                                            <span class="font-mono text-[12px] font-bold tracking-[0.15em] text-navy">{{ $kode }}</span>
+                                                        </div>
+                                                    @endforeach
+                                                </div>
+                                            @endif
+                                        </div>
                                     @endforeach
                                 </div>
 
@@ -345,8 +357,12 @@
                 
                 // Prev Button
                 const prevBtn = document.createElement('button');
-                prevBtn.innerHTML = '<i class="fa-solid fa-chevron-left text-xs"></i>';
-                prevBtn.className = `w-8 h-8 rounded-full flex items-center justify-center border transition focus:outline-none ${currentPage === 1 ? 'border-slate-200 text-slate-300 cursor-not-allowed' : 'border-slate-300 text-navy hover:bg-navy hover:text-white'}`;
+                prevBtn.innerHTML = '&laquo;';
+                if (currentPage === 1) {
+                    prevBtn.className = 'inline-flex h-11 w-11 items-center justify-center rounded-full border border-[#cbd5e1] bg-[#EFF8FF] text-[#475569] cursor-not-allowed focus:outline-none';
+                } else {
+                    prevBtn.className = 'inline-flex h-11 w-11 items-center justify-center rounded-full border border-[#cbd5e1] bg-white text-[#192853] transition hover:bg-[#EFF8FF] focus:outline-none';
+                }
                 prevBtn.disabled = currentPage === 1;
                 prevBtn.onclick = () => { 
                     if(currentPage > 1) { 
@@ -362,9 +378,9 @@
                     const pageBtn = document.createElement('button');
                     pageBtn.innerText = i;
                     if (i === currentPage) {
-                        pageBtn.className = 'w-8 h-8 rounded-full flex items-center justify-center bg-navy text-white font-medium shadow-sm focus:outline-none';
+                        pageBtn.className = 'inline-flex h-11 min-w-[44px] items-center justify-center rounded-full bg-[#192853] px-4 text-sm font-semibold text-white focus:outline-none';
                     } else {
-                        pageBtn.className = 'w-8 h-8 rounded-full flex items-center justify-center border border-slate-300 text-slate-600 font-medium hover:bg-slate-50 transition focus:outline-none';
+                        pageBtn.className = 'inline-flex h-11 min-w-[44px] items-center justify-center rounded-full border border-[#cbd5e1] bg-white px-4 text-sm font-medium text-[#192853] transition hover:bg-[#EFF8FF] focus:outline-none';
                     }
                     pageBtn.onclick = () => { 
                         currentPage = i; 
@@ -376,8 +392,12 @@
                 
                 // Next Button
                 const nextBtn = document.createElement('button');
-                nextBtn.innerHTML = '<i class="fa-solid fa-chevron-right text-xs"></i>';
-                nextBtn.className = `w-8 h-8 rounded-full flex items-center justify-center border transition focus:outline-none ${currentPage === totalPages ? 'border-slate-200 text-slate-300 cursor-not-allowed' : 'border-slate-300 text-navy hover:bg-navy hover:text-white'}`;
+                nextBtn.innerHTML = '&raquo;';
+                if (currentPage === totalPages) {
+                    nextBtn.className = 'inline-flex h-11 w-11 items-center justify-center rounded-full border border-[#cbd5e1] bg-[#EFF8FF] text-[#475569] cursor-not-allowed focus:outline-none';
+                } else {
+                    nextBtn.className = 'inline-flex h-11 w-11 items-center justify-center rounded-full border border-[#cbd5e1] bg-white text-[#192853] transition hover:bg-[#EFF8FF] focus:outline-none';
+                }
                 nextBtn.disabled = currentPage === totalPages;
                 nextBtn.onclick = () => { 
                     if(currentPage < totalPages) { 
