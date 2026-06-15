@@ -16,8 +16,13 @@ class TiketPanitiaController extends Controller
      */
     public function index(Request $request)
     {
-        // Mengambil semua event berurut dari yang terbaru beserta relasi tiket dan kategorinya
-        $events = Event::with(['tikets', 'kategori'])->latest()->get();
+        $userId = session('user_id');
+
+        // Mengambil semua event milik panitia saat ini berurut dari yang terbaru beserta relasi tiket dan kategorinya
+        $events = Event::where('user_id', $userId)
+            ->with(['tikets', 'kategori'])
+            ->latest()
+            ->get();
 
         // Mengambil ID event dari query parameter url (?event_id=x) untuk disorot di tampilan
         $highlightEventId = $request->query('event_id');

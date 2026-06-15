@@ -6,7 +6,7 @@
 
     <!-- HEADER -->
     <div class="mb-4">
-        <h1 class="text-xl font-bold mb-3">Event Yang Dikelola</h1>
+        <h1 class="text-xl font-bold mb-6">EVENT YANG DIKELOLA</h1>
 
         <a href="{{ route('panitia.event.create') }}" 
             class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition inline-block">
@@ -16,7 +16,7 @@
 
     <!-- TABLE -->
     <table class="w-full text-sm border">
-        <thead class="bg-gray-100">
+        <thead class="bg-gray-100 text-center">
             <tr>
                 <th class="border p-2">NO</th>
                 <th class="border p-2">JUDUL EVENT</th>

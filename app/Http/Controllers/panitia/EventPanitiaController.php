@@ -13,7 +13,10 @@ class EventPanitiaController extends Controller
      
     public function index()
     {
-        $events = Event::with(['tikets', 'kategori'])->latest()->get();
+        $events = Event::with(['tikets', 'kategori'])
+            ->where('user_id', session('user_id'))
+            ->latest()
+            ->get();
         $categories = \App\Models\Kategori::all();
 
         // Mengirimkan data event dan kategori ke halaman view
@@ -70,14 +73,10 @@ class EventPanitiaController extends Controller
         // Membuat record event baru di database
         Event::create($validated);
 
-        // Kembali ke halaman sebelumnya dengan membawa pesan sukses
         return back()->with('success', 'Event berhasil ditambahkan');
     }
 
-    /**
-     * Memperbarui data event yang sudah ada.
-     * Validasi tanggal/waktu lampau bersifat dinamis agar tidak mengunci event lama yang sedang diedit.
-     */
+    //Memperbarui data event yang sudah ada.
     public function update(Request $request, $id)
     {
         // Mencari event berdasarkan ID, tampilkan error 404 jika tidak ditemukan
@@ -134,9 +133,7 @@ class EventPanitiaController extends Controller
         return back()->with('success', 'Event berhasil diupdate');
     }
 
-    /**
-     * Menghapus event dari database.
-     */
+    //Menghapus event dari database.
     public function destroy($id)
     {
         // Mencari event lalu menghapusnya
@@ -147,9 +144,7 @@ class EventPanitiaController extends Controller
         return back()->with('success', 'Event berhasil dihapus');
     }
 
-    /**
-     * Mengirimkan event ke Admin untuk peninjauan (mengubah status menjadi 'Pending').
-     */
+    //Mengirimkan event ke Admin untuk peninjauan (mengubah status menjadi 'Pending').
     public function kirim($id)
     {
         // Mencari event berdasarkan ID

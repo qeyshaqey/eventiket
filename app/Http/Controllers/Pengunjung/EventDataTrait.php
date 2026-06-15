@@ -12,8 +12,11 @@ trait EventDataTrait
         // Waktu saat ini dalam zona Jakarta
         $now = \Carbon\Carbon::now('Asia/Jakarta');
 
-        // Ambil semua event yang berstatus 'Published'
+        // Ambil semua event yang berstatus 'Published' tetapi bukan event yang dibuat oleh user saat ini
         $dbEvents = \App\Models\Event::where('status', 'Published')
+            ->when(session('user_id'), function ($query, $userId) {
+                return $query->where('user_id', '!=', $userId);
+            })
             ->get()
             // Filter: hanya event yang belum melewati batas akhir (tanggal & jam)
             ->filter(function($event) use ($now) {

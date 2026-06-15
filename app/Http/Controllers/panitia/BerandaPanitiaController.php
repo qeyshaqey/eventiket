@@ -13,25 +13,32 @@ class BerandaPanitiaController extends Controller
 {
     public function index()
     {
-        //Total Tiket Terjual
-        $totalTiketTerjual = Tiket::sum('tiket_terjual');
+        $userId = session('user_id');
 
-        //Event Terdekat (Published, tanggal_mulai >= hari ini, terdekat)
+        //Total Tiket Terjual untuk event panitia ini saja
+        $totalTiketTerjual = Tiket::whereHas('event', function ($query) use ($userId) {
+            $query->where('user_id', $userId);
+        })->sum('tiket_terjual');
+
+        //Event Terdekat (Published, tanggal_mulai >= hari ini, terdekat) milik panitia saat ini
         $today = Carbon::today()->toDateString();
         $nearestEvent = Event::where('status', 'Published')
+            ->where('user_id', $userId)
             ->whereDate('tanggal_mulai', '>=', $today)
             ->orderBy('tanggal_mulai', 'asc')
             ->first();
 
-        // Jika tidak ada event di masa depan, ambil event published terdekat/terbaru apa saja
+        // Jika tidak ada event di masa depan, ambil event published terdekat/terbaru milik panitia saat ini
         if (!$nearestEvent) {
             $nearestEvent = Event::where('status', 'Published')
+                ->where('user_id', $userId)
                 ->orderBy('tanggal_mulai', 'desc')
                 ->first();
         }
 
-        // Event Terlaris (Published, berdasarkan jumlah tiket_terjual terbanyak)
+        // Event Terlaris (Published, berdasarkan jumlah tiket_terjual terbanyak) milik panitia saat ini
         $bestSellingEvent = Event::where('status', 'Published')
+            ->where('user_id', $userId)
             ->withSum('tikets', 'tiket_terjual')
             ->orderByDesc('tikets_sum_tiket_terjual')
             ->first();
@@ -42,6 +49,7 @@ class BerandaPanitiaController extends Controller
 
         // Daftar Event Aktif (Published dan belum berakhir/akan datang)
         $activeEvents = Event::where('status', 'Published')
+            ->where('user_id', $userId)
             ->where(function ($q) use ($today) {
                 $q->whereDate('tanggal_selesai', '>=', $today)
                   ->orWhere(function ($q2) use ($today) {
