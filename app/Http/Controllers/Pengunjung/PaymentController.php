@@ -13,6 +13,7 @@ use Illuminate\Support\Str;
 
 class PaymentController extends Controller
 {
+    
     public function __construct()
     {
         // Mengatur konfigurasi API Key Midtrans dengan mengambil data dari file .env
@@ -22,10 +23,8 @@ class PaymentController extends Controller
         Config::$is3ds = config('midtrans.is_3ds'); // Fitur keamanan tambahan untuk kartu kredit
     }
 
-    /**
-     * Method ini bertugas untuk memulai proses pembayaran.
-     * Ia akan mengecek pesanan pengguna dan meminta 'Snap Token' ke Midtrans untuk memunculkan pop-up bayar.
-     */
+    // Method ini bertugas untuk memulai proses pembayaran
+    // Ia akan mengecek pesanan pengguna dan meminta 'Snap Token' ke Midtrans untuk memunculkan pop-up bayar
     public function initiatePayment(Request $request)
     {
         // Ambil ID user dari session
@@ -59,7 +58,7 @@ class PaymentController extends Controller
             return redirect()->route('pengunjung.tiket')->with('error', 'Data tagihan tidak ditemukan atau sudah dibayar.');
         }
 
-        // Cek Kedaluwarsa (Fallback Lokal)
+        // Cek Kedaluwarsa 
         // Jika sudah lebih dari 24 jam sejak tagihan dibuat, ubah statusnya jadi Kedaluwarsa.
         // Fungsi Carbon::parse mengubah format tanggal dari DB, lalu addHours(24) menambah waktu 24 jam, 
         // lalu isPast() mengecek apakah waktu tersebut sudah lewat
@@ -111,7 +110,6 @@ class PaymentController extends Controller
     //  Ini untuk memberitahu web kalau pelanggan sudah sukses transfer uang atau pesanannya kedaluwarsa.
     public function callback(Request $request)
     {
-        // Verifikasi Keamanan (Signature Key)
         // Ambil kunci server dari file konfigurasi
         $serverKey = config('midtrans.server_key');
         // Buat rumus keamanan dengan menyatukan OrderID + StatusCode + TotalUang + ServerKey lalu dienkripsi (hash sha512)
@@ -134,7 +132,7 @@ class PaymentController extends Controller
                     $pembelian->status_pembayaran = 'Lunas';
                     $pembelian->save();
                     
-                    // Generate E-Tiket (Kode Unik)
+                    // Generate E-Tiket (Kode Unik) tabel pembelian berelasi dengan detail pembelian
                     // Ambil detail rincian tiket apa saja yang dibeli di pesanan ini
                     $details = $pembelian->detail_pembelians;
                     foreach ($details as $detail) {

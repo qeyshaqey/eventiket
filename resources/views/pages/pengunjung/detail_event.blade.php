@@ -38,7 +38,7 @@
                  class="relative w-full h-[450px] sm:h-[500px] bg-white rounded-[2rem] border-2 border-slate-200/60 shadow-sm overflow-hidden group flex items-center justify-center p-3 select-none">
 
                 <div class="w-full h-full bg-slate-50/80 rounded-3xl overflow-hidden relative flex items-center justify-center">
-                    <img src="{{ asset('image/' . ($event['image'] ?? 'default.jpg')) }}"
+                    <img src="{{ $event['image'] }}"
                          alt="{{ $event['title'] }}"
                          class="w-full h-full object-contain transition duration-500 group-hover:scale-[1.03]">
                 </div>

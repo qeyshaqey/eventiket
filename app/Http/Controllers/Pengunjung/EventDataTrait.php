@@ -9,12 +9,15 @@ trait EventDataTrait
    
     public function events()
     {
-        // 1. Dapatkan waktu saat ini secara spesifik dalam zona waktu Asia/Jakarta
+        // Dapatkan waktu saat ini dalam zona waktu Asia/Jakarta
+        // carbon library php digunakan untuk memanipulasi tanggal dan waktu
         $now = \Carbon\Carbon::now('Asia/Jakarta');
 
         // Ambil semua event yang berstatus 'Published'
         $dbEvents = \App\Models\Event::where('status', 'Published')
+            // get digunakan untuk mengeksekusi query
             ->get()
+
             // Filter: hanya event yang belum melewati batas akhir (tanggal & jam)
             ->filter(function($event) use ($now) {
                 // Tentukan batas tanggal akhir: jika ada tanggal selesai pakai itu, kalau tidak pakai tanggal mulai
@@ -23,7 +26,7 @@ trait EventDataTrait
                 // Tentukan batas jam: Jika waktu selesai tidak diisi, asumsikan acara berakhir di penghujung hari (23:59:59)
                 $endTime = !empty($event->waktu_selesai) ? $event->waktu_selesai : '23:59:59';
                 
-                // Gabungkan tanggal dan jam menjadi satu objek Carbon yang utuh (berzona Jakarta)
+                // Gabungkan tanggal dan jam menjadi satu objek waktu(berzona Jakarta)
                 $endDateTime = \Carbon\Carbon::parse($endDate . ' ' . $endTime, 'Asia/Jakarta');
                 
                 // Hanya tampilkan event jika batas akhir (Hari & Jam) belum terlewat
@@ -33,23 +36,24 @@ trait EventDataTrait
             // Map: Setelah event yang kadaluwarsa dibuang, susun ulang bentuk datanya
             ->map(function($event) use ($now) {
                 
-                // Cari harga paling murah dari seluruh jenis tiket yang dimiliki event ini
+                // Cari harga paling murah dari seluruh jenis tiket yang dimiliki event
                 // Gunakan 0 sebagai nilai default jika event belum memiliki tiket
                 $minPrice = $event->tikets()->min('harga') ?? 0;
                 
                 // Hitung total keseluruhan sisa kuota dengan menjumlahkan kolom 'kuota' dari semua jenis tiket
                 $totalKuota = $event->tikets()->sum('kuota');
                 
-                //variabel penanda apakah event tersebut sedang berlangsung saat ini
+                //variabel penanda apakah event tersebut sedang berlangsung 
+                // anggap event belum mulai (false)
                 $isOngoing = false;
                 
                 // Tentukan waktu mulai: Jika jam mulai kosong, asumsikan mulai jam 00:00:00
                 $startTime = !empty($event->waktu_mulai) ? $event->waktu_mulai : '00:00:00';
                 
-                // Gabungkan tanggal mulai dan jam mulai menjadi objek Carbon
+                // Gabungkan tanggal mulai dan jam mulai menjadi objek waktu
                 $startDateTime = \Carbon\Carbon::parse($event->tanggal_mulai . ' ' . $startTime, 'Asia/Jakarta');
 
-                // Cek apakah waktu saat ini sudah melewati atau sama dengan waktu mulai acara
+                // Jika waktu sekarang ($now) sudah melewati atau sama persis dengan waktu mulai acara ($startDateTime)
                 // Jika ya, berarti acara tersebut sedang berlangsung saat ini
                 if ($now->greaterThanOrEqualTo($startDateTime)) {
                     $isOngoing = true;
@@ -72,29 +76,30 @@ trait EventDataTrait
                     'id' => $event->id, // ID dari event
                     'title' => $event->judul, // Judul event
                     
-                    //  Format rentang tanggal (Contoh: "10 Jun 2026 - 12 Jun 2026")
-                    // - Carbon::parse() mengubah string teks biasa dari database (misal: "2026-06-10")
-                    // - translatedFormat('d M Y') mengubah objek waktu tadi menjadi format (Contoh: "10 Jun 2026").
+                    // Carbon::parse() mengubah string teks biasa dari database (misal: "2026-06-10")
+
+                    // Apakah tanggal selesai TIDAK KOSONG? DAN apakah tanggal selesainya BERBEDA dengan tanggal mulainya?
                     'date' => !empty($event->tanggal_selesai) && $event->tanggal_selesai !== $event->tanggal_mulai
+                        // Jika ya, maka format tanggalnya"Tanggal Mulai - Tanggal Selesai" (Contoh: "10 Jun 2026 - 12 Jun 2026")
                         ? \Carbon\Carbon::parse($event->tanggal_mulai)->translatedFormat('d M Y') . ' - ' . \Carbon\Carbon::parse($event->tanggal_selesai)->translatedFormat('d M Y')
-                        // atau "10 Jun 2026" jika hanya 1 hari
+                        // Jika tidak,maka format tanggalnya "10 Jun 2026" (hanya 1 hari)
                         : \Carbon\Carbon::parse($event->tanggal_mulai)->translatedFormat('d M Y'),
 
                     // Format jam tayang (Contoh: "08:00 - 15:00 WIB")
-                    // - substr($string, 0, 5) digunakan untuk memotong teks.
+                    // substr($string, 0, 5) digunakan untuk memotong teks.
                     // Jika di database jam tersimpan "08:00:00", maka diambil 5 karakter pertama saja menjadi "08:00".
                     'time' => substr($event->waktu_mulai, 0, 5) . ' - ' . substr($event->waktu_selesai, 0, 5) . ' WIB',
                     
-                    'venue' => $event->lokasi, // Lokasi fisik event
+                    'venue' => $event->lokasi, // Lokasi  event
 
                     // Ambil nama kategori lewat relasi ORM. Jika tidak ada, tulis 'Lainnya'
                     'category' => $event->kategori->nama_kategori ?? 'Lainnya', 
                     'status' => $statusBadge, // Badge status hasil perhitungan di atas
                     
-                    // number_format($angka, 0, ',', '.') mengubah angka mentah menjadi format mata uang.
+                    // number_format engubah angka int mentah menjadi format mata uang
                     // Mengubah angka 20000 menjadi format Rp 20.000 dengan titik sebagai pemisah ribuan.
                     'price' => 'Rp ' . number_format($minPrice, 0, ',', '.'),
-                    'image' => $event->poster ?? 'gambarevent1.jpg', // Gambar poster event
+                    'image' => $event->poster ? \Illuminate\Support\Facades\Storage::url($event->poster) : asset('image/gambarevent1.jpg'), // Gambar poster event
                     'description' => $event->deskripsi, // Teks paragraf deskripsi event
                     // Susun ulang data tiket (jenis-jenis tiket) yang ada dalam event ini
                     'tickets' => $event->tikets->map(function($t) {

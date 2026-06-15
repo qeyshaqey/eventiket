@@ -16,7 +16,7 @@
                 <a href="{{ route('pengunjung.detail.event', ['id' => $event['id']]) }}" class="block">
                     <div class="overflow-hidden">
                         <!-- Nampilin poster event, ditambah efek scale (membesar sedikit) pas kursor di-hover biar UI-nya interaktif  -->
-                        <img src="{{ asset('image/' . $event['image']) }}" alt="{{ $event['title'] }}" class="h-40 sm:h-64 w-full object-cover transition duration-500 group-hover:scale-105">
+                        <img src="{{ $event['image'] }}" alt="{{ $event['title'] }}" class="h-40 sm:h-64 w-full object-cover transition duration-500 group-hover:scale-105">
                     </div>
                 </a>
                 <div class="space-y-2 sm:space-y-4 p-3 sm:p-6">
