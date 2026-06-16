@@ -11,6 +11,9 @@ use App\Models\Event;
 use App\Models\Tiket;
 use App\Models\Pembelian;
 use App\Models\DetailPembelian;
+use App\Models\User;
+use Midtrans\Config;
+use Midtrans\Snap;
 
 class TiketController extends Controller
 {
@@ -24,7 +27,7 @@ class TiketController extends Controller
         // Ambil ID pengguna yang sedang login dari session
         $userId = session('user_id');
         // Simpan waktu hari ini untuk perbandingan batas event
-        $today = Carbon::today();
+        $now = Carbon::now('Asia/Jakarta');
 
         // Ambil semua data riwayat pembelian milik pengguna ini.
         // Gunakan WITH untuk menarik data relasi (detail pembelian, tiket, event, kategori, dan e-tiket
@@ -73,16 +76,18 @@ class TiketController extends Controller
             }
 
             // Penentuan Logika Pemisahan (Tiket Aktif vs Riwayat)
-            // Tentukan tanggal akhir event (jika tidak ada, anggap sama dengan tanggal mulai)
-            $endDate = Carbon::parse($event->tanggal_selesai ?? $event->tanggal_mulai);
+            // Gabungkan tanggal selesai + jam selesai agar perbandingannya presisi (menit-per-menit)
+            $endDateStr = $event->tanggal_selesai ?? $event->tanggal_mulai;
+            $endTimeStr = $event->waktu_selesai ?? '23:59:59';
+            $endDateTime = Carbon::parse($endDateStr . ' ' . $endTimeStr, 'Asia/Jakarta');
             $isHistory = false; // Anggap masih aktif pada awalnya
             
             // 1. Jika status pembayarannya Dibatalkan atau Kedaluwarsa -> Masuk Riwayat
             if ($pembelian->status_pembayaran === 'Dibatalkan' || $pembelian->status_pembayaran === 'Kedaluwarsa') {
                 $isHistory = true;
             } 
-            // 2. Jika hari ini sudah melewati tanggal akhir event -> Masuk Riwayat
-            elseif (!$endDate->gte($today)) {
+            // 2. Jika waktu sekarang sudah melewati tanggal DAN jam selesai event -> Masuk Riwayat
+            elseif ($now->gt($endDateTime)) {
                 $isHistory = true;
             } 
             // 3: Jika belum bayar dan sudah lewat 24 jam sejak struk dibuat -> Masuk Riwayat
@@ -103,8 +108,10 @@ class TiketController extends Controller
                 "id" => $pembelian->id, 
                 "title" => $event->judul,
                 "category" => $event->kategori->nama_kategori ?? '-',
-                // Format waktu lagi menggunakan Carbon 
-                "date" => Carbon::parse($event->tanggal_mulai)->translatedFormat('d M Y'),
+                // Format tanggal: tampilkan rentang jika tanggal selesai berbeda dengan tanggal mulai
+                "date" => ($event->tanggal_selesai && $event->tanggal_selesai != $event->tanggal_mulai)
+                    ? Carbon::parse($event->tanggal_mulai)->translatedFormat('d M Y') . ' - ' . Carbon::parse($event->tanggal_selesai)->translatedFormat('d M Y')
+                    : Carbon::parse($event->tanggal_mulai)->translatedFormat('d M Y'),
                 "date_end" => $event->tanggal_selesai,
                 "time" => substr($event->waktu_mulai ?? '', 0, 5) . " - " . substr($event->waktu_selesai ?? '', 0, 5) . " WIB",
                 "location" => $event->lokasi,
@@ -208,6 +215,33 @@ class TiketController extends Controller
 
             // Update struk pembelian awal dengan total harga sesungguhnya hasil perhitungan 
             $pembelian->update(['total_bayar' => $totalHarga]);
+
+            // Set konfigurasi Midtrans
+            Config::$serverKey = config('midtrans.server_key');
+            Config::$isProduction = config('midtrans.is_production');
+            Config::$isSanitized = config('midtrans.is_sanitized');
+            Config::$is3ds = config('midtrans.is_3ds');
+
+            $user = User::find($userId);
+
+            // Siapkan parameter untuk Midtrans
+            $params = [
+                'transaction_details' => [
+                    'order_id' => $orderId,
+                    'gross_amount' => $totalHarga,
+                ],
+                'customer_details' => [
+                    'first_name' => $user->name,
+                    'email' => $user->email,
+                ],
+            ];
+
+            try {
+                // Pre-fetch Snap Token dari Midtrans
+                $snapToken = Snap::getSnapToken($params);
+                $pembelian->update(['snap_token' => $snapToken]);
+            } catch (\Exception $e) {
+            }
 
             // Simpan semua perubahan database secara permanen (Commit)
             DB::commit();

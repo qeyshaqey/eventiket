@@ -34,8 +34,9 @@ class DashboardPengunjungController extends Controller
 
         // Fetch categories dynamically from database
         $categories = \App\Models\Kategori::pluck('nama_kategori')->toArray();
+        $showAll = $request->query('show_all', '0');
 
-        return view('pages.pengunjung.dashboard_pengunjung', compact('paginatedEvents', 'search', 'category', 'categories'));
+        return view('pages.pengunjung.dashboard_pengunjung', compact('paginatedEvents', 'search', 'category', 'categories', 'showAll'));
     }
 
     public function ajaxSearch(Request $request)
@@ -59,15 +60,17 @@ class DashboardPengunjungController extends Controller
         }
 
         $paginatedEvents = $this->paginateEvents($events, $request);
+        $showAll = $request->query('show_all', '0');
 
-        $html = view('pages.pengunjung.partials.dashboard_event_section', compact('paginatedEvents', 'search', 'category'))->render();
+        $html = view('pages.pengunjung.partials.dashboard_event_section', compact('paginatedEvents', 'search', 'category', 'showAll'))->render();
 
         return response()->json(['html' => $html]);
     }
 
     private function paginateEvents($events, Request $request)
     {
-        $perPage = 4;
+        $showAll = $request->query('show_all') === '1';
+        $perPage = $showAll ? max($events->count(), 1) : 4;
         $page = $request->input('page', 1);
         $currentPageItems = $events->slice(($page - 1) * $perPage, $perPage)->values();
 
