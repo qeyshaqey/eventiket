@@ -66,10 +66,16 @@
                     </tr>
                     @else
                     @foreach ($eventDisetujui as $i => $e)
-                    <tr data-modal-target="modal" data-modal-toggle="modal" onclick="showModal('{{ $e->judul }}','{{ \Carbon\Carbon::parse($e->tanggal_mulai)->format('d M Y') }}','{{ \Carbon\Carbon::parse($e->waktu_mulai)->format('H:i') }}','{{ $e->lokasi }}','{{ $e->panitia->name ?? '-' }}','{{ $e->deskripsi }}')" class="bg-white hover:bg-blue-50 transition cursor-pointer shadow-sm">
+                    @php
+                        $tgl = \Carbon\Carbon::parse($e->tanggal_mulai)->format('d M Y');
+                        $tglSelesai = $e->tanggal_selesai ? ' - ' . \Carbon\Carbon::parse($e->tanggal_selesai)->format('d M Y') : '';
+                        $wkt = \Carbon\Carbon::parse($e->waktu_mulai)->format('H:i');
+                        $wktSelesai = $e->waktu_selesai ? ' - ' . \Carbon\Carbon::parse($e->waktu_selesai)->format('H:i') : '';
+                    @endphp
+                    <tr data-modal-target="modal" data-modal-toggle="modal" onclick="showModal('{{ $e->judul }}','{{ $tgl . $tglSelesai }}','{{ $wkt . $wktSelesai }}','{{ $e->lokasi }}','{{ $e->panitia->name ?? '-' }}','{{ $e->deskripsi }}')" class="bg-white hover:bg-blue-50 transition cursor-pointer shadow-sm">
                         <td class="py-4 px-3 text-center first:rounded-l-lg last:rounded-r-lg">{{ $i+1 }}</td>
                         <td class="py-4 px-3 font-bold text-gray-700">{{ $e->judul }}</td>
-                        <td class="py-4 px-3 text-gray-500">{{ \Carbon\Carbon::parse($e->tanggal_mulai)->format('d M Y') }}</td>
+                        <td class="py-4 px-3 text-gray-500">{{ $tgl . $tglSelesai }}</td>
                         <td class="py-4 px-3 text-gray-600">{{ $e->panitia->name ?? '-' }}</td>
                         <td class="py-4 px-3">{{ $e->kategori->nama_kategori ?? '-' }}</td>
                         <td class="py-4 px-3 first:rounded-l-lg last:rounded-r-lg">
@@ -125,10 +131,16 @@
                     </tr>
                     @else
                     @foreach ($eventDitolak as $i => $e)
-                    <tr data-modal-target="modal" data-modal-toggle="modal" onclick="showModal('{{ $e->judul }}','{{ \Carbon\Carbon::parse($e->tanggal_mulai)->format('d M Y') }}','{{ \Carbon\Carbon::parse($e->waktu_mulai)->format('H:i') }}','{{ $e->lokasi }}','{{ $e->panitia->name ?? '-' }}','{{ $e->alasan_penolakan }}')" class="bg-white hover:bg-red-50 transition cursor-pointer shadow-sm">
+                    @php
+                        $tgl = \Carbon\Carbon::parse($e->tanggal_mulai)->format('d M Y');
+                        $tglSelesai = $e->tanggal_selesai ? ' - ' . \Carbon\Carbon::parse($e->tanggal_selesai)->format('d M Y') : '';
+                        $wkt = \Carbon\Carbon::parse($e->waktu_mulai)->format('H:i');
+                        $wktSelesai = $e->waktu_selesai ? ' - ' . \Carbon\Carbon::parse($e->waktu_selesai)->format('H:i') : '';
+                    @endphp
+                    <tr data-modal-target="modal" data-modal-toggle="modal" onclick="showModal('{{ $e->judul }}','{{ $tgl . $tglSelesai }}','{{ $wkt . $wktSelesai }}','{{ $e->lokasi }}','{{ $e->panitia->name ?? '-' }}','{{ $e->alasan_penolakan }}')" class="bg-white hover:bg-red-50 transition cursor-pointer shadow-sm">
                         <td class="py-4 px-3 text-center first:rounded-l-lg last:rounded-r-lg">{{ $i+1 }}</td>
                         <td class="py-4 px-3 font-bold text-gray-700">{{ $e->judul }}</td>
-                        <td class="py-4 px-3 text-gray-500">{{ \Carbon\Carbon::parse($e->tanggal_mulai)->format('d M Y') }}</td>
+                        <td class="py-4 px-3 text-gray-500">{{ $tgl . $tglSelesai }}</td>
                         <td class="py-4 px-3 text-gray-600">{{ $e->panitia->name ?? '-' }}</td>
                         <td class="py-4 px-3">{{ $e->kategori->nama_kategori ?? '-' }}</td>
                         <td class="py-4 px-3 text-red-500 text-sm first:rounded-l-lg last:rounded-r-lg">{{ $e->alasan_penolakan }}</td>
@@ -181,10 +193,16 @@
                     </tr>
                     @else
                     @foreach ($eventPending as $i => $e)
-                    <tr data-modal-target="modal" data-modal-toggle="modal" onclick="showModal('{{ $e->judul }}','{{ \Carbon\Carbon::parse($e->tanggal_mulai)->format('d M Y') }}','{{ \Carbon\Carbon::parse($e->waktu_mulai)->format('H:i') }}','{{ $e->lokasi }}','{{ $e->panitia->name ?? '-' }}','{{ $e->deskripsi }}')" class="bg-white hover:bg-blue-50 transition cursor-pointer shadow-sm">
+                    @php
+                        $tgl = \Carbon\Carbon::parse($e->tanggal_mulai)->format('d M Y');
+                        $tglSelesai = $e->tanggal_selesai ? ' - ' . \Carbon\Carbon::parse($e->tanggal_selesai)->format('d M Y') : '';
+                        $wkt = \Carbon\Carbon::parse($e->waktu_mulai)->format('H:i');
+                        $wktSelesai = $e->waktu_selesai ? ' - ' . \Carbon\Carbon::parse($e->waktu_selesai)->format('H:i') : '';
+                    @endphp
+                    <tr data-modal-target="modal" data-modal-toggle="modal" onclick="showModal('{{ $e->judul }}','{{ $tgl . $tglSelesai }}','{{ $wkt . $wktSelesai }}','{{ $e->lokasi }}','{{ $e->panitia->name ?? '-' }}','{{ $e->deskripsi }}')" class="bg-white hover:bg-blue-50 transition cursor-pointer shadow-sm">
                         <td class="py-4 px-3 text-center first:rounded-l-lg last:rounded-r-lg">{{ $i+1 }}</td>
                         <td class="py-4 px-3 font-bold text-gray-700">{{ $e->judul }}</td>
-                        <td class="py-4 px-3 text-gray-500">{{ \Carbon\Carbon::parse($e->tanggal_mulai)->format('d M Y') }}</td>
+                        <td class="py-4 px-3 text-gray-500">{{ $tgl . $tglSelesai }}</td>
                         <td class="py-4 px-3 text-gray-600">{{ $e->panitia->name ?? '-' }}</td>
                         <td class="py-4 px-3">{{ $e->kategori->nama_kategori ?? '-' }}</td>
                         <td class="py-4 px-3"><span class="text-yellow-600 text-xs font-bold bg-yellow-100 px-3 py-1 rounded-full">Pending</span></td>
@@ -192,10 +210,10 @@
                         <td class="py-4 px-3 first:rounded-l-lg last:rounded-r-lg">
                             <div class="flex gap-2 justify-center">
                                 <button type="button" onclick="event.stopPropagation(); openApproveModal({{ $e->id }}, '{{ addslashes($e->judul) }}')" class="w-9 h-9 flex items-center justify-center rounded-lg bg-green-100 text-green-600 hover:bg-green-200 transition">
-                                    <i class="fa-solid fa-check"></i>
+                                    <i class="fa-solid fa-check text-lg font-black" style="-webkit-text-stroke: 1px currentColor;"></i>
                                 </button>
                                 <button onclick="event.stopPropagation(); openRejectModal({{ $e->id }})" class="w-9 h-9 flex items-center justify-center rounded-lg bg-red-100 text-red-500 hover:bg-red-200 transition">
-                                    <i class="fa-solid fa-xmark"></i>
+                                    <i class="fa-solid fa-xmark text-lg font-black" style="-webkit-text-stroke: 1px currentColor;"></i>
                                 </button>
                             </div>
                         </td>
