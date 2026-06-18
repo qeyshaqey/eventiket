@@ -20,8 +20,9 @@ class EventController extends Controller
     public function approve($id)
     {
         $event = Event::findOrFail($id);
-        $event->status = 'Published';
-        $event->save();
+        
+        // Panggil method approve() dari model (Penerapan Polymorphism)
+        $event->approve();
 
         return redirect()->back()->with('success', 'Event berhasil disetujui');
     }
@@ -29,9 +30,10 @@ class EventController extends Controller
     public function reject(Request $request, $id)
     {
         $event = Event::findOrFail($id);
-        $event->status = 'Rejected';
         $event->alasan_penolakan = $request->input('alasan', 'Tidak memenuhi syarat');
-        $event->save();
+        
+        // Panggil method reject() dari model (Penerapan Polymorphism)
+        $event->reject();
 
         return redirect()->back()->with('success', 'Event berhasil ditolak');
     }
