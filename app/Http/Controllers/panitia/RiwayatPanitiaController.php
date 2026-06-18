@@ -52,12 +52,12 @@ class RiwayatPanitiaController extends Controller
             ->whereHas('tiket.event', function ($q) use ($panitiaId) {
                 $q->where('status', 'Published')
                   ->where('user_id', $panitiaId)
-                  ->where(function ($q2) {
-                      $q2->where('tanggal_selesai', '<', now()->toDateString())
-                         ->orWhere(function ($q3) {
-                             $q3->whereNull('tanggal_selesai')
-                                ->where('tanggal_mulai', '<', now()->toDateString());
-                         });
+                  ->where(function ($queryTanggal) {
+                      $queryTanggal->where('tanggal_selesai', '<', now()->toDateString())
+                                   ->orWhere(function ($q2) {
+                                       $q2->whereNull('tanggal_selesai')
+                                          ->where('tanggal_mulai', '<', now()->toDateString());
+                                   });
                   });
             });
 
