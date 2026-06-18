@@ -67,14 +67,9 @@ class PanitiaController extends Controller
     public function approve($id)
     {
         $pengajuan = PengajuanPanitia::findOrFail($id);
-        $pengajuan->status = 'disetujui';
-        $pengajuan->save();
-
-        $user = $pengajuan->user;
-        if ($user) {
-            $user->role = 'panitia';
-            $user->save();
-        }
+        
+        // Panggil method approve() dari model (Penerapan Polymorphism)
+        $pengajuan->approve();
  
         return redirect()->back()->with('success', 'Pengajuan panitia berhasil disetujui.');
     }
@@ -86,9 +81,10 @@ class PanitiaController extends Controller
         ]);
 
         $pengajuan = PengajuanPanitia::findOrFail($id);
-        $pengajuan->status = 'ditolak';
         $pengajuan->alasan_penolakan = $request->alasan_penolakan;
-        $pengajuan->save();
+        
+        // Panggil method reject() dari model (Penerapan Polymorphism)
+        $pengajuan->reject();
 
         return redirect()->back()->with('success', 'Pengajuan panitia berhasil ditolak.');
     }

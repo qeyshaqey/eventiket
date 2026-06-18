@@ -44,13 +44,13 @@ class Event extends Model implements ApprovableInterface
     // ---- Implementasi Interface methods (public) ----
     public function approve()
     {
-        $this->status = 'approved';
+        $this->status = 'Published';
         $this->save();
     }
 
     public function reject()
     {
-        $this->status = 'rejected';
+        $this->status = 'Rejected';
         $this->save();
     }
 }
