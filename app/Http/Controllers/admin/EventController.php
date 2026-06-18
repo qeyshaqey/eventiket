@@ -12,7 +12,7 @@ class EventController extends Controller
     {
         $eventDisetujui = Event::with(['panitia', 'kategori'])->where('status', 'Published')->get();
         $eventDitolak = Event::with(['panitia', 'kategori'])->where('status', 'Rejected')->get();
-        $eventPending = Event::with(['panitia', 'kategori'])->where('status', 'Draft')->get();
+        $eventPending = Event::with(['panitia', 'kategori'])->where('status', 'Pending')->get();
 
         return view('pages.admin.kelola-event', compact('eventDisetujui', 'eventDitolak', 'eventPending'));
     }

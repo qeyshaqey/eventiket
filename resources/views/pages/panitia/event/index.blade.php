@@ -136,9 +136,17 @@
 
             <!-- STATUS -->
             <td class="px-4 py-3">
-                @if($isPublished)
+                @if(($event->status ?? '') === 'Published')
                     <span class="px-2 py-1 text-xs rounded-full bg-green-100 text-green-600 font-semibold">
                         Published
+                    </span>
+                @elseif(($event->status ?? '') === 'Pending')
+                    <span class="px-2 py-1 text-xs rounded-full bg-blue-100 text-blue-600 font-semibold">
+                        Pending
+                    </span>
+                @elseif(($event->status ?? '') === 'Rejected')
+                    <span class="px-2 py-1 text-xs rounded-full bg-red-100 text-red-600 font-semibold">
+                        Rejected
                     </span>
                 @else
                     <span class="px-2 py-1 text-xs rounded-full bg-yellow-100 text-yellow-700 font-semibold">
@@ -151,7 +159,7 @@
             <td class="px-4 py-3">
                 <div class="flex items-center justify-center gap-3">
 
-                    @if(($event->status ?? '') === 'Draft')
+                    @if(in_array(($event->status ?? ''), ['Draft', 'Rejected']))
                     <button 
                         onclick="window.location.href='{{ route('panitia.tiket') }}?event_id={{ $event->id }}'"
                         class="text-green-500 hover:text-green-700 transition"
@@ -168,12 +176,18 @@
                         <i class="bi bi-pencil-square"></i>
                     </button>
 
+                    @php
+                        $canSend = in_array(($event->status ?? ''), ['Draft', 'Rejected']) && $isPublished;
+                    @endphp
                     <button 
-                        data-modal-target="modalDetail"
-data-modal-toggle="modalDetail"
-onclick="{{ $isPublished ? 'openDetailModal(' . $event->id . ')' : '' }}"
-                        class="text-blue-500 {{ !$isPublished ? 'opacity-30 cursor-not-allowed' : 'hover:text-blue-700' }}"
-                        title="{{ $isPublished ? 'Kirim ke Admin' : 'Tambah tiket dulu' }}">
+                        @if($canSend)
+                            data-modal-target="modalDetail"
+                            data-modal-toggle="modalDetail"
+                            onclick="openDetailModal({{ $event->id }})"
+                        @endif
+                        class="text-blue-500 {{ !$canSend ? 'opacity-30 cursor-not-allowed' : 'hover:text-blue-700' }}"
+                        title="{{ $isPublished ? (in_array(($event->status ?? ''), ['Draft', 'Rejected']) ? 'Kirim ke Admin' : 'Sudah dikirim/disetujui') : 'Tambah tiket dulu' }}"
+                        @if(!$canSend) disabled @endif>
                         <i class="bi bi-upload"></i>
                     </button>
 

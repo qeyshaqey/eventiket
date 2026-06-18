@@ -15,6 +15,13 @@ class EventPanitiaController extends Controller
     {
         $events = Event::with(['tikets', 'kategori'])
             ->where('user_id', session('user_id'))
+            ->where(function ($q) {
+                $q->where('tanggal_selesai', '>=', now()->toDateString())
+                  ->orWhere(function ($q2) {
+                      $q2->whereNull('tanggal_selesai')
+                         ->where('tanggal_mulai', '>=', now()->toDateString());
+                  });
+            })
             ->latest()
             ->get();
         $categories = \App\Models\Kategori::all();

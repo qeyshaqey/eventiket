@@ -131,14 +131,15 @@ Route::post('/login', function (Request $request) {
         return back()->with('error', 'NIM/Nama Lengkap dan password wajib diisi.');
     }
 
-    // cari user di db pake nama atau nim
+    // cari user di db pake nama, nim, atau email
     $user = User::where('name', $username)
                 ->orWhere('nim', $username)
+                ->orWhere('email', $username)
                 ->first();
     
     // mastiin user ketemu dan password-nya bener
     if (!$user || !Hash::check($password, $user->password)) {
-        return back()->with('error', 'NIM/Nama Lengkap atau password salah.');
+        return back()->with('error', 'NIM/Nama Lengkap/Email atau password salah.');
     }
 
     // simpan data user ke session kustom

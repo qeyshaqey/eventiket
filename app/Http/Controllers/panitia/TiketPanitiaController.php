@@ -20,6 +20,13 @@ class TiketPanitiaController extends Controller
 
         // Mengambil semua event milik panitia saat ini berurut dari yang terbaru beserta relasi tiket dan kategorinya
         $events = Event::where('user_id', $userId)
+            ->where(function ($q) {
+                $q->where('tanggal_selesai', '>=', now()->toDateString())
+                  ->orWhere(function ($q2) {
+                      $q2->whereNull('tanggal_selesai')
+                         ->where('tanggal_mulai', '>=', now()->toDateString());
+                  });
+            })
             ->with(['tikets', 'kategori'])
             ->latest()
             ->get();
@@ -64,10 +71,6 @@ class TiketPanitiaController extends Controller
 
         // Menyimpan data tiket baru ke database
         Tiket::create($validated);
-
-        // Secara otomatis mengubah status event terkait menjadi 'Published' karena sudah memiliki tiket
-        Event::find($validated['event_id'])
-            ->update(['status' => 'Published']);
 
         // Mengalihkan kembali ke halaman pengelolaan tiket dengan highlight event terkait dan pesan sukses
         return redirect()->route('panitia.tiket', [

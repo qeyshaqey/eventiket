@@ -37,20 +37,12 @@ class ProfilPanitiaController extends Controller
 
         $request->validate([
             'name' => 'required|string|max:255',
-            'nim' => 'required|integer|max:50',
-            'email' => 'required|email|max:255|unique:users,email,' . $user->id,
             'photo' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             'password' => 'nullable|string|min:8|confirmed',
         ], [
             'name.required' => 'Nama lengkap wajib diisi.',
             'name.string' => 'Nama lengkap harus berupa teks.',
             'name.max' => 'Nama lengkap maksimal 255 karakter.',
-            'nim.required' => 'NIM wajib diisi.',
-            'nim.integer' => 'NIM harus berupa angka.',
-            'nim.max' => 'NIM maksimal 50 karakter.',
-            'email.required' => 'Email wajib diisi.',
-            'email.email' => 'Format email tidak valid.',
-            'email.unique' => 'Email sudah digunakan oleh akun lain.',
             'photo.image' => 'File harus berupa gambar.',
             'photo.mimes' => 'Format gambar harus jpeg, png, atau jpg.',
             'photo.max' => 'Ukuran gambar maksimal 2MB.',
@@ -63,16 +55,6 @@ class ProfilPanitiaController extends Controller
         if ($user->name !== $request->name) {
             $user->name = $request->name;
             session(['user' => $user->name]);
-            $isChanged = true;
-        }
-
-        if ($user->nim !== $request->nim) {
-            $user->nim = $request->nim;
-            $isChanged = true;
-        }
-
-        if ($user->email !== $request->email) {
-            $user->email = $request->email;
             $isChanged = true;
         }
 
