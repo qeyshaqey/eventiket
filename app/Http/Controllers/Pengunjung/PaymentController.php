@@ -6,38 +6,22 @@ use App\Http\Controllers\Controller;
 use App\Models\Pembelian;
 use App\Models\Etiket;
 use Illuminate\Http\Request;
-use Midtrans\Config;
-use Midtrans\Snap;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
 class PaymentController extends Controller
 {
     
-    public function __construct()
-    {
-        // Mengatur konfigurasi API Key Midtrans dengan mengambil data dari file .env
-        Config::$serverKey = config('midtrans.server_key'); // Kunci rahasia server
-        Config::$isProduction = config('midtrans.is_production'); // true = Live, false = Sandbox (Testing)
-        Config::$isSanitized = config('midtrans.is_sanitized'); // Membersihkan input data (keamanan)
-        Config::$is3ds = config('midtrans.is_3ds'); // Fitur keamanan tambahan untuk kartu kredit
-    }
-
-    // Method ini bertugas untuk memulai proses pembayaran
-    // Ia akan mengecek pesanan pengguna dan meminta 'Snap Token' ke Midtrans untuk memunculkan pop-up bayar
+    // Method ini hanya bertugas mengambil Snap Token yang sudah digenerate saat proses Checkout di TiketController
     public function initiatePayment(Request $request)
     {
         // Ambil ID user dari session
         $userId = session('user_id');
-        // Cari data user tersebut di database
         $user = \App\Models\User::find($userId);
 
-        // Jika tidak ditemukan (belum login), kirim kembali ke halaman login
         if (!$user) {
-            return redirect()->route('login')->with('error', 'Silakan login terlebih dahulu.');
+            return response()->json(['success' => false, 'message' => 'Silakan login terlebih dahulu.']);
         }
         
-        // Cek apakah ada parameter 'order_id' di URL (misal dipanggil dari riwayat transaksi)
         $orderIdRequest = $request->query('order_id');
         
         if ($orderIdRequest) {
@@ -49,13 +33,12 @@ class PaymentController extends Controller
             // Jika tidak ada order_id, otomatis ambil transaksi TERAKHIR yang statusnya masih 'Belum Bayar'
             $pembelian = Pembelian::where('user_id', $user->id)
                                 ->where('status_pembayaran', 'Belum Bayar')
-                                ->latest() // Urutkan dari yang paling baru dibuat
+                                ->latest()
                                 ->first();
         }
 
-        // Jika sama sekali tidak ada data tagihan yang perlu dibayar, kembalikan ke halaman tiket
         if (!$pembelian) {
-            return redirect()->route('pengunjung.tiket')->with('error', 'Data tagihan tidak ditemukan atau sudah dibayar.');
+            return response()->json(['success' => false, 'message' => 'Data tagihan tidak ditemukan atau sudah dibayar.']);
         }
 
         // Cek Kedaluwarsa 
@@ -64,46 +47,19 @@ class PaymentController extends Controller
         // lalu isPast() mengecek apakah waktu tersebut sudah lewat
         if ($pembelian->status_pembayaran === 'Belum Bayar' && \Carbon\Carbon::parse($pembelian->created_at)->addHours(24)->isPast()) {
             $pembelian->update(['status_pembayaran' => 'Kedaluwarsa']);
-            return redirect()->route('pengunjung.tiket')->with('error', 'Tagihan telah kedaluwarsa karena melewati batas waktu pembayaran 24 jam.');
+            return response()->json(['success' => false, 'message' => 'Tagihan telah kedaluwarsa karena melewati batas waktu pembayaran 24 jam.']);
         }
 
-        // Proses mendapatkan Snap Token (Kunci untuk memunculkan jendela Midtrans)
-        // Jika token sudah pernah dibuat sebelumnya dan tagihan belum dibayar, pakai token yang lama saja
+        // Cek apakah token sudah digenerate (oleh TiketController saat checkout)
         if ($pembelian->snap_token && $pembelian->status_pembayaran == 'Belum Bayar') {
-            $snapToken = $pembelian->snap_token;
+            return response()->json([
+                'success' => true,
+                'snap_token' => $pembelian->snap_token
+            ]);
         } 
-        // Jika belum punya token, kita harus memintanya ke server Midtrans
-        else if ($pembelian->status_pembayaran == 'Belum Bayar') {
-            // Siapkan paket data (parameter) yang disyaratkan oleh Midtrans
-            $params = [
-                'transaction_details' => [
-                    'order_id' => $pembelian->order_id, // Nomor unik pesanan kita
-                    'gross_amount' => $pembelian->total_bayar, // Total uang yang harus dibayar
-                ],
-                'customer_details' => [
-                    'first_name' => $user->name, // Nama pelanggan
-                    'email' => $user->email, // Email pelanggan
-                ],
-            ];
-
-            try {
-                // Minta token ke Midtrans dengan mengirimkan paket data di atas
-                $snapToken = Snap::getSnapToken($params);
-                // Simpan token tersebut ke database kita agar tidak perlu minta berulang kali
-                $pembelian->snap_token = $snapToken;
-                $pembelian->save();
-            } catch (\Exception $e) {
-                // Jika server Midtrans sedang down/error, tangkap errornya
-                return redirect()->back()->with('error', 'Gagal hubung ke Midtrans: ' . $e->getMessage());
-            }
-        } else {
-            // Jika statusnya bukan 'Belum Bayar', cegah proses ini
-            return redirect()->route('pengunjung.tiket')->with('error', 'Pembayaran ini sudah diproses.');
-        }
-
-        // Lempar data tagihan dan token ke halaman view pembayaran
-        $pembayaran = $pembelian; 
-        return view('pages.pengunjung.pembayaran', compact('pembayaran', 'snapToken'));
+        
+        // Jika token tidak ada atau status sudah bukan 'Belum Bayar'
+        return response()->json(['success' => false, 'message' => 'Token pembayaran tidak ditemukan atau pembayaran sudah diproses.']);
     }
 
     //  Method Callback / Webhook

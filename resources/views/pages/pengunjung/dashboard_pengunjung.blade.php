@@ -58,6 +58,18 @@
                                     </div>
                                 </div>
                             </div>
+
+                            <!-- TOMBOL LIHAT SEMUA -->
+                            <div class="shrink-0 flex items-center w-full md:w-auto">
+                                <input type="hidden" name="show_all" id="show-all-input" value="{{ $showAll ?? '0' }}">
+                                <button type="button" id="show-all-btn" class="w-full md:w-auto h-11 sm:h-12 px-6 rounded-full border text-sm font-semibold transition flex items-center justify-center gap-2 {{ ($showAll ?? '0') === '1' ? 'bg-[#192853] text-white border-[#192853] shadow-md hover:bg-[#2a4387]' : 'bg-white text-[#192853] border-slate-300 hover:bg-[#EFF8FF] hover:border-[#192853]' }}">
+                                    @if(($showAll ?? '0') === '1')
+                                        <i class="fa-solid fa-compress"></i> Tampilkan Sebagian
+                                    @else
+                                        <i class="fa-solid fa-expand"></i> Lihat Semua
+                                    @endif
+                                </button>
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -99,6 +111,8 @@
         const categoryInput = document.getElementById('category-input');
         const searchForm = document.getElementById('search-form');
         const dashboardResults = document.getElementById('dashboard-results');
+        const showAllBtn = document.getElementById('show-all-btn');
+        const showAllInput = document.getElementById('show-all-input');
         const ajaxUrl = "{{ route('pengunjung.dashboard.ajax') }}";
         let timeoutId = null;
 
@@ -113,6 +127,7 @@
                 const query = buildQuery({
                     search: searchInput ? searchInput.value.trim() : '',
                     category: categoryInput ? categoryInput.value : 'semua',
+                    show_all: showAllInput ? showAllInput.value : '0',
                     page,
                 });
 
@@ -164,6 +179,21 @@
 
         if (categoryInput) {
             categoryInput.addEventListener('change', function () {
+                fetchResults(1);
+            });
+        }
+
+        if (showAllBtn && showAllInput) {
+            showAllBtn.addEventListener('click', function() {
+                if (showAllInput.value === '1') {
+                    showAllInput.value = '0';
+                    showAllBtn.innerHTML = '<i class="fa-solid fa-expand"></i> Lihat Semua';
+                    showAllBtn.className = 'w-full md:w-auto h-11 sm:h-12 px-6 rounded-full border border-slate-300 text-sm font-semibold transition flex items-center justify-center gap-2 bg-white text-[#192853] hover:bg-[#EFF8FF] hover:border-[#192853]';
+                } else {
+                    showAllInput.value = '1';
+                    showAllBtn.innerHTML = '<i class="fa-solid fa-compress"></i> Tampilkan Sebagian';
+                    showAllBtn.className = 'w-full md:w-auto h-11 sm:h-12 px-6 rounded-full border border-[#192853] text-sm font-semibold transition flex items-center justify-center gap-2 bg-[#192853] text-white shadow-md hover:bg-[#2a4387]';
+                }
                 fetchResults(1);
             });
         }

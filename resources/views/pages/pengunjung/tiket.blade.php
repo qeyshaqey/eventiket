@@ -13,6 +13,10 @@
         $eventsToShow = $activeTab === 'riwayat' ? $historyEvents : $activeEvents;
     @endphp
 
+    @push('styles')
+        <script src="{{ config('midtrans.is_production') ? 'https://app.midtrans.com/snap/snap.js' : 'https://app.sandbox.midtrans.com/snap/snap.js' }}" data-client-key="{{ config('midtrans.client_key') }}"></script>
+    @endpush
+
     <!-- Navigasi Tab untuk memilih antara Tiket Aktif atau Riwayat Transaksi -->
     <div class="px-6 mt-6">
         <div class="mx-auto flex w-full max-w-xl items-center justify-between pb-3">
@@ -181,12 +185,6 @@
                                     @endif
                                 ">
                                     {{ $event['status'] }}
-                                    {{-- Badge AKTIF/SELESAI: hanya muncul di mobile, inline --}}
-                                    @if($event['status'] == 'Lunas')
-                                        <span class="sm:hidden inline-flex items-center ml-1 bg-gray-200 text-navy text-[10px] px-3 py-0.5 rounded-full font-bold tracking-wide align-middle">
-                                            {{ $activeTab === 'riwayat' ? 'SELESAI' : 'AKTIF' }}
-                                        </span>
-                                    @endif
                                 </span>
 
                             </div>
@@ -197,18 +195,13 @@
                             <button type="button" onclick="confirmCancel('{{ $event['id'] ?? '' }}')" class="w-1/3 inline-flex items-center justify-center rounded-full border border-slate-300 bg-white py-2 text-sm font-semibold text-grayCustom transition hover:border-yellow hover:bg-yellow/10 shadow-sm">
                                 Batal
                             </button>
-                            <a href="{{ route('pengunjung.pembayaran') }}?order_id={{ $event['kode_order'] }}" class="w-2/3 inline-flex items-center justify-center bg-navy text-white py-2 rounded-full text-sm font-semibold hover:bg-yellow hover:text-navy transition shadow-sm">
+                            <button type="button" onclick="payNow('{{ $event['kode_order'] }}')" class="w-2/3 inline-flex items-center justify-center bg-navy text-white py-2 rounded-full text-sm font-semibold hover:bg-yellow hover:text-navy transition shadow-sm">
                                 Lakukan Pembayaran
-                            </a>
+                            </button>
                         </div>
                     @endif
 
-                    {{-- Badge AKTIF/SELESAI: hanya muncul di desktop, absolute --}}
-                    @if($event['status'] == 'Lunas')
-                        <div class="hidden sm:block absolute bottom-4 right-4 bg-gray-200 text-xs px-4 py-1 rounded-full font-medium">
-                            {{ $activeTab === 'riwayat' ? 'SELESAI' : 'AKTIF' }}
-                        </div>
-                    @endif
+
 
                         </div>{{-- end flex-1 p-5 --}}
                     </div>{{-- end flex (left accent) --}}
@@ -277,6 +270,51 @@
                     });
                 }
             })
+        }
+
+        function payNow(orderId) {
+            Swal.fire({
+                title: 'Memproses...',
+                text: 'Membuka jendela pembayaran',
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+
+            fetch(`{{ route('pengunjung.pembayaran') }}?order_id=${orderId}`, {
+                method: 'GET',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Accept': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    Swal.close();
+                    window.snap.pay(data.snap_token, {
+                        onSuccess: function(result) {
+                            Swal.fire('Berhasil!', 'Pembayaran berhasil.', 'success').then(() => location.reload());
+                        },
+                        onPending: function(result) {
+                            Swal.fire('Menunggu', 'Menunggu pembayaran Anda.', 'info').then(() => location.reload());
+                        },
+                        onError: function(result) {
+                            Swal.fire('Gagal!', 'Pembayaran gagal.', 'error');
+                        },
+                        onClose: function() {
+                            // Do nothing
+                        }
+                    });
+                } else {
+                    Swal.fire('Gagal!', data.message || 'Gagal memuat pembayaran.', 'error');
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                Swal.fire('Gagal!', 'Terjadi kesalahan sistem saat menghubungi server.', 'error');
+            });
         }
 
         // FUNGSI PENCARIAN REAL-TIME & PAGINATION (Client-Side)

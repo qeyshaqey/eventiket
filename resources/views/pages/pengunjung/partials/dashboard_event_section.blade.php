@@ -41,7 +41,7 @@
                         @if ($paginatedEvents->onFirstPage())
                             <span class="inline-flex h-11 w-11 items-center justify-center rounded-full border border-[#cbd5e1] bg-[#EFF8FF] text-[#475569]">&laquo;</span>
                         @else
-                            <a href="{{ $paginatedEvents->appends(['search' => $search ?? '', 'category' => $category ?? 'semua'])->previousPageUrl() }}#event" class="paginate-link inline-flex h-11 w-11 items-center justify-center rounded-full border border-[#cbd5e1] bg-white text-[#192853] transition hover:bg-[#EFF8FF]">&laquo;</a>
+                            <a href="{{ $paginatedEvents->appends(['search' => $search ?? '', 'category' => $category ?? 'semua', 'show_all' => $showAll ?? '0'])->previousPageUrl() }}#event" class="paginate-link inline-flex h-11 w-11 items-center justify-center rounded-full border border-[#cbd5e1] bg-white text-[#192853] transition hover:bg-[#EFF8FF]">&laquo;</a>
                         @endif
                     </li>
                     <!-- Angka halaman yang sedang aktif akan berwarna biru gelap dan ngka halaman yang tidak aktif berwarna putih -->
@@ -51,14 +51,14 @@
                                 <span class="inline-flex h-11 min-w-[44px] items-center justify-center rounded-full bg-[#192853] px-4 text-sm font-semibold text-white">{{ $i }}</span>
                             @else
                                 {{-- TIPS PENTING: Pake fungsi appends() biar pas kita nge-klik halaman 2/3, filter search & kategori sebelumnya gak ke-reset ulang --}}
-                                <a href="{{ $paginatedEvents->appends(['search' => $search ?? '', 'category' => $category ?? 'semua'])->url($i) }}#event" class="paginate-link inline-flex h-11 min-w-[44px] items-center justify-center rounded-full border border-[#cbd5e1] bg-white px-4 text-sm font-medium text-[#192853] transition hover:bg-[#EFF8FF]">{{ $i }}</a>
+                                <a href="{{ $paginatedEvents->appends(['search' => $search ?? '', 'category' => $category ?? 'semua', 'show_all' => $showAll ?? '0'])->url($i) }}#event" class="paginate-link inline-flex h-11 min-w-[44px] items-center justify-center rounded-full border border-[#cbd5e1] bg-white px-4 text-sm font-medium text-[#192853] transition hover:bg-[#EFF8FF]">{{ $i }}</a>
                             @endif
                         </li>
                     @endfor
                     
                     <li>
                         @if ($paginatedEvents->hasMorePages())
-                            <a href="{{ $paginatedEvents->appends(['search' => $search ?? '', 'category' => $category ?? 'semua'])->nextPageUrl() }}#event" class="paginate-link inline-flex h-11 w-11 items-center justify-center rounded-full border border-[#cbd5e1] bg-white text-[#192853] transition hover:bg-[#EFF8FF]">&raquo;</a>
+                            <a href="{{ $paginatedEvents->appends(['search' => $search ?? '', 'category' => $category ?? 'semua', 'show_all' => $showAll ?? '0'])->nextPageUrl() }}#event" class="paginate-link inline-flex h-11 w-11 items-center justify-center rounded-full border border-[#cbd5e1] bg-white text-[#192853] transition hover:bg-[#EFF8FF]">&raquo;</a>
                         @else
                             <span class="inline-flex h-11 w-11 items-center justify-center rounded-full border border-[#cbd5e1] bg-[#EFF8FF] text-[#475569]">&raquo;</span>
                         @endif
