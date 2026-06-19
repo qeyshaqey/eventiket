@@ -20,6 +20,12 @@ class RoleCheck
             return redirect()->route('login')->with('error', 'Silakan login terlebih dahulu.');
         }
 
+        // Sinkronisasi otomatis session role dengan database
+        $user = \App\Models\User::find(session('user_id'));
+        if ($user && session('role') !== $user->role) {
+            session(['role' => $user->role]);
+        }
+
         // Check if user has the correct role in session
         if (session('role') !== $role) {
             // Allow 'panitia' to access 'pengunjung' pages
