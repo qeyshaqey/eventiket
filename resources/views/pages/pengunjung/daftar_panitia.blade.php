@@ -59,8 +59,12 @@
                         <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
                             <div class="flex-1">
                                 <p class="font-semibold text-navy text-sm">{{ $item->nama_organisasi }}</p>
-                                <p class="text-xs text-grayCustom mt-1 leading-relaxed">{{ $item->deskripsi }}</p>
-                                <p class="text-[10px] text-slate-400 mt-2">Diajukan: {{ \Carbon\Carbon::parse($item->created_at)->translatedFormat('d M Y') }}</p>
+                                <p class="text-sm font-bold text-navy mt-4">{{ $item->nama_event }}</p>
+                                <div class="flex items-center gap-3 text-[11px] font-medium text-navy/60 mt-1.5">
+                                    <span><i class="fa-solid fa-layer-group mr-1"></i>{{ $item->kategori }}</span>
+                                    <span><i class="fa-regular fa-calendar mr-1"></i>{{ \Carbon\Carbon::parse($item->tanggal_event)->translatedFormat('d M Y') }}</span>
+                                </div>
+                                <p class="text-xs text-grayCustom mt-2.5 leading-relaxed">{{ $item->deskripsi }}</p>
                             </div>
                             <div class="shrink-0">
                                 @if($item->status == 'pending')
