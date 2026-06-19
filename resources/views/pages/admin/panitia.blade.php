@@ -389,7 +389,7 @@
                 </div>
                 <div class="flex flex-col gap-2 pt-2">
                     <b class="text-gray-900 font-bold">Deskripsi Singkat</b>
-                    <p id="detDeskripsi" class="bg-slate-50 p-4 rounded-2xl italic leading-relaxed text-gray-600 border border-slate-100 text-[13px]"></p>
+                    <p id="detDeskripsi" class="bg-slate-50 p-4 rounded-2xl italic leading-relaxed text-gray-600 border border-slate-100 text-[13px] break-words max-h-48 overflow-y-auto"></p>
                 </div>
             </div>
 

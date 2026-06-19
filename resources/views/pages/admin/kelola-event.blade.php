@@ -241,7 +241,7 @@
                 <p class="flex items-start"><b class="w-28 shrink-0 text-gray-900">Waktu</b> <span class="mr-2">:</span> <span id="m_waktu" class="flex-1"></span></p>
                 <p class="flex items-start"><b class="w-28 shrink-0 text-gray-900">Lokasi</b> <span class="mr-2">:</span> <span id="m_lokasi" class="flex-1"></span></p>
                 <p class="flex items-start"><b class="w-28 shrink-0 text-gray-900">Panitia</b> <span class="mr-2">:</span> <span id="m_panitia" class="flex-1"></span></p>
-                <p class="flex items-start"><b class="w-28 shrink-0 text-gray-900">Deskripsi</b> <span class="mr-2">:</span> <span id="m_deskripsi" class="flex-1 text-justify"></span></p>
+                <p class="flex items-start"><b class="w-28 shrink-0 text-gray-900">Deskripsi</b> <span class="mr-2">:</span> <span id="m_deskripsi" class="flex-1 break-words leading-relaxed bg-gray-50 p-2 rounded max-h-48 overflow-y-auto inline-block"></span></p>
             </div>
 
         </div>

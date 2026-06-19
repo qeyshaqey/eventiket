@@ -23,7 +23,7 @@ class EventPanitiaController extends Controller
                   });
             })
             ->latest()
-            ->get();
+            ->paginate(10);
         $categories = \App\Models\Kategori::all();
 
         // Mengirimkan data event dan kategori ke halaman view

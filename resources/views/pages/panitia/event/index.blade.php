@@ -29,8 +29,8 @@
 <div class="mb-4">
 
     <!-- BARIS ATAS -->
-    <div class="mb-6">
-        <h1 class="text-xl font-bold mb-6">DATA TRANSAKSI</h1>
+    <div class="flex justify-between items-center mb-3">
+        <h1 class="text-xl font-bold mb-6">EVENT YANG DIKELOLA</h1>
     </div>
 
     <!-- BARIS BAWAH -->
@@ -103,7 +103,7 @@
         <tr class="hover:bg-gray-50 transition">
 
             <td class="px-4 py-3 font-semibold text-gray-700">
-                {{ $index + 1 }}
+                {{ ($events->firstItem() ?? 0) + $index }}
             </td>
 
             <td class="px-4 py-3 font-semibold text-gray-900">
@@ -117,7 +117,7 @@
             </td>
 
             <td class="px-4 py-3 text-gray-600">
-                {{ \Illuminate\Support\Str::limit($event->deskripsi, 40) }}
+                <span title="{{ $event->deskripsi }}">{{ \Illuminate\Support\Str::limit($event->deskripsi, 40) }}</span>
             </td>
 
             <td class="px-4 py-3 text-gray-600">
@@ -216,6 +216,12 @@
 </table>
 
 </div>
+
+@if($events->hasPages())
+<div class="mt-4 px-1">
+    {{ $events->onEachSide(1)->links() }}
+</div>
+@endif
 
 </div>
 <!-- MODAL TAMBAH / EDIT EVENT -->
@@ -363,7 +369,7 @@
 
                 <div>
                     <b>Deskripsi</b>
-                    <p id="detailDeskripsi" class="text-sm text-gray-600 mt-1"></p>
+                    <p id="detailDeskripsi" class="text-sm text-gray-600 mt-1 leading-relaxed break-words bg-gray-50 p-3 rounded-lg max-h-48 overflow-y-auto"></p>
                 </div>
 
                 <div>
@@ -406,7 +412,21 @@
 <script>
 document.addEventListener('DOMContentLoaded', function () {
 
-    window.events = @json($events ?? []);
+    window.events = @json($events->items() ?? []);
+
+    function formatDateDMY(dateString) {
+        if (!dateString) return '-';
+        const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
+        const parts = dateString.split('-');
+        if (parts.length !== 3) return dateString;
+        const [year, month, day] = parts;
+        return `${day.padStart(2, '0')} ${monthNames[Number(month) - 1]} ${year}`;
+    }
+
+    function formatTimeHHMM(timeString) {
+        if (!timeString) return '-';
+        return timeString.slice(0, 5);
+    }
 
     // ==========================================
     // DEKLARASI ELEMEN & LISTENERS VALIDASI FORM
@@ -584,12 +604,12 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('detailLokasi').innerText = event.lokasi;
 
         document.getElementById('detailTanggal').innerText =
-            (event.tanggal_mulai ?? '-') +
-            (event.tanggal_selesai ? ' - ' + event.tanggal_selesai : '');
+            formatDateDMY(event.tanggal_mulai) +
+            (event.tanggal_selesai ? ' - ' + formatDateDMY(event.tanggal_selesai) : '');
 
         document.getElementById('detailWaktu').innerText =
-            (event.waktu_mulai ?? '-') +
-            (event.waktu_selesai ? ' - ' + event.waktu_selesai : '');
+            formatTimeHHMM(event.waktu_mulai) +
+            (event.waktu_selesai ? ' - ' + formatTimeHHMM(event.waktu_selesai) : '');
 
         document.getElementById('detailDeskripsi').innerText = event.deskripsi;
 
@@ -601,6 +621,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     <div class="border rounded p-2 mb-2 text-sm">
                         <b>${t.nama}</b><br>
                         Rp ${Number(t.harga).toLocaleString()} • Kuota: ${t.kuota}
+                        ${t.keterangan ? `<p class="text-gray-500 text-xs mt-1">${t.keterangan}</p>` : ''}
                     </div>
                 `;
             });

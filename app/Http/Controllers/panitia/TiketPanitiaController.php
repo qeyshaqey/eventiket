@@ -31,11 +31,10 @@ class TiketPanitiaController extends Controller
             ->latest()
             ->get();
 
-        // Mengambil ID event dari query parameter url (?event_id=x) untuk disorot di tampilan
+        $categories = $events->pluck('kategori.nama_kategori')->filter()->unique()->values();
         $highlightEventId = $request->query('event_id');
 
-        // Mengembalikan halaman view pengelolaan tiket
-        return view('pages.panitia.tiket', compact('events', $highlightEventId ? 'highlightEventId' : 'events'));
+        return view('pages.panitia.tiket', compact('events', 'categories', 'highlightEventId'));
     } 
 
     /**
@@ -56,6 +55,7 @@ class TiketPanitiaController extends Controller
             'nama' => 'required',
             'harga' => 'required|integer|min:1',
             'kuota' => 'required|integer|min:1',
+            'keterangan' => 'required|string',
             'event_id' => 'required|exists:events,id',
         ], [
             'nama.required' => 'Nama tiket wajib diisi.',
@@ -65,6 +65,7 @@ class TiketPanitiaController extends Controller
             'kuota.required' => 'Kuota tiket wajib diisi.',
             'kuota.integer' => 'Kuota tiket harus berupa angka/bilangan bulat.',
             'kuota.min' => 'Kuota tiket minimal 1.',
+            'keterangan.required' => 'Keterangan tiket wajib diisi.',
             'event_id.required' => 'Event ID wajib diisi.',
             'event_id.exists' => 'Event tidak valid.',
         ]);
@@ -93,6 +94,7 @@ class TiketPanitiaController extends Controller
             'nama' => 'required',
             'harga' => 'required|integer|min:1',
             'kuota' => 'required|integer|min:1',
+            'keterangan' => 'required|string',
         ], [
             'nama.required' => 'Nama tiket wajib diisi.',
             'harga.required' => 'Harga tiket wajib diisi.',
@@ -101,6 +103,7 @@ class TiketPanitiaController extends Controller
             'kuota.required' => 'Kuota tiket wajib diisi.',
             'kuota.integer' => 'Kuota tiket harus berupa angka/bilangan bulat.',
             'kuota.min' => 'Kuota tiket minimal 1.',
+            'keterangan.required' => 'Keterangan tiket wajib diisi.',
         ]);
 
         // Melakukan update data tiket di database

@@ -42,7 +42,7 @@
     <!-- DESKRIPSI -->
     <div class="mt-6">
         <p class="font-semibold">Deskripsi :</p>
-        <p class="text-sm mt-1">{{ $event->deskripsi ?? 'Tidak ada deskripsi' }}</p>
+        <p class="text-sm mt-1 leading-relaxed break-words bg-gray-50 p-3 rounded-lg max-h-48 overflow-y-auto">{{ $event->deskripsi ?? 'Tidak ada deskripsi' }}</p>
     </div>
 
     <!-- ACTION BUTTONS -->

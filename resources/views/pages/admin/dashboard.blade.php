@@ -191,7 +191,7 @@
 
                 <div>
                     <span class="text-gray-500">Deskripsi</span>
-                    <p id="m_deskripsi"></p>
+                    <p id="m_deskripsi" class="text-sm leading-relaxed break-words bg-gray-50 p-3 rounded-lg max-h-48 overflow-y-auto mt-1"></p>
                 </div>
 
             </div>
