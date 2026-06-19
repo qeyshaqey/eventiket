@@ -33,7 +33,7 @@ class DashboardAdminController extends Controller
             ->get()
             ->map(function ($e) {
                 return [
-                    "tanggal"   => Carbon::parse($e->tanggal_mulai)->format('d M'),
+                    "tanggal"   => Carbon::parse($e->tanggal_mulai)->format('d M') . ($e->tanggal_selesai && $e->tanggal_selesai !== $e->tanggal_mulai ? ' - ' . Carbon::parse($e->tanggal_selesai)->format('d M') : ''),
                     "nama"      => $e->judul,
                     "kategori"  => $e->kategori->nama_kategori ?? '-',
                     "waktu"     => Carbon::parse($e->waktu_mulai)->format('H:i') .

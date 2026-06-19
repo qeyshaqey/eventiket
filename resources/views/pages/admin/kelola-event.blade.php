@@ -34,8 +34,7 @@
                 <div class="relative w-full md:w-auto">
                     <select id="filterStatusAktif" class="w-full pl-4 pr-10 py-2 border rounded-lg text-sm text-gray-500 font-bold appearance-none bg-white focus:outline-none focus:ring-2 focus:ring-[#192853] transition-all cursor-pointer">
                         <option value="">Semua Status</option>
-                        <option value="aktif">Aktif</option>
-                        <option value="non aktif">Non Aktif</option>
+                        <option value="disetujui">Disetujui</option>
                     </select>
                     <i class="fa-solid fa-chevron-down absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"></i>
                 </div>
@@ -238,11 +237,11 @@
             </div>
 
             <div class="p-5 text-sm space-y-3 text-gray-700">
-                <p class="flex items-start"><b class="w-24 text-gray-900">Tanggal</b> <span class="mr-2">:</span> <span id="m_tanggal"></span></p>
-                <p class="flex items-start"><b class="w-24 text-gray-900">Waktu</b> <span class="mr-2">:</span> <span id="m_waktu"></span></p>
-                <p class="flex items-start"><b class="w-24 text-gray-900">Lokasi</b> <span class="mr-2">:</span> <span id="m_lokasi"></span></p>
-                <p class="flex items-start"><b class="w-24 text-gray-900">Panitia</b> <span class="mr-2">:</span> <span id="m_panitia"></span></p>
-                <p class="flex items-start"><b class="w-24 text-gray-900">Deskripsi</b> <span class="mr-2">:</span> <span id="m_deskripsi"></span></p>
+                <p class="flex items-start"><b class="w-28 shrink-0 text-gray-900">Tanggal</b> <span class="mr-2">:</span> <span id="m_tanggal" class="flex-1"></span></p>
+                <p class="flex items-start"><b class="w-28 shrink-0 text-gray-900">Waktu</b> <span class="mr-2">:</span> <span id="m_waktu" class="flex-1"></span></p>
+                <p class="flex items-start"><b class="w-28 shrink-0 text-gray-900">Lokasi</b> <span class="mr-2">:</span> <span id="m_lokasi" class="flex-1"></span></p>
+                <p class="flex items-start"><b class="w-28 shrink-0 text-gray-900">Panitia</b> <span class="mr-2">:</span> <span id="m_panitia" class="flex-1"></span></p>
+                <p class="flex items-start"><b class="w-28 shrink-0 text-gray-900">Deskripsi</b> <span class="mr-2">:</span> <span id="m_deskripsi" class="flex-1 text-justify"></span></p>
             </div>
 
         </div>
