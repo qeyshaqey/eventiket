@@ -31,6 +31,8 @@ class PengunjungController extends Controller
                     'tanggal_beli' => $pembelian->tanggal_beli ?? ($pembelian->created_at ? $pembelian->created_at->toDateString() : date('Y-m-d')),
                     'kategori' => $kategori ? $kategori->nama_kategori : '-',
                     'event' => $event ? $event->judul : '-',
+                    'jenis_tiket' => $tiket ? $tiket->nama : '-',
+                    'jumlah' => $detail->jumlah,
                     'foto' => $user->photo ? asset('storage/' . $user->photo) : 'https://ui-avatars.com/api/?name=' . urlencode($user->name) . '&background=192853&color=fbbf24&size=80&rounded=true&bold=true'
                 ];
             }

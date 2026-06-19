@@ -45,29 +45,33 @@
         <!-- CONTENT -->
         <div class="p-4 md:p-8 flex-1 w-full overflow-x-hidden">
             @if(session('success'))
-                <div id="alert-success" class="flex items-center p-4 mb-4 text-green-800 rounded-lg bg-green-50" role="alert">
-                    <i class="fa-solid fa-circle-check text-lg mr-2"></i>
-                    <span class="sr-only">Success</span>
-                    <div class="text-sm font-bold">
+                <div id="toast-success" class="fixed top-6 right-6 z-[9999] bg-green-500 text-white px-6 py-4 rounded-xl shadow-2xl flex items-center gap-4 transition-all duration-500 animate-fade-in-down">
+                    <div class="bg-white/20 rounded-full p-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                        </svg>
+                    </div>
+                    <div class="text-sm font-bold tracking-wide">
                         {{ session('success') }}
                     </div>
-                    <button type="button" class="ms-auto -mx-1.5 -my-1.5 bg-green-50 text-green-500 rounded-lg focus:ring-2 focus:ring-green-400 p-1.5 hover:bg-green-200 inline-flex items-center justify-center h-8 w-8" data-dismiss-target="#alert-success" aria-label="Close">
-                        <span class="sr-only">Close</span>
-                        <i class="fa-solid fa-xmark"></i>
+                    <button type="button" onclick="document.getElementById('toast-success').remove()" class="ml-4 text-white/80 hover:text-white text-3xl font-normal leading-none" aria-label="Close">
+                        &times;
                     </button>
                 </div>
             @endif
 
             @if(session('error'))
-                <div id="alert-error" class="flex items-center p-4 mb-4 text-red-800 rounded-lg bg-red-50" role="alert">
-                    <i class="fa-solid fa-circle-exclamation text-lg mr-2"></i>
-                    <span class="sr-only">Error</span>
-                    <div class="text-sm font-bold">
+                <div id="toast-error" class="fixed top-6 right-6 z-[9999] bg-red-500 text-white px-6 py-4 rounded-xl shadow-2xl flex items-center gap-4 transition-all duration-500 animate-fade-in-down">
+                    <div class="bg-white/20 rounded-full p-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </div>
+                    <div class="text-sm font-bold tracking-wide">
                         {{ session('error') }}
                     </div>
-                    <button type="button" class="ms-auto -mx-1.5 -my-1.5 bg-red-50 text-red-500 rounded-lg focus:ring-2 focus:ring-red-400 p-1.5 hover:bg-red-200 inline-flex items-center justify-center h-8 w-8" data-dismiss-target="#alert-error" aria-label="Close">
-                        <span class="sr-only">Close</span>
-                        <i class="fa-solid fa-xmark"></i>
+                    <button type="button" onclick="document.getElementById('toast-error').remove()" class="ml-4 text-white/80 hover:text-white text-3xl font-normal leading-none" aria-label="Close">
+                        &times;
                     </button>
                 </div>
             @endif

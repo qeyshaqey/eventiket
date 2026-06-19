@@ -82,6 +82,9 @@
                         <span class="bg-yellow-200 text-xs px-3 py-1 rounded-full">
                             {{ $d['event'] }}
                         </span>
+                        <div class="text-[11px] text-gray-500 mt-2 ml-1 font-medium">
+                            <i class="fa-solid fa-ticket mr-1"></i> {{ $d['jumlah'] }}x {{ $d['jenis_tiket'] }}
+                        </div>
                     </td>
 
                 </tr>

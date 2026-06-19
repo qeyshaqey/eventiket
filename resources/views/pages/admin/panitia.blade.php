@@ -260,12 +260,12 @@
                             <div class="flex gap-2 justify-center" onclick="event.stopPropagation()">
                                 <button data-modal-target="modalSetuju" data-modal-toggle="modalSetuju" onclick="openApproveModal('{{ $d['nama'] }}', '{{ $d['id'] }}')"
                                     class="w-9 h-9 flex items-center justify-center rounded-lg bg-green-100 text-green-600 hover:bg-green-200 transition" title="Setujui Panitia">
-                                    <i class="fa-solid fa-check"></i>
+                                    <i class="fa-solid fa-check text-lg font-black" style="-webkit-text-stroke: 1px currentColor;"></i>
                                 </button>
 
                                 <button data-modal-target="modalTolak" data-modal-toggle="modalTolak" onclick="openModal('{{ $d['nama'] }}', '{{ $d['id'] }}')"
                                     class="w-9 h-9 flex items-center justify-center rounded-lg bg-red-100 text-red-500 hover:bg-red-200 transition" title="Tolak Pengajuan">
-                                    <i class="fa-solid fa-xmark"></i>
+                                    <i class="fa-solid fa-xmark text-lg font-black" style="-webkit-text-stroke: 1px currentColor;"></i>
                                 </button>
                             </div>
                         </td>

@@ -34,8 +34,7 @@
                 <div class="relative w-full md:w-auto">
                     <select id="filterStatusAktif" class="w-full pl-4 pr-10 py-2 border rounded-lg text-sm text-gray-500 font-bold appearance-none bg-white focus:outline-none focus:ring-2 focus:ring-[#192853] transition-all cursor-pointer">
                         <option value="">Semua Status</option>
-                        <option value="aktif">Aktif</option>
-                        <option value="non aktif">Non Aktif</option>
+                        <option value="disetujui">Disetujui</option>
                     </select>
                     <i class="fa-solid fa-chevron-down absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"></i>
                 </div>
@@ -66,10 +65,16 @@
                     </tr>
                     @else
                     @foreach ($eventDisetujui as $i => $e)
-                    <tr data-modal-target="modal" data-modal-toggle="modal" onclick="showModal('{{ $e->judul }}','{{ \Carbon\Carbon::parse($e->tanggal_mulai)->format('d M Y') }}','{{ \Carbon\Carbon::parse($e->waktu_mulai)->format('H:i') }}','{{ $e->lokasi }}','{{ $e->panitia->name ?? '-' }}','{{ $e->deskripsi }}')" class="bg-white hover:bg-blue-50 transition cursor-pointer shadow-sm">
+                    @php
+                        $tgl = \Carbon\Carbon::parse($e->tanggal_mulai)->format('d M Y');
+                        $tglSelesai = $e->tanggal_selesai ? ' - ' . \Carbon\Carbon::parse($e->tanggal_selesai)->format('d M Y') : '';
+                        $wkt = \Carbon\Carbon::parse($e->waktu_mulai)->format('H:i');
+                        $wktSelesai = $e->waktu_selesai ? ' - ' . \Carbon\Carbon::parse($e->waktu_selesai)->format('H:i') : '';
+                    @endphp
+                    <tr data-modal-target="modal" data-modal-toggle="modal" onclick="showModal('{{ $e->judul }}','{{ $tgl . $tglSelesai }}','{{ $wkt . $wktSelesai }}','{{ $e->lokasi }}','{{ $e->panitia->name ?? '-' }}','{{ $e->deskripsi }}')" class="bg-white hover:bg-blue-50 transition cursor-pointer shadow-sm">
                         <td class="py-4 px-3 text-center first:rounded-l-lg last:rounded-r-lg">{{ $i+1 }}</td>
                         <td class="py-4 px-3 font-bold text-gray-700">{{ $e->judul }}</td>
-                        <td class="py-4 px-3 text-gray-500">{{ \Carbon\Carbon::parse($e->tanggal_mulai)->format('d M Y') }}</td>
+                        <td class="py-4 px-3 text-gray-500">{{ $tgl . $tglSelesai }}</td>
                         <td class="py-4 px-3 text-gray-600">{{ $e->panitia->name ?? '-' }}</td>
                         <td class="py-4 px-3">{{ $e->kategori->nama_kategori ?? '-' }}</td>
                         <td class="py-4 px-3 first:rounded-l-lg last:rounded-r-lg">
@@ -125,10 +130,16 @@
                     </tr>
                     @else
                     @foreach ($eventDitolak as $i => $e)
-                    <tr data-modal-target="modal" data-modal-toggle="modal" onclick="showModal('{{ $e->judul }}','{{ \Carbon\Carbon::parse($e->tanggal_mulai)->format('d M Y') }}','{{ \Carbon\Carbon::parse($e->waktu_mulai)->format('H:i') }}','{{ $e->lokasi }}','{{ $e->panitia->name ?? '-' }}','{{ $e->alasan_penolakan }}')" class="bg-white hover:bg-red-50 transition cursor-pointer shadow-sm">
+                    @php
+                        $tgl = \Carbon\Carbon::parse($e->tanggal_mulai)->format('d M Y');
+                        $tglSelesai = $e->tanggal_selesai ? ' - ' . \Carbon\Carbon::parse($e->tanggal_selesai)->format('d M Y') : '';
+                        $wkt = \Carbon\Carbon::parse($e->waktu_mulai)->format('H:i');
+                        $wktSelesai = $e->waktu_selesai ? ' - ' . \Carbon\Carbon::parse($e->waktu_selesai)->format('H:i') : '';
+                    @endphp
+                    <tr data-modal-target="modal" data-modal-toggle="modal" onclick="showModal('{{ $e->judul }}','{{ $tgl . $tglSelesai }}','{{ $wkt . $wktSelesai }}','{{ $e->lokasi }}','{{ $e->panitia->name ?? '-' }}','{{ $e->alasan_penolakan }}')" class="bg-white hover:bg-red-50 transition cursor-pointer shadow-sm">
                         <td class="py-4 px-3 text-center first:rounded-l-lg last:rounded-r-lg">{{ $i+1 }}</td>
                         <td class="py-4 px-3 font-bold text-gray-700">{{ $e->judul }}</td>
-                        <td class="py-4 px-3 text-gray-500">{{ \Carbon\Carbon::parse($e->tanggal_mulai)->format('d M Y') }}</td>
+                        <td class="py-4 px-3 text-gray-500">{{ $tgl . $tglSelesai }}</td>
                         <td class="py-4 px-3 text-gray-600">{{ $e->panitia->name ?? '-' }}</td>
                         <td class="py-4 px-3">{{ $e->kategori->nama_kategori ?? '-' }}</td>
                         <td class="py-4 px-3 text-red-500 text-sm first:rounded-l-lg last:rounded-r-lg">{{ $e->alasan_penolakan }}</td>
@@ -181,10 +192,16 @@
                     </tr>
                     @else
                     @foreach ($eventPending as $i => $e)
-                    <tr data-modal-target="modal" data-modal-toggle="modal" onclick="showModal('{{ $e->judul }}','{{ \Carbon\Carbon::parse($e->tanggal_mulai)->format('d M Y') }}','{{ \Carbon\Carbon::parse($e->waktu_mulai)->format('H:i') }}','{{ $e->lokasi }}','{{ $e->panitia->name ?? '-' }}','{{ $e->deskripsi }}')" class="bg-white hover:bg-blue-50 transition cursor-pointer shadow-sm">
+                    @php
+                        $tgl = \Carbon\Carbon::parse($e->tanggal_mulai)->format('d M Y');
+                        $tglSelesai = $e->tanggal_selesai ? ' - ' . \Carbon\Carbon::parse($e->tanggal_selesai)->format('d M Y') : '';
+                        $wkt = \Carbon\Carbon::parse($e->waktu_mulai)->format('H:i');
+                        $wktSelesai = $e->waktu_selesai ? ' - ' . \Carbon\Carbon::parse($e->waktu_selesai)->format('H:i') : '';
+                    @endphp
+                    <tr data-modal-target="modal" data-modal-toggle="modal" onclick="showModal('{{ $e->judul }}','{{ $tgl . $tglSelesai }}','{{ $wkt . $wktSelesai }}','{{ $e->lokasi }}','{{ $e->panitia->name ?? '-' }}','{{ $e->deskripsi }}')" class="bg-white hover:bg-blue-50 transition cursor-pointer shadow-sm">
                         <td class="py-4 px-3 text-center first:rounded-l-lg last:rounded-r-lg">{{ $i+1 }}</td>
                         <td class="py-4 px-3 font-bold text-gray-700">{{ $e->judul }}</td>
-                        <td class="py-4 px-3 text-gray-500">{{ \Carbon\Carbon::parse($e->tanggal_mulai)->format('d M Y') }}</td>
+                        <td class="py-4 px-3 text-gray-500">{{ $tgl . $tglSelesai }}</td>
                         <td class="py-4 px-3 text-gray-600">{{ $e->panitia->name ?? '-' }}</td>
                         <td class="py-4 px-3">{{ $e->kategori->nama_kategori ?? '-' }}</td>
                         <td class="py-4 px-3"><span class="text-yellow-600 text-xs font-bold bg-yellow-100 px-3 py-1 rounded-full">Pending</span></td>
@@ -192,10 +209,10 @@
                         <td class="py-4 px-3 first:rounded-l-lg last:rounded-r-lg">
                             <div class="flex gap-2 justify-center">
                                 <button type="button" onclick="event.stopPropagation(); openApproveModal({{ $e->id }}, '{{ addslashes($e->judul) }}')" class="w-9 h-9 flex items-center justify-center rounded-lg bg-green-100 text-green-600 hover:bg-green-200 transition">
-                                    <i class="fa-solid fa-check"></i>
+                                    <i class="fa-solid fa-check text-lg font-black" style="-webkit-text-stroke: 1px currentColor;"></i>
                                 </button>
                                 <button onclick="event.stopPropagation(); openRejectModal({{ $e->id }})" class="w-9 h-9 flex items-center justify-center rounded-lg bg-red-100 text-red-500 hover:bg-red-200 transition">
-                                    <i class="fa-solid fa-xmark"></i>
+                                    <i class="fa-solid fa-xmark text-lg font-black" style="-webkit-text-stroke: 1px currentColor;"></i>
                                 </button>
                             </div>
                         </td>
@@ -220,11 +237,11 @@
             </div>
 
             <div class="p-5 text-sm space-y-3 text-gray-700">
-                <p class="flex items-start"><b class="w-24 text-gray-900">Tanggal</b> <span class="mr-2">:</span> <span id="m_tanggal"></span></p>
-                <p class="flex items-start"><b class="w-24 text-gray-900">Waktu</b> <span class="mr-2">:</span> <span id="m_waktu"></span></p>
-                <p class="flex items-start"><b class="w-24 text-gray-900">Lokasi</b> <span class="mr-2">:</span> <span id="m_lokasi"></span></p>
-                <p class="flex items-start"><b class="w-24 text-gray-900">Panitia</b> <span class="mr-2">:</span> <span id="m_panitia"></span></p>
-                <p class="flex items-start"><b class="w-24 text-gray-900">Deskripsi</b> <span class="mr-2">:</span> <span id="m_deskripsi"></span></p>
+                <p class="flex items-start"><b class="w-28 shrink-0 text-gray-900">Tanggal</b> <span class="mr-2">:</span> <span id="m_tanggal" class="flex-1"></span></p>
+                <p class="flex items-start"><b class="w-28 shrink-0 text-gray-900">Waktu</b> <span class="mr-2">:</span> <span id="m_waktu" class="flex-1"></span></p>
+                <p class="flex items-start"><b class="w-28 shrink-0 text-gray-900">Lokasi</b> <span class="mr-2">:</span> <span id="m_lokasi" class="flex-1"></span></p>
+                <p class="flex items-start"><b class="w-28 shrink-0 text-gray-900">Panitia</b> <span class="mr-2">:</span> <span id="m_panitia" class="flex-1"></span></p>
+                <p class="flex items-start"><b class="w-28 shrink-0 text-gray-900">Deskripsi</b> <span class="mr-2">:</span> <span id="m_deskripsi" class="flex-1 text-justify"></span></p>
             </div>
 
         </div>
