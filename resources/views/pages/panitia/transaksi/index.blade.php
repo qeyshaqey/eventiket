@@ -108,9 +108,9 @@
 
                         <!-- Status Transaksi -->
                         <td class="p-3 whitespace-nowrap text-center">
-                            @if($trx->status === 'Belum Bayar')
+                            @if($trx->status === 'Belum Bayar' || $trx->status === 'Pending')
                                 <span class="px-2.5 py-1 text-xs rounded-full bg-yellow-100 text-yellow-700 font-semibold">
-                                    Belum Bayar
+                                    {{ $trx->status }}
                                 </span>
                             @elseif($trx->status === 'Lunas')
                                 <span class="px-2.5 py-1 text-xs rounded-full bg-green-100 text-green-700 font-semibold">
@@ -229,6 +229,7 @@ function openTrxModal(name, email, eventTitle, ticketType, purchaseDate, totalPr
     // Set warna status berdasarkan nilai DB
     const statusColors = {
         'Belum Bayar': ['bg-yellow-100', 'text-yellow-700'],
+        'Pending':     ['bg-yellow-100', 'text-yellow-700'],
         'Lunas':       ['bg-green-100',  'text-green-700'],
         'Dibatalkan':  ['bg-red-100',    'text-red-700'],
     };

@@ -3,9 +3,9 @@
 @section('content')
 <div class="p-4 md:p-6">
     <!-- JUDUL RIWAYAT -->
-    <h1 id="cardTitle" class="text-xl font-bold text-[#192853] mb-4 font-[Poppins]">
-        Riwayat
-    </h1>
+    <div class="mb-6">
+        <h1 class="text-xl font-bold mb-6">RIWAYAT</h1>
+    </div>
 
     <!-- SISTEM TAB (EVENT / TRANSAKSI) -->
     <div data-tabs-toggle="#tab-content">

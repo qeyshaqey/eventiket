@@ -29,8 +29,8 @@
 <div class="mb-4">
 
     <!-- BARIS ATAS -->
-    <div class="flex justify-between items-center mb-3">
-        <h1 class="text-xl font-bold mb-6">EVENT YANG DIKELOLA</h1>
+    <div class="mb-6">
+        <h1 class="text-xl font-bold mb-6">DATA TRANSAKSI</h1>
     </div>
 
     <!-- BARIS BAWAH -->
