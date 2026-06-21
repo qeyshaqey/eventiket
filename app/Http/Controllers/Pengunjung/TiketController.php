@@ -33,6 +33,7 @@ class TiketController extends Controller
         // Gunakan WITH untuk menarik data relasi (detail pembelian, tiket, event, kategori, dan e-tiket
         $pembelians = Pembelian::with(['detail_pembelians.tiket.event.kategori', 'etikets'])
             ->where('user_id', $userId)
+            ->latest()
             ->get();
 
         // Siapkan dua keranjang (array) kosong untuk memisahkan tiket
@@ -113,7 +114,7 @@ class TiketController extends Controller
                     ? Carbon::parse($event->tanggal_mulai)->translatedFormat('d M Y') . ' - ' . Carbon::parse($event->tanggal_selesai)->translatedFormat('d M Y')
                     : Carbon::parse($event->tanggal_mulai)->translatedFormat('d M Y'),
                 "date_end" => $event->tanggal_selesai,
-                "time" => substr($event->waktu_mulai ?? '', 0, 5) . " - " . substr($event->waktu_selesai ?? '', 0, 5) . " WIB",
+                "time" => substr($event->waktu_mulai ?? '', 0, 5) . (!empty($event->waktu_selesai) ? " - " . substr($event->waktu_selesai, 0, 5) : "") . " WIB",
                 "location" => $event->lokasi,
                 "tickets" => $ticketsData, // Rincian tiket per tipe yang kita susun di atas
                 "etikets" => $eticketCodes, // Seluruh e-tiket(kode unik)

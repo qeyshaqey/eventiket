@@ -1,12 +1,22 @@
 <div id="dashboard-result-list">
     @if ($paginatedEvents->isEmpty())
-        <div class="flex flex-col items-center justify-center py-16 text-center mx-auto w-full">
-            <div class="mb-4 text-[#192853] opacity-30">
-                <i class="fa-solid fa-calendar-xmark text-6xl"></i>
+        @if(empty($search) && (!isset($category) || $category === 'semua'))
+            <div class="flex flex-col items-center justify-center py-16 text-center mx-auto w-full">
+                <div class="mb-4 text-[#192853] opacity-30">
+                    <i class="fa-solid fa-calendar-xmark text-6xl"></i>
+                </div>
+                <h3 class="text-xl font-semibold text-[#192853]">Belum ada event yang tayang</h3>
+                <p class="mt-2 text-slate-500">Saat ini belum ada event yang dipublikasikan. Coba kembali lagi nanti!</p>
             </div>
-            <h3 class="text-xl font-semibold text-[#192853]">Oops! Event tidak ditemukan</h3>
-            <p class="mt-2 text-slate-500">Coba gunakan kata kunci yang berbeda atau ubah filter kategori pencarian.</p>
-        </div>
+        @else
+            <div class="flex flex-col items-center justify-center py-16 text-center mx-auto w-full">
+                <div class="mb-4 text-[#192853] opacity-30">
+                    <i class="fa-solid fa-magnifying-glass text-6xl"></i>
+                </div>
+                <h3 class="text-xl font-semibold text-[#192853]">Oops! Event tidak ditemukan</h3>
+                <p class="mt-2 text-slate-500">Coba gunakan kata kunci yang berbeda atau ubah filter kategori pencarian.</p>
+            </div>
+        @endif
     @else
         <div class="grid grid-cols-2 gap-3 sm:gap-6 md:grid-cols-2 xl:grid-cols-4">
             <!-- Looping / nge-print kartu event satu per satu sesuai data array yang dikirim dari Controller -->

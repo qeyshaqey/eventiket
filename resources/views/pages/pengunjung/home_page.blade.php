@@ -22,24 +22,34 @@
                     <h2 class="mt-6 text-3xl font-bold tracking-tight text-[#192853] sm:text-4xl">Temukan Event Seru</h2>
                     <p class="mx-auto mt-4 max-w-2xl text-sm text-[#475569] sm:text-base">Cari event favoritmu, lihat kategori, status, dan detail acara dengan tampilan yang mudah dibaca.</p>
                 </div>
-                <div class="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
-                    @foreach ($paginatedEvents as $event)
-                        <article class="group overflow-hidden rounded-[32px] border border-[#cbd5e1] bg-white shadow-[0_25px_60px_rgba(25,40,83,0.08)] transition duration-300 hover:-translate-y-1">
-                            <a href="{{ route('pengunjung.detail.event', ['id' => $event['id']]) }}" class="block">
-                                <div class="overflow-hidden">
-                                    <img src="{{ $event['image'] }}" alt="{{ $event['title'] }}" class="h-64 w-full object-cover transition duration-500 group-hover:scale-105">
+                @if ($paginatedEvents->isEmpty())
+                    <div class="flex flex-col items-center justify-center py-16 text-center mx-auto w-full">
+                        <div class="mb-4 text-[#192853] opacity-30">
+                            <i class="fa-solid fa-calendar-xmark text-6xl"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold text-[#192853]">Belum ada event yang tayang</h3>
+                        <p class="mt-2 text-slate-500">Saat ini belum ada event yang dipublikasikan. Coba kembali lagi nanti!</p>
+                    </div>
+                @else
+                    <div class="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+                        @foreach ($paginatedEvents as $event)
+                            <article class="group overflow-hidden rounded-[32px] border border-[#cbd5e1] bg-white shadow-[0_25px_60px_rgba(25,40,83,0.08)] transition duration-300 hover:-translate-y-1">
+                                <a href="{{ route('pengunjung.detail.event', ['id' => $event['id']]) }}" class="block">
+                                    <div class="overflow-hidden">
+                                        <img src="{{ $event['image'] }}" alt="{{ $event['title'] }}" class="h-64 w-full object-cover transition duration-500 group-hover:scale-105">
+                                    </div>
+                                </a>
+                                <div class="space-y-4 p-6">
+                                    <div class="flex items-center justify-between gap-1 sm:gap-2 text-[9px] sm:text-[11px] md:text-sm font-semibold text-[#475569] overflow-hidden">
+                                        <span class="inline-block whitespace-nowrap rounded-full bg-[#EFF8FF] px-1.5 py-0.5 sm:px-3 sm:py-1 uppercase">{{ $event['category'] }}</span>
+                                        <span class="inline-flex shrink-0 items-center whitespace-nowrap rounded-full bg-[#FFE14E] px-1.5 py-0.5 sm:px-3 sm:py-1 text-[#192853]">{{ $event['status'] }}</span>
+                                    </div>
+                                    <h3 class="text-xl font-semibold text-[#192853]">{{ $event['title'] }}</h3>
                                 </div>
-                            </a>
-                            <div class="space-y-4 p-6">
-                                <div class="flex items-center justify-between gap-1 sm:gap-2 text-[9px] sm:text-[11px] md:text-sm font-semibold text-[#475569] overflow-hidden">
-                                    <span class="inline-block whitespace-nowrap rounded-full bg-[#EFF8FF] px-1.5 py-0.5 sm:px-3 sm:py-1 uppercase">{{ $event['category'] }}</span>
-                                    <span class="inline-flex shrink-0 items-center whitespace-nowrap rounded-full bg-[#FFE14E] px-1.5 py-0.5 sm:px-3 sm:py-1 text-[#192853]">{{ $event['status'] }}</span>
-                                </div>
-                                <h3 class="text-xl font-semibold text-[#192853]">{{ $event['title'] }}</h3>
-                            </div>
-                        </article>
-                    @endforeach
-                </div>
+                            </article>
+                        @endforeach
+                    </div>
+                @endif
 
                 @if ($paginatedEvents->lastPage() > 1)
                     <div class="mt-12 flex justify-center">

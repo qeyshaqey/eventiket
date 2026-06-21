@@ -15,6 +15,8 @@ trait EventDataTrait
 
         // Ambil semua event yang berstatus 'Published' tetapi bukan event yang dibuat oleh user saat ini
         $dbEvents = \App\Models\Event::where('status', 'Published')
+            ->orderBy('tanggal_mulai', 'asc') // Urutkan berdasarkan tanggal terdekat
+            ->orderBy('waktu_mulai', 'asc')   // Jika tanggal sama, urutkan berdasarkan jam tercepat
             // get digunakan untuk mengeksekusi query
             ->when(session('user_id'), function ($query, $userId) {
                 return $query->where('user_id', '!=', $userId);
@@ -88,10 +90,8 @@ trait EventDataTrait
                         // Jika tidak,maka format tanggalnya "10 Jun 2026" (hanya 1 hari)
                         : \Carbon\Carbon::parse($event->tanggal_mulai)->translatedFormat('d M Y'),
 
-                    // Format jam tayang (Contoh: "08:00 - 15:00 WIB")
-                    // substr($string, 0, 5) digunakan untuk memotong teks.
-                    // Jika di database jam tersimpan "08:00:00", maka diambil 5 karakter pertama saja menjadi "08:00".
-                    'time' => substr($event->waktu_mulai, 0, 5) . ' - ' . substr($event->waktu_selesai, 0, 5) . ' WIB',
+                    // Format jam tayang (Contoh: "08:00 - 15:00 WIB" atau "08:00 WIB")
+                    'time' => substr($event->waktu_mulai, 0, 5) . (!empty($event->waktu_selesai) ? ' - ' . substr($event->waktu_selesai, 0, 5) : '') . ' WIB',
                     
                     'venue' => $event->lokasi, // Lokasi  event
 
