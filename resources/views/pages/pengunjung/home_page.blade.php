@@ -6,11 +6,15 @@
 
 @section('content')
     <main>
-        <section id="home" class="relative overflow-hidden bg-[#192853] text-white" style="background-image: radial-gradient(circle at top, rgba(255,225,78,0.14), transparent 40%), linear-gradient(180deg, rgba(25,40,83,0.95), rgba(25,40,83,0.8));">
+        <section class="relative overflow-hidden text-white" style="background: linear-gradient(160deg, #192853 0%, #1e3a6e 100%); border-top: 4px solid #FFE14E;">
             <div class="mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
                 <div class="max-w-3xl">
-                    <h1 class="mt-8 text-4xl font-bold tracking-tight sm:text-5xl">Temukan Event Terbaik Kampus</h1>
-                    <p class="mt-4 max-w-xl text-base text-white/85 sm:text-lg">Konser, seminar, festival, dan banyak lagi. Jelajahi acara terbaik dengan tampilan yang bersih dan responsif.</p>
+                    <h1 class="text-4xl font-bold tracking-tight sm:text-5xl" style="color: #EFF8FF;">
+                        Temukan Event Terbaik Kampus
+                    </h1>
+                    <p class="mt-4 max-w-xl text-base sm:text-lg" style="color: #9fb8d8;">
+                        Konser, seminar, festival, dan banyak lagi. Jelajahi acara terbaik dengan tampilan yang bersih dan responsif.
+                    </p>
                 </div>
             </div>
         </section>
