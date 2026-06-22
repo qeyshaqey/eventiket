@@ -71,25 +71,35 @@
     </button>
 
     <!-- KANAN: SEARCH + FILTER -->
-    <div class="flex gap-2 w-full md:w-auto">
+    <form action="{{ route('panitia.event') }}" method="GET" class="flex gap-2 w-full md:w-auto">
 
         <!-- SEARCH -->
         <input 
             type="text" 
-            id="searchEvent"
+            name="search"
+            value="{{ request('search') }}"
             placeholder="Cari event..."
+            onchange="this.form.submit()"
             class="border rounded-lg px-3 py-2 text-sm w-full md:w-64 focus:ring-2 focus:ring-[#192853]">
 
         <!-- FILTER -->
-        <select id="filterKategori"
+        <select name="kategori" onchange="this.form.submit()"
             class="border rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-[#192853]">
             <option value="">Semua Kategori</option>
             @foreach($categories as $cat)
-                <option value="{{ $cat->nama_kategori }}">{{ $cat->nama_kategori }}</option>
+                <option value="{{ $cat->nama_kategori }}" {{ request('kategori') == $cat->nama_kategori ? 'selected' : '' }}>{{ $cat->nama_kategori }}</option>
             @endforeach
         </select>
+        
+        @if(request('search') || request('kategori'))
+            <a href="{{ route('panitia.event') }}"
+                class="px-3 py-2 bg-gray-100 text-gray-600 rounded-lg text-sm hover:bg-gray-200 transition flex items-center gap-1 whitespace-nowrap"
+                title="Reset Filter">
+                <i class="bi bi-arrow-counterclockwise"></i> Reset
+            </a>
+        @endif
 
-    </div>
+    </form>
 
 </div>
 </div>
@@ -241,7 +251,7 @@
 
 @if($events->hasPages())
 <div class="mt-4 px-1">
-    {{ $events->onEachSide(1)->links() }}
+    {{ $events->withQueryString()->onEachSide(1)->links() }}
 </div>
 @endif
 
@@ -263,16 +273,17 @@
             </div>
 
             <!-- FORM -->
-            <form id="eventForm" method="POST" action="{{ route('panitia.event.store') }}" enctype="multipart/form-data"
+            <form id="eventForm" method="POST" action="{{ old('event_id') ? url('/panitia/event/'.old('event_id')) : route('panitia.event.store') }}" enctype="multipart/form-data"
                 class="p-6 space-y-4 max-h-[75vh] overflow-y-auto">
 
                 @csrf
-                <input type="hidden" id="methodOverride" name="_method" value="POST">
+                <input type="hidden" id="methodOverride" name="_method" value="{{ old('_method', 'POST') }}">
+                <input type="hidden" id="eventIdInput" name="event_id" value="{{ old('event_id') }}">
 
                 <!-- INPUT STYLE UNIFORM -->
                 <div>
                     <label class="text-sm font-semibold">Judul Event</label>
-                    <input type="text" name="judul" required
+                    <input type="text" name="judul" value="{{ old('judul') }}" required
                         class="w-full mt-1 border rounded-xl p-2.5 text-sm focus:ring-2 focus:ring-[#192853] outline-none">
                 </div>
 
@@ -282,7 +293,7 @@
                         class="w-full mt-1 border rounded-xl p-2.5 text-sm focus:ring-2 focus:ring-[#192853] outline-none">
                         <option value="">Pilih Kategori</option>
                         @foreach($categories as $cat)
-                            <option value="{{ $cat->id }}">{{ $cat->nama_kategori }}</option>
+                            <option value="{{ $cat->id }}" {{ old('kategori_id') == $cat->id ? 'selected' : '' }}>{{ $cat->nama_kategori }}</option>
                         @endforeach
                     </select>
                 </div>
@@ -290,13 +301,13 @@
                 <div>
                     <label class="text-sm font-semibold">Deskripsi</label>
                     <textarea name="deskripsi" required
-                        class="w-full mt-1 border rounded-xl p-2.5 text-sm focus:ring-2 focus:ring-[#192853] outline-none"></textarea>
+                        class="w-full mt-1 border rounded-xl p-2.5 text-sm focus:ring-2 focus:ring-[#192853] outline-none">{{ old('deskripsi') }}</textarea>
                 </div>
 
                 <div class="grid grid-cols-2 gap-3">
                     <div>
                         <label class="text-sm font-semibold">Tanggal Mulai</label>
-                        <input type="date" id="tanggal_mulai" name="tanggal_mulai" required
+                        <input type="date" id="tanggal_mulai" name="tanggal_mulai" value="{{ old('tanggal_mulai') }}" required
                             class="w-full mt-1 border @error('tanggal_mulai') border-red-500 @else border-gray-200 @enderror rounded-xl p-2.5 text-sm focus:ring-2 focus:ring-[#192853] outline-none">
                         @error('tanggal_mulai')
                             <p class="text-xs text-red-500 mt-1 font-medium">{{ $message }}</p>
@@ -304,7 +315,7 @@
                     </div>
                     <div>
                         <label class="text-sm font-semibold">Tanggal Selesai</label>
-                        <input type="date" id="tanggal_selesai" name="tanggal_selesai" required
+                        <input type="date" id="tanggal_selesai" name="tanggal_selesai" value="{{ old('tanggal_selesai') }}" required
                             class="w-full mt-1 border @error('tanggal_selesai') border-red-500 @else border-gray-200 @enderror rounded-xl p-2.5 text-sm focus:ring-2 focus:ring-[#192853] outline-none">
                         @error('tanggal_selesai')
                             <p class="text-xs text-red-500 mt-1 font-medium">{{ $message }}</p>
@@ -315,16 +326,16 @@
                 <div class="grid grid-cols-2 gap-3">
                     <div>
                         <label class="text-sm font-semibold">Waktu Mulai</label>
-                        <input type="time" id="waktu_mulai" name="waktu_mulai" required
-                            class="w-full mt-1 border @error('waktu_mulai') border-red-500 @else border-gray-200 @enderror rounded-xl p-2.5 text-sm focus:ring-2 focus:ring-[#192853] outline-none">
+                        <input type="text" id="waktu_mulai" name="waktu_mulai" value="{{ old('waktu_mulai') }}" placeholder="HH:MM" required
+                            class="w-full mt-1 border @error('waktu_mulai') border-red-500 @else border-gray-200 @enderror rounded-xl p-2.5 text-sm focus:ring-2 focus:ring-[#192853] outline-none bg-white">
                         @error('waktu_mulai')
                             <p class="text-xs text-red-500 mt-1 font-medium">{{ $message }}</p>
                         @enderror
                     </div>
                     <div>
                         <label class="text-sm font-semibold">Waktu Selesai</label>
-                        <input type="time" id="waktu_selesai" name="waktu_selesai" required
-                            class="w-full mt-1 border @error('waktu_selesai') border-red-500 @else border-gray-200 @enderror rounded-xl p-2.5 text-sm focus:ring-2 focus:ring-[#192853] outline-none">
+                        <input type="text" id="waktu_selesai" name="waktu_selesai" value="{{ old('waktu_selesai') }}" placeholder="HH:MM" required
+                            class="w-full mt-1 border @error('waktu_selesai') border-red-500 @else border-gray-200 @enderror rounded-xl p-2.5 text-sm focus:ring-2 focus:ring-[#192853] outline-none bg-white">
                         @error('waktu_selesai')
                             <p class="text-xs text-red-500 mt-1 font-medium">{{ $message }}</p>
                         @enderror
@@ -333,18 +344,28 @@
 
                 <div>
                     <label class="text-sm font-semibold">Lokasi</label>
-                    <input type="text" name="lokasi" required
+                    <input type="text" name="lokasi" value="{{ old('lokasi') }}" required
                         class="w-full mt-1 border rounded-xl p-2.5 text-sm">
                 </div>
 
                 <div>
-    <label class="text-sm font-semibold">Poster Event</label>
-    <input type="file" name="poster" id="posterInput"
-        class="w-full mt-1 border rounded-xl p-2.5 text-sm focus:ring-2 focus:ring-[#192853]">
-        <p class="text-xs text-gray-400 mt-1">
-    Format: JPG/PNG, max 2MB
-</p>
-</div>
+                    <label class="text-sm font-semibold">Poster Event</label>
+                    @php
+                        $oldEvent = null;
+                        if(old('event_id')) {
+                            $oldEvent = collect($events->items())->firstWhere('id', old('event_id'));
+                        }
+                    @endphp
+                    <div id="posterPreviewContainer" class="{{ ($oldEvent && $oldEvent->poster) ? '' : 'hidden' }} mb-2 mt-2">
+                        <p class="text-xs text-gray-500 mb-1">Poster Saat Ini:</p>
+                        <img id="posterPreview" src="{{ ($oldEvent && $oldEvent->poster) ? Storage::url($oldEvent->poster) : '' }}" class="h-32 object-cover rounded shadow">
+                    </div>
+                    <input type="file" name="poster" id="posterInput"
+                        class="w-full mt-1 border rounded-xl p-2.5 text-sm focus:ring-2 focus:ring-[#192853]">
+                    <p class="text-xs text-gray-400 mt-1">
+                        Format: JPG/PNG, max 2MB
+                    </p>
+                </div>
 
                 <!-- BUTTON -->
                 <div class="flex justify-end gap-2 pt-2">
@@ -482,17 +503,12 @@ document.addEventListener('DOMContentLoaded', function () {
             waktuMulaiInput.removeAttribute('min');
         }
 
-        // VALIDASI 2: Jika tanggal mulai dan tanggal selesai sama, waktu selesai harus setelah waktu mulai
-        if (tglMulaiInput && tglSelesaiInput && waktuMulaiInput && waktuSelesaiInput) {
-            if (tglMulaiInput.value === tglSelesaiInput.value) {
-                waktuSelesaiInput.min = waktuMulaiInput.value;
-                // Jika waktu selesai yang dipilih mendahului waktu mulai, sesuaikan otomatis
-                if (waktuSelesaiInput.value && waktuSelesaiInput.value < waktuMulaiInput.value) {
-                    waktuSelesaiInput.value = waktuMulaiInput.value;
-                }
-            } else {
-                // Hapus batas minimum waktu selesai jika tanggalnya berbeda
-                waktuSelesaiInput.removeAttribute('min');
+        // VALIDASI 2: Waktu selesai harus setelah waktu mulai, walaupun tanggalnya berbeda
+        if (waktuMulaiInput && waktuSelesaiInput) {
+            waktuSelesaiInput.min = waktuMulaiInput.value;
+            // Jika waktu selesai yang dipilih mendahului waktu mulai, sesuaikan otomatis
+            if (waktuSelesaiInput.value && waktuSelesaiInput.value < waktuMulaiInput.value) {
+                waktuSelesaiInput.value = waktuMulaiInput.value;
             }
         }
     }
@@ -538,7 +554,9 @@ document.addEventListener('DOMContentLoaded', function () {
             title.innerText = 'Tambah Event';
             form.action = '{{ route("panitia.event.store") }}';
             methodInput.value = 'POST';
+            document.getElementById('eventIdInput').value = '';
             document.getElementById('posterInput').required = true;
+            document.getElementById('posterPreviewContainer').classList.add('hidden');
 
             // Batasi tanggal mulai dan selesai minimal hari ini
             if (tglMulaiInput) tglMulaiInput.min = todayStr;
@@ -553,6 +571,7 @@ document.addEventListener('DOMContentLoaded', function () {
             title.innerText = 'Edit Event';
             methodInput.value = 'PUT';
             form.action = `/panitia/event/${eventId}`;
+            document.getElementById('eventIdInput').value = eventId;
             document.getElementById('posterInput').required = false;
 
             // Cari event berdasarkan ID dari array data events yang dikirim controller
@@ -568,6 +587,13 @@ document.addEventListener('DOMContentLoaded', function () {
             form.waktu_mulai.value = event.waktu_mulai ?? '';
             form.waktu_selesai.value = event.waktu_selesai ?? '';
             form.lokasi.value = event.lokasi ?? '';
+
+            if (event.poster) {
+                document.getElementById('posterPreview').src = '/storage/' + event.poster;
+                document.getElementById('posterPreviewContainer').classList.remove('hidden');
+            } else {
+                document.getElementById('posterPreviewContainer').classList.add('hidden');
+            }
 
             // Agar tidak error ketika mengedit event lama di masa lalu,
             // set min date ke tanggal event tersebut (mana yang lebih lama)
@@ -669,38 +695,6 @@ document.addEventListener('DOMContentLoaded', function () {
         form.submit();
     }
 
-    // =========================
-    // SEARCH & FILTER TABLE
-    // =========================
-    const searchInput = document.getElementById('searchEvent');
-    const filterSelect = document.getElementById('filterKategori');
-    const tableRows = document.querySelectorAll('tbody tr');
-
-    function filterTable() {
-        const searchText = searchInput ? searchInput.value.toLowerCase() : '';
-        const filterVal = filterSelect ? filterSelect.value : '';
-
-        tableRows.forEach(row => {
-            // Skip "Belum ada event" row
-            if (row.cells.length < 3) return;
-
-            const judul = row.cells[1].textContent.toLowerCase();
-            const kategori = row.cells[2].textContent.trim();
-
-            const matchSearch = judul.includes(searchText);
-            const matchKategori = filterVal === '' || kategori === filterVal;
-
-            if (matchSearch && matchKategori) {
-                row.style.display = '';
-            } else {
-                row.style.display = 'none';
-            }
-        });
-    }
-
-    if (searchInput) searchInput.addEventListener('input', filterTable);
-    if (filterSelect) filterSelect.addEventListener('change', filterTable);
-
     // GLOBAL EXPORT (WAJIB)
     window.openModal = openModal;
     window.openDeleteModal = openDeleteModal;
@@ -726,4 +720,41 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 </script>
 @endif
+
+@endsection
+
+@section('script')
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    flatpickr("#waktu_mulai", {
+        enableTime: true,
+        noCalendar: true,
+        dateFormat: "H:i",
+        time_24hr: true,
+        onChange: function(selectedDates, dateStr, instance) {
+            if (typeof updateTimeLimits === 'function') {
+                updateTimeLimits();
+            } else {
+                // Dispatch event manually just in case
+                document.getElementById('waktu_mulai').dispatchEvent(new Event('change'));
+            }
+        }
+    });
+    flatpickr("#waktu_selesai", {
+        enableTime: true,
+        noCalendar: true,
+        dateFormat: "H:i",
+        time_24hr: true,
+        onChange: function(selectedDates, dateStr, instance) {
+            if (typeof updateTimeLimits === 'function') {
+                updateTimeLimits();
+            } else {
+                document.getElementById('waktu_selesai').dispatchEvent(new Event('change'));
+            }
+        }
+    });
+});
+</script>
 @endsection

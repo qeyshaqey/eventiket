@@ -16,10 +16,20 @@ class RiwayatPanitiaController extends Controller
     {
         $panitiaId = session('user_id');
 
-        $allEvents = Event::where('status', 'Published')
-            ->where('user_id', $panitiaId)
-            ->latest()
-            ->get();
+        $allEventsQuery = Event::where('status', 'Published')
+            ->where('user_id', $panitiaId);
+            
+        if ($request->get('tab') === 'transaksi') {
+            if ($request->has('trx_kategori_id') && $request->trx_kategori_id != '') {
+                $allEventsQuery->where('kategori_id', $request->trx_kategori_id);
+            }
+        } else {
+            if ($request->has('kategori_id') && $request->kategori_id != '') {
+                $allEventsQuery->where('kategori_id', $request->kategori_id);
+            }
+        }
+            
+        $allEvents = $allEventsQuery->latest()->get();
 
         $categories = \App\Models\Kategori::all();
 
@@ -39,6 +49,10 @@ class RiwayatPanitiaController extends Controller
 
         if ($request->has('event_filter_id') && $request->event_filter_id != '') {
             $eventQuery->where('id', $request->event_filter_id);
+        }
+
+        if ($request->filled('search_event')) {
+            $eventQuery->where('judul', 'like', '%' . $request->search_event . '%');
         }
 
         $events = $eventQuery->with(['tikets', 'kategori'])
@@ -70,6 +84,13 @@ class RiwayatPanitiaController extends Controller
         if ($request->has('event_id') && $request->event_id != '') {
             $query->whereHas('tiket', function ($q) use ($request) {
                 $q->where('event_id', $request->event_id);
+            });
+        }
+
+        if ($request->filled('search_trx')) {
+            $searchTerm = $request->search_trx;
+            $query->whereHas('pembelian.user', function ($q) use ($searchTerm) {
+                $q->where('name', 'like', '%' . $searchTerm . '%');
             });
         }
 

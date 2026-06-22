@@ -19,7 +19,15 @@ class TransaksiController extends Controller
         // Mengambil data pembelian beserta relasi detail pembelian, tiket, event, dan user.
         $query = Pembelian::with(['user', 'detail_pembelians.tiket.event'])
             ->whereHas('detail_pembelians.tiket.event', function ($q) use ($panitiaId) {
-                $q->where('user_id', $panitiaId);
+                $q->where('user_id', $panitiaId)
+                  ->where(function ($sub) {
+                      $today = now()->toDateString();
+                      $sub->where('tanggal_selesai', '>=', $today)
+                          ->orWhere(function ($sub2) use ($today) {
+                              $sub2->whereNull('tanggal_selesai')
+                                   ->where('tanggal_mulai', '>=', $today);
+                          });
+                  });
             });
 
         // Filter berdasarkan kategori event
@@ -79,7 +87,12 @@ class TransaksiController extends Controller
         // Mengambil data untuk filter dropdown
         $panitiaId = session('user_id');
         $categories = Kategori::all();
-        $events = Event::where('user_id', $panitiaId)->orderBy('judul')->get();
+        
+        $eventsQuery = Event::where('user_id', $panitiaId);
+        if ($request->has('kategori_id') && $request->kategori_id !== '') {
+            $eventsQuery->where('kategori_id', $request->kategori_id);
+        }
+        $events = $eventsQuery->orderBy('judul')->get();
 
         // Mengirim data hasil pemetaan ke halaman view transaksi panitia
         return view('pages.panitia.transaksi.index', compact('transaksis', 'categories', 'events'));

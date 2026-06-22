@@ -11,9 +11,9 @@ class EventPanitiaController extends Controller
 {
     //Menampilkan daftar semua event yang dikelola oleh panitia.
      
-    public function index()
+    public function index(Request $request)
     {
-        $events = Event::with(['tikets', 'kategori'])
+        $query = Event::with(['tikets', 'kategori'])
             ->where('user_id', session('user_id'))
             ->where(function ($q) {
                 $q->where('tanggal_selesai', '>=', now()->toDateString())
@@ -21,9 +21,19 @@ class EventPanitiaController extends Controller
                       $q2->whereNull('tanggal_selesai')
                          ->where('tanggal_mulai', '>=', now()->toDateString());
                   });
-            })
-            ->latest()
-            ->paginate(10);
+            });
+
+        if ($request->filled('search')) {
+            $query->where('judul', 'like', '%' . $request->search . '%');
+        }
+
+        if ($request->filled('kategori')) {
+            $query->whereHas('kategori', function($q) use($request){
+                $q->where('nama_kategori', $request->kategori);
+            });
+        }
+
+        $events = $query->latest()->paginate(10);
         $categories = \App\Models\Kategori::all();
 
         // Mengirimkan data event dan kategori ke halaman view
