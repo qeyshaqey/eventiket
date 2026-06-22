@@ -143,12 +143,24 @@ class EventPanitiaController extends Controller
     //Menghapus event dari database.
     public function destroy($id)
     {
-        // Mencari event lalu menghapusnya
+        // Mencari event
         $event = Event::findOrFail($id);
-        $event->delete();
 
-        // Kembali dengan pesan sukses
-        return back()->with('success', 'Event berhasil dihapus');
+        // Cek apakah ada pembelian untuk tiket di event ini
+        $hasPurchases = \App\Models\DetailPembelian::whereHas('tiket', function($q) use ($id) {
+            $q->where('event_id', $id);
+        })->exists();
+
+        if ($hasPurchases) {
+            return back()->with('error', 'Event tidak dapat dihapus karena sudah memiliki transaksi pembelian.');
+        }
+
+        try {
+            $event->delete();
+            return back()->with('success', 'Event berhasil dihapus');
+        } catch (\Exception $e) {
+            return back()->with('error', 'Gagal menghapus event.');
+        }
     }
 
     //Mengirimkan event ke Admin untuk peninjauan (mengubah status menjadi 'Pending').

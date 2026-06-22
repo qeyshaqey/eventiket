@@ -4,13 +4,9 @@
 
 <div class="bg-[#EFF8FF] min-h-screen p-4 md:p-6">
 
-    <!-- HEADER DATA TRANSAKSI -->
-    <div class="mb-6">
-        <h1 class="text-xl font-bold mb-6">DATA TRANSAKSI</h1>
-    </div>
-
     <!-- BOX WADAH TABEL TRANSAKSI -->
     <div class="bg-white rounded-2xl shadow-md border border-gray-100 p-4 md:p-6">
+        <h1 class="text-xl font-bold mb-6">DATA TRANSAKSI</h1>
 
         <!-- FILTER -->
         <form method="GET" action="{{ route('panitia.transaksi') }}" class="flex flex-col md:flex-row gap-3 mb-5">
@@ -82,7 +78,7 @@
 
                         <!-- Nomor Urut -->
                         <td class="p-3 text-gray-500 font-medium">
-                            {{ $index + 1 }}
+                            {{ ($transaksis->firstItem() ?? 1) + $index }}
                         </td>
 
                         <!-- Informasi User Pembeli -->
@@ -158,6 +154,12 @@
                 </tbody>
             </table>
         </div>
+
+        @if($transaksis->hasPages())
+        <div class="mt-4">
+            {{ $transaksis->withQueryString()->links() }}
+        </div>
+        @endif
 
     </div>
 

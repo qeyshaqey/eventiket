@@ -48,10 +48,10 @@ class TransaksiController extends Controller
             });
         }
 
-        $pembelians = $query->latest()->get();
+        $pembelians = $query->latest()->paginate(10);
 
         // Memetakan data pembelian ke dalam struktur objek 
-        $transaksis = $pembelians->map(function ($pembelian) {
+        $transaksis = $pembelians->through(function ($pembelian) {
             $firstDetail = $pembelian->detail_pembelians->first();
             $event = $firstDetail->tiket->event ?? null;
             

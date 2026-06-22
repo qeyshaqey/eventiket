@@ -4,23 +4,38 @@
 <div class="bg-[#EFF8FF] min-h-screen p-6">
 
     <!-- JUDUL HALAMAN -->
-    <h1 class="text-xl font-bold mb-6">TIKET YANG DIKELOLA</h1>
+    
 
     <!-- SEARCH & FILTER -->
     <div class="bg-white rounded-xl shadow p-4 mb-6">
-        <div class="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-            <div class="relative w-full md:w-96">
-                <i class="bi bi-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
-                <input id="searchTiket" type="text" placeholder="Cari event atau tiket..."
-                    class="w-full rounded-xl border border-gray-200 bg-white px-12 py-3 text-sm text-[#192853] focus:border-[#192853] focus:ring-2 focus:ring-[#192853] outline-none" />
-            </div>
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+            <h1 class="text-xl font-bold text-[#192853]">TIKET YANG DIKELOLA</h1>
+            <div class="flex flex-wrap gap-2 w-full md:w-auto">
+                <!-- SEARCH -->
+                <input 
+                    type="text" 
+                    id="searchTiket"
+                    placeholder="Cari event atau tiket..."
+                    class="border rounded-lg px-3 py-2 text-sm w-full md:w-64 focus:ring-2 focus:ring-[#192853] outline-none">
 
-            <select id="filterKategori" class="w-full md:w-56 rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm focus:border-[#192853] focus:ring-2 focus:ring-[#192853] outline-none">
-                <option value="">Semua Kategori</option>
-                @foreach($categories as $category)
-                    <option value="{{ $category }}">{{ $category }}</option>
-                @endforeach
-            </select>
+                <!-- FILTER KATEGORI -->
+                <select id="filterKategori"
+                    class="border rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-[#192853] outline-none">
+                    <option value="">Semua Kategori</option>
+                    @foreach($categories as $category)
+                        <option value="{{ $category }}">{{ $category }}</option>
+                    @endforeach
+                </select>
+
+                <!-- FILTER EVENT -->
+                <select id="filterEvent"
+                    class="border rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-[#192853] outline-none">
+                    <option value="">Semua Event</option>
+                    @foreach($events as $e)
+                        <option value="{{ $e->id }}" {{ isset($highlightEventId) && $highlightEventId == $e->id ? 'selected' : '' }}>{{ $e->judul }}</option>
+                    @endforeach
+                </select>
+            </div>
         </div>
     </div>
 
@@ -145,36 +160,53 @@
 
 <!-- ================= MODAL TAMBAH TIKET ================= -->
 <div id="modalTiket" class="fixed inset-0 bg-black/50 hidden flex justify-center items-center z-50" onclick="closeModal()">
-    <div class="bg-white p-6 rounded-2xl shadow-2xl w-[400px] relative animate-fadeIn" onclick="event.stopPropagation()">
+    <div class="w-full max-w-lg bg-white/95 rounded-2xl shadow-2xl border border-gray-200 overflow-hidden animate-[fadeIn_0.2s_ease]" onclick="event.stopPropagation()">
 
-        <!-- Tombol Close Modal -->
-        <button onclick="closeModal()" class="absolute top-3 right-3 text-gray-400 hover:text-black text-lg">&times;</button>
+        <!-- HEADER -->
+        <div class="flex justify-between items-center px-6 py-4 border-b bg-[#192853] text-white">
+            <h2 class="font-semibold text-lg">Tambah Tiket</h2>
+            <button onclick="closeModal()" class="text-white/80 hover:text-white text-2xl">&times;</button>
+        </div>
 
-        <h2 class="text-lg font-bold text-[#192853] mb-3">Tambah Tiket</h2>
-
-        <!-- Form Tambah Tiket -->
-        <form method="POST" action="{{ route('panitia.tiket.store') }}">
+        <!-- FORM -->
+        <form method="POST" action="{{ route('panitia.tiket.store') }}" class="p-6 space-y-4">
             @csrf
             <!-- Input Hidden Event ID -->
             <input type="hidden" name="event_id" id="eventId">
 
-            <div class="space-y-3">
-                <input name="nama" type="text" placeholder="Nama Tiket" required
-                    class="w-full rounded-xl border border-gray-200 p-2.5 text-sm focus:ring-2 focus:ring-[#192853] outline-none">
+            <div class="space-y-4">
+                <div>
+                    <label class="text-sm font-semibold">Nama Tiket</label>
+                    <input name="nama" type="text" placeholder="Nama Tiket" required
+                        class="w-full mt-1 border rounded-xl p-2.5 text-sm focus:ring-2 focus:ring-[#192853] outline-none">
+                </div>
 
-                <input name="harga" type="text" placeholder="Harga (misal: 10.000)" required
-                    class="w-full rounded-xl border border-gray-200 p-2.5 text-sm focus:ring-2 focus:ring-[#192853] outline-none">
+                <div>
+                    <label class="text-sm font-semibold">Harga</label>
+                    <input name="harga" type="text" placeholder="Harga (misal: 10.000)" required
+                        class="w-full mt-1 border rounded-xl p-2.5 text-sm focus:ring-2 focus:ring-[#192853] outline-none">
+                </div>
 
-                <input name="kuota" type="number" placeholder="Kuota" min="1" required
-                    class="w-full rounded-xl border border-gray-200 p-2.5 text-sm focus:ring-2 focus:ring-[#192853] outline-none">
+                <div>
+                    <label class="text-sm font-semibold">Kuota</label>
+                    <input name="kuota" type="number" placeholder="Kuota" min="1" required
+                        class="w-full mt-1 border rounded-xl p-2.5 text-sm focus:ring-2 focus:ring-[#192853] outline-none">
+                </div>
 
-                <textarea name="keterangan" rows="3" placeholder="Keterangan tiket" required
-                    class="w-full rounded-xl border border-gray-200 p-2.5 text-sm focus:ring-2 focus:ring-[#192853] outline-none"></textarea>
+                <div>
+                    <label class="text-sm font-semibold">Keterangan Tiket</label>
+                    <textarea name="keterangan" rows="3" placeholder="Keterangan tiket" required
+                        class="w-full mt-1 border rounded-xl p-2.5 text-sm focus:ring-2 focus:ring-[#192853] outline-none"></textarea>
+                </div>
             </div>
 
-            <div class="flex justify-end gap-3 mt-5">
-                <button type="button" onclick="closeModal()" class="px-4 py-2 bg-gray-200 rounded-lg">Batal</button>
-                <button type="submit" class="px-4 py-2 bg-[#192853] text-yellow-400 rounded-lg">Simpan</button>
+            <div class="flex justify-end gap-2 pt-2">
+                <button type="button" onclick="closeModal()" class="px-4 py-2 rounded-xl bg-gray-200 hover:bg-gray-300 text-sm">
+                    Batal
+                </button>
+                <button type="submit" class="px-4 py-2 rounded-xl bg-[#192853] text-yellow-400 hover:opacity-90 text-sm">
+                    Simpan
+                </button>
             </div>
         </form>
     </div>
@@ -182,28 +214,52 @@
 
 <!-- ================= MODAL EDIT TIKET ================= -->
 <div id="modalEditTiket" class="fixed inset-0 bg-black/50 hidden flex justify-center items-center z-50" onclick="closeEditModal()">
-    <div class="bg-white p-6 rounded-2xl shadow-2xl w-[400px] relative animate-fadeIn" onclick="event.stopPropagation()">
+    <div class="w-full max-w-lg bg-white/95 rounded-2xl shadow-2xl border border-gray-200 overflow-hidden animate-[fadeIn_0.2s_ease]" onclick="event.stopPropagation()">
 
-        <!-- Tombol Close Modal -->
-        <button onclick="closeEditModal()" class="absolute top-3 right-3 text-gray-400 hover:text-black text-lg">&times;</button>
+        <!-- HEADER -->
+        <div class="flex justify-between items-center px-6 py-4 border-b bg-[#192853] text-white">
+            <h2 class="font-semibold text-lg">Edit Tiket</h2>
+            <button onclick="closeEditModal()" class="text-white/80 hover:text-white text-2xl">&times;</button>
+        </div>
 
-        <h2 class="text-lg font-bold text-[#192853] mb-3">Edit Tiket</h2>
-
-        <!-- Form Edit Tiket -->
-        <form id="formEdit" method="POST">
+        <!-- FORM -->
+        <form id="formEdit" method="POST" class="p-6 space-y-4">
             @csrf
             @method('PUT')
 
-            <div class="space-y-3">
-                <input id="editNama" name="nama" type="text" required class="w-full rounded-xl border border-gray-200 p-2.5 text-sm focus:ring-2 focus:ring-[#192853] outline-none">
-                <input id="editHarga" name="harga" type="text" placeholder="Harga (misal: 10.000)" required class="w-full rounded-xl border border-gray-200 p-2.5 text-sm focus:ring-2 focus:ring-[#192853] outline-none">
-                <input id="editKuota" name="kuota" type="number" min="1" required class="w-full rounded-xl border border-gray-200 p-2.5 text-sm focus:ring-2 focus:ring-[#192853] outline-none">
-                <textarea id="editKeterangan" name="keterangan" rows="3" placeholder="Keterangan tiket" required class="w-full rounded-xl border border-gray-200 p-2.5 text-sm focus:ring-2 focus:ring-[#192853] outline-none"></textarea>
+            <div class="space-y-4">
+                <div>
+                    <label class="text-sm font-semibold">Nama Tiket</label>
+                    <input id="editNama" name="nama" type="text" required
+                        class="w-full mt-1 border rounded-xl p-2.5 text-sm focus:ring-2 focus:ring-[#192853] outline-none">
+                </div>
+
+                <div>
+                    <label class="text-sm font-semibold">Harga</label>
+                    <input id="editHarga" name="harga" type="text" placeholder="Harga (misal: 10.000)" required
+                        class="w-full mt-1 border rounded-xl p-2.5 text-sm focus:ring-2 focus:ring-[#192853] outline-none">
+                </div>
+
+                <div>
+                    <label class="text-sm font-semibold">Kuota</label>
+                    <input id="editKuota" name="kuota" type="number" min="1" required
+                        class="w-full mt-1 border rounded-xl p-2.5 text-sm focus:ring-2 focus:ring-[#192853] outline-none">
+                </div>
+
+                <div>
+                    <label class="text-sm font-semibold">Keterangan Tiket</label>
+                    <textarea id="editKeterangan" name="keterangan" rows="3" placeholder="Keterangan tiket" required
+                        class="w-full mt-1 border rounded-xl p-2.5 text-sm focus:ring-2 focus:ring-[#192853] outline-none"></textarea>
+                </div>
             </div>
 
-            <div class="flex justify-end gap-3 mt-5">
-                <button type="button" onclick="closeEditModal()" class="px-4 py-2 bg-gray-200 rounded-lg">Batal</button>
-                <button type="submit" class="px-4 py-2 bg-[#192853] text-yellow-400 rounded-lg">Simpan</button>
+            <div class="flex justify-end gap-2 pt-2">
+                <button type="button" onclick="closeEditModal()" class="px-4 py-2 rounded-xl bg-gray-200 hover:bg-gray-300 text-sm">
+                    Batal
+                </button>
+                <button type="submit" class="px-4 py-2 rounded-xl bg-[#192853] text-yellow-400 hover:opacity-90 text-sm">
+                    Simpan
+                </button>
             </div>
         </form>
     </div>
@@ -289,21 +345,31 @@ function submitDelete(){
 function filterTicketCards() {
     const searchValue = document.getElementById('searchTiket')?.value.toLowerCase().trim() || '';
     const categoryValue = document.getElementById('filterKategori')?.value.toLowerCase() || '';
+    const eventValue = document.getElementById('filterEvent')?.value || '';
     const cards = document.querySelectorAll('[id^="event-"]');
 
     cards.forEach(card => {
         const title = card.dataset.title || '';
         const category = card.dataset.category || '';
+        const cardId = card.id.replace('event-', '');
+
         const matchesSearch = searchValue === '' || title.includes(searchValue);
         const matchesCategory = categoryValue === '' || category === categoryValue;
-        card.style.display = matchesSearch && matchesCategory ? '' : 'none';
+        const matchesEvent = eventValue === '' || cardId === eventValue;
+
+        card.style.display = matchesSearch && matchesCategory && matchesEvent ? '' : 'none';
     });
 }
 
 const searchInput = document.getElementById('searchTiket');
 const filterSelect = document.getElementById('filterKategori');
+const filterEventSelect = document.getElementById('filterEvent');
 if (searchInput) searchInput.addEventListener('input', filterTicketCards);
 if (filterSelect) filterSelect.addEventListener('change', filterTicketCards);
+if (filterEventSelect) filterEventSelect.addEventListener('change', filterTicketCards);
+
+// Jalankan filter saat pertama kali halaman dimuat
+filterTicketCards();
 
 @if ($errors->any())
 document.addEventListener("DOMContentLoaded", function () {
