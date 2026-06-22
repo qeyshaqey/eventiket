@@ -32,7 +32,7 @@
                     class="border rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-[#192853] outline-none">
                     <option value="">Semua Event</option>
                     @foreach($events as $e)
-                        <option value="{{ $e->id }}" {{ isset($highlightEventId) && $highlightEventId == $e->id ? 'selected' : '' }}>{{ $e->judul }}</option>
+                        <option value="{{ $e->id }}" data-kategori="{{ $e->kategori->nama_kategori ?? '' }}" {{ isset($highlightEventId) && $highlightEventId == $e->id ? 'selected' : '' }}>{{ $e->judul }}</option>
                     @endforeach
                 </select>
             </div>
@@ -361,15 +361,42 @@ function filterTicketCards() {
     });
 }
 
+function updateEventDropdown() {
+    const categoryValue = document.getElementById('filterKategori')?.value || '';
+    const eventSelect = document.getElementById('filterEvent');
+    if (!eventSelect) return;
+    
+    const options = eventSelect.querySelectorAll('option:not([value=""])');
+    
+    // Check if currently selected event matches the new category
+    let selectedOptionMatches = false;
+
+    options.forEach(option => {
+        const optionCategory = option.getAttribute('data-kategori') || '';
+        if (categoryValue === '' || optionCategory === categoryValue) {
+            option.style.display = '';
+            if (option.selected) selectedOptionMatches = true;
+        } else {
+            option.style.display = 'none';
+        }
+    });
+
+    if (!selectedOptionMatches) {
+        eventSelect.value = "";
+    }
+
+    filterTicketCards();
+}
+
 const searchInput = document.getElementById('searchTiket');
 const filterSelect = document.getElementById('filterKategori');
 const filterEventSelect = document.getElementById('filterEvent');
 if (searchInput) searchInput.addEventListener('input', filterTicketCards);
-if (filterSelect) filterSelect.addEventListener('change', filterTicketCards);
+if (filterSelect) filterSelect.addEventListener('change', updateEventDropdown);
 if (filterEventSelect) filterEventSelect.addEventListener('change', filterTicketCards);
 
 // Jalankan filter saat pertama kali halaman dimuat
-filterTicketCards();
+updateEventDropdown();
 
 @if ($errors->any())
 document.addEventListener("DOMContentLoaded", function () {

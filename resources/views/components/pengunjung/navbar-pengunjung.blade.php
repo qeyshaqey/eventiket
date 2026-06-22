@@ -108,7 +108,7 @@
                     @endif
 
                     <!-- ICON USER -->
-                    <a href="{{ $userRole === 'admin' ? route('admin.dashboard') : route('pengunjung.profil') }}" class="w-10 h-10 rounded-full border border-white bg-transparent text-white flex items-center justify-center transition hover:bg-white hover:text-[#192853]">
+                    <a href="{{ $userRole === 'admin' ? route('admin.dashboard') : ($userRole === 'panitia' ? route('panitia.profil') : route('pengunjung.profil')) }}" class="w-10 h-10 rounded-full border border-white bg-transparent text-white flex items-center justify-center transition hover:bg-white hover:text-[#192853]">
                         <i class="fa-solid fa-user-circle text-lg"></i>
                     </a>
                 @else
