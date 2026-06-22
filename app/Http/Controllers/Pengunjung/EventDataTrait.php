@@ -113,6 +113,7 @@ trait EventDataTrait
                             'price' => $t->harga, // Harga per satuan tiket
                             'quota' => $t->kuota, // SISA kuota tiket yang bisa dibeli
                             'sold' => $t->tiket_terjual, // Total jumlah tiket yang sudah lunas/terjual
+                            'description' => $t->keterangan, // Keterangan/benefit tiket
                         ];
                     })->toArray(), // Ubah hasil mapping koleksi tiket menjadi array 
                 ];

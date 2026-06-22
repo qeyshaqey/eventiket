@@ -157,7 +157,8 @@ class VisitorSeeder extends Seeder
             // Create pembelian
             $pembelian = Pembelian::create([
                 'user_id' => $user->id,
-                'tanggal_beli' => $p['tanggal'],
+                'created_at' => $p['tanggal'],
+                'updated_at' => $p['tanggal'],
                 'total_bayar' => $p['tiket']->harga,
                 'status_pembayaran' => 'Lunas',
                 'order_id' => 'ORDER-' . uniqid() . '-' . $index,

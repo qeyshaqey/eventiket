@@ -11,7 +11,6 @@ class Pembelian extends Model
 
     protected $fillable = [
         'user_id',
-        'tanggal_beli',
         'total_bayar',
         'status_pembayaran',
         'order_id',

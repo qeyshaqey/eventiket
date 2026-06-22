@@ -167,7 +167,6 @@ class TiketController extends Controller
             // Buat struk pembelian awal (status masih 'Belum Bayar', total '0' dulu)
             $pembelian = Pembelian::create([
                 'user_id' => $userId,
-                'tanggal_beli' => now(),
                 'total_bayar' => 0, 
                 'status_pembayaran' => 'Belum Bayar',
                 'order_id' => $orderId,

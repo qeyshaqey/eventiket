@@ -79,7 +79,7 @@ class TransaksiController extends Controller
                 'jumlah_tiket' => $pembelian->detail_pembelians->sum('jumlah'),
                 'total_harga' => $pembelian->total_bayar,
                 'status' => $status,
-                'created_at' => $pembelian->tanggal_beli,
+                'created_at' => $pembelian->created_at,
                 'jenis_tiket' => $jenisTiket,
             ];
         });
