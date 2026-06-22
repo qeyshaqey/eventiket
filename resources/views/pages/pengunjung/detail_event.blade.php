@@ -161,16 +161,22 @@
     <div class="mt-12">
         @php
             $isLoggedIn = session()->has('user') && in_array(session('role'), ['pengunjung', 'panitia']);
+            $isSoldOut = $event['status'] === 'Tiket Habis';
         @endphp
 
-        @if($isLoggedIn)
+        @if($isSoldOut)
+            <button disabled
+                class="inline-flex w-full items-center justify-center bg-slate-300 text-slate-500 py-4 rounded-full text-lg font-semibold cursor-not-allowed">
+                TIKET HABIS
+            </button>
+        @elseif($isLoggedIn)
             <button id="buyTicketButton" type="button" onclick="openCheckout()"
-                class="inline-flex w-full items-center justify-center bg-navy text-white py-4 rounded-full text-lg font-semibold hover:bg-yellow hover:text-navy transition">
+                class="inline-flex w-full items-center justify-center bg-navy text-white py-4 rounded-full text-lg font-semibold hover:bg-yellow hover:text-navy transition shadow-md">
                 Beli Tiket
             </button>
         @else
             <button onclick="redirectToLogin()"
-                class="inline-flex w-full items-center justify-center bg-navy text-white py-4 rounded-full text-lg font-semibold hover:bg-yellow hover:text-navy transition">
+                class="inline-flex w-full items-center justify-center bg-navy text-white py-4 rounded-full text-lg font-semibold hover:bg-yellow hover:text-navy transition shadow-md">
                 Beli Tiket
             </button>
         @endif
