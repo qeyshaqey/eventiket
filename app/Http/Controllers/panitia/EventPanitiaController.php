@@ -65,17 +65,27 @@ class EventPanitiaController extends Controller
             $rules['waktu_mulai'] .= '|after:' . $currentTime;
         }
 
-        // Validasi Waktu Selesai: Jika tanggal mulai dan tanggal selesai sama, waktu selesai harus setelah waktu mulai
-        if ($request->tanggal_mulai === $request->tanggal_selesai) {
-            $rules['waktu_selesai'] .= '|after:waktu_mulai';
-        }
+        // Validasi Waktu Selesai: Waktu selesai harus selalu setelah waktu mulai, walaupun harinya berbeda (Sesuai request user)
+        $rules['waktu_selesai'] .= '|after:waktu_mulai';
 
         // Mengeksekusi validasi dengan pesan error khusus dalam Bahasa Indonesia
         $validated = $request->validate($rules, [
             'tanggal_mulai.after_or_equal' => 'Tanggal mulai tidak boleh tanggal yang sudah lewat.',
             'tanggal_selesai.after_or_equal' => 'Tanggal selesai harus setelah atau sama dengan tanggal mulai.',
             'waktu_mulai.after' => 'Waktu mulai harus setelah waktu sekarang untuk event hari ini.',
-            'waktu_selesai.after' => 'Waktu selesai harus setelah waktu mulai pada hari yang sama.',
+            'waktu_selesai.after' => 'Waktu selesai harus setelah waktu mulai.',
+            'poster.required' => 'Poster wajib diunggah.',
+            'poster.image' => 'File poster harus berupa gambar.',
+            'poster.mimes' => 'Format poster harus jpg, jpeg, atau png.',
+            'poster.max' => 'Ukuran poster maksimal 2MB.',
+            'judul.required' => 'Judul event wajib diisi.',
+            'kategori_id.required' => 'Kategori wajib dipilih.',
+            'deskripsi.required' => 'Deskripsi event wajib diisi.',
+            'tanggal_mulai.required' => 'Tanggal mulai wajib diisi.',
+            'tanggal_selesai.required' => 'Tanggal selesai wajib diisi.',
+            'waktu_mulai.required' => 'Waktu mulai wajib diisi.',
+            'waktu_selesai.required' => 'Waktu selesai wajib diisi.',
+            'lokasi.required' => 'Lokasi wajib diisi.',
         ]);
 
         // Mengunggah file poster jika ada ke storage public
@@ -125,17 +135,26 @@ class EventPanitiaController extends Controller
             $rules['waktu_mulai'] .= '|after:' . $currentTime;
         }
 
-        // Jika tanggal mulai dan selesai sama, pastikan waktu selesai tidak mendahului waktu mulai
-        if ($request->tanggal_mulai === $request->tanggal_selesai) {
-            $rules['waktu_selesai'] .= '|after:waktu_mulai';
-        }
+        // Validasi Waktu Selesai: Waktu selesai harus selalu setelah waktu mulai, walaupun harinya berbeda
+        $rules['waktu_selesai'] .= '|after:waktu_mulai';
 
         // Mengeksekusi validasi dengan pesan error khusus dalam Bahasa Indonesia
         $validated = $request->validate($rules, [
             'tanggal_mulai.after_or_equal' => 'Tanggal mulai tidak boleh tanggal yang sudah lewat.',
             'tanggal_selesai.after_or_equal' => 'Tanggal selesai harus setelah atau sama dengan tanggal mulai.',
             'waktu_mulai.after' => 'Waktu mulai harus setelah waktu sekarang untuk event hari ini.',
-            'waktu_selesai.after' => 'Waktu selesai harus setelah waktu mulai pada hari yang sama.',
+            'waktu_selesai.after' => 'Waktu selesai harus setelah waktu mulai.',
+            'poster.image' => 'File poster harus berupa gambar.',
+            'poster.mimes' => 'Format poster harus jpg, jpeg, atau png.',
+            'poster.max' => 'Ukuran poster maksimal 2MB.',
+            'judul.required' => 'Judul event wajib diisi.',
+            'kategori_id.required' => 'Kategori wajib dipilih.',
+            'deskripsi.required' => 'Deskripsi event wajib diisi.',
+            'tanggal_mulai.required' => 'Tanggal mulai wajib diisi.',
+            'tanggal_selesai.required' => 'Tanggal selesai wajib diisi.',
+            'waktu_mulai.required' => 'Waktu mulai wajib diisi.',
+            'waktu_selesai.required' => 'Waktu selesai wajib diisi.',
+            'lokasi.required' => 'Lokasi wajib diisi.',
         ]);
 
         // Mengunggah file poster baru jika diunggah oleh user

@@ -60,11 +60,11 @@
                 <!-- HEADER TABEL -->
                 <thead class="bg-[#192853] text-white text-xs uppercase font-semibold">
                     <tr>
-                        <th class="p-3 text-center w-12">No</th>
-                        <th class="p-3 text-center">Nama Pembeli</th>
-                        <th class="p-3 text-center">Event</th>
-                        <th class="p-3 text-center">Tanggal</th>
-                        <th class="p-3 text-center">Total</th>
+                        <th class="p-3 text-left w-12">No</th>
+                        <th class="p-3 text-left">Nama Pembeli</th>
+                        <th class="p-3 text-left">Event</th>
+                        <th class="p-3 text-left">Tanggal</th>
+                        <th class="p-3 text-left">Total</th>
                         <th class="p-3 text-center">Status</th>
                         <th class="p-3 text-center w-24">Aksi</th>
                     </tr>
@@ -93,12 +93,12 @@
                         </td>
 
                         <!-- Tanggal Transaksi -->
-                        <td class="p-3 text-gray-600 text-xs whitespace-nowrap text-center">
+                        <td class="p-3 text-gray-600 text-xs whitespace-nowrap text-left">
                             {{ \Carbon\Carbon::parse($trx->created_at)->format('d M Y') }}
                         </td>
 
                         <!-- Total Bayar -->
-                        <td class="p-3 font-semibold text-gray-800 whitespace-nowrap text-center">
+                        <td class="p-3 font-semibold text-gray-800 whitespace-nowrap text-left">
                             Rp {{ number_format($trx->total_harga, 0, ',', '.') }}
                         </td>
 
@@ -143,7 +143,7 @@
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="7" class="py-12 text-center">
+                        <td colspan="7" class="py-12 text-left">
                             <div class="flex flex-col items-center gap-2 text-gray-400">
                                 <p class="font-semibold">Belum ada transaksi</p>
                             </div>

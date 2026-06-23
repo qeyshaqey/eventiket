@@ -93,7 +93,7 @@
                             <th class="p-3 text-left">Judul Event</th>
                             <th class="p-3 text-left">Kategori</th>
                             <th class="p-3 text-left">Tanggal</th>
-                            <th class="p-3 text-left">Status</th>
+                            <th class="p-3 text-center">Status</th>
                         </tr>
                     </thead>
 
@@ -114,7 +114,7 @@
                             <td class="p-3 text-gray-600 text-sm">
                                 {{ \Carbon\Carbon::parse($event->tanggal_mulai)->format('d M Y') }}
                             </td>
-                            <td class="p-3">
+                            <td class="p-3 text-center">
                                 <span class="px-3 py-1 text-xs rounded-full
                                     {{ $event->status == 'published'
                                         ? 'bg-green-100 text-green-700'
@@ -199,7 +199,7 @@
                             <th class="p-3 text-left">Event</th>
                             <th class="p-3 text-left">Tanggal</th>
                             <th class="p-3 text-left">Total</th>
-                            <th class="p-3 text-left">Status</th>
+                            <th class="p-3 text-center">Status</th>
                             <th class="p-3 text-center">Aksi</th>
                         </tr>
                     </thead>
@@ -223,7 +223,7 @@
                             <td class="p-3 font-semibold text-gray-800 whitespace-nowrap">
                                 Rp {{ number_format($trx->total) }}
                             </td>
-                            <td class="p-3 whitespace-nowrap">
+                            <td class="p-3 whitespace-nowrap text-center">
                                 @if($trx->status === 'Belum Bayar')
                                     <span class="px-2.5 py-1 text-xs rounded-full bg-yellow-100 text-yellow-700 font-semibold">Belum Bayar</span>
                                 @elseif($trx->status === 'Lunas')

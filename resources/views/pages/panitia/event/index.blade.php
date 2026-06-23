@@ -118,8 +118,8 @@
             <th class="px-4 py-3">TANGGAL</th>
             <th class="px-4 py-3">WAKTU</th>
             <th class="px-4 py-3">LOKASI</th>
-            <th class="px-4 py-3">STATUS</th>
-            <th class="px-4 py-3">AKSI</th>
+            <th class="px-4 py-3 text-center">STATUS</th>
+            <th class="px-4 py-3 text-center">AKSI</th>
         </tr>
     </thead>
 
@@ -167,7 +167,7 @@
             </td>
 
             <!-- STATUS -->
-            <td class="px-4 py-3">
+            <td class="px-4 py-3 text-center">
                 @if(($event->status ?? '') === 'Published')
                     <span class="px-2 py-1 text-xs rounded-full bg-green-100 text-green-600 font-semibold">
                         Published
@@ -188,7 +188,7 @@
             </td>
 
             <!-- AKSI -->
-            <td class="px-4 py-3">
+            <td class="px-4 py-3 text-center">
                 <div class="flex items-center justify-center gap-3">
 
                     @if(in_array(($event->status ?? ''), ['Draft', 'Rejected']))
@@ -693,6 +693,78 @@ document.addEventListener('DOMContentLoaded', function () {
 
         document.body.appendChild(form);
         form.submit();
+    }
+
+    // =========================
+    // AJAX SUBMIT (BIAR POSTER GA ILANG)
+    // =========================
+    const eventForm = document.getElementById('eventForm');
+    if (eventForm) {
+        eventForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            // Hapus error sebelumnya (baik dari JS maupun dari blade)
+            document.querySelectorAll('#eventForm p.text-red-500').forEach(el => el.remove());
+            document.querySelectorAll('#eventForm .border-red-500').forEach(el => {
+                el.classList.remove('border-red-500');
+                el.classList.add('border-gray-200');
+            });
+            
+            const submitBtn = this.querySelector('button[type="submit"]');
+            const originalText = submitBtn ? submitBtn.innerText : 'Simpan';
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.innerText = 'Menyimpan...';
+            }
+
+            const formData = new FormData(this);
+            const actionUrl = this.action;
+
+            try {
+                const response = await fetch(actionUrl, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'Accept': 'application/json'
+                    }
+                });
+
+                if (!response.ok) {
+                    if (response.status === 422) {
+                        const data = await response.json();
+                        const errors = data.errors;
+                        for (const field in errors) {
+                            // Untuk name="poster", parentnya mungkin agak berbeda, tapi tetap bisa dicari
+                            const input = document.querySelector(`#eventForm [name="${field}"]`);
+                            if (input) {
+                                input.classList.remove('border-gray-200');
+                                input.classList.add('border-red-500');
+                                const errorMsg = document.createElement('p');
+                                errorMsg.className = 'text-xs text-red-500 mt-1 font-medium';
+                                errorMsg.innerText = errors[field][0];
+                                input.parentNode.appendChild(errorMsg);
+                            }
+                        }
+                        if (typeof showToast === 'function') {
+                            showToast("Silakan periksa kembali isian form Anda.", "error");
+                        }
+                    } else {
+                        if (typeof showToast === 'function') showToast("Terjadi kesalahan sistem.", "error");
+                    }
+                } else {
+                    // Sukses, muat ulang halaman untuk nampilin pesan success dari controller
+                    window.location.reload();
+                }
+            } catch (err) {
+                if (typeof showToast === 'function') showToast("Gagal menghubungi server.", "error");
+            } finally {
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.innerText = originalText;
+                }
+            }
+        });
     }
 
     // GLOBAL EXPORT (WAJIB)
