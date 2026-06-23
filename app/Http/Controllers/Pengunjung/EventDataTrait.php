@@ -65,12 +65,13 @@ trait EventDataTrait
                 }
 
                 // Penentuan (Badge) Status di antarmuka pengunjung
-                if ($isOngoing) {
-                    // Jika acara sedang berjalan sekarang
-                    $statusBadge = 'Sedang Berjalan';
-                } elseif ($totalKuota <= 0) {
-                    // Jika acara belum berjalan, tapi tiket (sisa kuota) sudah habis terjual
+                // Kuota habis dicek PERTAMA, apapun kondisi eventnya (sedang berjalan atau belum)
+                if ($totalKuota <= 0) {
+                    // Jika semua tiket sudah habis terjual (kuota = 0)
                     $statusBadge = 'Tiket Habis';
+                } elseif ($isOngoing) {
+                    // Jika acara sedang berjalan sekarang dan masih ada sisa kuota
+                    $statusBadge = 'Sedang Berjalan';
                 } else {
                     // Jika acara belum berjalan, dan tiket masih tersedia
                     $statusBadge = 'Tersedia Tiket';
@@ -112,6 +113,7 @@ trait EventDataTrait
                             'price' => $t->harga, // Harga per satuan tiket
                             'quota' => $t->kuota, // SISA kuota tiket yang bisa dibeli
                             'sold' => $t->tiket_terjual, // Total jumlah tiket yang sudah lunas/terjual
+                            'description' => $t->keterangan, // Keterangan/benefit tiket
                         ];
                     })->toArray(), // Ubah hasil mapping koleksi tiket menjadi array 
                 ];

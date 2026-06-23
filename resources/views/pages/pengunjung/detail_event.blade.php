@@ -71,12 +71,19 @@
                 <h3 class="font-semibold mb-6 text-lg">Pilih Jenis Tiket</h3>
 
                 @foreach($event['tickets'] as $i => $ticket)
-                <div class="flex flex-col sm:flex-row sm:items-center justify-between bg-white sm:bg-[#F8FAFC] rounded-2xl sm:rounded-xl p-5 sm:px-5 sm:py-4 mb-4 border border-slate-100 sm:border-none shadow-[0_8px_30px_rgb(0,0,0,0.04)] sm:shadow-none gap-5 sm:gap-0 transition-all hover:border-[#FFE14E]/50">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between bg-white sm:bg-[#F8FAFC] rounded-2xl sm:rounded-xl p-5 sm:px-5 sm:py-4 mb-4 border border-slate-100 sm:border-none shadow-[0_8px_30px_rgb(0,0,0,0.04)] sm:shadow-none gap-5 sm:gap-6 transition-all hover:border-[#FFE14E]/50">
 
                     <!-- INFO -->
                     <div class="flex flex-col sm:block">
                         <div class="flex items-center justify-between sm:block mb-1 sm:mb-0">
-                            <p class="font-bold sm:font-semibold text-navy text-lg sm:text-[15px]">{{ $ticket['type'] }}</p>
+                            <div class="flex items-center gap-2">
+                                <p class="font-bold sm:font-semibold text-navy text-lg sm:text-[15px] whitespace-nowrap">{{ $ticket['type'] }}</p>
+                                @if(!empty($ticket['description']))
+                                    <button type="button" onclick="showTicketInfo({{ $i }})" class="text-slate-400 hover:text-navy transition focus:outline-none" title="Lihat Keterangan Tiket">
+                                        <i class="fa-solid fa-circle-info text-sm"></i>
+                                    </button>
+                                @endif
+                            </div>
                             <!-- KUOTA & TERJUAL MOBILE -->
                             <div class="sm:hidden flex items-center gap-2 mt-1">
                                 <div class="flex items-center whitespace-nowrap gap-1 text-[10px] font-semibold bg-[#FFF7E0] text-[#192853] px-2 py-0.5 rounded border border-[#FFE14E]">
@@ -254,16 +261,44 @@
 @endsection
 
 @push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
 
 let prices = @json(array_column($event['tickets'], 'price'));
 let quotas = @json(array_column($event['tickets'], 'quota'));
 let ticketTypes = @json(array_column($event['tickets'], 'type'));
 let ticketIds = @json(array_column($event['tickets'], 'id'));
+let ticketDescriptions = @json(array_column($event['tickets'], 'description'));
 let quantities = new Array(prices.length).fill(0);
 let noticeTimeout = null;
 const toastNotice = document.getElementById('toast-notice');
 const toastNoticeText = document.getElementById('toast-notice-text');
+
+function showTicketInfo(i) {
+    let desc = ticketDescriptions[i] ? ticketDescriptions[i].replace(/\n/g, '<br>') : 'Tidak ada keterangan tambahan.';
+    Swal.fire({
+        html: `
+            <div class="flex flex-col items-center">
+                <div class="w-16 h-16 bg-[#FFE14E] rounded-full flex items-center justify-center mb-4 shadow-sm">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-9 w-9 text-[#192853]" viewBox="0 0 24 24" fill="currentColor">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M21.2 5.5H2.8a.8.8 0 0 0-.8.8v3.6c0 .4.3.8.8.8.8 0 1.5.7 1.5 1.5s-.7 1.5-1.5 1.5a.8.8 0 0 0-.8.8v3.6c0 .4.4.8.8.8h18.4c.4 0 .8-.4.8-.8v-3.6c0-.4-.3-.8-.8-.8-.8 0-1.5-.7-1.5-1.5s.7-1.5 1.5-1.5c.4 0 .8-.4.8-.8V6.3a.8.8 0 0 0-.8-.8ZM12 15.5l-2.4 1.3.5-2.7-2-2 2.7-.4L12 9l1.2 2.7 2.7.4-2 2 .5 2.7L12 15.5Z"/>
+                    </svg>
+                </div>
+                <h3 class="text-2xl font-bold text-[#192853] mb-2">${ticketTypes[i]}</h3>
+                <div class="text-sm text-slate-600 leading-relaxed text-center px-2">
+                    ${desc}
+                </div>
+            </div>
+        `,
+        showConfirmButton: true,
+        confirmButtonColor: '#192853',
+        confirmButtonText: 'Tutup',
+        customClass: {
+            popup: 'rounded-3xl p-6',
+            confirmButton: 'rounded-full px-8 py-2.5 font-semibold mt-4 hover:bg-[#FFE14E] hover:text-[#192853] transition-colors'
+        }
+    });
+}
 
 function formatRupiah(num) {
     return new Intl.NumberFormat('id-ID').format(num);

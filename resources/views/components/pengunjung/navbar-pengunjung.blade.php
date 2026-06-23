@@ -6,7 +6,12 @@
 @if(request()->routeIs('home'))
     <header class="sticky top-0 z-50 bg-[#192853] text-white shadow-sm">
         <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-5 sm:px-6 lg:px-8">
-            <a href="{{ route('home') }}" class="text-xl font-bold tracking-tight">EventiX</a>
+            <a href="{{ route('home') }}" class="flex items-center gap-2 text-xl font-bold tracking-tight">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-[#FFE14E] flex-shrink-0 drop-shadow-sm" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M21.2 5.5H2.8a.8.8 0 0 0-.8.8v3.6c0 .4.3.8.8.8.8 0 1.5.7 1.5 1.5s-.7 1.5-1.5 1.5a.8.8 0 0 0-.8.8v3.6c0 .4.4.8.8.8h18.4c.4 0 .8-.4.8-.8v-3.6c0-.4-.3-.8-.8-.8-.8 0-1.5-.7-1.5-1.5s.7-1.5 1.5-1.5c.4 0 .8-.4.8-.8V6.3a.8.8 0 0 0-.8-.8ZM12 15.5l-2.4 1.3.5-2.7-2-2 2.7-.4L12 9l1.2 2.7 2.7.4-2 2 .5 2.7L12 15.5Z"/>
+                </svg>
+                EventiX
+            </a>
             
             <!-- Desktop Nav -->
             <nav class="hidden items-center gap-4 md:flex">
@@ -35,7 +40,12 @@
             <!-- Content Container -->
             <div class="relative h-full flex flex-col p-6 transform translate-y-0 opacity-100">
                 <div class="flex items-center justify-between mb-12">
-                    <span class="text-xl font-bold text-white">EventiX</span>
+                    <span class="flex items-center gap-2 text-xl font-bold text-white">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-[#FFE14E] flex-shrink-0 drop-shadow-sm" viewBox="0 0 24 24" fill="currentColor">
+                          <path d="M21.2 5.5H2.8a.8.8 0 0 0-.8.8v3.6c0 .4.3.8.8.8.8 0 1.5.7 1.5 1.5s-.7 1.5-1.5 1.5a.8.8 0 0 0-.8.8v3.6c0 .4.4.8.8.8h18.4c.4 0 .8-.4.8-.8v-3.6c0-.4-.3-.8-.8-.8-.8 0-1.5-.7-1.5-1.5s.7-1.5 1.5-1.5c.4 0 .8-.4.8-.8V6.3a.8.8 0 0 0-.8-.8ZM12 15.5l-2.4 1.3.5-2.7-2-2 2.7-.4L12 9l1.2 2.7 2.7.4-2 2 .5 2.7L12 15.5Z"/>
+                        </svg>
+                        EventiX
+                    </span>
                     <button type="button" data-collapse-toggle="mobile-menu" class="w-10 h-10 flex items-center justify-center rounded-full bg-white/5 border border-white/10 text-white transition active:scale-90">
                         <i class="fa-solid fa-xmark text-xl"></i>
                     </button>
@@ -80,7 +90,12 @@
 @else
     <header class="sticky top-0 z-50 bg-[#192853] text-white shadow-sm">
         <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-5">
-            <a href="{{ $isLoggedIn ? route('pengunjung.dashboard') : route('home') }}" class="text-xl font-semibold tracking-tight">EventiX</a>
+            <a href="{{ $isLoggedIn ? route('pengunjung.dashboard') : route('home') }}" class="flex items-center gap-2 text-xl font-semibold tracking-tight">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-[#FFE14E] flex-shrink-0 drop-shadow-sm" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M21.2 5.5H2.8a.8.8 0 0 0-.8.8v3.6c0 .4.3.8.8.8.8 0 1.5.7 1.5 1.5s-.7 1.5-1.5 1.5a.8.8 0 0 0-.8.8v3.6c0 .4.4.8.8.8h18.4c.4 0 .8-.4.8-.8v-3.6c0-.4-.3-.8-.8-.8-.8 0-1.5-.7-1.5-1.5s.7-1.5 1.5-1.5c.4 0 .8-.4.8-.8V6.3a.8.8 0 0 0-.8-.8ZM12 15.5l-2.4 1.3.5-2.7-2-2 2.7-.4L12 9l1.2 2.7 2.7.4-2 2 .5 2.7L12 15.5Z"/>
+                </svg>
+                EventiX
+            </a>
 
             <div class="flex items-center gap-3">
                 @if($isLoggedIn)

@@ -28,7 +28,7 @@ class PengunjungController extends Controller
                     'nama' => $user->name,
                     'email' => $user->email,
                     'nim' => $user->nim ?? '-',
-                    'tanggal_beli' => $pembelian->tanggal_beli ?? ($pembelian->created_at ? $pembelian->created_at->toDateString() : date('Y-m-d')),
+                    'tanggal_beli' => $pembelian->created_at ? $pembelian->created_at->toDateString() : date('Y-m-d'),
                     'kategori' => $kategori ? $kategori->nama_kategori : '-',
                     'event' => $event ? $event->judul : '-',
                     'jenis_tiket' => $tiket ? $tiket->nama : '-',
