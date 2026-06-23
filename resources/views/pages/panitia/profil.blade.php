@@ -71,7 +71,10 @@
                         <input type="file" name="photo" class="hidden" accept="image/jpeg,image/png,image/jpg" onchange="previewFoto(event)">
                     </label>
                 </div>
-                <p class="text-xs text-gray-500 mt-3">Klik ikon untuk mengganti foto. Kosongkan jika tidak ingin mengubah.</p>
+                <p class="text-xs text-gray-500 mt-3 text-center">Klik ikon untuk mengganti foto. Kosongkan jika tidak ingin mengubah.<br>Format: JPG, JPEG, PNG. Ukuran Maksimal: 2MB.</p>
+                @error('photo')
+                    <p class="text-xs text-red-500 mt-2 text-center">{{ $message }}</p>
+                @enderror
             </div>
 
             <div class="grid grid-cols-1 gap-4">
