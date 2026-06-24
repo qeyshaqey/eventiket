@@ -44,7 +44,6 @@
                         <th class="p-3 text-left">Email</th>
                         <th class="p-3 text-left">NIM</th>
                         <th class="p-3 text-left">Organisasi</th>
-                        <th class="p-3 text-left">Status</th>
                         <th class="p-3 text-center">Aksi</th>
                     </tr>
                 </thead>
@@ -61,7 +60,7 @@
 
                     @if(!$hasAktif)
                     <tr class="empty-row bg-white cursor-default">
-                        <td colspan="7" class="py-12 px-4 text-center">
+                        <td colspan="6" class="py-12 px-4 text-center">
                             <div class="flex flex-col items-center justify-center text-gray-300 opacity-70">
                                 <i class="fa-solid fa-box-open text-[150px] mb-4 drop-shadow-2xl"></i>
                                 <p class="text-2xl font-bold drop-shadow-sm">Data tidak tersedia</p>
@@ -78,11 +77,6 @@
                         <td class="py-4 px-3 text-gray-500">{{ $d['email'] }}</td>
                         <td class="py-4 px-3 text-gray-600">{{ $d['nim'] }}</td>
                         <td class="py-4 px-3">{{ $d['nama_organisasi'] }}</td>
-                        <td class="py-4 px-3">
-                            <span class="px-3 py-1 rounded-full text-xs bg-green-100 text-green-600 font-bold">
-                                {{ $d['status'] }}
-                            </span>
-                        </td>
                         <td class="py-4 px-3 first:rounded-l-lg last:rounded-r-lg">
                             <div class="flex justify-center">
                                 <button data-modal-target="modalTurunkan" data-modal-toggle="modalTurunkan" onclick="openDemoteModal('{{ $d['nama'] }}', '{{ $d['id'] }}')" 

@@ -109,9 +109,9 @@ event.addEventListener('change', filter);
 tanggal_beli.addEventListener('change', filter);
 
 function filter(){
-    let s = search.value.toLowerCase();
-    let k = kategori.value;
-    let e = event.value;
+    let s = search.value.toLowerCase().trim();
+    let k = kategori.value.toLowerCase().trim();
+    let e = event.value.toLowerCase().trim();
     let t = tanggal_beli.value; // format: YYYY-MM-DD
 
     let tbody = document.getElementById('tableBody');
@@ -122,8 +122,8 @@ function filter(){
 
     rows.forEach(row=>{
         let nama = row.children[1].innerText.toLowerCase();
-        let kategoriRow = row.dataset.kategori;
-        let eventRow = row.dataset.event;
+        let kategoriRow = row.dataset.kategori.toLowerCase().trim();
+        let eventRow = row.dataset.event.toLowerCase().trim();
         let tanggalRow = row.dataset.tanggal;
 
         let show =

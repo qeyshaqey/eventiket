@@ -21,6 +21,17 @@
 
     <!-- ================= SEMUA EVENT ================= -->
     <div id="k" class="bg-white p-5 rounded-xl shadow border">
+        
+        <!-- Sub Tabs inside Semua Event -->
+        <div class="flex gap-2 mb-4 border-b pb-3">
+            <button id="subEvent1" onclick="subTabEvent('aktif')" class="px-4 py-2 text-xs rounded-full border bg-[#192853] text-white transition-all font-bold">
+                Event Aktif
+            </button>
+            <button id="subEvent2" onclick="subTabEvent('riwayat')" class="px-4 py-2 text-xs rounded-full border bg-white text-yellow-400 transition-all font-bold">
+                Riwayat Event
+            </button>
+        </div>
+
         <div class="mb-4">
             <div class="flex flex-col md:flex-row gap-3">
                 <div class="relative flex-1">
@@ -28,20 +39,24 @@
                         class="w-full pl-10 pr-4 py-2 border rounded-lg text-sm font-bold focus:outline-none focus:ring-2 focus:ring-[#192853] transition-all">
                     <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
                 </div>
-                <div class="relative w-full md:w-auto">
-                    <input type="date" id="filterTanggalAktif" class="w-full px-3 py-2 border rounded-lg text-sm text-gray-500 font-bold focus:outline-none focus:ring-2 focus:ring-[#192853] transition-all">
+                <div class="relative w-full md:w-auto flex gap-2">
+                    <input type="date" id="filterTanggalAktifMulai" class="w-full px-3 py-2 border rounded-lg text-sm text-gray-500 font-bold focus:outline-none focus:ring-2 focus:ring-[#192853] transition-all" title="Dari Tanggal">
+                    <input type="date" id="filterTanggalAktifSampai" class="w-full px-3 py-2 border rounded-lg text-sm text-gray-500 font-bold focus:outline-none focus:ring-2 focus:ring-[#192853] transition-all" title="Sampai Tanggal">
                 </div>
                 <div class="relative w-full md:w-auto">
-                    <select id="filterStatusAktif" class="w-full pl-4 pr-10 py-2 border rounded-lg text-sm text-gray-500 font-bold appearance-none bg-white focus:outline-none focus:ring-2 focus:ring-[#192853] transition-all cursor-pointer">
-                        <option value="">Semua Status</option>
-                        <option value="disetujui">Disetujui</option>
+                    <select id="filterKategoriAktif" class="w-full pl-4 pr-10 py-2 border rounded-lg text-sm text-gray-500 font-bold appearance-none bg-white focus:outline-none focus:ring-2 focus:ring-[#192853] transition-all cursor-pointer">
+                        <option value="">Semua Kategori</option>
+                        @foreach($kategoris as $k)
+                            <option value="{{ strtolower($k) }}">{{ $k }}</option>
+                        @endforeach
                     </select>
                     <i class="fa-solid fa-chevron-down absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"></i>
                 </div>
             </div>
         </div>
 
-        <div class="max-h-[65vh] overflow-y-auto overflow-x-auto">
+        <!-- TABLE EVENT AKTIF -->
+        <div id="divEventAktif" class="max-h-[65vh] overflow-y-auto overflow-x-auto">
             <table class="w-full text-sm border-separate border-spacing-y-1" id="tableAktif">
                 <thead class="text-gray-500 border-b bg-gray-50 sticky top-0">
                     <tr>
@@ -54,7 +69,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @if(count($eventDisetujui) == 0)
+                    @if(count($eventAktif) == 0)
                     <tr class="empty-row bg-white cursor-default">
                         <td colspan="6" class="py-12 px-4 text-center">
                             <div class="flex flex-col items-center justify-center text-gray-300 opacity-70">
@@ -64,7 +79,7 @@
                         </td>
                     </tr>
                     @else
-                    @foreach ($eventDisetujui as $i => $e)
+                    @foreach ($eventAktif as $i => $e)
                     @php
                         $tgl = \Carbon\Carbon::parse($e->tanggal_mulai)->format('d M Y');
                         $tglSelesai = $e->tanggal_selesai ? ' - ' . \Carbon\Carbon::parse($e->tanggal_selesai)->format('d M Y') : '';
@@ -79,7 +94,56 @@
                         <td class="py-4 px-3">{{ $e->kategori->nama_kategori ?? '-' }}</td>
                         <td class="py-4 px-3 first:rounded-l-lg last:rounded-r-lg">
                             <span class="px-3 py-1 rounded-full text-xs font-bold bg-green-100 text-green-600">
-                                Disetujui
+                                Aktif
+                            </span>
+                        </td>
+                    </tr>
+                    @endforeach
+                    @endif
+                </tbody>
+            </table>
+        </div>
+
+        <!-- TABLE RIWAYAT EVENT -->
+        <div id="divEventRiwayat" class="max-h-[65vh] overflow-y-auto overflow-x-auto hidden">
+            <table class="w-full text-sm border-separate border-spacing-y-1" id="tableRiwayat">
+                <thead class="text-gray-500 border-b bg-gray-50 sticky top-0">
+                    <tr>
+                        <th class="p-3 text-center">No</th>
+                        <th class="p-3 text-left">Nama</th>
+                        <th class="p-3 text-left">Tanggal</th>
+                        <th class="p-3 text-left">Panitia</th>
+                        <th class="p-3 text-left">Kategori</th>
+                        <th class="p-3 text-left">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if(count($eventRiwayat) == 0)
+                    <tr class="empty-row bg-white cursor-default">
+                        <td colspan="6" class="py-12 px-4 text-center">
+                            <div class="flex flex-col items-center justify-center text-gray-300 opacity-70">
+                                <i class="fa-solid fa-box-open text-[150px] mb-4 drop-shadow-2xl"></i>
+                                <p class="text-2xl font-bold drop-shadow-sm">Data tidak tersedia</p>
+                            </div>
+                        </td>
+                    </tr>
+                    @else
+                    @foreach ($eventRiwayat as $i => $e)
+                    @php
+                        $tgl = \Carbon\Carbon::parse($e->tanggal_mulai)->format('d M Y');
+                        $tglSelesai = $e->tanggal_selesai ? ' - ' . \Carbon\Carbon::parse($e->tanggal_selesai)->format('d M Y') : '';
+                        $wkt = \Carbon\Carbon::parse($e->waktu_mulai)->format('H:i');
+                        $wktSelesai = $e->waktu_selesai ? ' - ' . \Carbon\Carbon::parse($e->waktu_selesai)->format('H:i') : '';
+                    @endphp
+                    <tr data-modal-target="modal" data-modal-toggle="modal" onclick="showModal('{{ $e->judul }}','{{ $tgl . $tglSelesai }}','{{ $wkt . $wktSelesai }}','{{ $e->lokasi }}','{{ $e->panitia->name ?? '-' }}','{{ $e->deskripsi }}')" class="bg-white hover:bg-gray-100 transition cursor-pointer shadow-sm">
+                        <td class="py-4 px-3 text-center first:rounded-l-lg last:rounded-r-lg">{{ $i+1 }}</td>
+                        <td class="py-4 px-3 font-bold text-gray-700">{{ $e->judul }}</td>
+                        <td class="py-4 px-3 text-gray-500">{{ $tgl . $tglSelesai }}</td>
+                        <td class="py-4 px-3 text-gray-600">{{ $e->panitia->name ?? '-' }}</td>
+                        <td class="py-4 px-3">{{ $e->kategori->nama_kategori ?? '-' }}</td>
+                        <td class="py-4 px-3 first:rounded-l-lg last:rounded-r-lg">
+                            <span class="px-3 py-1 rounded-full text-xs font-bold bg-gray-200 text-gray-600">
+                                Selesai
                             </span>
                         </td>
                     </tr>
@@ -100,8 +164,18 @@
                         class="w-full pl-10 pr-4 py-2 border rounded-lg text-sm font-bold focus:outline-none focus:ring-2 focus:ring-[#192853] transition-all">
                     <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
                 </div>
+                <div class="relative w-full md:w-auto flex gap-2">
+                    <input type="date" id="filterTanggalDitolakMulai" class="w-full px-3 py-2 border rounded-lg text-sm text-gray-500 font-bold focus:outline-none focus:ring-2 focus:ring-[#192853] transition-all" title="Dari Tanggal">
+                    <input type="date" id="filterTanggalDitolakSampai" class="w-full px-3 py-2 border rounded-lg text-sm text-gray-500 font-bold focus:outline-none focus:ring-2 focus:ring-[#192853] transition-all" title="Sampai Tanggal">
+                </div>
                 <div class="relative w-full md:w-auto">
-                    <input type="date" id="filterTanggalDitolak" class="w-full px-3 py-2 border rounded-lg text-sm text-gray-500 font-bold focus:outline-none focus:ring-2 focus:ring-[#192853] transition-all">
+                    <select id="filterKategoriDitolak" class="w-full pl-4 pr-10 py-2 border rounded-lg text-sm text-gray-500 font-bold appearance-none bg-white focus:outline-none focus:ring-2 focus:ring-[#192853] transition-all cursor-pointer">
+                        <option value="">Semua Kategori</option>
+                        @foreach($kategoris as $k)
+                            <option value="{{ strtolower($k) }}">{{ $k }}</option>
+                        @endforeach
+                    </select>
+                    <i class="fa-solid fa-chevron-down absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"></i>
                 </div>
             </div>
         </div>
@@ -160,8 +234,18 @@
                         class="w-full pl-10 pr-4 py-2 border rounded-lg text-sm font-bold focus:outline-none focus:ring-2 focus:ring-[#192853] transition-all">
                     <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
                 </div>
+                <div class="relative w-full md:w-auto flex gap-2">
+                    <input type="date" id="filterTanggalPengajuanMulai" class="w-full px-3 py-2 border rounded-lg text-sm text-gray-500 font-bold focus:outline-none focus:ring-2 focus:ring-[#192853] transition-all" title="Dari Tanggal">
+                    <input type="date" id="filterTanggalPengajuanSampai" class="w-full px-3 py-2 border rounded-lg text-sm text-gray-500 font-bold focus:outline-none focus:ring-2 focus:ring-[#192853] transition-all" title="Sampai Tanggal">
+                </div>
                 <div class="relative w-full md:w-auto">
-                    <input type="date" id="filterTanggalPengajuan" class="w-full px-3 py-2 border rounded-lg text-sm text-gray-500 font-bold focus:outline-none focus:ring-2 focus:ring-[#192853] transition-all">
+                    <select id="filterKategoriPengajuan" class="w-full pl-4 pr-10 py-2 border rounded-lg text-sm text-gray-500 font-bold appearance-none bg-white focus:outline-none focus:ring-2 focus:ring-[#192853] transition-all cursor-pointer">
+                        <option value="">Semua Kategori</option>
+                        @foreach($kategoris as $k)
+                            <option value="{{ strtolower($k) }}">{{ $k }}</option>
+                        @endforeach
+                    </select>
+                    <i class="fa-solid fa-chevron-down absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"></i>
                 </div>
             </div>
         </div>
@@ -324,10 +408,11 @@
         tab(urlParams.get('tab'));
     }
 
-    function setupAdvancedSearch(inputId, tanggalId, tableId, statusId = null) {
+    function setupAdvancedSearch(inputId, tglMulaiId, tglSampaiId, kategoriId, tableId) {
         const inputEl = document.getElementById(inputId);
-        const tanggalEl = document.getElementById(tanggalId);
-        const statusEl = statusId ? document.getElementById(statusId) : null;
+        const tglMulaiEl = document.getElementById(tglMulaiId);
+        const tglSampaiEl = document.getElementById(tglSampaiId);
+        const kategoriEl = document.getElementById(kategoriId);
         const tableEl = document.getElementById(tableId);
 
         if (!tableEl) return;
@@ -336,8 +421,9 @@
 
         function filterTable() {
             const searchValue = inputEl ? inputEl.value.toLowerCase() : '';
-            const tanggalValue = tanggalEl ? tanggalEl.value : '';
-            const statusValue = statusEl ? statusEl.value.toLowerCase() : '';
+            const tglMulaiValue = tglMulaiEl ? tglMulaiEl.value : '';
+            const tglSampaiValue = tglSampaiEl ? tglSampaiEl.value : '';
+            const kategoriValue = kategoriEl ? kategoriEl.value.toLowerCase() : '';
 
             const tbody = tableEl.querySelector('tbody');
             if (!tbody) return;
@@ -355,27 +441,34 @@
 
                 // Date formatting and checking
                 let matchesTanggal = true;
-                if (tanggalValue !== '') {
-                    const dateCellText = cells[2].innerText.toLowerCase().trim(); // e.g. "12 apr 2024"
-                    const parts = dateCellText.split(' ');
+                if (tglMulaiValue !== '' || tglSampaiValue !== '') {
+                    const dateCellText = cells[2].innerText.toLowerCase().trim(); // e.g. "12 apr 2024" or "12 apr 2024 - 15 apr 2024"
+                    const mainDateStr = dateCellText.split('-')[0].trim(); // Just take the start date for filtering
+                    const parts = mainDateStr.split(' ');
                     if (parts.length === 3) {
                         const d = parts[0].padStart(2, '0');
                         const m = months[parts[1]] || '00';
                         const y = parts[2];
                         const rowDateStr = `${y}-${m}-${d}`;
-                        matchesTanggal = (tanggalValue === rowDateStr);
+                        
+                        if (tglMulaiValue !== '' && rowDateStr < tglMulaiValue) {
+                            matchesTanggal = false;
+                        }
+                        if (tglSampaiValue !== '' && rowDateStr > tglSampaiValue) {
+                            matchesTanggal = false;
+                        }
                     } else {
                         matchesTanggal = false;
                     }
                 }
 
-                let matchesStatus = true;
-                if (statusValue !== '' && cells.length > 5) {
-                    const statusCellText = cells[5].innerText.toLowerCase().trim();
-                    matchesStatus = (statusCellText === statusValue);
+                let matchesKategori = true;
+                if (kategoriValue !== '' && cells.length > 4) {
+                    const kategoriCellText = cells[4].innerText.toLowerCase().trim();
+                    matchesKategori = (kategoriCellText === kategoriValue);
                 }
 
-                if (matchesSearch && matchesTanggal && matchesStatus) {
+                if (matchesSearch && matchesTanggal && matchesKategori) {
                     row.style.display = '';
                     visibleCount++;
                 } else {
@@ -407,13 +500,15 @@
         }
 
         if (inputEl) inputEl.addEventListener('keyup', filterTable);
-        if (tanggalEl) tanggalEl.addEventListener('change', filterTable);
-        if (statusEl) statusEl.addEventListener('change', filterTable);
+        if (tglMulaiEl) tglMulaiEl.addEventListener('change', filterTable);
+        if (tglSampaiEl) tglSampaiEl.addEventListener('change', filterTable);
+        if (kategoriEl) kategoriEl.addEventListener('change', filterTable);
     }
 
-    setupAdvancedSearch('searchAktif', 'filterTanggalAktif', 'tableAktif', 'filterStatusAktif');
-    setupAdvancedSearch('searchPengajuan', 'filterTanggalPengajuan', 'tablePengajuan');
-    setupAdvancedSearch('searchDitolak', 'filterTanggalDitolak', 'tableDitolak');
+    setupAdvancedSearch('searchAktif', 'filterTanggalAktifMulai', 'filterTanggalAktifSampai', 'filterKategoriAktif', 'tableAktif');
+    setupAdvancedSearch('searchAktif', 'filterTanggalAktifMulai', 'filterTanggalAktifSampai', 'filterKategoriAktif', 'tableRiwayat');
+    setupAdvancedSearch('searchPengajuan', 'filterTanggalPengajuanMulai', 'filterTanggalPengajuanSampai', 'filterKategoriPengajuan', 'tablePengajuan');
+    setupAdvancedSearch('searchDitolak', 'filterTanggalDitolakMulai', 'filterTanggalDitolakSampai', 'filterKategoriDitolak', 'tableDitolak');
 
     // MODAL DETAIL
     function showModal(n, t, w, l, p, d) {
@@ -468,6 +563,30 @@
     function closeApproveModal() {
         document.getElementById('approveModal').classList.add('hidden');
         document.getElementById('approveModal').classList.remove('flex');
+    }
+
+    // SUB TAB EVENT
+    function subTabEvent(type) {
+        const divAktif = document.getElementById('divEventAktif');
+        const divRiwayat = document.getElementById('divEventRiwayat');
+        const sub1 = document.getElementById('subEvent1');
+        const sub2 = document.getElementById('subEvent2');
+
+        if (type === 'aktif') {
+            divAktif.classList.remove('hidden');
+            divRiwayat.classList.add('hidden');
+            sub1.classList.remove('bg-white', 'text-yellow-400');
+            sub1.classList.add('bg-[#192853]', 'text-white');
+            sub2.classList.remove('bg-[#192853]', 'text-white');
+            sub2.classList.add('bg-white', 'text-yellow-400');
+        } else {
+            divAktif.classList.add('hidden');
+            divRiwayat.classList.remove('hidden');
+            sub2.classList.remove('bg-white', 'text-yellow-400');
+            sub2.classList.add('bg-[#192853]', 'text-white');
+            sub1.classList.remove('bg-[#192853]', 'text-white');
+            sub1.classList.add('bg-white', 'text-yellow-400');
+        }
     }
 </script>
 

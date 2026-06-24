@@ -10,11 +10,36 @@ class EventController extends Controller
 {
     public function index()
     {
-        $eventDisetujui = Event::with(['panitia', 'kategori'])->where('status', 'Published')->get();
+        $today = now()->toDateString();
+
+        $eventAktif = Event::with(['panitia', 'kategori'])
+            ->where('status', 'Published')
+            ->where(function ($query) use ($today) {
+                $query->where('tanggal_selesai', '>=', $today)
+                      ->orWhere(function ($q) use ($today) {
+                          $q->whereNull('tanggal_selesai')
+                            ->where('tanggal_mulai', '>=', $today);
+                      });
+            })
+            ->get();
+
+        $eventRiwayat = Event::with(['panitia', 'kategori'])
+            ->where('status', 'Published')
+            ->where(function ($query) use ($today) {
+                $query->where('tanggal_selesai', '<', $today)
+                      ->orWhere(function ($q) use ($today) {
+                          $q->whereNull('tanggal_selesai')
+                            ->where('tanggal_mulai', '<', $today);
+                      });
+            })
+            ->get();
+
         $eventDitolak = Event::with(['panitia', 'kategori'])->where('status', 'Rejected')->get();
         $eventPending = Event::with(['panitia', 'kategori'])->where('status', 'Pending')->get();
 
-        return view('pages.admin.kelola-event', compact('eventDisetujui', 'eventDitolak', 'eventPending'));
+        $kategoris = \App\Models\Kategori::pluck('nama_kategori');
+
+        return view('pages.admin.kelola-event', compact('eventAktif', 'eventRiwayat', 'eventDitolak', 'eventPending', 'kategoris'));
     }
 
     public function approve($id)
