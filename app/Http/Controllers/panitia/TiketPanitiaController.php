@@ -52,13 +52,19 @@ class TiketPanitiaController extends Controller
 
         // Validasi input form penambahan tiket
         $validated = $request->validate([
-            'nama' => 'required',
+            'nama' => [
+                'required',
+                \Illuminate\Validation\Rule::unique('tikets')->where(function ($query) use ($request) {
+                    return $query->where('event_id', $request->event_id);
+                })
+            ],
             'harga' => 'required|integer|min:1',
             'kuota' => 'required|integer|min:1',
             'keterangan' => 'required|string',
             'event_id' => 'required|exists:events,id',
         ], [
             'nama.required' => 'Nama tiket wajib diisi.',
+            'nama.unique' => 'Nama tiket tersebut sudah ada untuk event ini.',
             'harga.required' => 'Harga tiket wajib diisi.',
             'harga.integer' => 'Harga tiket harus berupa angka/bilangan bulat.',
             'harga.min' => 'Harga tiket tidak boleh kurang dari 1.',
@@ -91,12 +97,18 @@ class TiketPanitiaController extends Controller
 
         // Validasi input form perubahan tiket
         $validated = $request->validate([
-            'nama' => 'required',
+            'nama' => [
+                'required',
+                \Illuminate\Validation\Rule::unique('tikets')->where(function ($query) use ($tiket) {
+                    return $query->where('event_id', $tiket->event_id);
+                })->ignore($tiket->id)
+            ],
             'harga' => 'required|integer|min:1',
             'kuota' => 'required|integer|min:1',
             'keterangan' => 'required|string',
         ], [
             'nama.required' => 'Nama tiket wajib diisi.',
+            'nama.unique' => 'Nama tiket tersebut sudah ada untuk event ini.',
             'harga.required' => 'Harga tiket wajib diisi.',
             'harga.integer' => 'Harga tiket harus berupa angka/bilangan bulat.',
             'harga.min' => 'Harga tiket tidak boleh kurang dari 1.',
@@ -113,20 +125,26 @@ class TiketPanitiaController extends Controller
         return back()->with('success', 'Tiket berhasil diupdate');
     }
 
-    //Menghapus jenis tiket dari database. Jika setelah dihapus event tidak memiliki tiket sama sekali, status event akan diturunkan kembali ke 'Draft'.
     public function destroy(Tiket $tiket)
     {
-        // Menyimpan ID event terkait sebelum menghapus tiket
-        $eventId = $tiket->event_id;
-        // Menghapus tiket dari database
-        $tiket->delete();
+        try {
+            // Menyimpan ID event terkait sebelum menghapus tiket
+            $eventId = $tiket->event_id;
+            // Menghapus tiket dari database
+            $tiket->delete();
 
-        // Jika event tersebut sudah tidak memiliki tiket sama sekali, statusnya diturunkan menjadi 'Draft'
-        if (Tiket::where('event_id', $eventId)->count() === 0) {
-            Event::where('id', $eventId)->update(['status' => 'Draft']);
+            // Jika event tersebut sudah tidak memiliki tiket sama sekali, statusnya diturunkan menjadi 'Draft'
+            if (Tiket::where('event_id', $eventId)->count() === 0) {
+                Event::where('id', $eventId)->update(['status' => 'Draft']);
+            }
+
+            // Kembali dengan pesan sukses
+            return back()->with('success', 'Tiket berhasil dihapus');
+        } catch (\Illuminate\Database\QueryException $e) {
+            if ($e->getCode() == 23000) {
+                return back()->with('error', 'Gagal! Tiket tidak dapat dihapus karena sudah memiliki transaksi pembelian.');
+            }
+            return back()->with('error', 'Gagal menghapus tiket. Kesalahan sistem.');
         }
-
-        // Kembali dengan pesan sukses
-        return back()->with('success', 'Tiket berhasil dihapus');
     }
 }
