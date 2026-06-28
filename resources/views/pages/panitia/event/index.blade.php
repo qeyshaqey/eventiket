@@ -180,6 +180,11 @@
                     <span class="px-2 py-1 text-xs rounded-full bg-red-100 text-red-600 font-semibold">
                         Rejected
                     </span>
+                    @if($event->alasan_penolakan)
+                        <div class="text-[10px] text-red-500 mt-1 italic max-w-[120px] mx-auto leading-tight text-center" style="word-break: break-word;">
+                            Alasan: {{ $event->alasan_penolakan }}
+                        </div>
+                    @endif
                 @else
                     <span class="px-2 py-1 text-xs rounded-full bg-yellow-100 text-yellow-700 font-semibold">
                         Draft
@@ -773,6 +778,33 @@ document.addEventListener('DOMContentLoaded', function () {
     window.confirmDelete = confirmDelete;
     window.openDetailModal = openDetailModal;
     window.kirimKeAdmin = kirimKeAdmin;
+
+    // TRANSLASI VALIDASI HTML5 BAWAAN BROWSER
+    const inputs = document.querySelectorAll('input, select, textarea');
+    inputs.forEach(input => {
+        input.addEventListener('invalid', function (e) {
+            if (this.validity.valueMissing) {
+                this.setCustomValidity('Kolom ini harus diisi.');
+            } else if (this.validity.rangeUnderflow) {
+                let min = this.getAttribute('min');
+                if (this.type === 'date') {
+                    // format min date for message
+                    min = min.split('-').reverse().join('/');
+                }
+                this.setCustomValidity('Harap pilih nilai yang tidak lebih awal dari ' + min + '.');
+            } else if (this.validity.typeMismatch && this.type === 'email') {
+                this.setCustomValidity('Harap masukkan alamat email yang valid.');
+            } else if (this.validity.patternMismatch) {
+                this.setCustomValidity('Format tidak sesuai.');
+            } else {
+                this.setCustomValidity('');
+            }
+        });
+
+        input.addEventListener('input', function (e) {
+            this.setCustomValidity(''); // Reset custom validity on input
+        });
+    });
 });
 </script>
 @if ($errors->any())

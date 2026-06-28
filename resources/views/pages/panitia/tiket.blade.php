@@ -63,6 +63,30 @@
     </script>
     @endif
 
+    <!-- TOAST NOTIFIKASI ERROR -->
+    @if(session('error'))
+    <div id="toastError" class="fixed top-5 right-5 z-[9999] bg-red-500 text-white px-6 py-4 rounded-xl shadow-2xl flex items-center gap-4 animate-fadeIn transition-all duration-500">
+        <div class="bg-white/20 p-2 rounded-full flex items-center justify-center">
+            <i class="bi bi-x-lg text-xl"></i>
+        </div>
+        <div>
+            <h4 class="font-bold text-sm">Gagal!</h4>
+            <span class="block text-sm">{{ session('error') }}</span>
+        </div>
+        <button onclick="document.getElementById('toastError').remove()" class="ml-4 text-white/80 hover:text-white text-2xl leading-none">&times;</button>
+    </div>
+    <script>
+        // Menghilangkan toast error secara otomatis dalam 5 detik
+        setTimeout(() => {
+            const toastError = document.getElementById('toastError');
+            if(toastError) {
+                toastError.classList.add('opacity-0', '-translate-y-5');
+                setTimeout(() => toastError.remove(), 500);
+            }
+        }, 3000);
+    </script>
+    @endif
+
     <!-- PERULANGAN EVENT YANG DIKELOLA -->
     @forelse($events as $event)
     <!-- Box Event: Diberi ring biru jika di-highlight dari parameter URL -->

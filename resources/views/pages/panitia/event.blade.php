@@ -45,6 +45,11 @@
                         <span class="text-green-600 font-semibold">Published</span>
                     @elseif($event->status === 'Rejected')
                         <span class="text-red-600 font-semibold">Rejected</span>
+                        @if($event->alasan_penolakan)
+                            <div class="text-xs text-red-500 mt-1 italic">
+                                Alasan: {{ $event->alasan_penolakan }}
+                            </div>
+                        @endif
                     @else
                         <span class="text-yellow-600 font-semibold">Draft</span>
                     @endif
