@@ -46,8 +46,8 @@ class PengajuanPanitia extends Model implements ApprovableInterface
                 'deskripsi'       => $this->deskripsi,
                 'tanggal_mulai'   => $this->tanggal_event,
                 'tanggal_selesai' => $this->tanggal_event,
-                'waktu_mulai'     => '08:00:00', // Default waktu mulai
-                'waktu_selesai'   => '17:00:00', // Default waktu selesai
+                'waktu_mulai'     => '00:00:00', // Default waktu mulai
+                'waktu_selesai'   => '23:59:00', // Default waktu selesai
                 'lokasi'          => 'Belum ditentukan', // Default lokasi
                 'status'          => 'Draft',
             ]);

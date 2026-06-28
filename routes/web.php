@@ -128,7 +128,7 @@ Route::post('/login', function (Request $request) {
     $password = $request->password;
 
     if (!$username || !$password) {
-        return back()->with('error', 'NIM/Nama Lengkap dan password wajib diisi.');
+        return back()->with('error', 'NIM/Nama Lengkap dan kata sandi wajib diisi.');
     }
 
     // cari user di db pake nama, nim, atau email
@@ -139,7 +139,7 @@ Route::post('/login', function (Request $request) {
     
     // mastiin user ketemu dan password-nya bener
     if (!$user || !Hash::check($password, $user->password)) {
-        return back()->with('error', 'NIM/Nama Lengkap/Email atau password salah.');
+        return back()->with('error', 'NIM/Nama Lengkap atau kata sandi salah.');
     }
 
     // simpan data user ke session kustom
@@ -149,12 +149,19 @@ Route::post('/login', function (Request $request) {
         'user_id' => $user->id
     ]);
     
-    // lempar ke dashboard sesuai role masing-masing
+    // tentukan URL tujuan berdasarkan role
     if ($user->role === 'admin') {
-        return redirect()->route('admin.dashboard');
+        $redirectUrl = route('admin.dashboard');
+    } elseif ($user->role === 'panitia') {
+        $redirectUrl = route('beranda.panitia');
     } else {
-        return redirect()->route('pengunjung.dashboard');
+        $redirectUrl = route('pengunjung.dashboard');
     }
+
+    // redirect ke halaman login dulu, tampilkan notif, baru pindah ke dashboard
+    return redirect()->route('login')
+        ->with('success', 'Berhasil Masuk! Selamat datang, ' . $user->name . '.')
+        ->with('redirect_to', $redirectUrl);
 });
 
 // ── PROSES DAFTAR ──
@@ -209,7 +216,7 @@ Route::get('/beranda-panitia', [BerandaPanitiaController::class, 'index'])
 // ── PROSES LOGOUT ──
 Route::post('/logout', function () {
     session()->flush();
-    return redirect('/login');
+    return redirect('/login')->with('success', 'Berhasil Keluar !!');
 })->name('logout');
 
 // callback midtrans buat update status bayar

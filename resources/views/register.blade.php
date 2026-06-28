@@ -155,6 +155,17 @@
             </div>
         @endif
 
+        {{-- Error Banner --}}
+        @if ($errors->any())
+            <div class="error-banner" style="background:#fce8e8;border:1px solid #e5414a;border-radius:9px;padding:11px 14px;color:#e5414a;font-size:13px;margin-bottom:16px;display:flex;align-items:center;gap:9px">
+                <svg style="flex-shrink:0" width="20" height="20" fill="none" viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="10" fill="#e5414a"/>
+                    <path d="M12 8v4m0 4h.01" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Pendaftaran gagal. Terdapat data yang belum lengkap atau sudah terdaftar. Silakan periksa kembali!
+            </div>
+        @endif
+
         {{-- Form --}}
         <form method="POST" action="{{ route('register.store') }}" novalidate>
             @csrf

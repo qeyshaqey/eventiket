@@ -17,9 +17,17 @@ class KategoriController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
+        $validator = \Illuminate\Support\Facades\Validator::make($request->all(), [
             'nama' => 'required|string|max:255',
+        ], [
+            'nama.required' => 'Nama kategori wajib diisi',
+            'nama.string' => 'Nama kategori harus berupa teks.',
+            'nama.max' => 'Nama kategori maksimal 255 karakter.'
         ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->with('error', $validator->errors()->first());
+        }
 
         $nama_kategori = trim($request->nama);
 

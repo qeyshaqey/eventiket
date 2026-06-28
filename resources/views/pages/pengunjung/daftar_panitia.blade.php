@@ -109,7 +109,7 @@
             <p class="text-xs sm:text-sm text-grayCustom mt-1 font-medium">*Lengkapi data event yang akan direncanakan</p>
         </div>
 
-        <form id="form-pengajuan" action="{{ route('pengunjung.daftar_panitia_post') }}" method="POST" onsubmit="return validateForm(event)">
+        <form id="form-pengajuan" action="{{ route('pengunjung.daftar_panitia_post') }}" method="POST" onsubmit="return validateForm(event)" novalidate>
             @csrf
             <div class="px-6 sm:px-10 pt-5 pb-8 space-y-8">
 
@@ -198,7 +198,7 @@
 
                         <div>
                             <label class="block font-semibold text-navy text-sm mb-2">Perkiraan Tanggal Event*</label>
-                            <input type="date" id="tanggal" name="tanggal"
+                            <input type="date" id="tanggal" name="tanggal" min="{{ \Carbon\Carbon::now()->addDays(7)->format('Y-m-d') }}"
                                 class="w-full border border-grayCustom rounded-xl px-5 py-3 text-navy text-sm font-medium focus:outline-none focus:border-navy focus:ring-1 focus:ring-navy bg-slate-50 transition text-grayCustom">
                         </div>
 
@@ -295,6 +295,21 @@
     function validateForm(e) {
         const ok = ['organisasi','nama_event','kategori','tanggal','deskripsi'].every(id => document.getElementById(id)?.value?.trim());
         if (!ok) { e.preventDefault(); showToast('Silakan lengkapi form terlebih dahulu', 'error'); return false; }
+        
+        const tglVal = document.getElementById('tanggal')?.value;
+        if (tglVal) {
+            const selectedDate = new Date(tglVal);
+            const minDate = new Date();
+            minDate.setDate(minDate.getDate() + 7);
+            minDate.setHours(0,0,0,0);
+            
+            if (selectedDate < minDate) {
+                e.preventDefault();
+                showToast('Perkiraan tanggal event minimal harus H-7 dari hari ini.', 'error');
+                return false;
+            }
+        }
+        
         return true;
     }
 

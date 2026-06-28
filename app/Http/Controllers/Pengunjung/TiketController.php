@@ -77,11 +77,11 @@ class TiketController extends Controller
             }
 
             // Penentuan Logika Pemisahan (Tiket Aktif vs Riwayat)
-            // Gabungkan tanggal selesai + jam selesai agar perbandingannya presisi (menit-per-menit)
+            // Gabungkan tanggal selesai + jam selesai 
             $endDateStr = $event->tanggal_selesai ?? $event->tanggal_mulai;
             $endTimeStr = $event->waktu_selesai ?? '23:59:59';
             $endDateTime = Carbon::parse($endDateStr . ' ' . $endTimeStr, 'Asia/Jakarta');
-            $isHistory = false; // Anggap masih aktif pada awalnya
+            $isHistory = false; // Anggap masih aktif riwayat pada awalnya
             
             // 1. Jika status pembayarannya Dibatalkan atau Kedaluwarsa -> Masuk Riwayat
             if ($pembelian->status_pembayaran === 'Dibatalkan' || $pembelian->status_pembayaran === 'Kedaluwarsa') {
@@ -135,8 +135,7 @@ class TiketController extends Controller
     }
 
     
-    //  Method ini menangani saat user mengklik tombol "Beli Tiket" (Proses Checkout di halaman Detail).
-     
+    //  Method ini menangani saat user mengklik tombol "Beli Tiket" (Proses Checkout di halaman Detail)
     public function checkout(Request $request)
     {
         // Cek keamanan (apakah session user sudah ada / sudah login?)
@@ -270,6 +269,19 @@ class TiketController extends Controller
         
         // Jika statusnya memang masih "Belum Bayar"
         if ($pembelian && $pembelian->status_pembayaran == 'Belum Bayar') {
+            // Set konfigurasi Midtrans
+            \Midtrans\Config::$serverKey = config('midtrans.server_key');
+            \Midtrans\Config::$isProduction = config('midtrans.is_production');
+            
+            try {
+                // Membatalkan transaksi langsung ke server Midtrans
+                if ($pembelian->order_id) {
+                    \Midtrans\Transaction::cancel($pembelian->order_id);
+                }
+            } catch (\Exception $e) {
+                // Jika error (misalnya transaksi belum terdaftar di Midtrans), biarkan saja.
+            }
+
             // izinkan mengubah status di database menjadi 'Dibatalkan'
             $pembelian->update(['status_pembayaran' => 'Dibatalkan']);
             return response()->json(['success' => true, 'message' => 'Tiket berhasil dibatalkan.']);

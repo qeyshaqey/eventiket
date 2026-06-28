@@ -29,7 +29,7 @@ class PaymentController extends Controller
             $pembelian = Pembelian::where('user_id', $user->id)
                                 ->where('order_id', $orderIdRequest)
                                 ->first();
-        } else {
+        } else {    
             // Jika tidak ada order_id, otomatis ambil transaksi TERAKHIR yang statusnya masih 'Belum Bayar'
             $pembelian = Pembelian::where('user_id', $user->id)
                                 ->where('status_pembayaran', 'Belum Bayar')
@@ -89,10 +89,12 @@ class PaymentController extends Controller
                     $pembelian->save();
                     
                     // Generate E-Tiket (Kode Unik) tabel pembelian berelasi dengan detail pembelian
-                    // Ambil detail rincian tiket apa saja yang dibeli di pesanan ini
                     $details = $pembelian->detail_pembelians;
+                    // mengambil kumpulan data $details, lalu setiap kali berulang, simpan satu datanya ke dalam variabel $detail
                     foreach ($details as $detail) {
-                        // Jika dia beli 3 tiket, lakukan perulangan 3 kali untuk membuat 3 kode E-Tiket terpisah
+                        // $i < $detail->jumlah : Ulangi terus selama angka $i lebih kecil dari jumlah tiket yang dibeli. 
+                        // (jika beli 3, maka akan berulang untuk angka 0, 1, 2)
+                        // $i++ : Setiap kali selesai satu putaran, tambahkan nilai $i dengan angka 1
                         for ($i = 0; $i < $detail->jumlah; $i++) {
                             Etiket::create([
                                 'pembelian_id' => $pembelian->id,

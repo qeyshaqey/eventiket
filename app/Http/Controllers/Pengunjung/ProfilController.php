@@ -147,8 +147,10 @@ class ProfilController extends Controller
             'organisasi'  => 'required|string|max:255', // Nama UKM / Organisasi
             'nama_event'  => 'required|string|max:255', // Rencana acara
             'kategori'    => 'required|string|max:255', // Pilihan Dropdown
-            'tanggal'     => 'required|date',           // Tanggal rencana pelaksanaan
+            'tanggal'     => 'required|date|after_or_equal:' . \Carbon\Carbon::now()->addDays(7)->format('Y-m-d'), // Minimal H-7
             'deskripsi'   => 'required|string',         // Paragraf deskripsi konsep acara
+        ], [
+            'tanggal.after_or_equal' => 'Perkiraan tanggal event minimal harus H-7 dari hari ini.',
         ]);
 
         // Cek kembali ke database, apakah user ini berstatus 'dicabut' (di-banned admin)?

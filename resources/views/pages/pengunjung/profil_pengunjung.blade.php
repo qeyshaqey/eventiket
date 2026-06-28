@@ -49,8 +49,8 @@
 
                     @elseif($pengajuan->status == 'pending')
                         <div class="rounded-xl bg-[#FFF7E0] p-4 border border-[#FFE14E]">
-                            <p class="font-bold text-navy text-sm"><i class="fa-solid fa-clock mr-1"></i> Pengajuan Sedang Diproses</p>
-                            <p class="text-xs text-[#192853]/70 mt-1">Mohon tunggu, admin sedang meninjau pengajuan Anda.</p>
+                            <p class="font-bold text-navy text-sm"><i class="fa-solid fa-clock mr-1"></i>Menunggu </p>
+                            <p class="text-xs text-[#192853]/70 mt-1">Pengajuan Sedang Diproses. Mohon tunggu, admin sedang meninjau pengajuan Anda.</p>
                         </div>
 
                     @elseif($pengajuan->status == 'dicabut')

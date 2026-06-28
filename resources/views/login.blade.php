@@ -498,16 +498,38 @@
             <h1>Masuk</h1>
             <p class="sub">Selamat datang kembali! Masuk ke akun Anda.</p>
 
-            {{-- pesan alert error/sukses dari laravel --}}
+            <!-- Notifikasi Error Login  -->
             @if(session('error'))
-            <div class="alert alert-error">{{ session('error') }}</div>
+            <div style="background:#fce8e8;border:1px solid #e5414a;border-radius:9px;padding:12px 15px;color:#c0392b;font-size:13px;margin-bottom:18px;display:flex;align-items:center;gap:10px">
+                <svg style="flex-shrink:0" width="20" height="20" fill="none" viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="10" fill="#e5414a"/>
+                    <path d="M12 8v4m0 4h.01" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                {{ session('error') }}
+            </div>
             @endif
 
+            <!-- Notifikasi Berhasil Login  -->
             @if(session('success'))
-            <div class="alert alert-success">{{ session('success') }}</div>
+            <div style="background:#e8f9f0;border:1px solid #7dd9aa;border-radius:9px;padding:12px 15px;color:#1a7a4a;font-size:13px;margin-bottom:18px;display:flex;align-items:center;gap:10px">
+                <svg style="flex-shrink:0" width="20" height="20" fill="none" viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="10" fill="#7dd9aa"/>
+                    <path d="M8 12.5l3 3 5-5" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                {{ session('success') }}
+            </div>
+            @if(session('redirect_to'))
+            <script>
+                setTimeout(function() {
+                    window.location.href = "{{ session('redirect_to') }}";
+                }, 1000);
+            </script>
+            @endif
             @endif
 
-            <form method="POST" action="/login">
+
+
+            <form method="POST" action="/login" novalidate>
                 @csrf
 
                 <!-- input username atau nim -->
