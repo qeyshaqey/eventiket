@@ -196,7 +196,7 @@
             <td class="px-4 py-3 text-center">
                 <div class="flex items-center justify-center gap-3">
 
-                    @if(in_array(($event->status ?? ''), ['Draft', 'Rejected']))
+                    @if(($event->status ?? '') === 'Rejected')
                     <button 
                         onclick="window.location.href='{{ route('panitia.tiket') }}?event_id={{ $event->id }}'"
                         class="text-green-500 hover:text-green-700 transition"
@@ -554,6 +554,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const todayStr = new Date().toISOString().split('T')[0];
 
+        // Tanggal minimal 7 hari dari sekarang
+        const minDateObj = new Date();
+        minDateObj.setDate(minDateObj.getDate() + 7);
+        const minDateStr = minDateObj.toISOString().split('T')[0];
+
         // MODE TAMBAH
         if (mode === 'tambah') {
             title.innerText = 'Tambah Event';
@@ -563,9 +568,9 @@ document.addEventListener('DOMContentLoaded', function () {
             document.getElementById('posterInput').required = true;
             document.getElementById('posterPreviewContainer').classList.add('hidden');
 
-            // Batasi tanggal mulai dan selesai minimal hari ini
-            if (tglMulaiInput) tglMulaiInput.min = todayStr;
-            if (tglSelesaiInput) tglSelesaiInput.min = todayStr;
+            // Batasi tanggal mulai dan selesai minimal 7 hari dari sekarang
+            if (tglMulaiInput) tglMulaiInput.min = minDateStr;
+            if (tglSelesaiInput) tglSelesaiInput.min = minDateStr;
             
             // Perbarui batas waktu input
             updateTimeLimits();
@@ -600,12 +605,12 @@ document.addEventListener('DOMContentLoaded', function () {
                 document.getElementById('posterPreviewContainer').classList.add('hidden');
             }
 
-            // Agar tidak error ketika mengedit event lama di masa lalu,
-            // set min date ke tanggal event tersebut (mana yang lebih lama)
-            const eventDate = event.tanggal_mulai ?? todayStr;
-            const minDate = eventDate < todayStr ? eventDate : todayStr;
+            // Agar tidak error ketika mengedit event:
+            // Jika tanggal event lebih lama dari minDateStr, izinkan tanggal event tersebut tetap valid
+            const eventDate = event.tanggal_mulai ?? minDateStr;
+            const minDate = eventDate < minDateStr ? eventDate : minDateStr;
             if (tglMulaiInput) tglMulaiInput.min = minDate;
-            if (tglSelesaiInput) tglSelesaiInput.min = minDate;
+            if (tglSelesaiInput) tglSelesaiInput.min = event.tanggal_mulai ?? minDateStr;
 
             // Perbarui batas waktu input
             updateTimeLimits();
@@ -783,26 +788,37 @@ document.addEventListener('DOMContentLoaded', function () {
     const inputs = document.querySelectorAll('input, select, textarea');
     inputs.forEach(input => {
         input.addEventListener('invalid', function (e) {
+            this.setCustomValidity(''); // Reset custom validity first
+            
             if (this.validity.valueMissing) {
                 this.setCustomValidity('Kolom ini harus diisi.');
             } else if (this.validity.rangeUnderflow) {
                 let min = this.getAttribute('min');
                 if (this.type === 'date') {
                     // format min date for message
-                    min = min.split('-').reverse().join('/');
+                    if (min && min.includes('-')) {
+                        min = min.split('-').reverse().join('/');
+                    }
+                    this.setCustomValidity('Harap pilih tanggal yang tidak lebih awal dari ' + min + '.');
+                } else if (this.type === 'time' || this.id === 'waktu_mulai' || this.id === 'waktu_selesai') {
+                    this.setCustomValidity('Harap pilih waktu yang tidak lebih awal dari ' + min + '.');
+                } else if (this.type === 'number') {
+                    this.setCustomValidity('Nilai harus lebih besar dari atau sama dengan ' + min + '.');
+                } else {
+                    this.setCustomValidity('Harap pilih nilai yang tidak lebih awal dari ' + min + '.');
                 }
-                this.setCustomValidity('Harap pilih nilai yang tidak lebih awal dari ' + min + '.');
             } else if (this.validity.typeMismatch && this.type === 'email') {
                 this.setCustomValidity('Harap masukkan alamat email yang valid.');
             } else if (this.validity.patternMismatch) {
                 this.setCustomValidity('Format tidak sesuai.');
-            } else {
-                this.setCustomValidity('');
             }
         });
 
         input.addEventListener('input', function (e) {
             this.setCustomValidity(''); // Reset custom validity on input
+        });
+        input.addEventListener('change', function (e) {
+            this.setCustomValidity(''); // Reset custom validity on change
         });
     });
 });

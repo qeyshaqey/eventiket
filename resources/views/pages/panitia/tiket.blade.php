@@ -422,6 +422,43 @@ if (filterEventSelect) filterEventSelect.addEventListener('change', filterTicket
 // Jalankan filter saat pertama kali halaman dimuat
 updateEventDropdown();
 
+// TRANSLASI VALIDASI HTML5 BAWAAN BROWSER
+const inputs = document.querySelectorAll('input, select, textarea');
+inputs.forEach(input => {
+    input.addEventListener('invalid', function (e) {
+        this.setCustomValidity(''); // Reset custom validity first
+        
+        if (this.validity.valueMissing) {
+            this.setCustomValidity('Kolom ini harus diisi.');
+        } else if (this.validity.rangeUnderflow) {
+            let min = this.getAttribute('min');
+            if (this.type === 'date') {
+                if (min && min.includes('-')) {
+                    min = min.split('-').reverse().join('/');
+                }
+                this.setCustomValidity('Harap pilih tanggal yang tidak lebih awal dari ' + min + '.');
+            } else if (this.type === 'time' || this.id === 'waktu_mulai' || this.id === 'waktu_selesai') {
+                this.setCustomValidity('Harap pilih waktu yang tidak lebih awal dari ' + min + '.');
+            } else if (this.type === 'number') {
+                this.setCustomValidity('Nilai harus lebih besar dari atau sama dengan ' + min + '.');
+            } else {
+                this.setCustomValidity('Harap pilih nilai yang tidak lebih awal dari ' + min + '.');
+            }
+        } else if (this.validity.typeMismatch && this.type === 'email') {
+            this.setCustomValidity('Harap masukkan alamat email yang valid.');
+        } else if (this.validity.patternMismatch) {
+            this.setCustomValidity('Format tidak sesuai.');
+        }
+    });
+
+    input.addEventListener('input', function (e) {
+        this.setCustomValidity(''); // Reset custom validity on input
+    });
+    input.addEventListener('change', function (e) {
+        this.setCustomValidity(''); // Reset custom validity on change
+    });
+});
+
 @if ($errors->any())
 document.addEventListener("DOMContentLoaded", function () {
     if (typeof showToast === 'function') {

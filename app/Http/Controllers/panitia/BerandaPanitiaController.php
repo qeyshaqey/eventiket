@@ -83,12 +83,19 @@ class BerandaPanitiaController extends Controller
             $totalKuota = $event->tikets->sum('kuota');
 
             return [
-                'judul' => $event->judul,
-                'kategori' => $event->kategori->nama_kategori ?? '-',
-                'tanggal' => $tanggal,
-                'waktu' => $event->waktu_mulai ? substr($event->waktu_mulai, 0, 5) : '00:00',
-                'lokasi' => $event->lokasi ?? '-',
-                'kuota' => $totalKuota
+                'judul'     => $event->judul,
+                'kategori'  => $event->kategori->nama_kategori ?? '-',
+                'tanggal'   => $tanggal,
+                'waktu'     => $event->waktu_mulai ? substr($event->waktu_mulai, 0, 5) : '00:00',
+                'lokasi'    => $event->lokasi ?? '-',
+                'kuota'     => $totalKuota,
+                'deskripsi' => $event->deskripsi ?? '',
+                'poster'    => $event->poster ?? '',
+                'tikets'    => $event->tikets->map(fn($t) => [
+                    'nama'  => $t->nama,
+                    'harga' => $t->harga,
+                    'kuota' => $t->kuota,
+                ])->values()->toArray(),
             ];
         });
 

@@ -43,8 +43,8 @@ class EventPanitiaController extends Controller
     //Menyimpan data event baru ke dalam database.Dilengkapi validasi ketat untuk mendeteksi tanggal dan waktu yang sudah lewat di masa lalu.
     public function store(Request $request)
     {
-        // Mendapatkan tanggal hari ini dalam format Y-m-d dan waktu sekarang H:i
-        $today = date('Y-m-d');
+        // Tanggal minimal = 7 hari dari sekarang (logika pengajuan panitia)
+        $minDate = now()->addDays(7)->toDateString();
         $currentTime = date('H:i');
 
         // Aturan validasi dasar
@@ -52,7 +52,7 @@ class EventPanitiaController extends Controller
             'judul' => 'required',
             'kategori_id' => 'required|exists:kategoris,id',
             'deskripsi' => 'required',
-            'tanggal_mulai' => 'required|date|after_or_equal:today',
+            'tanggal_mulai' => 'required|date|after_or_equal:' . $minDate,
             'tanggal_selesai' => 'required|date|after_or_equal:tanggal_mulai',
             'waktu_mulai' => 'required',
             'waktu_selesai' => 'required',
@@ -60,19 +60,14 @@ class EventPanitiaController extends Controller
             'poster' => 'required|image|mimes:jpg,jpeg,png|max:2048',
         ];
 
-        // Validasi Waktu Mulai: Jika tanggal mulai adalah HARI INI, waktu mulai harus setelah jam sekarang
-        if ($request->tanggal_mulai === $today) {
-            $rules['waktu_mulai'] .= '|after:' . $currentTime;
-        }
-
-        // Validasi Waktu Selesai: Waktu selesai harus selalu setelah waktu mulai, walaupun harinya berbeda (Sesuai request user)
+        // Validasi Waktu Selesai: Waktu selesai harus selalu setelah waktu mulai
         $rules['waktu_selesai'] .= '|after:waktu_mulai';
 
         // Mengeksekusi validasi dengan pesan error khusus dalam Bahasa Indonesia
+        $minDateFormatted = now()->addDays(7)->translatedFormat('d F Y');
         $validated = $request->validate($rules, [
-            'tanggal_mulai.after_or_equal' => 'Tanggal mulai tidak boleh tanggal yang sudah lewat.',
+            'tanggal_mulai.after_or_equal' => 'Tanggal mulai harus minimal 7 hari dari sekarang (minimal ' . $minDateFormatted . ').',
             'tanggal_selesai.after_or_equal' => 'Tanggal selesai harus setelah atau sama dengan tanggal mulai.',
-            'waktu_mulai.after' => 'Waktu mulai harus setelah waktu sekarang untuk event hari ini.',
             'waktu_selesai.after' => 'Waktu selesai harus setelah waktu mulai.',
             'poster.required' => 'Poster wajib diunggah.',
             'poster.image' => 'File poster harus berupa gambar.',
@@ -109,8 +104,8 @@ class EventPanitiaController extends Controller
         // Mencari event berdasarkan ID, tampilkan error 404 jika tidak ditemukan
         $event = Event::findOrFail($id);
 
-        $today = date('Y-m-d');
-        $currentTime = date('H:i');
+        // Tanggal minimal = 7 hari dari sekarang (jika tanggal diubah)
+        $minDate = now()->addDays(7)->toDateString();
 
         // Aturan validasi dasar
         $rules = [
@@ -125,24 +120,19 @@ class EventPanitiaController extends Controller
             'poster' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ];
 
-        // Hanya validasi tanggal hari ini/mendatang jika tanggal mulai diubah oleh pengguna
+        // Hanya validasi minimal 7 hari jika tanggal mulai diubah oleh pengguna
         if ($request->tanggal_mulai !== $event->tanggal_mulai) {
-            $rules['tanggal_mulai'] .= '|after_or_equal:today';
+            $rules['tanggal_mulai'] .= '|after_or_equal:' . $minDate;
         }
 
-        // Validasi waktu mulai: Jika tanggal mulai diatur ke hari ini dan diubah, pastikan tidak menggunakan jam yang sudah lewat
-        if ($request->tanggal_mulai === $today && ($request->tanggal_mulai !== $event->tanggal_mulai || $request->waktu_mulai !== $event->waktu_mulai)) {
-            $rules['waktu_mulai'] .= '|after:' . $currentTime;
-        }
-
-        // Validasi Waktu Selesai: Waktu selesai harus selalu setelah waktu mulai, walaupun harinya berbeda
+        // Validasi Waktu Selesai: Waktu selesai harus selalu setelah waktu mulai
         $rules['waktu_selesai'] .= '|after:waktu_mulai';
 
         // Mengeksekusi validasi dengan pesan error khusus dalam Bahasa Indonesia
+        $minDateFormatted = now()->addDays(7)->translatedFormat('d F Y');
         $validated = $request->validate($rules, [
-            'tanggal_mulai.after_or_equal' => 'Tanggal mulai tidak boleh tanggal yang sudah lewat.',
+            'tanggal_mulai.after_or_equal' => 'Tanggal mulai harus minimal 7 hari dari sekarang (minimal ' . $minDateFormatted . ').',
             'tanggal_selesai.after_or_equal' => 'Tanggal selesai harus setelah atau sama dengan tanggal mulai.',
-            'waktu_mulai.after' => 'Waktu mulai harus setelah waktu sekarang untuk event hari ini.',
             'waktu_selesai.after' => 'Waktu selesai harus setelah waktu mulai.',
             'poster.image' => 'File poster harus berupa gambar.',
             'poster.mimes' => 'Format poster harus jpg, jpeg, atau png.',

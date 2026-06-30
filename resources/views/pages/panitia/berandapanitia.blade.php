@@ -82,42 +82,43 @@
     <!-- ========================================== -->
     <div id="modal"
         class="fixed inset-0 bg-black/40 hidden items-center justify-center z-50 px-4">
+        <div class="absolute inset-0 bg-black/50" onclick="closeModal()"></div>
 
-        <div class="bg-white w-full max-w-sm rounded-xl shadow-xl overflow-hidden">
+        <div class="relative bg-white w-full max-w-2xl rounded-2xl shadow-2xl overflow-hidden z-10">
             <!-- Header Modal -->
-            <div class="bg-[#192853] p-4 flex justify-between items-start">
-                <div>
-                    <h3 id="m_nama" class="text-yellow-400 font-semibold text-sm"></h3>
-                    <p id="m_kategori" class="text-white/60 text-xs"></p>
-                </div>
+            <div class="bg-[#192853] p-4 flex justify-between items-center text-white">
+                <h2 class="font-semibold text-yellow-400">Detail Event</h2>
                 <button onclick="closeModal()" class="text-white text-lg">&times;</button>
             </div>
 
             <!-- Detail Informasi Event -->
-            <div class="p-4 space-y-3 text-sm">
-                <div class="flex justify-between">
-                    <span class="text-gray-500">Tanggal</span>
-                    <span id="m_tanggal"></span>
-                </div>
+            <div class="p-6 space-y-4 max-h-[75vh] overflow-y-auto">
 
-                <div class="flex justify-between">
-                    <span class="text-gray-500">Waktu</span>
-                    <span id="m_waktu"></span>
-                </div>
+                <div class="flex gap-4">
+                    <img id="m_poster" class="w-44 h-44 object-cover rounded-xl shadow">
 
-                <div class="flex justify-between">
-                    <span class="text-gray-500">Lokasi</span>
-                    <span id="m_lokasi"></span>
+                    <div class="text-sm space-y-1">
+                        <p><b>Judul:</b> <span id="m_nama"></span></p>
+                        <p><b>Kategori:</b> <span id="m_kategori"></span></p>
+                        <p><b>Lokasi:</b> <span id="m_lokasi"></span></p>
+                        <p><b>Tanggal:</b> <span id="m_tanggal"></span></p>
+                        <p><b>Waktu:</b> <span id="m_waktu"></span></p>
+                        <p><b>Total Kuota:</b> <span id="m_kuota"></span></p>
+                    </div>
                 </div>
 
                 <div>
-                    <span class="text-gray-500">Kuota</span>
-                    <p id="m_kuota" class="font-semibold"></p>
+                    <b>Deskripsi</b>
+                    <p id="m_deskripsi" class="text-sm text-gray-600 mt-1 leading-relaxed break-words bg-gray-50 p-3 rounded-lg max-h-48 overflow-y-auto"></p>
+                </div>
+
+                <div>
+                    <b>Tiket</b>
+                    <div id="m_tiket" class="mt-2"></div>
                 </div>
             </div>
         </div>
     </div>
-
 </div>
 
 <!-- JAVASCRIPT LOGIC -->
@@ -191,7 +192,24 @@ window.openDetail = function(index){
     document.getElementById("m_tanggal").innerText = data.tanggal;
     document.getElementById("m_waktu").innerText = data.waktu;
     document.getElementById("m_lokasi").innerText = data.lokasi;
-    document.getElementById("m_kuota").innerText = data.kuota;
+    document.getElementById("m_kuota").innerText = data.kuota + ' tiket';
+    
+
+    document.getElementById("m_poster").src = data.poster ? '/storage/' + data.poster : 'https://via.placeholder.com/400x200?text=No+Image';
+    document.getElementById("m_deskripsi").innerText = data.deskripsi || '-';
+
+    // Render daftar tiket
+    const tiketContainer = document.getElementById("m_tiket");
+    if (data.tikets && data.tikets.length > 0) {
+        tiketContainer.innerHTML = data.tikets.map(t =>
+            `<div class="border rounded p-2 mb-2 text-sm">
+                <b>${t.nama}</b><br>
+                Rp ${Number(t.harga).toLocaleString()} • Kuota: ${t.kuota}
+            </div>`
+        ).join('');
+    } else {
+        tiketContainer.innerHTML = '<p class="text-gray-400 text-sm">Belum ada tiket</p>';
+    }
 
     document.getElementById("modal").classList.remove("hidden");
     document.getElementById("modal").classList.add("flex");

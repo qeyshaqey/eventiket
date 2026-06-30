@@ -72,32 +72,24 @@
     </div>
 
     <!-- BOTTOM -->
-    <div class="p-4 border-t border-white/10">
+    <div class="p-4 border-t border-white/10 flex items-center justify-between">
+        <span class="text-xs text-white/30">@Eventix Panitia</span>
 
-        <div class="flex items-center justify-between">
-
+        <div class="flex items-center gap-2">
+            <!-- PROFIL -->
             <a href="{{ route('panitia.profil') }}"
-               class="flex items-center gap-3">
-
-                <img src="https://ui-avatars.com/api/?name={{ session('user') }}" 
-                     class="w-10 h-10 rounded-full border">
-
-                <div>
-                    <p class="text-sm font-semibold">
-                        {{ session('user') ?? 'User' }}
-                    </p>
-                    <p class="text-xs text-white/40">Panitia</p>
-                </div>
+               class="w-9 h-9 flex items-center justify-center rounded-lg bg-yellow-400/10 text-yellow-400 hover:bg-yellow-400 hover:text-[#192853] transition"
+               title="Profil Panitia">
+                <i class="bi bi-person-circle text-lg"></i>
             </a>
 
-            <!-- FLOWBITE MODAL TRIGGER -->
+            <!-- LOGOUT -->
             <button data-modal-target="logoutModal" data-modal-toggle="logoutModal"
-                class="text-red-500 hover:text-red-600">
-                <i class="bi bi-box-arrow-right"></i>
+                class="w-9 h-9 flex items-center justify-center rounded-lg bg-red-500/10 text-red-400 hover:bg-red-500 hover:text-white transition"
+                title="Keluar">
+                <i class="bi bi-box-arrow-right text-lg"></i>
             </button>
-
         </div>
-
     </div>
 
 </div>
